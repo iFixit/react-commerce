@@ -1,0 +1,27 @@
+{
+   "kind": "collectionType",
+   "collectionName": "screwdriver_bits",
+   "info": {
+      "singularName": "screwdriver-bit",
+      "pluralName": "screwdriver-bits",
+      "displayName": "ScrewdriverBit",
+      "description": ""
+   },
+   "options": {
+      "draftAndPublish": false
+   },
+   "pluginOptions": {},
+   "attributes": {
+      "type": {
+         "type": "relation",
+         "relation": "oneToOne",
+         "target": "api::screwdriver-bit-type.screwdriver-bit-type"
+      },
+      "size": {
+         "type": "string"
+      },
+      "slug": {
+         "type": "uid"
+      }
+   }
+}

@@ -383,6 +383,20 @@ export type ComponentPageStatsStatsArgs = {
    sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
+export type ComponentProductBitTable = {
+   __typename?: 'ComponentProductBitTable';
+   bits?: Maybe<ScrewdriverBitRelationResponseCollection>;
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentProductBitTableBitsArgs = {
+   filters?: InputMaybe<ScrewdriverBitFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
 export type ComponentProductCrossSell = {
    __typename?: 'ComponentProductCrossSell';
    id: Scalars['ID'];
@@ -863,6 +877,7 @@ export type GenericMorph =
    | ComponentPageSplitWithImage
    | ComponentPageStatItem
    | ComponentPageStats
+   | ComponentProductBitTable
    | ComponentProductCrossSell
    | ComponentProductDeviceCompatibility
    | ComponentProductListBanner
@@ -895,6 +910,8 @@ export type GenericMorph =
    | ProductList
    | PublisherAction
    | ReusableSection
+   | ScrewdriverBit
+   | ScrewdriverBitType
    | SocialPost
    | Store
    | UploadFile
@@ -1133,6 +1150,8 @@ export type Mutation = {
    createProductListLocalization?: Maybe<ProductListEntityResponse>;
    createPublisherAction?: Maybe<PublisherActionEntityResponse>;
    createReusableSection?: Maybe<ReusableSectionEntityResponse>;
+   createScrewdriverBit?: Maybe<ScrewdriverBitEntityResponse>;
+   createScrewdriverBitType?: Maybe<ScrewdriverBitTypeEntityResponse>;
    createSocialPost?: Maybe<SocialPostEntityResponse>;
    createStore?: Maybe<StoreEntityResponse>;
    createUploadFile?: Maybe<UploadFileEntityResponse>;
@@ -1151,6 +1170,8 @@ export type Mutation = {
    deleteProductList?: Maybe<ProductListEntityResponse>;
    deletePublisherAction?: Maybe<PublisherActionEntityResponse>;
    deleteReusableSection?: Maybe<ReusableSectionEntityResponse>;
+   deleteScrewdriverBit?: Maybe<ScrewdriverBitEntityResponse>;
+   deleteScrewdriverBitType?: Maybe<ScrewdriverBitTypeEntityResponse>;
    deleteSocialPost?: Maybe<SocialPostEntityResponse>;
    deleteStore?: Maybe<StoreEntityResponse>;
    deleteUploadFile?: Maybe<UploadFileEntityResponse>;
@@ -1181,6 +1202,8 @@ export type Mutation = {
    updateProductList?: Maybe<ProductListEntityResponse>;
    updatePublisherAction?: Maybe<PublisherActionEntityResponse>;
    updateReusableSection?: Maybe<ReusableSectionEntityResponse>;
+   updateScrewdriverBit?: Maybe<ScrewdriverBitEntityResponse>;
+   updateScrewdriverBitType?: Maybe<ScrewdriverBitTypeEntityResponse>;
    updateSocialPost?: Maybe<SocialPostEntityResponse>;
    updateStore?: Maybe<StoreEntityResponse>;
    updateUploadFile?: Maybe<UploadFileEntityResponse>;
@@ -1268,6 +1291,14 @@ export type MutationCreateReusableSectionArgs = {
    data: ReusableSectionInput;
 };
 
+export type MutationCreateScrewdriverBitArgs = {
+   data: ScrewdriverBitInput;
+};
+
+export type MutationCreateScrewdriverBitTypeArgs = {
+   data: ScrewdriverBitTypeInput;
+};
+
 export type MutationCreateSocialPostArgs = {
    data: SocialPostInput;
 };
@@ -1333,6 +1364,14 @@ export type MutationDeletePublisherActionArgs = {
 };
 
 export type MutationDeleteReusableSectionArgs = {
+   id: Scalars['ID'];
+};
+
+export type MutationDeleteScrewdriverBitArgs = {
+   id: Scalars['ID'];
+};
+
+export type MutationDeleteScrewdriverBitTypeArgs = {
    id: Scalars['ID'];
 };
 
@@ -1449,6 +1488,16 @@ export type MutationUpdatePublisherActionArgs = {
 
 export type MutationUpdateReusableSectionArgs = {
    data: ReusableSectionInput;
+   id: Scalars['ID'];
+};
+
+export type MutationUpdateScrewdriverBitArgs = {
+   data: ScrewdriverBitInput;
+   id: Scalars['ID'];
+};
+
+export type MutationUpdateScrewdriverBitTypeArgs = {
+   data: ScrewdriverBitTypeInput;
    id: Scalars['ID'];
 };
 
@@ -1784,6 +1833,7 @@ export type ProductListSectionsDynamicZone =
 
 export type ProductSectionsDynamicZone =
    | ComponentPageSplitWithImage
+   | ComponentProductBitTable
    | ComponentProductCrossSell
    | ComponentProductDeviceCompatibility
    | ComponentProductProduct
@@ -1874,6 +1924,10 @@ export type Query = {
    publisherActions?: Maybe<PublisherActionEntityResponseCollection>;
    reusableSection?: Maybe<ReusableSectionEntityResponse>;
    reusableSections?: Maybe<ReusableSectionEntityResponseCollection>;
+   screwdriverBit?: Maybe<ScrewdriverBitEntityResponse>;
+   screwdriverBitType?: Maybe<ScrewdriverBitTypeEntityResponse>;
+   screwdriverBitTypes?: Maybe<ScrewdriverBitTypeEntityResponseCollection>;
+   screwdriverBits?: Maybe<ScrewdriverBitEntityResponseCollection>;
    socialPost?: Maybe<SocialPostEntityResponse>;
    socialPosts?: Maybe<SocialPostEntityResponseCollection>;
    store?: Maybe<StoreEntityResponse>;
@@ -2006,6 +2060,26 @@ export type QueryReusableSectionsArgs = {
    filters?: InputMaybe<ReusableSectionFiltersInput>;
    pagination?: InputMaybe<PaginationArg>;
    publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type QueryScrewdriverBitArgs = {
+   id?: InputMaybe<Scalars['ID']>;
+};
+
+export type QueryScrewdriverBitTypeArgs = {
+   id?: InputMaybe<Scalars['ID']>;
+};
+
+export type QueryScrewdriverBitTypesArgs = {
+   filters?: InputMaybe<ScrewdriverBitTypeFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type QueryScrewdriverBitsArgs = {
+   filters?: InputMaybe<ScrewdriverBitFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
    sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
@@ -2142,6 +2216,101 @@ export type ReusableSectionSectionDynamicZone =
    | ComponentSectionFaqs
    | ComponentSectionQuoteGallery
    | Error;
+
+export type ScrewdriverBit = {
+   __typename?: 'ScrewdriverBit';
+   createdAt?: Maybe<Scalars['DateTime']>;
+   size?: Maybe<Scalars['String']>;
+   slug?: Maybe<Scalars['String']>;
+   type?: Maybe<ScrewdriverBitTypeEntityResponse>;
+   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type ScrewdriverBitEntity = {
+   __typename?: 'ScrewdriverBitEntity';
+   attributes?: Maybe<ScrewdriverBit>;
+   id?: Maybe<Scalars['ID']>;
+};
+
+export type ScrewdriverBitEntityResponse = {
+   __typename?: 'ScrewdriverBitEntityResponse';
+   data?: Maybe<ScrewdriverBitEntity>;
+};
+
+export type ScrewdriverBitEntityResponseCollection = {
+   __typename?: 'ScrewdriverBitEntityResponseCollection';
+   data: Array<ScrewdriverBitEntity>;
+   meta: ResponseCollectionMeta;
+};
+
+export type ScrewdriverBitFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<ScrewdriverBitFiltersInput>>>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   not?: InputMaybe<ScrewdriverBitFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ScrewdriverBitFiltersInput>>>;
+   size?: InputMaybe<StringFilterInput>;
+   slug?: InputMaybe<StringFilterInput>;
+   type?: InputMaybe<ScrewdriverBitTypeFiltersInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type ScrewdriverBitInput = {
+   size?: InputMaybe<Scalars['String']>;
+   slug?: InputMaybe<Scalars['String']>;
+   type?: InputMaybe<Scalars['ID']>;
+};
+
+export type ScrewdriverBitRelationResponseCollection = {
+   __typename?: 'ScrewdriverBitRelationResponseCollection';
+   data: Array<ScrewdriverBitEntity>;
+};
+
+export type ScrewdriverBitType = {
+   __typename?: 'ScrewdriverBitType';
+   createdAt?: Maybe<Scalars['DateTime']>;
+   driverSize: Scalars['String'];
+   icon: UploadFileEntityResponse;
+   name: Scalars['String'];
+   slug?: Maybe<Scalars['String']>;
+   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type ScrewdriverBitTypeEntity = {
+   __typename?: 'ScrewdriverBitTypeEntity';
+   attributes?: Maybe<ScrewdriverBitType>;
+   id?: Maybe<Scalars['ID']>;
+};
+
+export type ScrewdriverBitTypeEntityResponse = {
+   __typename?: 'ScrewdriverBitTypeEntityResponse';
+   data?: Maybe<ScrewdriverBitTypeEntity>;
+};
+
+export type ScrewdriverBitTypeEntityResponseCollection = {
+   __typename?: 'ScrewdriverBitTypeEntityResponseCollection';
+   data: Array<ScrewdriverBitTypeEntity>;
+   meta: ResponseCollectionMeta;
+};
+
+export type ScrewdriverBitTypeFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<ScrewdriverBitTypeFiltersInput>>>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   driverSize?: InputMaybe<StringFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   name?: InputMaybe<StringFilterInput>;
+   not?: InputMaybe<ScrewdriverBitTypeFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ScrewdriverBitTypeFiltersInput>>>;
+   slug?: InputMaybe<StringFilterInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type ScrewdriverBitTypeInput = {
+   driverSize?: InputMaybe<Scalars['String']>;
+   icon?: InputMaybe<Scalars['ID']>;
+   name?: InputMaybe<Scalars['String']>;
+   slug?: InputMaybe<Scalars['String']>;
+};
 
 export type SocialPost = {
    __typename?: 'SocialPost';
@@ -3132,6 +3301,7 @@ export type FindProductQuery = {
                        } | null;
                     } | null;
                  }
+               | { __typename: 'ComponentProductBitTable' }
                | {
                     __typename: 'ComponentProductCrossSell';
                     id: string;
