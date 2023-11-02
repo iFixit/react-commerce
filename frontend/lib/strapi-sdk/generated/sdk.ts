@@ -1495,6 +1495,8 @@ export type Page = {
    createdAt?: Maybe<Scalars['DateTime']>;
    locale?: Maybe<Scalars['String']>;
    localizations?: Maybe<PageRelationResponseCollection>;
+   metaDescription?: Maybe<Scalars['String']>;
+   metaTitle?: Maybe<Scalars['String']>;
    path: Scalars['String'];
    publishedAt?: Maybe<Scalars['DateTime']>;
    sections: Array<Maybe<PageSectionsDynamicZone>>;
@@ -1532,6 +1534,8 @@ export type PageFiltersInput = {
    id?: InputMaybe<IdFilterInput>;
    locale?: InputMaybe<StringFilterInput>;
    localizations?: InputMaybe<PageFiltersInput>;
+   metaDescription?: InputMaybe<StringFilterInput>;
+   metaTitle?: InputMaybe<StringFilterInput>;
    not?: InputMaybe<PageFiltersInput>;
    or?: InputMaybe<Array<InputMaybe<PageFiltersInput>>>;
    path?: InputMaybe<StringFilterInput>;
@@ -1541,6 +1545,8 @@ export type PageFiltersInput = {
 };
 
 export type PageInput = {
+   metaDescription?: InputMaybe<Scalars['String']>;
+   metaTitle?: InputMaybe<Scalars['String']>;
    path?: InputMaybe<Scalars['String']>;
    publishedAt?: InputMaybe<Scalars['DateTime']>;
    sections?: InputMaybe<Array<Scalars['PageSectionsDynamicZoneInput']>>;

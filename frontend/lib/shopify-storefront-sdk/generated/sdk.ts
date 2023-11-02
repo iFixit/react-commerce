@@ -6721,7 +6721,7 @@ export type QueryRoot = {
    productTags: StringConnection;
    /** List of product types for the shop's products that are published to your app. */
    productTypes: StringConnection;
-   /** List of the shop’s products. */
+   /** List of the shop’s products. For storefront search, use [`search` query](https://shopify.dev/docs/api/storefront/latest/queries/search). */
    products: ProductConnection;
    /** The list of public Storefront API versions, including supported, release candidate and unstable versions. */
    publicApiVersions: Array<ApiVersion>;
