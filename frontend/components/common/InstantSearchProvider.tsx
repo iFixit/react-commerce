@@ -3,7 +3,6 @@ import { ALGOLIA_APP_ID, IFIXIT_ORIGIN } from '@config/env';
 import { getClientOptions } from '@helpers/algolia-helpers';
 import {
    destylizeDeviceItemType,
-   destylizeDeviceTitle,
    destylizeDeviceTitleAndVariant,
    getFacetWidgetType,
    isValidRefinementListValue,
