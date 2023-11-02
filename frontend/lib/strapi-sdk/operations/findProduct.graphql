@@ -18,6 +18,7 @@ query findProduct($handle: String) {
                ...QuoteSectionFields
                ...FAQsSectionFields
                ...DeviceCompatibilitySectionFields
+               ...BitTableSectionFields
             }
          }
       }

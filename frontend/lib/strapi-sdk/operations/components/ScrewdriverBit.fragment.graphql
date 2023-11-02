@@ -1,0 +1,18 @@
+fragment ScrewdriverBitFields on ScrewdriverBitEntity {
+   id
+   attributes {
+      type {
+         data {
+            id
+            attributes {
+               icon {
+                  ...ImageFields
+               }
+               name
+               driverSize
+            }
+         }
+      }
+      size
+   }
+}
