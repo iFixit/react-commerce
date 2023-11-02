@@ -772,6 +772,8 @@ export function PageFiltersInputSchema(): z.ZodObject<
       id: z.lazy(() => IdFilterInputSchema().nullish()),
       locale: z.lazy(() => StringFilterInputSchema().nullish()),
       localizations: z.lazy(() => PageFiltersInputSchema().nullish()),
+      metaDescription: z.lazy(() => StringFilterInputSchema().nullish()),
+      metaTitle: z.lazy(() => StringFilterInputSchema().nullish()),
       not: z.lazy(() => PageFiltersInputSchema().nullish()),
       or: z.array(z.lazy(() => PageFiltersInputSchema().nullable())).nullish(),
       path: z.lazy(() => StringFilterInputSchema().nullish()),
@@ -783,6 +785,8 @@ export function PageFiltersInputSchema(): z.ZodObject<
 
 export function PageInputSchema(): z.ZodObject<Properties<PageInput>> {
    return z.object<Properties<PageInput>>({
+      metaDescription: z.string().nullish(),
+      metaTitle: z.string().nullish(),
       path: z.string().nullish(),
       publishedAt: z.unknown().nullish(),
       sections: z.array(z.lazy(() => z.unknown())).nullish(),
