@@ -1,11 +1,8 @@
-import { SentryError } from '@ifixit/sentry';
 import Head from 'next/head';
 import React from 'react';
 
 // This is public so no need to hide.
 const API_KEY = '59NVBFN';
-const GET_PARAM = 'matomoTagManager';
-const DEFAULT_ENV = 'Live';
 
 function GoogleScript() {
    const scriptTag = `
