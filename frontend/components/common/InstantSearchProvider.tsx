@@ -200,8 +200,9 @@ export function InstantSearchProvider({
          }
 
          if (devicePathHasVariant) {
-            filterObject['worksin'] =
-               destylizeDeviceTitleAndVariant(deviceHandle);
+            filterObject['worksin'] = destylizeDeviceTitleAndVariant(
+               decodeURIComponent(deviceHandle)
+            );
          }
 
          return {
