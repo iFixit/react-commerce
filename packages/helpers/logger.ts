@@ -1,4 +1,8 @@
-type Log = typeof console.log;
+type Log = {
+   (...data: any[]): void;
+   (message?: any, ...optionalParams: any[]): void;
+};
+
 type ExtendedLog = Log & {
    timing: (statName: string, ms: number) => void;
    event: (statName: string) => void;
