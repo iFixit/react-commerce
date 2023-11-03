@@ -12,6 +12,8 @@ query findPage(
          attributes {
             path
             title
+            metaTitle
+            metaDescription
             sections {
                __typename
                ...HeroSectionFields

@@ -1,4 +1,4 @@
-import { presentOrNull } from '@ifixit/helpers';
+import { presence } from '@ifixit/helpers';
 import { ProductList, ProductListType } from '@models/product-list';
 import { useDevicePartsItemType } from './useDevicePartsItemType';
 
@@ -25,35 +25,35 @@ export function useItemTypeProductList(productList: ProductList) {
       };
    }
 
-   const overrideTitle = presentOrNull(
+   const overrideTitle = presence(
       replacePlaceholders(
          overrides?.title ?? allItemTypesOverrides?.title,
          replacements
       )
    );
 
-   const overrideMetaTitle = presentOrNull(
+   const overrideMetaTitle = presence(
       replacePlaceholders(
          overrides?.metaTitle ?? allItemTypesOverrides?.metaTitle,
          replacements
       )
    );
 
-   const overrideDescription = presentOrNull(
+   const overrideDescription = presence(
       replacePlaceholders(
          overrides?.description ?? allItemTypesOverrides?.description,
          replacements
       )
    );
 
-   const overrideMetaDescription = presentOrNull(
+   const overrideMetaDescription = presence(
       replacePlaceholders(
          overrides?.metaDescription ?? allItemTypesOverrides?.metaDescription,
          replacements
       )
    );
 
-   const overrideTagline = presentOrNull(
+   const overrideTagline = presence(
       replacePlaceholders(
          overrides?.tagline ?? allItemTypesOverrides?.tagline,
          replacements

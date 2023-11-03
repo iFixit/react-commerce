@@ -1,12 +1,12 @@
-import { SentryError } from '@ifixit/sentry';
 import { IFIXIT_ORIGIN } from '@config/env';
 import { invariant } from '@ifixit/helpers';
+import { SentryError } from '@ifixit/sentry';
 import type { Product } from '@models/product';
 import { ProductList, ProductListType } from '@models/product-list';
+import type { IncomingHttpHeaders } from 'http';
 import { GetServerSidePropsContext } from 'next';
 import { getProductIdFromGlobalId } from './product-helpers';
 import { stylizeDeviceTitle } from './product-list-helpers';
-import { IncomingHttpHeaders } from 'http';
 
 export function productPath(handle: string) {
    return `/products/${handle}`;
@@ -150,4 +150,8 @@ export function getiFixitOriginFromHost(headers: Headers) {
 
 export function ifixitOriginWithSubdomain(subdomain: string) {
    return IFIXIT_ORIGIN.replace(/(^https:\/\/)www/, `$1${subdomain}`);
+}
+
+export function joinPaths(...paths: string[]) {
+   return paths.map((path) => path.replace(/^\/|\/$/g, '')).join('/');
 }
