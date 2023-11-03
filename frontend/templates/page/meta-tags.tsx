@@ -10,7 +10,6 @@ interface MetaTagsProps {
 
 export function MetaTags({ page }: MetaTagsProps) {
    const ogImage = findOgImage(page);
-   console.log('ogImage', ogImage);
    return (
       <>
          <Head>
