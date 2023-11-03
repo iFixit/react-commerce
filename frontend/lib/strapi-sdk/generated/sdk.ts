@@ -2815,6 +2815,8 @@ export type FindPageQuery = {
             __typename?: 'Page';
             path: string;
             title: string;
+            metaTitle?: string | null;
+            metaDescription?: string | null;
             sections: Array<
                | {
                     __typename: 'ComponentPageBrowse';
@@ -6338,6 +6340,8 @@ export const FindPageDocument = `
       attributes {
         path
         title
+        metaTitle
+        metaDescription
         sections {
           __typename
           ...HeroSectionFields

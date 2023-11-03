@@ -1,4 +1,5 @@
 import { PRODUCT_LIST_PAGE_PARAM } from '@config/constants';
+import { metaTitleWithSuffix } from '@helpers/metadata-helpers';
 import { productListPath } from '@helpers/path-helpers';
 import { stylizeDeviceItemType } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
@@ -49,8 +50,6 @@ export function MetaTags({ productList }: MetaTagsProps) {
    );
 }
 
-const META_TITLE_SUFFIX = ' | iFixit';
-
 function useMetaTitle(productList: ProductList): string {
    const pagination = usePagination();
 
@@ -60,9 +59,7 @@ function useMetaTitle(productList: ProductList): string {
 
    let metaTitle = productList.metaTitle ?? productList.title;
 
-   if (!metaTitle.trim().endsWith(META_TITLE_SUFFIX)) {
-      metaTitle += META_TITLE_SUFFIX;
-   }
+   metaTitle = metaTitleWithSuffix(metaTitle);
 
    if (metaTitle && !isFiltered && page > 1) {
       metaTitle += ` - Page ${page}`;

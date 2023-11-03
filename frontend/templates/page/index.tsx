@@ -12,6 +12,7 @@ import {
    PageTemplateProps,
    usePageTemplateProps,
 } from './hooks/usePageTemplateProps';
+import { MetaTags } from './meta-tags';
 import { BrowseSection } from './sections/BrowseSection';
 import { HeroSection } from './sections/HeroSection';
 import { PressQuotesSection } from './sections/PressQuotesSection';
@@ -19,98 +20,103 @@ import { PressQuotesSection } from './sections/PressQuotesSection';
 const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
    const { page } = usePageTemplateProps();
    return (
-      <Box>
-         {page.sections.map((section) => {
-            switch (section.type) {
-               case 'Hero': {
-                  return <HeroSection key={section.id} data={section} />;
+      <>
+         <MetaTags page={page} />
+         <Box>
+            {page.sections.map((section) => {
+               switch (section.type) {
+                  case 'Hero': {
+                     return <HeroSection key={section.id} data={section} />;
+                  }
+                  case 'Browse': {
+                     return <BrowseSection key={section.id} data={section} />;
+                  }
+                  case 'IFixitStats': {
+                     return (
+                        <IFixitStatsSection key={section.id} data={section} />
+                     );
+                  }
+                  case 'SplitWithImage': {
+                     return (
+                        <SplitWithImageContentSection
+                           key={section.id}
+                           id={section.id}
+                           title={section.title}
+                           description={section.description}
+                           image={section.image}
+                           imagePosition={section.imagePosition}
+                           callToAction={section.callToAction}
+                        />
+                     );
+                  }
+                  case 'PressQuotes': {
+                     return (
+                        <PressQuotesSection
+                           key={section.id}
+                           title={section.title}
+                           description={section.description}
+                           callToAction={section.callToAction}
+                           quotes={section.quotes}
+                        />
+                     );
+                  }
+                  case 'FeaturedProducts': {
+                     return (
+                        <FeaturedProductsSection
+                           key={section.id}
+                           id={section.id}
+                           title={section.title}
+                           description={section.description}
+                           background={section.background}
+                           products={section.products}
+                        />
+                     );
+                  }
+                  case 'SocialGallery': {
+                     return (
+                        <SocialGallerySection
+                           key={section.id}
+                           title={section.title}
+                           description={section.description}
+                           posts={section.posts}
+                        />
+                     );
+                  }
+                  case 'LifetimeWarranty': {
+                     return (
+                        <LifetimeWarrantySection
+                           key={section.id}
+                           title={section.title}
+                           description={section.description}
+                        />
+                     );
+                  }
+                  case 'Banners': {
+                     return (
+                        <BannersSection
+                           key={section.id}
+                           id={section.id}
+                           banners={section.banners}
+                        />
+                     );
+                  }
+                  case 'QuoteGallery': {
+                     return (
+                        <QuoteGallerySection
+                           key={section.id}
+                           id={section.id}
+                           title={section.title}
+                           description={section.description}
+                           quotes={section.quotes}
+                        />
+                     );
+                  }
+                  default:
+                     return assertNever(section);
                }
-               case 'Browse': {
-                  return <BrowseSection key={section.id} data={section} />;
-               }
-               case 'IFixitStats': {
-                  return <IFixitStatsSection key={section.id} data={section} />;
-               }
-               case 'SplitWithImage': {
-                  return (
-                     <SplitWithImageContentSection
-                        key={section.id}
-                        id={section.id}
-                        title={section.title}
-                        description={section.description}
-                        image={section.image}
-                        imagePosition={section.imagePosition}
-                        callToAction={section.callToAction}
-                     />
-                  );
-               }
-               case 'PressQuotes': {
-                  return (
-                     <PressQuotesSection
-                        key={section.id}
-                        title={section.title}
-                        description={section.description}
-                        callToAction={section.callToAction}
-                        quotes={section.quotes}
-                     />
-                  );
-               }
-               case 'FeaturedProducts': {
-                  return (
-                     <FeaturedProductsSection
-                        key={section.id}
-                        id={section.id}
-                        title={section.title}
-                        description={section.description}
-                        background={section.background}
-                        products={section.products}
-                     />
-                  );
-               }
-               case 'SocialGallery': {
-                  return (
-                     <SocialGallerySection
-                        key={section.id}
-                        title={section.title}
-                        description={section.description}
-                        posts={section.posts}
-                     />
-                  );
-               }
-               case 'LifetimeWarranty': {
-                  return (
-                     <LifetimeWarrantySection
-                        key={section.id}
-                        title={section.title}
-                        description={section.description}
-                     />
-                  );
-               }
-               case 'Banners': {
-                  return (
-                     <BannersSection
-                        key={section.id}
-                        id={section.id}
-                        banners={section.banners}
-                     />
-                  );
-               }
-               case 'QuoteGallery': {
-                  return (
-                     <QuoteGallerySection
-                        key={section.id}
-                        id={section.id}
-                        title={section.title}
-                        description={section.description}
-                        quotes={section.quotes}
-                     />
-                  );
-               }
-               default:
-                  return assertNever(section);
-            }
-         })}
-      </Box>
+            })}
+         </Box>
+      </>
    );
 };
 
