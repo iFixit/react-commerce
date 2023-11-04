@@ -96,7 +96,7 @@ const DefaultLayoutComponent = function ({
          >
             <Box>
                <Head>
-                  <title>{title || 'iFixit'}</title>
+                  <title key="title">{title || 'iFixit'}</title>
                   <link
                      rel="apple-touch-icon"
                      sizes="57x57"

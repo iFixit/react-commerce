@@ -15,16 +15,32 @@ export function MetaTags({ page }: MetaTagsProps) {
          <Head>
             {page.metaTitle && (
                <>
-                  <title>{metaTitleWithSuffix(page.metaTitle)}</title>
-                  <meta name="og:title" content={page.metaTitle} />
+                  <title key="title">
+                     {metaTitleWithSuffix(page.metaTitle)}
+                  </title>
+                  <meta
+                     key="og:title"
+                     name="og:title"
+                     content={page.metaTitle}
+                  />
                </>
             )}
             {page.metaDescription && (
-               <meta name="description" content={page.metaDescription} />
+               <meta
+                  key="description"
+                  name="description"
+                  content={page.metaDescription}
+               />
             )}
-            <meta name="og:type" content="website" />
-            <meta name="og:url" content={joinPaths(IFIXIT_ORIGIN, page.path)} />
-            {ogImage && <meta name="og:image" content={ogImage} />}
+            <meta key="og:type" name="og:type" content="website" />
+            <meta
+               key="og:url"
+               name="og:url"
+               content={joinPaths(IFIXIT_ORIGIN, page.path)}
+            />
+            {ogImage && (
+               <meta key="og:image" name="og:image" content={ogImage} />
+            )}
          </Head>
       </>
    );
