@@ -2968,6 +2968,61 @@ export type QuoteCardFieldsFragment = {
    } | null;
 };
 
+export type ScrewdriverBitFieldsFragment = {
+   __typename?: 'ScrewdriverBitEntity';
+   id?: string | null;
+   attributes?: {
+      __typename?: 'ScrewdriverBit';
+      size?: string | null;
+      type?: {
+         __typename?: 'ScrewdriverBitTypeEntityResponse';
+         data?: {
+            __typename?: 'ScrewdriverBitTypeEntity';
+            id?: string | null;
+            attributes?: {
+               __typename?: 'ScrewdriverBitType';
+               name: string;
+               driverSize: string;
+               icon: {
+                  __typename?: 'UploadFileEntityResponse';
+                  data?: {
+                     __typename?: 'UploadFileEntity';
+                     attributes?: {
+                        __typename?: 'UploadFile';
+                        alternativeText?: string | null;
+                        url: string;
+                        formats?: any | null;
+                     } | null;
+                  } | null;
+               };
+            } | null;
+         } | null;
+      } | null;
+   } | null;
+};
+
+export type ScrewdriverBitTypeFieldsFragment = {
+   __typename?: 'ScrewdriverBitTypeEntity';
+   id?: string | null;
+   attributes?: {
+      __typename?: 'ScrewdriverBitType';
+      name: string;
+      driverSize: string;
+      icon: {
+         __typename?: 'UploadFileEntityResponse';
+         data?: {
+            __typename?: 'UploadFileEntity';
+            attributes?: {
+               __typename?: 'UploadFile';
+               alternativeText?: string | null;
+               url: string;
+               formats?: any | null;
+            } | null;
+         } | null;
+      };
+   } | null;
+};
+
 export type FindPageQueryVariables = Exact<{
    filters?: InputMaybe<PageFiltersInput>;
    publicationState?: InputMaybe<PublicationState>;
@@ -3302,6 +3357,47 @@ export type FindProductQuery = {
                     } | null;
                  }
                | { __typename: 'ComponentProductBitTable' }
+               | {
+                    __typename: 'ComponentProductBitTable';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    bits?: {
+                       __typename?: 'ScrewdriverBitRelationResponseCollection';
+                       data: Array<{
+                          __typename?: 'ScrewdriverBitEntity';
+                          id?: string | null;
+                          attributes?: {
+                             __typename?: 'ScrewdriverBit';
+                             size?: string | null;
+                             type?: {
+                                __typename?: 'ScrewdriverBitTypeEntityResponse';
+                                data?: {
+                                   __typename?: 'ScrewdriverBitTypeEntity';
+                                   id?: string | null;
+                                   attributes?: {
+                                      __typename?: 'ScrewdriverBitType';
+                                      name: string;
+                                      driverSize: string;
+                                      icon: {
+                                         __typename?: 'UploadFileEntityResponse';
+                                         data?: {
+                                            __typename?: 'UploadFileEntity';
+                                            attributes?: {
+                                               __typename?: 'UploadFile';
+                                               alternativeText?: string | null;
+                                               url: string;
+                                               formats?: any | null;
+                                            } | null;
+                                         } | null;
+                                      };
+                                   } | null;
+                                } | null;
+                             } | null;
+                          } | null;
+                       }>;
+                    } | null;
+                 }
                | {
                     __typename: 'ComponentProductCrossSell';
                     id: string;
@@ -5486,6 +5582,48 @@ export type BannersSectionFieldsFragment = {
    } | null;
 };
 
+export type BitTableSectionFieldsFragment = {
+   __typename?: 'ComponentProductBitTable';
+   id: string;
+   title?: string | null;
+   description?: string | null;
+   bits?: {
+      __typename?: 'ScrewdriverBitRelationResponseCollection';
+      data: Array<{
+         __typename?: 'ScrewdriverBitEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'ScrewdriverBit';
+            size?: string | null;
+            type?: {
+               __typename?: 'ScrewdriverBitTypeEntityResponse';
+               data?: {
+                  __typename?: 'ScrewdriverBitTypeEntity';
+                  id?: string | null;
+                  attributes?: {
+                     __typename?: 'ScrewdriverBitType';
+                     name: string;
+                     driverSize: string;
+                     icon: {
+                        __typename?: 'UploadFileEntityResponse';
+                        data?: {
+                           __typename?: 'UploadFileEntity';
+                           attributes?: {
+                              __typename?: 'UploadFile';
+                              alternativeText?: string | null;
+                              url: string;
+                              formats?: any | null;
+                           } | null;
+                        } | null;
+                     };
+                  } | null;
+               } | null;
+            } | null;
+         } | null;
+      }>;
+   } | null;
+};
+
 export type BrowseSectionFieldsFragment = {
    __typename?: 'ComponentPageBrowse';
    id: string;
@@ -5948,6 +6086,18 @@ export const ImageFieldsFragmentDoc = `
   }
 }
     `;
+export const ScrewdriverBitTypeFieldsFragmentDoc = `
+    fragment ScrewdriverBitTypeFields on ScrewdriverBitTypeEntity {
+  id
+  attributes {
+    icon {
+      ...ImageFields
+    }
+    name
+    driverSize
+  }
+}
+    `;
 export const FaqFieldsFragmentDoc = `
     fragment FAQFields on FaqEntity {
   id
@@ -6356,6 +6506,38 @@ export const MenuEntityResponsePropsFragmentDoc = `
   }
 }
     `;
+export const ScrewdriverBitFieldsFragmentDoc = `
+    fragment ScrewdriverBitFields on ScrewdriverBitEntity {
+  id
+  attributes {
+    type {
+      data {
+        id
+        attributes {
+          icon {
+            ...ImageFields
+          }
+          name
+          driverSize
+        }
+      }
+    }
+    size
+  }
+}
+    `;
+export const BitTableSectionFieldsFragmentDoc = `
+    fragment BitTableSectionFields on ComponentProductBitTable {
+  id
+  title
+  description
+  bits {
+    data {
+      ...ScrewdriverBitFields
+    }
+  }
+}
+    `;
 export const CategoryFieldsFragmentDoc = `
     fragment CategoryFields on ComponentPageCategory {
   id
@@ -6570,6 +6752,7 @@ export const FindProductDocument = `
           ...QuoteSectionFields
           ...FAQsSectionFields
           ...DeviceCompatibilitySectionFields
+          ...BitTableSectionFields
         }
       }
     }
@@ -6590,7 +6773,9 @@ ${BannerFieldsFragmentDoc}
 ${QuoteSectionFieldsFragmentDoc}
 ${FaQsSectionFieldsFragmentDoc}
 ${FaqFieldsFragmentDoc}
-${DeviceCompatibilitySectionFieldsFragmentDoc}`;
+${DeviceCompatibilitySectionFieldsFragmentDoc}
+${BitTableSectionFieldsFragmentDoc}
+${ScrewdriverBitFieldsFragmentDoc}`;
 export const FindProductListDocument = `
     query findProductList($filters: ProductListFiltersInput) {
   productLists(pagination: {limit: 1}, filters: $filters, publicationState: LIVE) {

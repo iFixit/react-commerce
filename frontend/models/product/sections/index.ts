@@ -8,6 +8,10 @@ import {
    BannersSectionSchema,
 } from '@models/sections/banners-section';
 import {
+   bitTableSectionFromStrapi,
+   BitTableSectionSchema,
+} from '@models/sections/bit-table-section';
+import {
    faqsSectionFromStrapi,
    FAQsSectionSchema,
 } from '@models/sections/faqs-section';
@@ -46,6 +50,7 @@ export const ProductSectionSchema = z.union([
    BannersSectionSchema,
    QuoteSectionSchema,
    FAQsSectionSchema,
+   BitTableSectionSchema,
 ]);
 
 interface GetProductSectionsArgs {
@@ -131,6 +136,9 @@ export async function getProductSections({
 
             case 'ComponentSectionQuote':
                return quoteSectionFromStrapi(section, sectionId);
+
+            case 'ComponentProductBitTable':
+               return bitTableSectionFromStrapi(section, sectionId);
 
             default:
                return null;

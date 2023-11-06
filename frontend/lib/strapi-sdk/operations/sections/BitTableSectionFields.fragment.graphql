@@ -1,0 +1,10 @@
+fragment BitTableSectionFields on ComponentProductBitTable {
+   id
+   title
+   description
+   bits {
+      data {
+         ...ScrewdriverBitFields
+      }
+   }
+}

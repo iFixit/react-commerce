@@ -36,9 +36,11 @@ import { CompatibilitySection } from './sections/CompatibilitySection';
 import { ProductOverviewSection } from './sections/ProductOverviewSection';
 import { ProductReviewsSection } from './sections/ProductReviewsSection';
 import { trackInPiwik } from '@ifixit/analytics/piwik/track-event';
+import { BitTableSection } from '@components/sections/BitTableSection';
 
 const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
+
    const [selectedVariant, setSelectedVariantId] = useSelectedVariant(product);
 
    const internationalBuyBox = useInternationalBuyBox(product);
@@ -236,6 +238,18 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                            title={section.title}
                            description={section.description}
                            faqs={section.faqs}
+                        />
+                     );
+                  }
+
+                  case 'BitTable': {
+                     return (
+                        <BitTableSection
+                           key={section.id}
+                           id={section.id}
+                           title={section.title}
+                           description={section.description}
+                           bits={section.bits}
                         />
                      );
                   }
