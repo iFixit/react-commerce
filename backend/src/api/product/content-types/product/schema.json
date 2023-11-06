@@ -32,7 +32,8 @@
             "section.lifetime-warranty",
             "section.banner",
             "section.quote",
-            "section.faqs"
+            "section.faqs",
+            "product.bit-table"
          ],
          "required": true
       }

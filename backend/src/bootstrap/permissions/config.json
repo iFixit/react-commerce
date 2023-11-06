@@ -20,6 +20,10 @@
       "api::faq.faq.findOne",
       "api::faq.faq.find",
       "api::reusable-section.reusable-section.findOne",
-      "api::reusable-section.reusable-section.find"
+      "api::reusable-section.reusable-section.find",
+      "api::screwdriver-bit-type.screwdriver-bit-type.find",
+      "api::screwdriver-bit-type.screwdriver-bit-type.findOne",
+      "api::screwdriver-bit.screwdriver-bit.find",
+      "api::screwdriver-bit.screwdriver-bit.findOne"
    ]
 }

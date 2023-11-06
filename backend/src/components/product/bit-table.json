@@ -1,0 +1,22 @@
+{
+   "collectionName": "components_product_bit_tables",
+   "info": {
+      "displayName": "bit table",
+      "description": ""
+   },
+   "options": {},
+   "attributes": {
+      "title": {
+         "type": "string",
+         "required": false
+      },
+      "description": {
+         "type": "richtext"
+      },
+      "bits": {
+         "type": "relation",
+         "relation": "oneToMany",
+         "target": "api::screwdriver-bit.screwdriver-bit"
+      }
+   }
+}
