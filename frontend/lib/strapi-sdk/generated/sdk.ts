@@ -3356,7 +3356,6 @@ export type FindProductQuery = {
                        } | null;
                     } | null;
                  }
-               | { __typename: 'ComponentProductBitTable' }
                | {
                     __typename: 'ComponentProductBitTable';
                     id: string;
