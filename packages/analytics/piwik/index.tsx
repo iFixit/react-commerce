@@ -9,7 +9,7 @@ import { AddToCartInput, CartLineItem } from '@ifixit/cart-sdk';
 import { trackInPiwik } from './track-event';
 
 /**
- * @see https://developer.matomo.org/api-reference/tracking-javascript
+ * @see https://developers.piwik.pro/en/latest/data_collection/web/javascript_tracking_client/api.html
  */
 export function trackPiwikPageView(url: string) {
    piwikPush(['setCustomUrl', url]);
@@ -46,8 +46,8 @@ export function trackPiwikPreferredLanguage(
 }
 
 /**
- * @see https://developer.matomo.org/api-reference/tracking-javascript
- * @see https://matomo.org/docs/ecommerce-analytics/#tracking-product-views-in-matomo
+ * @see https://developers.piwik.pro/en/latest/data_collection/web/javascript_tracking_client/api.html
+ * @see https://developers.piwik.pro/en/latest/data_collection/web/guides.html?highlight=product%20views#tracking-product-views
  */
 type ProductData = {
    productSku: string;
@@ -89,8 +89,8 @@ export function trackPiwikCartChange(items: CartLineItem[]) {
 }
 
 /**
- * @see https://developer.matomo.org/api-reference/tracking-javascript
- * @see https://matomo.org/docs/ecommerce-analytics/#example-of-adding-a-product-to-the-order
+ * @see https://developers.piwik.pro/en/latest/data_collection/web/javascript_tracking_client/api.html
+ * @see https://developers.piwik.pro/en/latest/data_collection/web/javascript_tracking_client/api.html?highlight=adding%20product#ecommerceAddToCart
  */
 type AddToCartData = {
    productSku: string;
@@ -130,8 +130,8 @@ export function trackPiwikAddToCart(
 }
 
 /**
- * @see https://developer.matomo.org/api-reference/tracking-javascript
- * @see https://matomo.org/docs/ecommerce-analytics/#example-of-adding-a-product-to-the-order
+ * @see https://developers.piwik.pro/en/latest/data_collection/web/javascript_tracking_client/api.html
+ * @see https://developers.piwik.pro/en/latest/data_collection/web/javascript_tracking_client/api.html?highlight=adding%20product#ecommerceAddToCart
  */
 function trackAddItemToCart(product: AddToCartData) {
    piwikPush([
