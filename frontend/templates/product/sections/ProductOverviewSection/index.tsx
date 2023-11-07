@@ -44,7 +44,7 @@ import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
 import { ProductVideos } from './ProductVideos';
 import { Prop65Warning } from './Prop65Warning';
-import { trackGA4ViewItem } from '@ifixit/analytics';
+import { trackInAnalyticsViewItem } from '@ifixit/analytics';
 import { PrerenderedHTML } from '@components/common';
 
 export interface ProductOverviewSectionProps {
@@ -72,7 +72,7 @@ export function ProductOverviewSection({
             (variant) => variant.id === variantId
          );
          if (newVariant) {
-            trackGA4ViewItem({
+            trackInAnalyticsViewItem({
                currency: newVariant.price.currencyCode,
                value: newVariant.price.amount,
                items: [

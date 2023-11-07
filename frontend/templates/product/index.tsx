@@ -49,12 +49,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
 
    React.useEffect(() => {
-      trackPiwikEcommerceView({
-         productSku: selectedVariant.sku ?? selectedVariant.id,
-         productName: selectedVariant.internalDisplayName ?? product.title,
-         price: selectedVariant.price,
-      });
-      trackGA4ViewItem({
+      trackInAnalyticsViewItem({
          currency: selectedVariant.price.currencyCode,
          value: selectedVariant.price.amount,
          items: [
