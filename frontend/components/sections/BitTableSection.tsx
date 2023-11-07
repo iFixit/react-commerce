@@ -134,7 +134,7 @@ function Bit({ type, driverSizeColor, sizes }: GroupedBit) {
          </Flex>
          <Flex flexGrow={1} alignItems="center" gap="2.5" m="2.5">
             <Text flexGrow={1}>{type.name}</Text>
-            <Flex flexWrap="wrap" gap={1}>
+            <Flex flexWrap="wrap" gap={1} justifyContent="flex-end">
                {sizes.map((size) => (
                   <Flex
                      key={size}
