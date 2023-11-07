@@ -7,6 +7,7 @@ import {
 import { piwikPush } from './piwikPush';
 import { AddToCartInput, CartLineItem } from '@ifixit/cart-sdk';
 import { trackInPiwik } from './track-event';
+import { AnalyticsItem, AnalyticsItemsEvent } from '..';
 
 /**
  * @see https://developer.matomo.org/api-reference/tracking-javascript
@@ -59,6 +60,26 @@ type ProductData = {
    categoryName?: string | [string, string?, string?, string?, string?];
    price: Money;
 };
+
+export function trackPiwikV2ProductDetailView(items: AnalyticsItem[]) {
+   piwikPush(['ecommerceProductDetailView', items.map(formatProduct)]);
+}
+
+export function trackPiwikV2AddToCart(items: AnalyticsItem[]) {
+   piwikPush(['ecommerceAddToCart', items.map(formatProduct)]);
+}
+
+export function trackPiwikV2RemoveFromCart(items: AnalyticsItem[]) {
+   piwikPush(['ecommerceRemoveFromCart', items.map(formatProduct)]);
+}
+
+export function trackPiwikCartUpdate(event: AnalyticsItemsEvent) {
+   piwikPush([
+      'ecommerceCartUpdate',
+      event.items.map(formatProduct),
+      event.value.toString(),
+   ]);
+}
 
 export function trackPiwikEcommerceView(product: ProductData) {
    piwikPush([
@@ -174,4 +195,14 @@ function getPiwikCustomDimensionsForEnv(
       default:
          return null;
    }
+}
+
+function formatProduct(item: AnalyticsItem) {
+   return {
+      sku: item.item_id,
+      name: item.item_name,
+      price: item.price.toString(),
+      quantity: item.quantity,
+      variant: item.item_variant,
+   };
 }

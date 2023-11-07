@@ -9,7 +9,7 @@ import { ReplacementGuidesSection } from '@components/sections/ReplacementGuides
 import { ServiceValuePropositionSection } from '@components/sections/ServiceValuePropositionSection';
 import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
 import { DEFAULT_STORE_CODE } from '@config/env';
-import { trackPiwikEcommerceView, trackGA4ViewItem } from '@ifixit/analytics';
+import { trackInAnalyticsViewItem } from '@ifixit/analytics';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import {
    assertNever,
