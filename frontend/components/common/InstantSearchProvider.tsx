@@ -335,7 +335,9 @@ function getBaseOrigin(location: Location): string {
 }
 
 function getDevicePath(handle: string, routeState: RouteState): string {
-   const [device, variant] = handle.split(':');
+   const [device, ...restParts] = handle.split(':');
+   const variant = restParts.join(':');
+
    const variantFromRouteState = routeState.filter?.worksin;
 
    if (variant && !variantFromRouteState) {
