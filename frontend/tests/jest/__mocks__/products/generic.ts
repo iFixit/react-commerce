@@ -184,6 +184,7 @@ export const mockedProduct: Product = {
    id: 'gid://shopify/Product/1231231231231',
    title: 'Mocked Product Title',
    handle: 'iphone-6s-plus-replacement-battery',
+   noindex: false,
    descriptionHtml:
       '<p>This replacement battery is what you need to bring that dead smartphone back to life.</p>\n\n<ul><li>This battery is brand new! Each one has been tested to confirm that there are no cycles on the cell and that the capacity is 95% or higher.</li></ul>',
    tags: [
