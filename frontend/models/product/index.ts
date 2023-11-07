@@ -58,6 +58,7 @@ export const ProductSchema = z.object({
    id: z.string(),
    handle: z.string(),
    title: z.string(),
+   noindex: z.boolean(),
    breadcrumbs: z.array(BreadcrumbSchema),
    descriptionHtml: z.string(),
    iFixitProductId: z.string(),
@@ -125,9 +126,12 @@ export async function getProduct({
       strapiProduct,
    });
 
+   const noindex = shopifyProduct.noindex?.value === '1';
+
    return {
       id: shopifyProduct.id,
       handle: shopifyProduct.handle,
+      noindex,
       title: shopifyProduct.title,
       breadcrumbs,
       descriptionHtml: shopifyProduct.descriptionHtml,
