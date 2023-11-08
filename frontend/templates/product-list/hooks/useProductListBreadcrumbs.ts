@@ -1,5 +1,4 @@
 import { productListPath, storePath } from '@helpers/path-helpers';
-import { getProductListTitle } from '@helpers/product-list-helpers';
 import type { BreadcrumbItem } from '@ifixit/breadcrumbs';
 import { ProductList, ProductListType } from '@models/product-list';
 import { useDevicePartsItemType } from './useDevicePartsItemType';
@@ -27,7 +26,7 @@ export function useProductListBreadcrumbs(
 
    if (productList.type === ProductListType.DeviceParts && itemType) {
       breadcrumbs.push({
-         label: getProductListTitle(productList),
+         label: productList.title,
          url: productListPath(productList),
       });
       breadcrumbs.push({
@@ -35,7 +34,7 @@ export function useProductListBreadcrumbs(
       });
    } else {
       breadcrumbs.push({
-         label: getProductListTitle(productList),
+         label: productList.title,
       });
    }
 
