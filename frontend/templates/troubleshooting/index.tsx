@@ -901,14 +901,28 @@ function Conclusion({ conclusion: conclusions }: { conclusion: Section[] }) {
 
 function AnswersCTA({ answersUrl }: { answersUrl: string }) {
    return (
-      <Alert p={3} mt={4}>
+      <Alert p={3}>
          <AlertIcon color="gray.500" />
-         <chakra.span pr={3} mr="auto">
-            Haven&apos;t found the solution to your problem?
-         </chakra.span>
-         <Button href={answersUrl} as="a" colorScheme="brand">
-            Browse our forum
-         </Button>
+         <Flex
+            align="center"
+            sx={{
+               '@media (max-width: 374px)': {
+                  flexDirection: 'column',
+                  gap: '8px',
+
+                  a: {
+                     width: '100%',
+                  },
+               },
+            }}
+         >
+            <chakra.span pr={3} mr="auto">
+               Haven&apos;t found the solution to your problem?
+            </chakra.span>
+            <Button href={answersUrl} as="a" colorScheme="brand">
+               Browse our forum
+            </Button>
+         </Flex>
       </Alert>
    );
 }
