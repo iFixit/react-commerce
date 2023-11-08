@@ -12,10 +12,7 @@ import {
    trackPiwikV2ProductDetailView,
    trackPiwikV2RemoveFromCart,
 } from './piwik';
-import {
-   getProductIdFromGlobalId,
-   getVariantIdFromVariantURI,
-} from '@ifixit/helpers';
+import { getVariantIdFromVariantURI } from '@ifixit/helpers';
 
 export * from './google';
 export * from './piwik';
@@ -72,11 +69,13 @@ export function convertAddToCartInputToAnalyticsItemEvent(
 export function convertCartLineItemsToAnalyticsItem(
    items: CartLineItem[]
 ): AnalyticsItem[] {
-   return items.map((item) => ({
-      item_id: item.itemcode,
-      item_name: `${item.name} - ${item.variantTitle}`,
-      item_variant: getVariantIdFromVariantURI(item.shopifyVariantId),
-      quantity: item.quantity,
-      price: Number(item.price.amount),
-   }));
+   return items.map((item) => {
+      return {
+         item_id: item.itemcode,
+         item_name: `${item.name} - ${item.variantTitle}`,
+         item_variant: getVariantIdFromVariantURI(item.shopifyVariantId),
+         quantity: item.quantity,
+         price: Number(item.price.amount),
+      };
+   });
 }
