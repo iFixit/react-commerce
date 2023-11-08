@@ -901,25 +901,27 @@ function Conclusion({ conclusion: conclusions }: { conclusion: Section[] }) {
 
 function AnswersCTA({ answersUrl }: { answersUrl: string }) {
    return (
-      <Alert p={3}>
-         <AlertIcon color="gray.500" />
+      <Alert p={3} fontSize="sm">
+         <AlertIcon
+            color="gray.500"
+            alignSelf={{ base: 'start', sm: 'center' }}
+         />
          <Flex
             align="center"
+            flex="auto"
+            justify="space-between"
             sx={{
-               '@media (max-width: 374px)': {
+               '@media (max-width: 375px)': {
                   flexDirection: 'column',
-                  gap: '8px',
-
-                  a: {
-                     width: '100%',
-                  },
+                  gap: '6px',
+                  alignItems: 'end',
                },
             }}
          >
-            <chakra.span pr={3} mr="auto">
+            <chakra.span>
                Haven&apos;t found the solution to your problem?
             </chakra.span>
-            <Button href={answersUrl} as="a" colorScheme="brand">
+            <Button href={answersUrl} as="a" colorScheme="brand" ml={3}>
                Browse our forum
             </Button>
          </Flex>
