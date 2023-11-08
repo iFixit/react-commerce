@@ -93,6 +93,7 @@ export const mockedBatteryProduct: Product = {
    id: 'gid://shopify/Product/6556284026970',
    title: 'Moto G7 Play Battery',
    handle: 'moto-g7-play-replacement-battery',
+   noindex: false,
    descriptionHtml:
       "<p>This Moto G7 Play replacement battery is what you need to bring your dead smartphone back to life!</p>\n\n<ul><li>Repair with confidence! iFixit is an authorized Motorola parts reseller.</li></ul>\n\n<p>Battery degradation is an inevitable part of your Android phone's lifespan — extend it with this replacement battery compatible with the Moto G7 Play. If your phone won’t turn on, won’t hold a charge, or you simply experience poor battery life, this replacement battery may be what you need to fix it.</p>",
    tags: [

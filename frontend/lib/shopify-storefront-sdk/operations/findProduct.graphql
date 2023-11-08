@@ -5,6 +5,9 @@ query findProduct($handle: String) {
       handle
       descriptionHtml
       tags
+      noindex: metafield(namespace: "seo", key: "hidden") {
+         value
+      }
       rating: metafield(namespace: "reviews", key: "rating") {
          value
       }

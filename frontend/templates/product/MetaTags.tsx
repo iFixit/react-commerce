@@ -65,7 +65,7 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
          ? 'https://schema.org/InStock'
          : 'https://schema.org/OutOfStock';
 
-   const shouldNoIndex = !product.isEnabled;
+   const shouldNoIndex = !product.isEnabled || product.noindex;
 
    return (
       <Head>
