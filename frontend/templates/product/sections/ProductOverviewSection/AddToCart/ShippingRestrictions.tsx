@@ -1,15 +1,5 @@
-import {
-   Box,
-   Flex,
-   Link,
-   Popover,
-   PopoverArrow,
-   PopoverBody,
-   PopoverContent,
-   PopoverTrigger,
-   StackProps,
-   VStack,
-} from '@chakra-ui/react';
+import { Box, Flex, StackProps, VStack } from '@chakra-ui/react';
+import { Tooltip } from '@components/ui/Tooltip';
 import { faCircleInfo } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
 
@@ -81,39 +71,30 @@ export function ShippingRestrictions({
                      align="center"
                   >
                      {shippingRestriction.notice}
-                     <Popover trigger="hover">
-                        <PopoverTrigger>
+                     <Tooltip
+                        trigger={
                            <FaIcon
-                              display="block"
                               icon={faCircleInfo}
                               h="4"
-                              m="-1.5"
-                              ml="0"
-                              p="1.5"
+                              mt="1px"
+                              ml="1.5"
                               color="gray.400"
                            />
-                        </PopoverTrigger>
-                        <PopoverContent>
-                           <PopoverArrow backgroundColor="gray.800" />
-                           <PopoverBody
-                              borderRadius="md"
-                              backgroundColor="gray.800"
-                              color="white"
-                              fontSize="13px"
-                           >
+                        }
+                        content={
+                           <>
                               <Box>{shippingRestriction.text}</Box>
                               {shippingRestriction.link && (
-                                 <Link
+                                 <a
                                     href={shippingRestriction.link}
-                                    color="brand.400"
                                     target="_blank"
                                  >
                                     Learn more
-                                 </Link>
+                                 </a>
                               )}
-                           </PopoverBody>
-                        </PopoverContent>
-                     </Popover>
+                           </>
+                        }
+                     />
                   </Flex>
                );
             })}
