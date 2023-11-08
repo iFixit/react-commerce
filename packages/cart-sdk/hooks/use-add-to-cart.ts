@@ -145,12 +145,21 @@ function addLineItem(cart: Cart, inputLineItem: CartLineItem): Cart {
    } else {
       updatedLineItems.push(inputLineItem);
    }
+   const updateTotalPrice = Math.max(
+      Number(cart.totals.price.amount) +
+         inputLineItem.quantity * Number(inputLineItem.price.amount),
+      0
+   ).toFixed(2);
    return {
       ...cart,
       hasItemsInCart: true,
       lineItems: updatedLineItems,
       totals: {
          ...cart.totals,
+         price: {
+            ...cart.totals.price,
+            amount: updateTotalPrice,
+         },
          itemsCount: cart.totals.itemsCount + inputLineItem.quantity,
       },
    };

@@ -54,6 +54,11 @@ export function useUpdateLineItemQuantity() {
                   current.totals.itemsCount + input.quantity,
                   0
                );
+               const updateTotalPrice = Math.max(
+                  Number(current.totals.price.amount) +
+                     input.quantity * Number(input.item.price.amount),
+                  0
+               ).toFixed(2);
                return {
                   ...current,
                   hasItemsInCart: updatedItemsCount > 0,
@@ -72,6 +77,10 @@ export function useUpdateLineItemQuantity() {
                   }),
                   totals: {
                      ...current.totals,
+                     price: {
+                        ...current.totals.price,
+                        amount: updateTotalPrice,
+                     },
                      itemsCount: updatedItemsCount,
                   },
                };

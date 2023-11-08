@@ -47,6 +47,11 @@ export function useRemoveLineItem() {
                   current.totals.itemsCount - deletedItem.quantity,
                   0
                );
+               const updateTotalPrice = Math.max(
+                  Number(current.totals.price.amount) -
+                     deletedItem.quantity * Number(deletedItem.price.amount),
+                  0
+               ).toFixed(2);
                return {
                   ...current,
                   hasItemsInCart: updatedItemCount > 0,
@@ -55,6 +60,10 @@ export function useRemoveLineItem() {
                   ),
                   totals: {
                      ...current.totals,
+                     price: {
+                        ...current.totals.price,
+                        amount: updateTotalPrice,
+                     },
                      itemsCount: updatedItemCount,
                   },
                };
