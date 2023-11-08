@@ -1,6 +1,5 @@
 import { Box, List, ListIcon, ListItem } from '@chakra-ui/react';
 import { Tooltip } from '@components/ui/Tooltip';
-import { IFIXIT_ORIGIN } from '@config/env';
 import {
    faBadgeDollar,
    faCalendarCheck,
@@ -78,9 +77,7 @@ export function ValuePropositionList() {
                            within 30 days of receipt.
                         </p>
                         <Box mt="3">
-                           <a
-                              href={`${IFIXIT_ORIGIN}/article/49-return-policy`}
-                           >
+                           <a href="https://help.ifixit.com/article/49-return-policy">
                               Initiate a return here
                            </a>
                         </Box>
