@@ -128,12 +128,10 @@ type AddToCartData = {
    quantity?: number;
 };
 
-export function trackPiwikAddToCart(
-   cart: CartLineItem[],
+export function trackPiwikCustomAddToCart(
    addToCartInput: AddToCartInput,
    eventSpecification?: string
 ) {
-   trackPiwikCartChange(cart);
    const event =
       `Add to Cart` + (eventSpecification ? ` - ${eventSpecification}` : '');
    const itemcodes =

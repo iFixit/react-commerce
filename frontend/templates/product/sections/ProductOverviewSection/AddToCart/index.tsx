@@ -159,19 +159,6 @@ function useOptimisticAddToCart(
          },
       });
       onOpen(event, true);
-      trackGA4AddToCart({
-         currency: userPrice.price.currencyCode,
-         value: Number(userPrice.price.amount),
-         items: [
-            {
-               item_id: selectedVariant.sku,
-               item_name: selectedVariant.internalDisplayName,
-               item_variant: getVariantIdFromVariantURI(selectedVariant.id),
-               price: Number(userPrice.price.amount),
-               quantity: 1,
-            },
-         ],
-      });
    }, [
       selectedVariant.sku,
       selectedVariant.title,

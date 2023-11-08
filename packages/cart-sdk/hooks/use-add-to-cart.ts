@@ -1,4 +1,10 @@
-import { trackPiwikAddToCart } from '@ifixit/analytics';
+import {
+   convertAddToCartInputToAnalyticsItemEvent,
+   convertCartLineItemsToAnalyticsItem,
+   trackInAnalyticsAddToCart,
+   trackPiwikCartUpdate,
+   trackPiwikCustomAddToCart,
+} from '@ifixit/analytics';
 import { assertNever, getProductVariantSku } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -102,12 +108,17 @@ export function useAddToCart(analyticsMessage?: string) {
             );
          },
          onSuccess: (data, variables) => {
+            trackPiwikCustomAddToCart(variables, analyticsMessage);
+            const event = convertAddToCartInputToAnalyticsItemEvent(variables);
+            trackInAnalyticsAddToCart(event);
             const cart = client.getQueryData<Cart>(cartKeys.cart);
-            trackPiwikAddToCart(
-               cart?.lineItems ?? [],
-               variables,
-               analyticsMessage
-            ); // here fr
+            if (cart) {
+               trackPiwikCartUpdate({
+                  items: convertCartLineItemsToAnalyticsItem(cart.lineItems),
+                  value: Number(cart.totals.price.amount),
+                  currency: cart.totals.price.currencyCode,
+               });
+            }
          },
          onSettled: () => {
             window.onbeforeunload = () => undefined;

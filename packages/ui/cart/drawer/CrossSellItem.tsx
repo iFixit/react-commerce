@@ -44,21 +44,6 @@ export function CrossSellItem({ item, ...otherProps }: CrossSellItemProps) {
             compareAtPrice: userPrice.compareAtPrice,
          },
       });
-      trackGA4AddToCart({
-         currency: item.price.currencyCode,
-         value: Number(userPrice.price),
-         items: [
-            {
-               item_id: item.itemcode,
-               item_name: item.name,
-               item_variant: getVariantIdFromEncodedVariantURI(
-                  item.shopifyVariantId
-               ),
-               price: Number(userPrice.price),
-               quantity: 1,
-            },
-         ],
-      });
    }, [userPrice.price, userPrice.compareAtPrice, item]);
 
    return (
