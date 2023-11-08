@@ -19,6 +19,8 @@
       "api::banner.banner.find",
       "api::faq.faq.findOne",
       "api::faq.faq.find",
+      "api::item-type.item-type.find",
+      "api::item-type.item-type.findOne",
       "api::reusable-section.reusable-section.findOne",
       "api::reusable-section.reusable-section.find",
       "api::screwdriver-bit-type.screwdriver-bit-type.find",
