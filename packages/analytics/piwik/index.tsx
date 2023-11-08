@@ -1,11 +1,9 @@
 import {
-   Money,
    getShopifyStoreDomainFromCurrentURL,
    getShopifyLanguageFromCurrentURL,
-   sumMoney,
 } from '@ifixit/helpers';
 import { piwikPush } from './piwikPush';
-import { AddToCartInput, CartLineItem } from '@ifixit/cart-sdk';
+import { AddToCartInput } from '@ifixit/cart-sdk';
 import { trackInPiwik } from './track-event';
 import { AnalyticsItem, AnalyticsItemsEvent } from '..';
 
@@ -46,21 +44,6 @@ export function trackPiwikPreferredLanguage(
    }
 }
 
-/**
- * @see https://developer.matomo.org/api-reference/tracking-javascript
- * @see https://matomo.org/docs/ecommerce-analytics/#tracking-product-views-in-matomo
- */
-type ProductData = {
-   productSku: string;
-   productName?: string;
-   /**
-    * Category name, or up to five unique categories, e.g. ["Books", "New
-    * Releases", "Technology"]
-    */
-   categoryName?: string | [string, string?, string?, string?, string?];
-   price: Money;
-};
-
 export function trackPiwikV2ProductDetailView(items: AnalyticsItem[]) {
    piwikPush(['ecommerceProductDetailView', items.map(formatProduct)]);
 }
@@ -81,53 +64,6 @@ export function trackPiwikCartUpdate(event: AnalyticsItemsEvent) {
    ]);
 }
 
-export function trackPiwikEcommerceView(product: ProductData) {
-   piwikPush([
-      'setEcommerceView',
-      product.productSku,
-      product.productName,
-      product.categoryName,
-      product.price.amount,
-   ]);
-}
-
-export function trackPiwikCartChange(items: CartLineItem[]) {
-   trackClearCart();
-   if (items.length === 0) {
-      return;
-   }
-   items.forEach((item) => {
-      trackAddItemToCart({
-         productSku: item.itemcode,
-         productName: item.internalDisplayName,
-         price: item.price,
-         quantity: item.quantity,
-      });
-   });
-
-   const totalPrice = sumMoney(items.map((i) => i.price));
-   trackCartUpdated(totalPrice);
-}
-
-/**
- * @see https://developer.matomo.org/api-reference/tracking-javascript
- * @see https://matomo.org/docs/ecommerce-analytics/#example-of-adding-a-product-to-the-order
- */
-type AddToCartData = {
-   productSku: string;
-   productName?: string;
-   /**
-    * Category name, or up to five unique categories, e.g. ["Books", "New
-    * Releases", "Technology"]
-    */
-   categoryName?: string | [string, string?, string?, string?, string?];
-   price?: Money;
-   /**
-    * How many of this item to add (Defaults to 1)
-    */
-   quantity?: number;
-};
-
 export function trackPiwikCustomAddToCart(
    addToCartInput: AddToCartInput,
    eventSpecification?: string
@@ -146,29 +82,6 @@ export function trackPiwikCustomAddToCart(
       eventAction: `${event} - ${itemcodes}`,
       eventName: `${window.location.origin}${window.location.pathname}`,
    });
-}
-
-/**
- * @see https://developer.matomo.org/api-reference/tracking-javascript
- * @see https://matomo.org/docs/ecommerce-analytics/#example-of-adding-a-product-to-the-order
- */
-function trackAddItemToCart(product: AddToCartData) {
-   piwikPush([
-      'addEcommerceItem',
-      product.productSku,
-      product.productName,
-      product.categoryName,
-      product.price?.amount,
-      product.quantity,
-   ]);
-}
-
-function trackClearCart() {
-   piwikPush(['clearEcommerceCart']);
-}
-
-function trackCartUpdated(grandTotal: Money) {
-   piwikPush(['trackEcommerceCartUpdate', grandTotal.amount]);
 }
 
 type PiwikCustomDimensions = {

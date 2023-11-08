@@ -1,13 +1,10 @@
-import { AddToCartInput, Cart, CartLineItem } from '@ifixit/cart-sdk';
+import { AddToCartInput, CartLineItem } from '@ifixit/cart-sdk';
 import {
    trackGA4AddToCart,
    trackGA4RemoveFromCart,
-   trackGA4ViewCart,
    trackGA4ViewItem,
-   trackGA4ViewItemList,
 } from './google';
 import {
-   trackPiwikCartUpdate,
    trackPiwikV2AddToCart,
    trackPiwikV2ProductDetailView,
    trackPiwikV2RemoveFromCart,
