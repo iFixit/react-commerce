@@ -9,8 +9,6 @@ import { AddToCartBar } from './AddToCartBar';
 import { InventoryMessage } from './InventoryMessage';
 import { NotifyMeForm } from './NotifyMeForm';
 import { ShippingRestrictions } from './ShippingRestrictions';
-import { trackGA4AddToCart } from '@ifixit/analytics';
-import { getVariantIdFromVariantURI } from '@ifixit/helpers';
 
 type AddToCartProps = {
    product: Product;

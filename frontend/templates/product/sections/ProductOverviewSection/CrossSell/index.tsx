@@ -20,11 +20,6 @@ import {
    useCartDrawer,
    useGetUserPrice,
 } from '@ifixit/ui';
-import { getVariantIdFromVariantURI } from '@ifixit/helpers';
-import {
-   trackGA4AddToCart,
-   trackInAnalyticsAddToCart,
-} from '@ifixit/analytics';
 import type { Money } from '@models/components/money';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import NextLink from 'next/link';

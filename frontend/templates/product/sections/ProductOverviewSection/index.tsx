@@ -87,7 +87,7 @@ export function ProductOverviewSection({
             });
          }
       },
-      [onVariantChange]
+      [onVariantChange, product.variants]
    );
    const isForSale = useIsProductForSale(product);
    return (
