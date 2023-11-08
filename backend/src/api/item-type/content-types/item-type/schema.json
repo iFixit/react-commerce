@@ -1,0 +1,27 @@
+{
+   "kind": "collectionType",
+   "collectionName": "item_types",
+   "info": {
+      "singularName": "item-type",
+      "pluralName": "item-types",
+      "displayName": "Item Type"
+   },
+   "options": {
+      "draftAndPublish": true
+   },
+   "pluginOptions": {},
+   "attributes": {
+      "akeneo_code": {
+         "type": "string",
+         "required": true,
+         "unique": true,
+         "regex": "[a-z][a-z0-9]*"
+      },
+      "fallback_image": {
+         "allowedTypes": ["images"],
+         "type": "media",
+         "multiple": false,
+         "required": true
+      }
+   }
+}
