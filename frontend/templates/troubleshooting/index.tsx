@@ -951,7 +951,7 @@ function RelatedProblems({
                   borderRadius="md"
                   overflow="hidden"
                >
-                  <Flex gap={2} padding={3} align="center">
+                  <Flex gap={2} padding={3}>
                      <Image
                         src={imageUrl}
                         alt={displayTitle}
@@ -971,10 +971,10 @@ function RelatedProblems({
                         </Box>
                         <Box
                            display={{ base: 'none', sm: '-webkit-box' }}
-                           mt={3}
+                           mt={1}
                         >
                            <PrerenderedHTML
-                              noOfLines={3}
+                              noOfLines={4}
                               template="troubleshooting"
                               html={description}
                            />
