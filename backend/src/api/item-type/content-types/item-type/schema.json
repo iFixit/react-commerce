@@ -15,7 +15,7 @@
          "type": "string",
          "required": true,
          "unique": true,
-         "regex": "[a-z][a-z0-9]*"
+         "regex": "[a-z0-9_]+"
       },
       "fallback_image": {
          "allowedTypes": ["images"],
