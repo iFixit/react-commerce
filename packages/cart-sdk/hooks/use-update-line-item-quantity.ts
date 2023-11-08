@@ -2,9 +2,7 @@ import {
    convertCartLineItemsToAnalyticsItem,
    trackInAnalyticsAddToCart,
    trackInAnalyticsRemoveFromCart,
-   trackPiwikCartChange,
    trackPiwikCartUpdate,
-   trackPiwikCustomAddToCart,
 } from '@ifixit/analytics';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';

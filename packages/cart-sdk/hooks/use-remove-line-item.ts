@@ -1,7 +1,6 @@
 import {
    convertCartLineItemsToAnalyticsItem,
    trackInAnalyticsRemoveFromCart,
-   trackPiwikCartChange,
    trackPiwikCartUpdate,
 } from '@ifixit/analytics';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
