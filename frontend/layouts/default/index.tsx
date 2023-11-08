@@ -11,7 +11,7 @@ import {
    Portal,
    Icon,
 } from '@chakra-ui/react';
-import { GoogleAnalytics, Matomo, PiwikPro } from '@components/analytics';
+import { GoogleAnalytics, PiwikPro } from '@components/analytics';
 import { SmartLink } from '@components/ui/SmartLink';
 import {
    faArrowRight,
@@ -329,7 +329,6 @@ const DefaultLayoutComponent = function ({
                   />
                </Flex>
             </Box>
-            <Matomo />
             <GoogleAnalytics />
             <PiwikPro />
          </ShopifyStorefrontProvider>

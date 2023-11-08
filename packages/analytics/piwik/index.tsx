@@ -8,7 +8,7 @@ import { trackInPiwik } from './track-event';
 import { AnalyticsItem, AnalyticsItemsEvent } from '..';
 
 /**
- * @see https://developer.matomo.org/api-reference/tracking-javascript
+ * @see https://developers.piwik.pro/en/latest/data_collection/web/javascript_tracking_client/api.html
  */
 export function trackPiwikPageView(url: string) {
    piwikPush(['setCustomUrl', url]);

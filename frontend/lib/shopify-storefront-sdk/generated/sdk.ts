@@ -8021,6 +8021,7 @@ export type FindProductQuery = {
       descriptionHtml: string;
       tags: Array<string>;
       vendor: string;
+      noindex?: { __typename?: 'Metafield'; value: string } | null;
       rating?: { __typename?: 'Metafield'; value: string } | null;
       reviewsCount?: { __typename?: 'Metafield'; value: string } | null;
       breadcrumbs?: { __typename?: 'Metafield'; value: string } | null;
@@ -8441,6 +8442,9 @@ export const FindProductDocument = `
     handle
     descriptionHtml
     tags
+    noindex: metafield(namespace: "seo", key: "hidden") {
+      value
+    }
     rating: metafield(namespace: "reviews", key: "rating") {
       value
     }

@@ -24,8 +24,6 @@ export function BitTableSection({
    description,
    bits,
 }: BitTableSectionProps) {
-   const needHeader = title || description;
-
    let currentColorIndex = 0;
    const driverSizeColors: Record<string, string> = {};
    const predefinedColors = ['amber', 'violet', 'green'];
@@ -55,20 +53,18 @@ export function BitTableSection({
    return (
       <Box id={id} as="section" py="16" fontSize="sm">
          <Wrapper>
-            {needHeader && (
+            {title && (
                <SectionHeaderWrapper
                   textAlign="center"
-                  mt={{
-                     base: 12,
-                     md: 16,
-                  }}
                   mb={{
                      base: 6,
                      md: 12,
                   }}
                >
-                  {title && <SectionHeading mb="4">{title}</SectionHeading>}
-                  {description && <SectionDescription richText={description} />}
+                  <SectionHeading>{title}</SectionHeading>
+                  {description && (
+                     <SectionDescription mt="4" richText={description} />
+                  )}
                </SectionHeaderWrapper>
             )}
             <Grid
@@ -138,7 +134,7 @@ function Bit({ type, driverSizeColor, sizes }: GroupedBit) {
          </Flex>
          <Flex flexGrow={1} alignItems="center" gap="2.5" m="2.5">
             <Text flexGrow={1}>{type.name}</Text>
-            <Flex flexWrap="wrap" gap={1}>
+            <Flex flexWrap="wrap" gap={1} justifyContent="flex-end">
                {sizes.map((size) => (
                   <Flex
                      key={size}
