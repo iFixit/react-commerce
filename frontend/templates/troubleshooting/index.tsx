@@ -1041,8 +1041,8 @@ function DeviceCard({
                >
                   <Text>
                      {countOfAssociatedProblems === 1
-                        ? '1 common problem'
-                        : countOfAssociatedProblems + ' common problems'}
+                        ? '1 Common problem'
+                        : countOfAssociatedProblems + ' Common problems'}
                   </Text>
                   <Link href={deviceGuideUrl} textColor="brand.500">
                      {countOfAssociatedProblems === 1
