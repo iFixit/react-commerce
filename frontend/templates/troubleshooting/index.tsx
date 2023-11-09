@@ -109,6 +109,8 @@ const Wiki: NextPageWithLayout<{
 
    const contentContainerRef = useRef<HTMLDivElement>(null);
 
+   const tocWidth = '220px';
+
    return (
       <>
          <GoogleNoScript />
@@ -135,8 +137,8 @@ const Wiki: NextPageWithLayout<{
                display="grid"
                sx={{
                   gridTemplateColumns: {
-                     base: '[toc] 0 [wrapper] 1fr',
-                     lg: '[toc] 220px [wrapper] 1fr',
+                     base: `[toc] 0 [wrapper] 1fr`,
+                     lg: `[toc] ${tocWidth} [wrapper] 1fr`,
                   },
                }}
                ref={contentContainerRef}
@@ -164,6 +166,14 @@ const Wiki: NextPageWithLayout<{
                   marginInline={{ sm: 'auto' }}
                   spacing={{ base: 4, lg: 12 }}
                   flexWrap={{ base: 'wrap', xl: 'nowrap' }}
+                  sx={{
+                     '@media (min-width: 1340px) and (max-width: 1719px)': {
+                        marginLeft: '0',
+                     },
+                     '@media (min-width: 1720px)': {
+                        transform: `translateX(calc(${tocWidth} / -2))`,
+                     },
+                  }}
                >
                   <Stack id="main" spacing={4}>
                      <TroubleshootingHeading wikiData={wikiData} />
