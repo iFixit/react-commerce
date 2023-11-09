@@ -911,14 +911,30 @@ function Conclusion({ conclusion: conclusions }: { conclusion: Section[] }) {
 
 function AnswersCTA({ answersUrl }: { answersUrl: string }) {
    return (
-      <Alert p={3} mt={4}>
-         <AlertIcon color="gray.500" />
-         <chakra.span pr={3} mr="auto">
-            Haven&apos;t found the solution to your problem?
-         </chakra.span>
-         <Button href={answersUrl} as="a" colorScheme="brand">
-            Browse our forum
-         </Button>
+      <Alert p={3} fontSize="sm">
+         <AlertIcon
+            color="gray.500"
+            alignSelf={{ base: 'start', sm: 'center' }}
+         />
+         <Flex
+            align="center"
+            flex="auto"
+            justify="space-between"
+            sx={{
+               '@media (max-width: 375px)': {
+                  flexDirection: 'column',
+                  gap: '6px',
+                  alignItems: 'end',
+               },
+            }}
+         >
+            <chakra.span>
+               Haven&apos;t found the solution to your problem?
+            </chakra.span>
+            <Button href={answersUrl} as="a" colorScheme="brand" ml={3}>
+               Browse our forum
+            </Button>
+         </Flex>
       </Alert>
    );
 }
@@ -941,103 +957,126 @@ function RelatedProblems({
    );
 
    return (
-      <>
-         <Stack
-            id={RelatedProblemsRecord.uniqueId}
-            ref={ref}
-            className="sidebar"
-            spacing={{ base: 4, xl: 6 }}
-            width={{ base: '100%' }}
-            alignSelf="start"
-            fontSize="14px"
-            flex={{ xl: '1 0 320px' }}
-            mt={{ base: 3, md: 0 }}
+      <Stack
+         id={RelatedProblemsRecord.uniqueId}
+         ref={ref}
+         className="sidebar"
+         spacing={{ base: 4, xl: 6 }}
+         width={{ base: '100%' }}
+         alignSelf="start"
+         fontSize="14px"
+         flex={{ xl: '1 0 320px' }}
+         mt={{ base: 3, md: 0 }}
+      >
+         <DeviceCard
+            imageUrl={imageUrl}
+            displayTitle={displayTitle}
+            description={description}
+            countOfAssociatedProblems={countOfAssociatedProblems}
+            deviceGuideUrl={deviceGuideUrl}
+         />
+         {hasRelatedPages && <LinkedProblems problems={linkedProblems} />}
+      </Stack>
+   );
+}
+
+function DeviceCard({
+   imageUrl,
+   displayTitle,
+   description,
+   countOfAssociatedProblems,
+   deviceGuideUrl,
+}: {
+   imageUrl: string;
+   displayTitle: string;
+   description: string;
+   countOfAssociatedProblems: number;
+   deviceGuideUrl: string | undefined;
+}) {
+   return (
+      <Stack className="question" spacing={1.5} display="flex">
+         <Box
+            bgColor="white"
+            border="1px solid"
+            borderColor="gray.300"
+            borderRadius="md"
+            overflow="hidden"
          >
-            <Stack className="question" spacing={1.5} display="flex">
-               <Box
-                  bgColor="white"
-                  border="1px solid"
-                  borderColor="gray.300"
+            <Flex gap={2} padding={3}>
+               <Image
+                  src={imageUrl}
+                  alt={displayTitle}
+                  width={{ base: '75px', md: '104px' }}
+                  height={{ base: '56px', md: '78px' }}
+                  htmlWidth={104}
+                  htmlHeight={78}
+                  objectFit="cover"
                   borderRadius="md"
-                  overflow="hidden"
-               >
-                  <Flex gap={2} padding={3}>
-                     <Image
-                        src={imageUrl}
-                        alt={displayTitle}
-                        width={{ base: '75px', md: '104px' }}
-                        height={{ base: '56px', md: '78px' }}
-                        htmlWidth={104}
-                        htmlHeight={78}
-                        objectFit="cover"
-                        borderRadius="md"
-                        outline="1px solid"
-                        outlineColor="gray.300"
-                        aspectRatio="4 / 3"
+                  outline="1px solid"
+                  outlineColor="gray.300"
+                  aspectRatio="4 / 3"
+               />
+               <Box display="block" lineHeight="normal">
+                  <Box fontWeight="semibold" my="auto">
+                     {displayTitle}
+                  </Box>
+                  <Box display={{ base: 'none', sm: '-webkit-box' }} mt={1}>
+                     <PrerenderedHTML
+                        noOfLines={4}
+                        template="troubleshooting"
+                        html={description}
                      />
-                     <Box display="block" lineHeight="normal">
-                        <Box fontWeight="semibold" my="auto">
-                           {displayTitle}
-                        </Box>
-                        <Box
-                           display={{ base: 'none', sm: '-webkit-box' }}
-                           mt={1}
-                        >
-                           <PrerenderedHTML
-                              noOfLines={4}
-                              template="troubleshooting"
-                              html={description}
-                           />
-                        </Box>
-                     </Box>
-                  </Flex>
-                  {countOfAssociatedProblems && (
-                     <Flex
-                        justifyContent="space-between"
-                        alignItems="center"
-                        w="100%"
-                        padding={3}
-                        bg="gray.100"
-                        borderTop="1px solid"
-                        borderColor="gray.300"
-                     >
-                        <Text>
-                           {countOfAssociatedProblems === 1
-                              ? '1 common problem'
-                              : countOfAssociatedProblems + ' common problems'}
-                        </Text>
-                        <Link href={deviceGuideUrl} textColor="brand.500">
-                           {countOfAssociatedProblems === 1
-                              ? 'View problem'
-                              : 'View all'}
-                        </Link>
-                     </Flex>
-                  )}
+                  </Box>
                </Box>
-            </Stack>
-            {hasRelatedPages && (
-               <Stack spacing={3}>
-                  <Heading
-                     as="h3"
-                     fontSize={{ base: '20px', md: '24px' }}
-                     fontWeight="medium"
-                     lineHeight="normal"
-                  >
-                     {RelatedProblemsRecord.title}
-                  </Heading>
-                  <SimpleGrid
-                     className="list"
-                     columns={{ base: 1, sm: 2, xl: 1 }}
-                     spacing={3}
-                  >
-                     {linkedProblems.map((problem) => (
-                        <ProblemCard problem={problem} key={problem.title} />
-                     ))}
-                  </SimpleGrid>
-               </Stack>
+            </Flex>
+            {countOfAssociatedProblems && (
+               <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  w="100%"
+                  padding={3}
+                  bg="gray.100"
+                  borderTop="1px solid"
+                  borderColor="gray.300"
+               >
+                  <Text>
+                     {countOfAssociatedProblems === 1
+                        ? '1 common problem'
+                        : countOfAssociatedProblems + ' common problems'}
+                  </Text>
+                  <Link href={deviceGuideUrl} textColor="brand.500">
+                     {countOfAssociatedProblems === 1
+                        ? 'View problem'
+                        : 'View all'}
+                  </Link>
+               </Flex>
             )}
-         </Stack>
-      </>
+         </Box>
+      </Stack>
+   );
+}
+
+function LinkedProblems({ problems }: { problems: Problem[] }) {
+   return (
+      <Stack spacing={3}>
+         <Heading
+            as="h3"
+            fontSize={{ base: '20px', md: '24px' }}
+            fontWeight="medium"
+            lineHeight="normal"
+         >
+            {RelatedProblemsRecord.title}
+         </Heading>
+         <SimpleGrid
+            className="list"
+            columns={{ base: 1, sm: 2, xl: 1 }}
+            spacing={3}
+         >
+            {problems.map((problem) => (
+               <ProblemCard problem={problem} key={problem.title} />
+            ))}
+         </SimpleGrid>
+      </Stack>
    );
 }
 
