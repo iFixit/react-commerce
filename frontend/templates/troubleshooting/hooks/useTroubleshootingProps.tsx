@@ -89,6 +89,7 @@ export type TroubleshootingApiData = {
    metaDescription: string;
    metaKeywords: string;
    linkedProblems: Problem[];
+   relatedProblems: Problem[];
    countOfAssociatedProblems: number;
    mainImageUrl: string;
    mainImageUrlLarge: string;
