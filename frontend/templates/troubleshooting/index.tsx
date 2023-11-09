@@ -943,71 +943,92 @@ function RelatedProblems({
             flex={{ xl: '1 0 320px' }}
             mt={{ base: 3, md: 0 }}
          >
-            <Stack className="question" spacing={1.5} display="flex">
-               <Box
-                  bgColor="white"
-                  border="1px solid"
-                  borderColor="gray.300"
-                  borderRadius="md"
-                  overflow="hidden"
-               >
-                  <Flex gap={2} padding={3} align="center">
-                     <Image
-                        src={imageUrl}
-                        alt={displayTitle}
-                        width={{ base: '75px', md: '104px' }}
-                        height={{ base: '56px', md: '78px' }}
-                        htmlWidth={104}
-                        htmlHeight={78}
-                        objectFit="cover"
-                        borderRadius="md"
-                        outline="1px solid"
-                        outlineColor="gray.300"
-                        aspectRatio="4 / 3"
-                     />
-                     <Box display="block" lineHeight="normal">
-                        <Box fontWeight="semibold" my="auto">
-                           {displayTitle}
-                        </Box>
-                        <Box
-                           display={{ base: 'none', sm: '-webkit-box' }}
-                           mt={3}
-                        >
-                           <PrerenderedHTML
-                              noOfLines={3}
-                              template="troubleshooting"
-                              html={description}
-                           />
-                        </Box>
-                     </Box>
-                  </Flex>
-                  {countOfAssociatedProblems && (
-                     <Flex
-                        justifyContent="space-between"
-                        alignItems="center"
-                        w="100%"
-                        padding={3}
-                        bg="gray.100"
-                        borderTop="1px solid"
-                        borderColor="gray.300"
-                     >
-                        <Text>
-                           {countOfAssociatedProblems === 1
-                              ? '1 Problem'
-                              : countOfAssociatedProblems + ' Problems'}
-                        </Text>
-                        <Link href={deviceGuideUrl} textColor="brand.500">
-                           {countOfAssociatedProblems === 1
-                              ? 'View problem'
-                              : 'View all'}
-                        </Link>
-                     </Flex>
-                  )}
-               </Box>
-            </Stack>
+            <DeviceCard
+               imageUrl={imageUrl}
+               displayTitle={displayTitle}
+               description={description}
+               countOfAssociatedProblems={countOfAssociatedProblems}
+               deviceGuideUrl={deviceGuideUrl}
+            />
             {hasRelatedPages && <LinkedProblems problems={linkedProblems} />}
          </Stack>
       </>
+   );
+}
+
+function DeviceCard({
+   imageUrl,
+   displayTitle,
+   description,
+   countOfAssociatedProblems,
+   deviceGuideUrl,
+}: {
+   imageUrl: string;
+   displayTitle: string;
+   description: string;
+   countOfAssociatedProblems: number;
+   deviceGuideUrl: string | undefined;
+}) {
+   return (
+      <Stack className="question" spacing={1.5} display="flex">
+         <Box
+            bgColor="white"
+            border="1px solid"
+            borderColor="gray.300"
+            borderRadius="md"
+            overflow="hidden"
+         >
+            <Flex gap={2} padding={3} align="center">
+               <Image
+                  src={imageUrl}
+                  alt={displayTitle}
+                  width={{ base: '75px', md: '104px' }}
+                  height={{ base: '56px', md: '78px' }}
+                  htmlWidth={104}
+                  htmlHeight={78}
+                  objectFit="cover"
+                  borderRadius="md"
+                  outline="1px solid"
+                  outlineColor="gray.300"
+                  aspectRatio="4 / 3"
+               />
+               <Box display="block" lineHeight="normal">
+                  <Box fontWeight="semibold" my="auto">
+                     {displayTitle}
+                  </Box>
+                  <Box display={{ base: 'none', sm: '-webkit-box' }} mt={3}>
+                     <PrerenderedHTML
+                        noOfLines={3}
+                        template="troubleshooting"
+                        html={description}
+                     />
+                  </Box>
+               </Box>
+            </Flex>
+            {countOfAssociatedProblems && (
+               <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  w="100%"
+                  padding={3}
+                  bg="gray.100"
+                  borderTop="1px solid"
+                  borderColor="gray.300"
+               >
+                  <Text>
+                     {countOfAssociatedProblems === 1
+                        ? '1 Problem'
+                        : countOfAssociatedProblems + ' Problems'}
+                  </Text>
+                  <Link href={deviceGuideUrl} textColor="brand.500">
+                     {countOfAssociatedProblems === 1
+                        ? 'View problem'
+                        : 'View all'}
+                  </Link>
+               </Flex>
+            )}
+         </Box>
+      </Stack>
    );
 }
 
