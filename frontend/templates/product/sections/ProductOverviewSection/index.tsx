@@ -18,12 +18,13 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { BuyBoxPropositionSection } from '@components/sections/ServiceValuePropositionSection';
+import { PrerenderedHTML } from '@components/common';
 import { faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
+import { trackGA4ViewItem } from '@ifixit/analytics';
 import { useAppContext } from '@ifixit/app';
 import {
-   isLifetimeWarranty,
    getVariantIdFromVariantURI,
+   isLifetimeWarranty,
 } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import { ProductVariantPrice, Wrapper } from '@ifixit/ui';
@@ -44,8 +45,7 @@ import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
 import { ProductVideos } from './ProductVideos';
 import { Prop65Warning } from './Prop65Warning';
-import { trackGA4ViewItem } from '@ifixit/analytics';
-import { PrerenderedHTML } from '@components/common';
+import { ValuePropositionList } from './ValuePropositionList';
 
 export interface ProductOverviewSectionProps {
    product: Product;
@@ -87,7 +87,7 @@ export function ProductOverviewSection({
             });
          }
       },
-      [onVariantChange]
+      [onVariantChange, product.variants]
    );
    const isForSale = useIsProductForSale(product);
    return (
@@ -209,7 +209,7 @@ export function ProductOverviewSection({
                   <GenuinePartBanner oemPartnership={product.oemPartnership} />
                )}
 
-               {isForSale && <BuyBoxPropositionSection />}
+               {isForSale && <ValuePropositionList />}
 
                <Accordion
                   defaultIndex={product.isEnabled ? [0, 1] : undefined}
