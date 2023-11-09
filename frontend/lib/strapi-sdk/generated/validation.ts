@@ -38,6 +38,8 @@ import {
    I18NLocaleFiltersInput,
    IdFilterInput,
    IntFilterInput,
+   ItemTypeFiltersInput,
+   ItemTypeInput,
    JsonFilterInput,
    MenuFiltersInput,
    MenuInput,
@@ -710,6 +712,33 @@ export function IntFilterInputSchema(): z.ZodObject<
       null: z.boolean().nullish(),
       or: z.array(z.number().nullable()).nullish(),
       startsWith: z.number().nullish(),
+   });
+}
+
+export function ItemTypeFiltersInputSchema(): z.ZodObject<
+   Properties<ItemTypeFiltersInput>
+> {
+   return z.object<Properties<ItemTypeFiltersInput>>({
+      akeneo_code: z.lazy(() => StringFilterInputSchema().nullish()),
+      and: z
+         .array(z.lazy(() => ItemTypeFiltersInputSchema().nullable()))
+         .nullish(),
+      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      id: z.lazy(() => IdFilterInputSchema().nullish()),
+      not: z.lazy(() => ItemTypeFiltersInputSchema().nullish()),
+      or: z
+         .array(z.lazy(() => ItemTypeFiltersInputSchema().nullable()))
+         .nullish(),
+      publishedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+   });
+}
+
+export function ItemTypeInputSchema(): z.ZodObject<Properties<ItemTypeInput>> {
+   return z.object<Properties<ItemTypeInput>>({
+      akeneo_code: z.string().nullish(),
+      fallback_image: z.string().nullish(),
+      publishedAt: z.unknown().nullish(),
    });
 }
 
