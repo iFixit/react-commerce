@@ -1005,29 +1005,33 @@ function RelatedProblems({
                   )}
                </Box>
             </Stack>
-            {hasRelatedPages && (
-               <Stack spacing={3}>
-                  <Heading
-                     as="h3"
-                     fontSize={{ base: '20px', md: '24px' }}
-                     fontWeight="medium"
-                     lineHeight="normal"
-                  >
-                     {RelatedProblemsRecord.title}
-                  </Heading>
-                  <SimpleGrid
-                     className="list"
-                     columns={{ base: 1, sm: 2, xl: 1 }}
-                     spacing={3}
-                  >
-                     {linkedProblems.map((problem) => (
-                        <ProblemCard problem={problem} key={problem.title} />
-                     ))}
-                  </SimpleGrid>
-               </Stack>
-            )}
+            {hasRelatedPages && <LinkedProblems problems={linkedProblems} />}
          </Stack>
       </>
+   );
+}
+
+function LinkedProblems({ problems }: { problems: Problem[] }) {
+   return (
+      <Stack spacing={3}>
+         <Heading
+            as="h3"
+            fontSize={{ base: '20px', md: '24px' }}
+            fontWeight="medium"
+            lineHeight="normal"
+         >
+            {RelatedProblemsRecord.title}
+         </Heading>
+         <SimpleGrid
+            className="list"
+            columns={{ base: 1, sm: 2, xl: 1 }}
+            spacing={3}
+         >
+            {problems.map((problem) => (
+               <ProblemCard problem={problem} key={problem.title} />
+            ))}
+         </SimpleGrid>
+      </Stack>
    );
 }
 
