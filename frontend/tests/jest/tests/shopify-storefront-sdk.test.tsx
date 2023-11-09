@@ -13,8 +13,10 @@ describe('getServerShopifyStorefrontSdk', () => {
       (global as any).fetch = mockFetch;
 
       const mockResponse: Partial<Response> = {
-         ok: false,
-         statusText: 'Not Found',
+         url: 'https://test.myshopify.com/api/graphql',
+         ok: true,
+         statusText: 'success',
+         status: 200,
          json: async () => ({
             errors: [
                {
@@ -34,8 +36,13 @@ describe('getServerShopifyStorefrontSdk', () => {
          storefrontDelegateToken: 'test_token',
       };
 
+      const storefront = getServerShopifyStorefrontSdk(shop);
+
       try {
-         await getServerShopifyStorefrontSdk(shop);
+         await storefront.findProduct({
+            handle: 'test-handle',
+         });
+         fail('Expected error to be thrown');
       } catch (error) {
          expect(error).toBeInstanceOf(SentryError);
          expect((error as SentryError).sentryDetails).toEqual({
@@ -56,9 +63,9 @@ describe('getServerShopifyStorefrontSdk', () => {
                },
             },
             tags: {
-               request_url: expect.any(String),
-               request_status: '404',
-               request_status_text: 'Not Found',
+               request_url: 'https://test.myshopify.com/api/graphql',
+               request_status: '200',
+               request_status_text: 'success',
             },
          });
       }
