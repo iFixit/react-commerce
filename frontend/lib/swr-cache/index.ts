@@ -212,7 +212,7 @@ export const withCache = <
          return res.status(200).json({ success: true });
       } catch (error) {
          logger.error(printError(error));
-         return res.status(500).json({ success: false });
+         throw error;
       }
    };
 
