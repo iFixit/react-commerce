@@ -42,7 +42,7 @@ describe('getServerShopifyStorefrontSdk', () => {
          await storefront.findProduct({
             handle: 'test-handle',
          });
-         fail('Expected error to be thrown');
+         expect(true).toBe('Expected error to be thrown');
       } catch (error) {
          expect(error).toBeInstanceOf(SentryError);
          expect((error as SentryError).sentryDetails).toEqual({
