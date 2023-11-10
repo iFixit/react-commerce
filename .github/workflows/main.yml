@@ -44,7 +44,6 @@ jobs:
          - name: Run Playwright Tests
            env:
               NODE_ENV: test
-              NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
               ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
               NEXT_PUBLIC_DEV_API_AUTH_TOKEN: ${{ secrets.NEXT_PUBLIC_DEV_API_AUTH_TOKEN }}
            run: cd frontend && pnpm playwright:run --project="${{ matrix.project }}"

@@ -22,7 +22,6 @@ runs:
       - name: Build Next.js
         env:
            NODE_ENV: test
-           NEXT_PUBLIC_STRAPI_ORIGIN: http://localhost:1337
            ALGOLIA_API_KEY: ${{ inputs.ALGOLIA_API_KEY }}
            NEXT_PUBLIC_DEV_API_AUTH_TOKEN: ${{ inputs.NEXT_PUBLIC_DEV_API_AUTH_TOKEN }}
         run: cd frontend && pnpm build
