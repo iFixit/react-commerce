@@ -904,6 +904,7 @@ export type GenericMorph =
    | Faq
    | Global
    | I18NLocale
+   | ItemType
    | Menu
    | Page
    | Product
@@ -1041,6 +1042,49 @@ export type IntFilterInput = {
    startsWith?: InputMaybe<Scalars['Int']>;
 };
 
+export type ItemType = {
+   __typename?: 'ItemType';
+   akeneo_code: Scalars['String'];
+   createdAt?: Maybe<Scalars['DateTime']>;
+   fallback_image: UploadFileEntityResponse;
+   publishedAt?: Maybe<Scalars['DateTime']>;
+   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type ItemTypeEntity = {
+   __typename?: 'ItemTypeEntity';
+   attributes?: Maybe<ItemType>;
+   id?: Maybe<Scalars['ID']>;
+};
+
+export type ItemTypeEntityResponse = {
+   __typename?: 'ItemTypeEntityResponse';
+   data?: Maybe<ItemTypeEntity>;
+};
+
+export type ItemTypeEntityResponseCollection = {
+   __typename?: 'ItemTypeEntityResponseCollection';
+   data: Array<ItemTypeEntity>;
+   meta: ResponseCollectionMeta;
+};
+
+export type ItemTypeFiltersInput = {
+   akeneo_code?: InputMaybe<StringFilterInput>;
+   and?: InputMaybe<Array<InputMaybe<ItemTypeFiltersInput>>>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   not?: InputMaybe<ItemTypeFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ItemTypeFiltersInput>>>;
+   publishedAt?: InputMaybe<DateTimeFilterInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type ItemTypeInput = {
+   akeneo_code?: InputMaybe<Scalars['String']>;
+   fallback_image?: InputMaybe<Scalars['ID']>;
+   publishedAt?: InputMaybe<Scalars['DateTime']>;
+};
+
 export type JsonFilterInput = {
    and?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
    between?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
@@ -1141,6 +1185,7 @@ export type Mutation = {
    createCompany?: Maybe<CompanyEntityResponse>;
    createFaq?: Maybe<FaqEntityResponse>;
    createGlobalLocalization?: Maybe<GlobalEntityResponse>;
+   createItemType?: Maybe<ItemTypeEntityResponse>;
    createMenu?: Maybe<MenuEntityResponse>;
    createMenuLocalization?: Maybe<MenuEntityResponse>;
    createPage?: Maybe<PageEntityResponse>;
@@ -1164,6 +1209,7 @@ export type Mutation = {
    deleteCompany?: Maybe<CompanyEntityResponse>;
    deleteFaq?: Maybe<FaqEntityResponse>;
    deleteGlobal?: Maybe<GlobalEntityResponse>;
+   deleteItemType?: Maybe<ItemTypeEntityResponse>;
    deleteMenu?: Maybe<MenuEntityResponse>;
    deletePage?: Maybe<PageEntityResponse>;
    deleteProduct?: Maybe<ProductEntityResponse>;
@@ -1196,6 +1242,7 @@ export type Mutation = {
    updateFaq?: Maybe<FaqEntityResponse>;
    updateFileInfo: UploadFileEntityResponse;
    updateGlobal?: Maybe<GlobalEntityResponse>;
+   updateItemType?: Maybe<ItemTypeEntityResponse>;
    updateMenu?: Maybe<MenuEntityResponse>;
    updatePage?: Maybe<PageEntityResponse>;
    updateProduct?: Maybe<ProductEntityResponse>;
@@ -1244,6 +1291,10 @@ export type MutationCreateGlobalLocalizationArgs = {
    data?: InputMaybe<GlobalInput>;
    id?: InputMaybe<Scalars['ID']>;
    locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+export type MutationCreateItemTypeArgs = {
+   data: ItemTypeInput;
 };
 
 export type MutationCreateMenuArgs = {
@@ -1338,6 +1389,10 @@ export type MutationDeleteFaqArgs = {
 
 export type MutationDeleteGlobalArgs = {
    locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+export type MutationDeleteItemTypeArgs = {
+   id: Scalars['ID'];
 };
 
 export type MutationDeleteMenuArgs = {
@@ -1456,6 +1511,11 @@ export type MutationUpdateFileInfoArgs = {
 export type MutationUpdateGlobalArgs = {
    data: GlobalInput;
    locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+export type MutationUpdateItemTypeArgs = {
+   data: ItemTypeInput;
+   id: Scalars['ID'];
 };
 
 export type MutationUpdateMenuArgs = {
@@ -1911,6 +1971,8 @@ export type Query = {
    global?: Maybe<GlobalEntityResponse>;
    i18NLocale?: Maybe<I18NLocaleEntityResponse>;
    i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
+   itemType?: Maybe<ItemTypeEntityResponse>;
+   itemTypes?: Maybe<ItemTypeEntityResponseCollection>;
    me?: Maybe<UsersPermissionsMe>;
    menu?: Maybe<MenuEntityResponse>;
    menus?: Maybe<MenuEntityResponseCollection>;
@@ -1989,6 +2051,17 @@ export type QueryI18NLocaleArgs = {
 export type QueryI18NLocalesArgs = {
    filters?: InputMaybe<I18NLocaleFiltersInput>;
    pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type QueryItemTypeArgs = {
+   id?: InputMaybe<Scalars['ID']>;
+};
+
+export type QueryItemTypesArgs = {
+   filters?: InputMaybe<ItemTypeFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
    sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
