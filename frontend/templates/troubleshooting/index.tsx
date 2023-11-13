@@ -999,6 +999,7 @@ function RelatedProblemsV2({
          <Stack
             id={RelatedProblemsRecord.uniqueId}
             ref={ref}
+            data-test="related-problems-v2"
             className="sidebar"
             spacing={{ base: 4, xl: 6 }}
             width={{ base: '100%' }}
