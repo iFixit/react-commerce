@@ -13,8 +13,8 @@ export function checkFlag(flagName: keyof typeof raw_flags) {
    const enableFlag = 'enable-' + flagName;
 
    if (typeof flagValue === 'object') {
-      if (flagValue.userToggle) {
-         return window?.localStorage?.getItem(enableFlag) === 'true';
+      if (flagValue.userToggle && typeof localStorage !== 'undefined') {
+         return localStorage?.getItem(enableFlag) === 'true';
       }
    }
 
@@ -27,6 +27,10 @@ export function checkFlag(flagName: keyof typeof raw_flags) {
 }
 
 function getHashBoolean(param: string): boolean {
+   if (typeof window === 'undefined') {
+      return false;
+   }
+
    const hash = window?.location?.hash;
    if (!hash) {
       return false;
