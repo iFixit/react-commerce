@@ -468,6 +468,9 @@ function WikiHtmlAccordianItem({
                      tbody: {
                         w: 'full',
                      },
+                     th: {
+                        textAlign: 'left',
+                     },
                      tr: {
                         display: 'flex',
                         flexDirection: 'column',
