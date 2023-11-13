@@ -538,6 +538,15 @@ importers:
 
   packages/eslint: {}
 
+  packages/feature_flags:
+    devDependencies:
+      '@ifixit/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
+
   packages/footer:
     dependencies:
       '@chakra-ui/react':
