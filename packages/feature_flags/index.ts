@@ -14,7 +14,9 @@ export function checkFlag(flagName: keyof typeof raw_flags) {
 
    if (typeof flagValue === 'object') {
       if (flagValue.userToggle && typeof localStorage !== 'undefined') {
-         return localStorage?.getItem(enableFlag) === 'true';
+         if (localStorage?.getItem(enableFlag) === 'true') {
+            return true;
+         }
       }
    }
 
