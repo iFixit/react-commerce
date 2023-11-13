@@ -82,6 +82,9 @@ importers:
       '@ifixit/eslint-plugin':
         specifier: workspace:^
         version: link:../packages/eslint
+      '@ifixit/feature_flags':
+        specifier: workspace:*
+        version: link:../packages/feature_flags
       '@ifixit/footer':
         specifier: workspace:*
         version: link:../packages/footer
