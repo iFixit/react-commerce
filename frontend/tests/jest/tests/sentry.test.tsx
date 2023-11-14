@@ -1,13 +1,12 @@
 import {
    SentryDetails,
    SentryError,
-   injectSentryErrorHandler,
+   SentryErrorIntegration,
 } from '@ifixit/sentry';
 import * as Sentry from '@sentry/nextjs';
 
-describe('Sentry beforeSend', () => {
-   it('should add extra information to the event', () => {
-      const mockBeforeSend = initSentry();
+describe('Sentry SentryErrorIntegration', () => {
+   it('should have extra information to the event', async () => {
       const sentryDetails: SentryDetails = {
          contexts: {
             contextName: {
@@ -22,8 +21,17 @@ describe('Sentry beforeSend', () => {
             tag2: 'Goodbye',
          },
       };
+
+      const mockBeforeSend = initSentry();
+
+      // Trigger an exception to invoke the beforeSend callback
       Sentry.captureException(new SentryError('message', sentryDetails));
 
+      // Flush the event to Sentry now
+      const didFlush = await Sentry.flush();
+      expect(didFlush).toBe(true);
+
+      // Assert
       expect(mockBeforeSend).toHaveBeenCalledTimes(1);
 
       const event = mockBeforeSend.mock.calls[0][0];
@@ -33,20 +41,18 @@ describe('Sentry beforeSend', () => {
    });
 });
 
-const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN;
-function initSentry() {
+function initSentry(debug: boolean = false) {
    const mockBeforeSend = jest.fn();
 
    Sentry.init({
-      sampleRate: 1,
-      dsn: SENTRY_DSN,
+      debug,
+      dsn: 'https://00000000000000000000000000000000@o000000.ingest.sentry.io/0000000',
+      integrations: [new SentryErrorIntegration()],
       beforeSend: (event) => {
          mockBeforeSend(event);
-         return null;
+         return event;
       },
    });
-
-   injectSentryErrorHandler();
 
    return mockBeforeSend;
 }
