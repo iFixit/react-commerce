@@ -1000,7 +1000,10 @@ function RelatedProblemsV2({
       bufferPx
    );
    const problems = linkedProblems.concat(relatedProblems);
-   const uniqProblems = uniqBy(problems, 'title');
+   // We don't want to omit any linked problems, but we also don't want to add
+   // an unlimited number of additional problems from the device.
+   const maxProblems = Math.max(6, linkedProblems.length);
+   const uniqProblems = uniqBy(problems, 'title').slice(0, maxProblems);
 
    return (
       <>
