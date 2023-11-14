@@ -13,7 +13,7 @@ test.describe('Troubleshooting Page Content and SEO', () => {
       // Select the element with the ID 'related-problems'
       const element = await page.locator('#related-problems');
 
-      // Assert that the element's 'data-test' attribute is 'related-problems-v2'
+      // Assert that the element's 'data-test' attribute is not 'related-problems-v2'
       await expect(element).not.toHaveAttribute(
          'data-test',
          'related-problems-v2'
