@@ -10,6 +10,7 @@
                "@ifixit/breadcrumbs",
                "@ifixit/cart-sdk",
                "@ifixit/feature_flags",
+               "@ifixit/react-feature-flags",
                "@ifixit/footer",
                "@ifixit/helpers",
                "@ifixit/icons",

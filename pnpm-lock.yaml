@@ -82,9 +82,6 @@ importers:
       '@ifixit/eslint-plugin':
         specifier: workspace:^
         version: link:../packages/eslint
-      '@ifixit/feature_flags':
-        specifier: workspace:*
-        version: link:../packages/feature_flags
       '@ifixit/footer':
         specifier: workspace:*
         version: link:../packages/footer
@@ -106,6 +103,9 @@ importers:
       '@ifixit/newsletter-sdk':
         specifier: workspace:*
         version: link:../packages/newsletter-sdk
+      '@ifixit/react-feature-flags':
+        specifier: workspace:*
+        version: link:../packages/react-feature-flags
       '@ifixit/sentry':
         specifier: workspace:*
         version: link:../packages/sentry

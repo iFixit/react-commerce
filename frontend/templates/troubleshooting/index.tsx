@@ -51,7 +51,7 @@ import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
 import { useRef } from 'react';
-import { checkFlag } from '@ifixit/feature_flags';
+import { useFlag } from '@ifixit/react-feature-flags';
 import ProblemCard from './Problem';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
 import { GoogleNoScript, TagManager } from './components/TagManager';
@@ -110,7 +110,8 @@ const Wiki: NextPageWithLayout<{
 
    const contentContainerRef = useRef<HTMLDivElement>(null);
 
-   const RelatedProblemsComponent = checkFlag('extended-related-problems')
+   const relatedProblemsFlag = useFlag('extended-related-problems');
+   const RelatedProblemsComponent = relatedProblemsFlag
       ? RelatedProblemsV2
       : RelatedProblems;
 
