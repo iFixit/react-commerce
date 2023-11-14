@@ -1,10 +1,10 @@
 import type { Strapi } from '@strapi/strapi';
-import z from 'zod';
-import { ensureDirectoryExists } from '../../helpers/server-helpers';
 import * as csv from 'fast-csv';
 import fs from 'fs';
 import { omit } from 'lodash';
+import z from 'zod';
 import { getAddonsService } from '..';
+import { ensureDirectoryExists } from '../../helpers/server-helpers';
 
 const EXPORT_FOLDER_NAME = 'bulk-operations';
 
@@ -67,7 +67,7 @@ async function findRecords<T = any>(
    strapi: Strapi,
    uid: string
 ): Promise<Array<T>> {
-   let records = await strapi.entityService.findMany(uid as any);
+   let records = await strapi.entityService!.findMany(uid as any);
    return Array.isArray(records) ? records.map(processRecord) : [];
 }
 

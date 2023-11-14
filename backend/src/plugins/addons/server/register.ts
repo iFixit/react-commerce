@@ -1,5 +1,5 @@
-import '@strapi/strapi';
+import type { Strapi } from '@strapi/strapi';
 
-export default ({ strapi }: { strapi: Strapi.Strapi }) => {
+export default ({ strapi }: { strapi: Strapi }) => {
    // registeration phase
 };
