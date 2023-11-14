@@ -1050,7 +1050,7 @@ function DeviceCard({
             borderRadius="md"
             overflow="hidden"
          >
-            <Flex gap={2} padding={3}>
+            <Flex gap={2} padding={3} align="center">
                <Image
                   src={imageUrl}
                   alt={displayTitle}
