@@ -737,6 +737,22 @@ importers:
         specifier: 5.2.2
         version: 5.2.2
 
+  packages/react-feature-flags:
+    dependencies:
+      '@ifixit/feature_flags':
+        specifier: workspace:*
+        version: link:../feature_flags
+      react:
+        specifier: ^18.0.0
+        version: 18.2.0
+    devDependencies:
+      '@ifixit/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
+
   packages/sentry:
     dependencies:
       '@ifixit/helpers':

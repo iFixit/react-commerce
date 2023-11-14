@@ -2,8 +2,9 @@ import * as raw_flags from './flags.json';
 import type { FlagList as FormalFlagList } from './flag_schema';
 
 export const flags: FormalFlagList = raw_flags;
+export type FlagKey = keyof typeof raw_flags;
 
-export function checkFlag(flagName: keyof typeof raw_flags) {
+export function checkFlag(flagName: FlagKey) {
    const flagValue = flags[flagName];
 
    if (flagValue === true) {
