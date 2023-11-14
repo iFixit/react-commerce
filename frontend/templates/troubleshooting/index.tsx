@@ -51,6 +51,7 @@ import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
 import { useRef } from 'react';
+import { useFlag } from '@ifixit/react-feature-flags';
 import ProblemCard from './Problem';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
 import { GoogleNoScript, TagManager } from './components/TagManager';
@@ -108,6 +109,11 @@ const Wiki: NextPageWithLayout<{
       .filter((tocItem) => tocItem.title);
 
    const contentContainerRef = useRef<HTMLDivElement>(null);
+
+   const relatedProblemsFlag = useFlag('extended-related-problems');
+   const RelatedProblemsComponent = relatedProblemsFlag
+      ? RelatedProblemsV2
+      : RelatedProblems;
 
    return (
       <>
@@ -189,7 +195,7 @@ const Wiki: NextPageWithLayout<{
                      <Conclusion conclusion={filteredConclusions} />
                      <AnswersCTA answersUrl={wikiData.answersUrl} />
                   </Stack>
-                  <RelatedProblems
+                  <RelatedProblemsComponent
                      hasRelatedPages={hasRelatedPages}
                      wikiData={wikiData}
                   />
@@ -951,6 +957,50 @@ function RelatedProblems({
          <Stack
             id={RelatedProblemsRecord.uniqueId}
             ref={ref}
+            className="sidebar"
+            spacing={{ base: 4, xl: 6 }}
+            width={{ base: '100%' }}
+            alignSelf="start"
+            fontSize="14px"
+            flex={{ xl: '1 0 320px' }}
+            mt={{ base: 3, md: 0 }}
+         >
+            <DeviceCard
+               imageUrl={imageUrl}
+               displayTitle={displayTitle}
+               description={description}
+               countOfAssociatedProblems={countOfAssociatedProblems}
+               deviceGuideUrl={deviceGuideUrl}
+            />
+            {hasRelatedPages && <LinkedProblems problems={linkedProblems} />}
+         </Stack>
+      </>
+   );
+}
+
+function RelatedProblemsV2({
+   wikiData,
+   hasRelatedPages,
+}: {
+   wikiData: TroubleshootingData;
+   hasRelatedPages?: boolean;
+}) {
+   const { linkedProblems, deviceGuideUrl, countOfAssociatedProblems } =
+      wikiData;
+   const { displayTitle, imageUrl, description } = wikiData.category;
+
+   const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
+   const { ref } = LinkToTOC<HTMLHeadingElement>(
+      RelatedProblemsRecord.uniqueId,
+      bufferPx
+   );
+
+   return (
+      <>
+         <Stack
+            id={RelatedProblemsRecord.uniqueId}
+            ref={ref}
+            data-test="related-problems-v2"
             className="sidebar"
             spacing={{ base: 4, xl: 6 }}
             width={{ base: '100%' }}
