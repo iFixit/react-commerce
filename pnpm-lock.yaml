@@ -103,6 +103,9 @@ importers:
       '@ifixit/newsletter-sdk':
         specifier: workspace:*
         version: link:../packages/newsletter-sdk
+      '@ifixit/react-feature-flags':
+        specifier: workspace:*
+        version: link:../packages/react-feature-flags
       '@ifixit/sentry':
         specifier: workspace:*
         version: link:../packages/sentry
@@ -538,6 +541,15 @@ importers:
 
   packages/eslint: {}
 
+  packages/feature_flags:
+    devDependencies:
+      '@ifixit/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
+
   packages/footer:
     dependencies:
       '@chakra-ui/react':
@@ -721,6 +733,22 @@ importers:
       react:
         specifier: 18.2.0
         version: 18.2.0
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
+
+  packages/react-feature-flags:
+    dependencies:
+      '@ifixit/feature_flags':
+        specifier: workspace:*
+        version: link:../feature_flags
+      react:
+        specifier: ^18.0.0
+        version: 18.2.0
+    devDependencies:
+      '@ifixit/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
       typescript:
         specifier: 5.2.2
         version: 5.2.2
