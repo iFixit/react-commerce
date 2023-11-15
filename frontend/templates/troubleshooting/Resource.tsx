@@ -204,7 +204,7 @@ function Resource({
    difficulty?: string;
    spacing: SystemProps['margin'];
    href: string;
-   showBuyButton?: boolean;
+   showBuyButton?: string | boolean;
    openInNewTab?: boolean;
 }>) {
    const difficultyTheme =
@@ -214,6 +214,8 @@ function Resource({
    const { themeColor, iconColor, icon } = difficultyTheme;
    const breakpoint = useBreakpoint();
    const isMobile = breakpoint === 'base';
+   const buyButtonText =
+      typeof showBuyButton === 'string' ? showBuyButton : 'Buy';
 
    return (
       <ResourceBox>
@@ -274,7 +276,7 @@ function Resource({
                buttonSize="xs"
                openInNewTab={false}
                url={href}
-               buyButtonText="Buy"
+               buyButtonText={buyButtonText}
             />
          )}
          {!isMobile && showBuyButton && (
@@ -283,7 +285,7 @@ function Resource({
                buttonSize="sm"
                openInNewTab={openInNewTab}
                url={href}
-               buyButtonText="Buy"
+               buyButtonText={buyButtonText}
             />
          )}
       </ResourceBox>
