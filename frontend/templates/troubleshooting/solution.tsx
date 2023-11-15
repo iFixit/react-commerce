@@ -17,7 +17,11 @@ import {
    SectionPartCollection,
 } from './hooks/useTroubleshootingProps';
 import { PrerenderedHTML } from '@components/common';
-import { GuideResource, ProductResource } from './Resource';
+import {
+   GuideResource,
+   ProductResource,
+   PartCollectionResource,
+} from './Resource';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
 import { LinkToTOC, useTOCBufferPxScrollOnClick } from './tocContext';
 
@@ -128,10 +132,13 @@ export default function SolutionCard({
                title={solution.heading}
             />
             <SolutionTexts body={solution.body} />
-            {(solution.guides.length > 0 || solution.products.length > 0) && (
+            {(solution.guides.length > 0 ||
+               solution.products.length > 0 ||
+               solution.partCollections.length > 0) && (
                <LinkCards
                   guides={solution.guides}
                   products={solution.products}
+                  partCollections={solution.partCollections}
                />
             )}
          </Stack>
@@ -142,8 +149,13 @@ export default function SolutionCard({
 function LinkCards({
    guides,
    products,
+   partCollections,
    ...props
-}: { guides: SectionGuide[]; products: SectionProduct[] } & BoxProps) {
+}: {
+   guides: SectionGuide[];
+   products: SectionProduct[];
+   partCollections: SectionPartCollection[];
+} & BoxProps) {
    const uniqueGuides = guides.filter(
       (guide, index) =>
          guides.findIndex((g) => g.guideid === guide.guideid) === index
@@ -156,6 +168,14 @@ function LinkCards({
          {products.map((product: SectionProduct, index) => (
             <ProductResource key={index} product={product} />
          ))}
+         {partCollections.map(
+            (partCollection: SectionPartCollection, index) => (
+               <PartCollectionResource
+                  key={index}
+                  partCollection={partCollection}
+               />
+            )
+         )}
       </VStack>
    );
 }

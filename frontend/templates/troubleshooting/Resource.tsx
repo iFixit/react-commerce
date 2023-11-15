@@ -70,6 +70,32 @@ export function ProductResource({ product }: { product: SectionProduct }) {
    );
 }
 
+export function PartCollectionResource({
+   partCollection,
+}: {
+   partCollection: SectionPartCollection;
+}) {
+   const { title, url, description, imageUrl } = partCollection;
+
+   console.log('rendering part collection: ' + partCollection);
+
+   return (
+      <Resource
+         href={url}
+         title={title}
+         imageUrl={imageUrl}
+         spacing={1}
+         showBuyButton={'Find Your Parts'}
+         openInNewTab={true}
+         showStackedImages={true}
+      >
+         <Text color="gray.600" fontSize="12px">
+            {description}
+         </Text>
+      </Resource>
+   );
+}
+
 function ResourceProductRating({ product }: { product: SectionProduct }) {
    if (!shouldShowProductRating(product.reviews)) {
       return null;
