@@ -1,6 +1,7 @@
 import { Box, Circle, IconButton } from '@chakra-ui/react';
 import { faShoppingCart } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
+import { BlueDot } from '../../misc';
 
 export interface CartDrawerTriggerProps {
    onClick?: () => void;
@@ -29,16 +30,7 @@ export function CartDrawerTrigger({
             data-testid="cart-drawer-open"
          />
          {hasItemsInCart && (
-            <Circle
-               position="absolute"
-               top="0.5"
-               right="2px"
-               size={3}
-               bg="blue.500"
-               borderRadius="full"
-               borderWidth={2}
-               borderColor="gray.900"
-            />
+            <BlueDot position="absolute" top="-2px" right="3px" />
          )}
       </Box>
    );

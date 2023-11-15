@@ -24,6 +24,7 @@ const AuthenticatedUserSchema = z.object({
    teams: z.array(z.number()),
    links: z.record(z.any()),
    langid: z.string().optional().nullable(),
+   unread_notification_count: z.number().optional().nullable(),
 });
 
 export function useAuthenticatedUser() {
@@ -74,6 +75,7 @@ const UserApiResponseSchema = z.object({
    teams: z.array(z.number()),
    links: z.record(z.any()),
    langid: z.string().optional().nullable(),
+   unread_notification_count: z.number().optional().nullable(),
 });
 
 async function fetchAuthenticatedUser(
@@ -106,6 +108,7 @@ async function fetchAuthenticatedUser(
       isAdmin: userSchema.data.privileges.includes('Admin'),
       teams: userSchema.data.teams,
       links: userSchema.data.links,
-      langid: userSchema.data?.langid ?? null,
+      langid: userSchema.data.langid ?? null,
+      unread_notification_count: userSchema.data.unread_notification_count,
    };
 }

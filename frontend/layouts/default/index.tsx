@@ -1,3 +1,4 @@
+import { Wordmark20th } from '@assets/svg/files';
 import {
    Alert,
    AlertIcon,
@@ -5,22 +6,32 @@ import {
    Box,
    DrawerCloseButton,
    Flex,
+   Icon,
    MenuDivider,
    MenuGroup,
    MenuList,
    Portal,
-   Icon,
 } from '@chakra-ui/react';
 import { GoogleAnalytics, PiwikPro } from '@components/analytics';
 import { SmartLink } from '@components/ui/SmartLink';
+import { PIWIK_ENV, SHOPIFY_STOREFRONT_VERSION } from '@config/env';
 import {
    faArrowRight,
+   faBell,
+   faBox,
    faMagnifyingGlass,
+   faRightFromBracket,
+   faScrewdriverWrench,
+   faUser,
+   faUsers,
 } from '@fortawesome/pro-solid-svg-icons';
+import {
+   trackPiwikPreferredLanguage,
+   trackPiwikPreferredStore,
+} from '@ifixit/analytics';
 import { useAppContext } from '@ifixit/app';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { FaIcon } from '@ifixit/icons';
-import { Wordmark20th } from '@assets/svg/files';
 import type { Menu } from '@ifixit/menu';
 import { ShopifyStorefrontProvider } from '@ifixit/shopify-storefront-client';
 import {
@@ -52,18 +63,14 @@ import {
    NavigationSubmenuName,
    NoUserLink,
    SearchInput,
-   useHeaderContext,
    UserMenu,
    UserMenuButton,
    UserMenuHeading,
+   MenuItemIcon,
    UserMenuLink,
    WordmarkLink,
+   useHeaderContext,
 } from '@ifixit/ui';
-import {
-   trackPiwikPreferredStore,
-   trackPiwikPreferredLanguage,
-} from '@ifixit/analytics';
-import { PIWIK_ENV, SHOPIFY_STOREFRONT_VERSION } from '@config/env';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import * as React from 'react';
@@ -411,37 +418,52 @@ function HeaderUserMenu() {
       return <NoUserLink href={`${appContext.ifixitOrigin}/Login`} />;
    }
 
+   const notificationsCount = user.data.unread_notification_count ?? 0;
+
    return (
       <UserMenu user={user.data}>
-         <UserMenuButton aria-label="Open user menu" />
+         <UserMenuButton
+            aria-label="Open user menu"
+            hasUnreadNotifications={notificationsCount > 0}
+         />
          <Portal>
-            <MenuList>
+            <MenuList minW="240px">
                <UserMenuHeading />
                <MenuDivider />
                <MenuGroup>
                   <UserMenuLink
                      href={`${appContext.ifixitOrigin}/User/Notifications/${user.data.id}/${user.data.username}`}
                   >
-                     Notifications
+                     <Flex justify="space-between" align="center" w="full">
+                        <Flex align="center">
+                           <MenuItemIcon icon={faBell} />
+                           <span>Notifications</span>
+                        </Flex>
+                        <NotificationCountBadge count={notificationsCount} />
+                     </Flex>
                   </UserMenuLink>
                   <UserMenuLink
                      href={`${appContext.ifixitOrigin}/User/${user.data.id}/${user.data.username}`}
                   >
-                     View Profile
+                     <MenuItemIcon icon={faUser} />
+                     <span>View Profile</span>
                   </UserMenuLink>
                   {user.data.teams.length > 0 && (
                      <UserMenuLink href={`${appContext.ifixitOrigin}/Team`}>
-                        My Team
+                        <MenuItemIcon icon={faUsers} />
+                        <span>My Team</span>
                      </UserMenuLink>
                   )}
                   <UserMenuLink href={`${appContext.ifixitOrigin}/User/Orders`}>
-                     Orders
+                     <MenuItemIcon icon={faBox} />
+                     <span>Orders</span>
                   </UserMenuLink>
                   {user.data.links.manage && (
                      <UserMenuLink
                         href={`${appContext.ifixitOrigin}${user.data.links.manage}`}
                      >
-                        Manage
+                        <MenuItemIcon icon={faScrewdriverWrench} />
+                        <span>Manage</span>
                      </UserMenuLink>
                   )}
                </MenuGroup>
@@ -450,12 +472,37 @@ function HeaderUserMenu() {
                   <UserMenuLink
                      href={`${appContext.ifixitOrigin}/Guide/logout`}
                   >
-                     Log Out
+                     <MenuItemIcon icon={faRightFromBracket} />
+                     <span>Log Out</span>
                   </UserMenuLink>
                </MenuGroup>
             </MenuList>
          </Portal>
       </UserMenu>
+   );
+}
+
+interface NotificationCountBadgeProps {
+   count: number;
+}
+
+function NotificationCountBadge({ count }: NotificationCountBadgeProps) {
+   if (count === 0) return null;
+   return (
+      <Flex
+         rounded="full"
+         bgColor="brand.500"
+         h="18px"
+         minW="18px"
+         justify="center"
+         align="center"
+         fontSize="xs"
+         fontWeight="semibold"
+         color="white"
+         p="1"
+      >
+         {count > 100 ? '100+' : count}
+      </Flex>
    );
 }
 
