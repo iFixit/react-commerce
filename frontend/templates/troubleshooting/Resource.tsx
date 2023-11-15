@@ -188,6 +188,7 @@ function hasKey<O extends Object>(obj: O, key: PropertyKey): key is keyof O {
 
 function Resource({
    title,
+   showStackedImages,
    imageUrl,
    timeRequired,
    difficulty,
@@ -198,6 +199,7 @@ function Resource({
    children,
 }: React.PropsWithChildren<{
    title: string;
+   showStackedImages?: boolean;
    imageUrl?: string | null;
    introduction?: string | null;
    timeRequired?: string;
@@ -219,7 +221,31 @@ function Resource({
 
    return (
       <ResourceBox>
-         {imageUrl && (
+         {imageUrl && showStackedImages && (
+            <Box position="relative" mr={2}>
+               <Image
+                  boxSize="64px"
+                  outline="1px solid"
+                  outlineColor="gray.300"
+                  borderRadius="md"
+                  objectFit="cover"
+                  alt={title}
+                  src={imageUrl}
+                  position="relative"
+                  zIndex="1"
+               />
+               <Box
+                  boxSize="64px"
+                  outline="1px solid"
+                  outlineColor="gray.300"
+                  borderRadius="md"
+                  position="absolute"
+                  top="0"
+                  transform="rotate(6deg)"
+               />
+            </Box>
+         )}
+         {imageUrl && !showStackedImages && (
             <Image
                boxSize="64px"
                outline="1px solid"
