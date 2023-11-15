@@ -14,6 +14,10 @@ const getFindManyContentTypes = (strapi: Strapi) => () => {
    });
 };
 
+export type FindManyContentTypesResult = Awaited<
+   ReturnType<ReturnType<typeof getFindManyContentTypes>>
+>;
+
 const getFindOneContentType = (strapi: Strapi) => (uid: string) => {
    const findContentTypes = getFindManyContentTypes(strapi);
    return findContentTypes().find((schema) => schema.uid === uid);
