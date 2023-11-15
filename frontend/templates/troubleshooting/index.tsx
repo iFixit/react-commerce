@@ -110,6 +110,8 @@ const Wiki: NextPageWithLayout<{
 
    const contentContainerRef = useRef<HTMLDivElement>(null);
 
+   const tocWidth = '220px';
+
    const relatedProblemsFlag = useFlag('extended-related-problems');
    const RelatedProblemsComponent = relatedProblemsFlag
       ? RelatedProblemsV2
@@ -141,8 +143,8 @@ const Wiki: NextPageWithLayout<{
                display="grid"
                sx={{
                   gridTemplateColumns: {
-                     base: '[toc] 0 [wrapper] 1fr',
-                     lg: '[toc] 220px [wrapper] 1fr',
+                     base: `[toc] 0 [wrapper] 1fr`,
+                     lg: `[toc] ${tocWidth} [wrapper] 1fr`,
                   },
                }}
                ref={contentContainerRef}
@@ -170,6 +172,14 @@ const Wiki: NextPageWithLayout<{
                   marginInline={{ sm: 'auto' }}
                   spacing={{ base: 4, lg: 12 }}
                   flexWrap={{ base: 'wrap', xl: 'nowrap' }}
+                  sx={{
+                     '@media (min-width: 1340px) and (max-width: 1719px)': {
+                        marginLeft: '0',
+                     },
+                     '@media (min-width: 1720px)': {
+                        transform: `translateX(calc(${tocWidth} / -2))`,
+                     },
+                  }}
                >
                   <Stack id="main" spacing={4}>
                      <TroubleshootingHeading wikiData={wikiData} />
@@ -953,28 +963,26 @@ function RelatedProblems({
    );
 
    return (
-      <>
-         <Stack
-            id={RelatedProblemsRecord.uniqueId}
-            ref={ref}
-            className="sidebar"
-            spacing={{ base: 4, xl: 6 }}
-            width={{ base: '100%' }}
-            alignSelf="start"
-            fontSize="14px"
-            flex={{ xl: '1 0 320px' }}
-            mt={{ base: 3, md: 0 }}
-         >
-            <DeviceCard
-               imageUrl={imageUrl}
-               displayTitle={displayTitle}
-               description={description}
-               countOfAssociatedProblems={countOfAssociatedProblems}
-               deviceGuideUrl={deviceGuideUrl}
-            />
-            {hasRelatedPages && <LinkedProblems problems={linkedProblems} />}
-         </Stack>
-      </>
+      <Stack
+         id={RelatedProblemsRecord.uniqueId}
+         ref={ref}
+         className="sidebar"
+         spacing={{ base: 4, xl: 6 }}
+         width={{ base: '100%' }}
+         alignSelf="start"
+         fontSize="14px"
+         flex={{ xl: '1 0 320px' }}
+         mt={{ base: 3, md: 0 }}
+      >
+         <DeviceCard
+            imageUrl={imageUrl}
+            displayTitle={displayTitle}
+            description={description}
+            countOfAssociatedProblems={countOfAssociatedProblems}
+            deviceGuideUrl={deviceGuideUrl}
+         />
+         {hasRelatedPages && <LinkedProblems problems={linkedProblems} />}
+      </Stack>
    );
 }
 
@@ -996,29 +1004,27 @@ function RelatedProblemsV2({
    );
 
    return (
-      <>
-         <Stack
-            id={RelatedProblemsRecord.uniqueId}
-            ref={ref}
-            data-test="related-problems-v2"
-            className="sidebar"
-            spacing={{ base: 4, xl: 6 }}
-            width={{ base: '100%' }}
-            alignSelf="start"
-            fontSize="14px"
-            flex={{ xl: '1 0 320px' }}
-            mt={{ base: 3, md: 0 }}
-         >
-            <DeviceCard
-               imageUrl={imageUrl}
-               displayTitle={displayTitle}
-               description={description}
-               countOfAssociatedProblems={countOfAssociatedProblems}
-               deviceGuideUrl={deviceGuideUrl}
-            />
-            {hasRelatedPages && <LinkedProblems problems={linkedProblems} />}
-         </Stack>
-      </>
+      <Stack
+         id={RelatedProblemsRecord.uniqueId}
+         ref={ref}
+         data-test="related-problems-v2"
+         className="sidebar"
+         spacing={{ base: 4, xl: 6 }}
+         width={{ base: '100%' }}
+         alignSelf="start"
+         fontSize="14px"
+         flex={{ xl: '1 0 320px' }}
+         mt={{ base: 3, md: 0 }}
+      >
+         <DeviceCard
+            imageUrl={imageUrl}
+            displayTitle={displayTitle}
+            description={description}
+            countOfAssociatedProblems={countOfAssociatedProblems}
+            deviceGuideUrl={deviceGuideUrl}
+         />
+         {hasRelatedPages && <LinkedProblems problems={linkedProblems} />}
+      </Stack>
    );
 }
 
@@ -1062,9 +1068,9 @@ function DeviceCard({
                   <Box fontWeight="semibold" my="auto">
                      {displayTitle}
                   </Box>
-                  <Box display={{ base: 'none', sm: '-webkit-box' }} mt={3}>
+                  <Box display={{ base: 'none', sm: '-webkit-box' }} mt={1}>
                      <PrerenderedHTML
-                        noOfLines={3}
+                        noOfLines={4}
                         template="troubleshooting"
                         html={description}
                      />
@@ -1083,8 +1089,8 @@ function DeviceCard({
                >
                   <Text>
                      {countOfAssociatedProblems === 1
-                        ? '1 Problem'
-                        : countOfAssociatedProblems + ' Problems'}
+                        ? '1 common problem'
+                        : countOfAssociatedProblems + ' common problems'}
                   </Text>
                   <Link href={deviceGuideUrl} textColor="brand.500">
                      {countOfAssociatedProblems === 1
