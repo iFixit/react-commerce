@@ -1,22 +1,22 @@
 import {
    Avatar,
-   forwardRef,
+   Box,
+   BoxProps,
    Link,
    LinkProps,
    Menu,
    MenuButton,
    MenuButtonProps,
    MenuItem,
-   MenuItemProps,
    MenuProps,
-   StackProps,
    Text,
-   VStack,
 } from '@chakra-ui/react';
 import { faUser } from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
+import { FaIcon } from '@ifixit/icons';
 import * as React from 'react';
 import { usePreloadImage } from '../hooks';
-import { FaIcon } from '@ifixit/icons';
+import { BlueDot } from '../misc';
 
 type UserMenuContext = {
    user: User;
@@ -54,13 +54,17 @@ export const UserMenu = ({ user, ...otherProps }: UserMenuProps) => {
    );
 };
 
-export const UserMenuButton = forwardRef<
-   Omit<MenuButtonProps, 'children'>,
-   'button'
->((props, ref) => {
+interface UserMenuButtonProps extends MenuButtonProps {
+   hasUnreadNotifications?: boolean;
+}
+
+export const UserMenuButton = ({
+   hasUnreadNotifications,
+   ...props
+}: UserMenuButtonProps) => {
    return (
       <MenuButton
-         ref={ref}
+         position="relative"
          borderRadius="full"
          _focus={{
             boxShadow: 'outline',
@@ -69,55 +73,64 @@ export const UserMenuButton = forwardRef<
          {...props}
       >
          <UserAvatar />
+         {hasUnreadNotifications && (
+            <BlueDot position="absolute" top="-2px" right="-2px" />
+         )}
       </MenuButton>
    );
-});
+};
 
-export const UserMenuHeading = forwardRef<Omit<StackProps, 'children'>, 'div'>(
-   (props, ref) => {
-      const { user } = useMenuContext();
-      return (
-         <VStack
-            ref={ref}
-            align="flex-start"
-            px="0.8rem"
-            py="0.4rem"
-            {...props}
-         >
-            <Text color="gray.900" fontWeight="semibold">
-               {user?.username}
-            </Text>
-            {user?.handle && <Text color="gray.700">@{user?.handle}</Text>}
-         </VStack>
-      );
-   }
-);
+export const UserMenuHeading = (props: BoxProps) => {
+   const { user } = useMenuContext();
+   return (
+      <Box px="4" py="2" {...props}>
+         <Text color="gray.900" fontWeight="medium">
+            {user?.username}
+         </Text>
+         {user?.handle && <Text color="gray.500">@{user?.handle}</Text>}
+      </Box>
+   );
+};
 
-export const UserMenuLink = forwardRef<MenuItemProps, 'a'>((props, ref) => {
-   return <MenuItem ref={ref} as="a" fontSize="sm" {...props} />;
-});
+interface UserMenuLinkProps {
+   href: string;
+   children: React.ReactNode;
+}
 
-export const NoUserLink = forwardRef<Omit<LinkProps, 'children'>, 'a'>(
-   (props, ref) => {
-      return (
-         <Link
-            ref={ref}
-            borderRadius="full"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            {...props}
-            h={8}
-            w={8}
-            _hover={{ opacity: '0.7' }}
-            transition="0.3s"
-            aria-label="Login"
-         >
-            <FaIcon icon={faUser} h="5" color="white" />
-         </Link>
-      );
-   }
-);
+export const UserMenuLink = ({ href, children }: UserMenuLinkProps) => {
+   return (
+      <MenuItem as="a" href={href} fontSize="sm" px="4" py="1.5">
+         {children}
+      </MenuItem>
+   );
+};
+
+interface MenuItemIconProps {
+   icon: FontAwesomeIconProps['icon'];
+}
+
+export const MenuItemIcon = ({ icon }: MenuItemIconProps) => {
+   return <FaIcon icon={icon} w="4" color="gray.500" mr="1.5" />;
+};
+
+export const NoUserLink = (props: LinkProps) => {
+   return (
+      <Link
+         borderRadius="full"
+         display="flex"
+         alignItems="center"
+         justifyContent="center"
+         {...props}
+         h={8}
+         w={8}
+         _hover={{ opacity: '0.7' }}
+         transition="0.3s"
+         aria-label="Login"
+      >
+         <FaIcon icon={faUser} h="5" color="white" />
+      </Link>
+   );
+};
 
 function UserAvatar() {
    const { user } = useMenuContext();
