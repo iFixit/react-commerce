@@ -221,41 +221,39 @@ function Resource({
 
    return (
       <ResourceBox>
-         {imageUrl && showStackedImages && (
-            <Box position="relative" mr={2}>
+         {imageUrl && (
+            <Box
+               position="relative"
+               mr={2}
+               boxSize="64px"
+               minWidth="64px"
+               borderRadius="md"
+               outline="1px solid"
+               outlineColor="gray.300"
+            >
+               {showStackedImages && (
+                  <Box
+                     width="100%"
+                     height="100%"
+                     borderRadius="inherit"
+                     outline="inherit"
+                     outlineColor="inherit"
+                     position="absolute"
+                     top="0"
+                     transform="rotate(6deg)"
+                  />
+               )}
                <Image
-                  boxSize="64px"
-                  outline="1px solid"
-                  outlineColor="gray.300"
-                  borderRadius="md"
+                  outline="inherit"
+                  outlineColor="inherit"
+                  borderRadius="inherit"
                   objectFit="cover"
                   alt={title}
                   src={imageUrl}
                   position="relative"
                   zIndex="1"
                />
-               <Box
-                  boxSize="64px"
-                  outline="1px solid"
-                  outlineColor="gray.300"
-                  borderRadius="md"
-                  position="absolute"
-                  top="0"
-                  transform="rotate(6deg)"
-               />
             </Box>
-         )}
-         {imageUrl && !showStackedImages && (
-            <Image
-               boxSize="64px"
-               outline="1px solid"
-               outlineColor="gray.300"
-               borderRadius="md"
-               objectFit="cover"
-               alt={title}
-               src={imageUrl}
-               mr={2}
-            />
          )}
          <Stack
             justify="flex-start"
