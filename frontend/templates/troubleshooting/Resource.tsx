@@ -21,7 +21,11 @@ import { PrerenderedHTML } from '@components/common';
 import { DifficultyThemeLookup, GuideDifficultyNames } from './DifficultyBadge';
 import { Rating } from '@components/ui';
 import { Money, formatMoney, shouldShowProductRating } from '@ifixit/helpers';
-import { SectionProduct, SectionGuide } from './hooks/useTroubleshootingProps';
+import {
+   SectionProduct,
+   SectionGuide,
+   SectionPartCollection,
+} from './hooks/useTroubleshootingProps';
 
 export function GuideResource({ guide }: { guide: SectionGuide }) {
    return (

@@ -26,6 +26,14 @@ export type Problem = {
 export type ApiSolutionSection = Section & {
    guides: SectionGuide[];
    products: SectionProduct[];
+   partCollections: SectionPartCollection[];
+};
+
+export type SectionPartCollection = {
+   title: string;
+   url: string;
+   description: string;
+   imageUrl: string;
 };
 
 export type SectionProduct = {

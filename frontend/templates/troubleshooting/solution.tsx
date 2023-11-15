@@ -14,6 +14,7 @@ import {
    SectionGuide,
    SectionProduct,
    SolutionSection,
+   SectionPartCollection,
 } from './hooks/useTroubleshootingProps';
 import { PrerenderedHTML } from '@components/common';
 import { GuideResource, ProductResource } from './Resource';
