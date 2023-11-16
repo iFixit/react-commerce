@@ -885,6 +885,9 @@ export function ProductListFiltersInputSchema(): z.ZodObject<
       handle: z.lazy(() => StringFilterInputSchema().nullish()),
       hideFromParent: z.lazy(() => BooleanFilterInputSchema().nullish()),
       id: z.lazy(() => IdFilterInputSchema().nullish()),
+      indexVariantsInsteadOfDevice: z.lazy(() =>
+         BooleanFilterInputSchema().nullish()
+      ),
       legacyDescription: z.lazy(() => StringFilterInputSchema().nullish()),
       legacyPageId: z.lazy(() => IntFilterInputSchema().nullish()),
       locale: z.lazy(() => StringFilterInputSchema().nullish()),
@@ -924,6 +927,7 @@ export function ProductListInputSchema(): z.ZodObject<
       heroImage: z.string().nullish(),
       hideFromParent: z.boolean().nullish(),
       image: z.string().nullish(),
+      indexVariantsInsteadOfDevice: z.boolean().nullish(),
       itemOverrides: z.array(z.lazy(() => z.unknown())).nullish(),
       legacyDescription: z.string().nullish(),
       legacyPageId: z.number().nullish(),

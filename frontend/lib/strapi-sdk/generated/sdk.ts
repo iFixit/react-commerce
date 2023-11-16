@@ -1755,6 +1755,7 @@ export type ProductList = {
    heroImage?: Maybe<UploadFileEntityResponse>;
    hideFromParent?: Maybe<Scalars['Boolean']>;
    image?: Maybe<UploadFileEntityResponse>;
+   indexVariantsInsteadOfDevice?: Maybe<Scalars['Boolean']>;
    itemOverrides: Array<Maybe<ProductListItemOverridesDynamicZone>>;
    legacyDescription?: Maybe<Scalars['String']>;
    legacyPageId?: Maybe<Scalars['Int']>;
@@ -1826,6 +1827,7 @@ export type ProductListFiltersInput = {
    handle?: InputMaybe<StringFilterInput>;
    hideFromParent?: InputMaybe<BooleanFilterInput>;
    id?: InputMaybe<IdFilterInput>;
+   indexVariantsInsteadOfDevice?: InputMaybe<BooleanFilterInput>;
    legacyDescription?: InputMaybe<StringFilterInput>;
    legacyPageId?: InputMaybe<IntFilterInput>;
    locale?: InputMaybe<StringFilterInput>;
@@ -1859,6 +1861,7 @@ export type ProductListInput = {
    heroImage?: InputMaybe<Scalars['ID']>;
    hideFromParent?: InputMaybe<Scalars['Boolean']>;
    image?: InputMaybe<Scalars['ID']>;
+   indexVariantsInsteadOfDevice?: InputMaybe<Scalars['Boolean']>;
    itemOverrides?: InputMaybe<
       Array<Scalars['ProductListItemOverridesDynamicZoneInput']>
    >;
