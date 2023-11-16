@@ -249,6 +249,15 @@
             }
          },
          "type": "text"
+      },
+      "indexVariantsInsteadOfDevice": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": true
+            }
+         },
+         "type": "boolean",
+         "default": false
       }
    }
 }
