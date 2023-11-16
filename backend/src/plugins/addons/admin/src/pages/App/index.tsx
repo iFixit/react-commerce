@@ -6,7 +6,6 @@
  */
 
 import { Layout } from '@strapi/design-system';
-import { NotFound } from '@strapi/helper-plugin';
 import { QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -35,7 +34,6 @@ const App = () => {
                      component={BulkOperationsPage}
                      exact
                   />
-                  <Route component={NotFound} />
                </Switch>
             </Layout>
          </div>

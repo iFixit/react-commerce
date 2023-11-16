@@ -1,9 +1,8 @@
-import type { Strapi } from '@strapi/strapi';
+import type { Attribute, Schema, Strapi } from '@strapi/strapi';
 import * as csv from 'fast-csv';
 import z from 'zod';
 import { getAddonsService } from '..';
 import { isBlank } from '../../helpers/server-helpers';
-import { ContentTypeAttribute, ContentTypeSchema } from '../content-types';
 
 export type ImportCSVArgs = z.infer<typeof ImportCSVArgsSchema>;
 
@@ -132,7 +131,7 @@ function parseCSV(csvString: string): Promise<ParseCSVResult> {
 }
 
 interface SaveRecordContext {
-   schema: ContentTypeSchema;
+   schema: Schema.ContentType;
    strapi: Strapi;
 }
 
@@ -159,7 +158,7 @@ async function saveRecord(
 
 function prepareRecordInput(
    record: Record<string, string>,
-   schema: ContentTypeSchema
+   schema: Schema.ContentType
 ) {
    const scalarAttributesNames = getScalarAttributes(schema);
    const requiredComponentAttributesNames =
@@ -191,7 +190,7 @@ function prepareRecordInput(
    return input;
 }
 
-function getScalarAttributes(schema: ContentTypeSchema) {
+function getScalarAttributes(schema: Schema.ContentType) {
    return Object.entries(schema.attributes)
       .filter(
          ([, attribute]) =>
@@ -202,7 +201,7 @@ function getScalarAttributes(schema: ContentTypeSchema) {
       .map(([name]) => name);
 }
 
-function getRequiredComponentAttributes(schema: ContentTypeSchema): string[] {
+function getRequiredComponentAttributes(schema: Schema.ContentType): string[] {
    return Object.entries(schema.attributes)
       .filter(
          ([, attribute]) =>
@@ -211,7 +210,9 @@ function getRequiredComponentAttributes(schema: ContentTypeSchema): string[] {
       .map(([name]) => name);
 }
 
-function getRequiredDynamicZoneAttributes(schema: ContentTypeSchema): string[] {
+function getRequiredDynamicZoneAttributes(
+   schema: Schema.ContentType
+): string[] {
    return Object.entries(schema.attributes)
       .filter(
          ([, attribute]) =>
@@ -220,10 +221,7 @@ function getRequiredDynamicZoneAttributes(schema: ContentTypeSchema): string[] {
       .map(([name]) => name);
 }
 
-function csvValueToAttributeValue(
-   value: string,
-   attribute: ContentTypeAttribute
-) {
+function csvValueToAttributeValue(value: string, attribute: Attribute.Any) {
    switch (attribute.type) {
       case 'enumeration': {
          if (isBlank(value)) {

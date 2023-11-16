@@ -1,10 +1,11 @@
+import type { Common, Strapi } from '@strapi/strapi';
 import { ContentTypeRepository, LoadArgs } from './content-type-repository';
 import { ContentTypeNotFoundError } from './errors/ContentTypeNotFoundError';
 import { ContentTypeItem } from './types';
 
 type ConstructorArgs = {
-   strapi: Strapi.Strapi;
-   uid: string;
+   strapi: Strapi;
+   uid: Common.UID.ContentType;
 };
 
 export class SingleTypeRepository extends ContentTypeRepository {
@@ -48,7 +49,7 @@ export class SingleTypeRepository extends ContentTypeRepository {
       const { id, attributes } = this.item;
       const nestedAttributes = this.keepNestedAttributes(attributes);
       try {
-         await this.strapi.entityService.update(this.schema.uid as any, id, {
+         await this.strapi.entityService!.update(this.schema.uid as any, id, {
             data: nestedAttributes,
          });
       } catch (error) {
