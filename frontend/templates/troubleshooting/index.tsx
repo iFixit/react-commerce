@@ -69,6 +69,7 @@ import {
    TOCContextProvider,
    useTOCBufferPxScrollOnClick,
 } from './tocContext';
+import { uniqBy } from 'lodash';
 
 const RelatedProblemsRecord = {
    title: 'Related Problems',
@@ -993,8 +994,12 @@ function RelatedProblemsV2({
    wikiData: TroubleshootingData;
    hasRelatedPages?: boolean;
 }) {
-   const { linkedProblems, deviceGuideUrl, countOfAssociatedProblems } =
-      wikiData;
+   const {
+      linkedProblems,
+      relatedProblems,
+      deviceGuideUrl,
+      countOfAssociatedProblems,
+   } = wikiData;
    const { displayTitle, imageUrl, description } = wikiData.category;
 
    const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
@@ -1002,6 +1007,11 @@ function RelatedProblemsV2({
       RelatedProblemsRecord.uniqueId,
       bufferPx
    );
+   const problems = linkedProblems.concat(relatedProblems);
+   // We don't want to omit any linked problems, but we also don't want to add
+   // an unlimited number of additional problems from the device.
+   const maxProblems = Math.max(6, linkedProblems.length);
+   const uniqProblems = uniqBy(problems, 'title').slice(0, maxProblems);
 
    return (
       <Stack
@@ -1023,7 +1033,7 @@ function RelatedProblemsV2({
             countOfAssociatedProblems={countOfAssociatedProblems}
             deviceGuideUrl={deviceGuideUrl}
          />
-         {hasRelatedPages && <LinkedProblems problems={linkedProblems} />}
+         {hasRelatedPages && <LinkedProblems problems={uniqProblems} />}
       </Stack>
    );
 }
