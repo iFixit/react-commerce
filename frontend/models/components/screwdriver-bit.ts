@@ -5,9 +5,9 @@ import {
    screwdriverBitTypeFromStrapiFragment,
 } from './screwdriver-bit-type';
 
-export type ScrewdriverBit = z.infer<typeof ScrewDriverBitSchema>;
+export type ScrewdriverBit = z.infer<typeof ScrewdriverBitSchema>;
 
-export const ScrewDriverBitSchema = z.object({
+export const ScrewdriverBitSchema = z.object({
    id: z.string(),
    type: ScrewdriverBitTypeSchema,
    size: z.string().nullable(),
