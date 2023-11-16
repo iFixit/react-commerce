@@ -1,254 +1,268 @@
 {
-   "kind": "collectionType",
-   "collectionName": "product_lists",
-   "info": {
-      "singularName": "product-list",
-      "pluralName": "product-lists",
-      "displayName": "ProductList",
-      "description": ""
-   },
-   "options": {
-      "draftAndPublish": true
-   },
-   "pluginOptions": {
-      "i18n": {
-         "localized": true
+  "kind": "collectionType",
+  "collectionName": "product_lists",
+  "info": {
+    "singularName": "product-list",
+    "pluralName": "product-lists",
+    "displayName": "ProductList",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "type": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "all-parts",
+        "parts",
+        "all-tools",
+        "tools",
+        "marketing"
+      ],
+      "default": "parts",
+      "required": false
+    },
+    "handle": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "uid",
+      "required": true
+    },
+    "title": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "required": true
+    },
+    "h1": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "required": false
+    },
+    "description": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "richtext",
+      "required": true
+    },
+    "heroImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
       }
-   },
-   "attributes": {
-      "type": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": false
-            }
-         },
-         "type": "enumeration",
-         "enum": ["all-parts", "parts", "all-tools", "tools", "marketing"],
-         "default": "parts",
-         "required": false
-      },
-      "handle": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": true
-            }
-         },
-         "type": "uid",
-         "required": true
-      },
-      "title": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": true
-            }
-         },
-         "type": "string",
-         "required": true
-      },
-      "h1": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": true
-            }
-         },
-         "type": "string",
-         "required": false
-      },
-      "description": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": true
-            }
-         },
-         "type": "richtext",
-         "required": true
-      },
-      "heroImage": {
-         "type": "media",
-         "multiple": false,
-         "required": false,
-         "allowedTypes": ["images"],
-         "pluginOptions": {
-            "i18n": {
-               "localized": false
-            }
-         }
-      },
-      "image": {
-         "type": "media",
-         "multiple": false,
-         "required": false,
-         "allowedTypes": ["images"],
-         "pluginOptions": {
-            "i18n": {
-               "localized": false
-            }
-         }
-      },
-      "brandLogo": {
-         "type": "media",
-         "multiple": false,
-         "required": false,
-         "allowedTypes": ["images"],
-         "pluginOptions": {
-            "i18n": {
-               "localized": false
-            }
-         }
-      },
-      "brandLogoWidth": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": false
-            }
-         },
-         "type": "integer"
-      },
-      "filters": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": true
-            }
-         },
-         "type": "text"
-      },
-      "tagline": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": true
-            }
-         },
-         "type": "string"
-      },
-      "metaDescription": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": true
-            }
-         },
-         "type": "string",
-         "maxLength": 320
-      },
-      "metaTitle": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": true
-            }
-         },
-         "type": "string",
-         "maxLength": 130
-      },
-      "deviceTitle": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": false
-            }
-         },
-         "type": "string"
-      },
-      "forceNoindex": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": false
-            }
-         },
-         "type": "boolean",
-         "default": false
-      },
-      "hideFromParent": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": false
-            }
-         },
-         "type": "boolean",
-         "default": false,
-         "required": false
-      },
-      "parent": {
-         "type": "relation",
-         "relation": "manyToOne",
-         "target": "api::product-list.product-list",
-         "inversedBy": "children"
-      },
-      "children": {
-         "type": "relation",
-         "relation": "oneToMany",
-         "target": "api::product-list.product-list",
-         "mappedBy": "parent"
-      },
-      "legacyPageId": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": true
-            }
-         },
-         "type": "integer",
-         "unique": true
-      },
-      "sections": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": true
-            }
-         },
-         "type": "dynamiczone",
-         "components": [
-            "product-list.banner",
-            "product-list.linked-product-list-set",
-            "product-list.related-posts"
-         ],
-         "required": true
-      },
-      "sortPriority": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": false
-            }
-         },
-         "type": "integer",
-         "default": 0
-      },
-      "legacyDescription": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": true
-            }
-         },
-         "type": "richtext"
-      },
-      "defaultShowAllChildrenOnLgSizes": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": false
-            }
-         },
-         "type": "boolean",
-         "default": false
-      },
-      "itemOverrides": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": true
-            }
-         },
-         "type": "dynamiczone",
-         "components": ["product-list.item-type-override"],
-         "required": true
-      },
-      "faqs": {
-         "type": "relation",
-         "relation": "manyToMany",
-         "target": "api::faq.faq",
-         "inversedBy": "product_lists"
-      },
-      "optionalFilters": {
-         "pluginOptions": {
-            "i18n": {
-               "localized": true
-            }
-         },
-         "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
       }
-   }
+    },
+    "brandLogo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ],
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "brandLogoWidth": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "integer"
+    },
+    "filters": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "text"
+    },
+    "tagline": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    },
+    "metaDescription": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "maxLength": 320
+    },
+    "metaTitle": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "maxLength": 130
+    },
+    "deviceTitle": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "string"
+    },
+    "forceNoindex": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "boolean",
+      "default": false
+    },
+    "hideFromParent": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "boolean",
+      "default": false,
+      "required": false
+    },
+    "parent": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product-list.product-list",
+      "inversedBy": "children"
+    },
+    "children": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product-list.product-list",
+      "mappedBy": "parent"
+    },
+    "legacyPageId": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer",
+      "unique": true
+    },
+    "sections": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "dynamiczone",
+      "components": [
+        "product-list.banner",
+        "product-list.linked-product-list-set",
+        "product-list.related-posts"
+      ],
+      "required": true
+    },
+    "sortPriority": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "integer",
+      "default": 0
+    },
+    "legacyDescription": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "richtext"
+    },
+    "defaultShowAllChildrenOnLgSizes": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "boolean",
+      "default": false
+    },
+    "itemOverrides": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "dynamiczone",
+      "components": [
+        "product-list.item-type-override"
+      ],
+      "required": true
+    },
+    "faqs": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::faq.faq",
+      "inversedBy": "product_lists"
+    },
+    "optionalFilters": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "text"
+    }
+  }
 }

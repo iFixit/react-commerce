@@ -1,40 +1,40 @@
 {
-   "kind": "collectionType",
-   "collectionName": "faqs",
-   "info": {
-      "singularName": "faq",
-      "pluralName": "faqs",
-      "displayName": "FAQ",
-      "description": ""
-   },
-   "options": {
-      "draftAndPublish": true
-   },
-   "pluginOptions": {},
-   "attributes": {
-      "question": {
-         "type": "string",
-         "required": true
-      },
-      "answer": {
-         "type": "richtext",
-         "required": true
-      },
-      "category": {
-         "type": "string",
-         "required": false
-      },
-      "product_lists": {
-         "type": "relation",
-         "relation": "manyToMany",
-         "target": "api::product-list.product-list",
-         "mappedBy": "faqs"
-      },
-      "item_type": {
-         "type": "string"
-      },
-      "priority": {
-         "type": "integer"
-      }
-   }
+  "kind": "collectionType",
+  "collectionName": "faqs",
+  "info": {
+    "singularName": "faq",
+    "pluralName": "faqs",
+    "displayName": "FAQ",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "question": {
+      "type": "string",
+      "required": true
+    },
+    "answer": {
+      "type": "richtext",
+      "required": true
+    },
+    "category": {
+      "type": "string",
+      "required": false
+    },
+    "product_lists": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product-list.product-list",
+      "mappedBy": "faqs"
+    },
+    "item_type": {
+      "type": "string"
+    },
+    "priority": {
+      "type": "integer"
+    }
+  }
 }
