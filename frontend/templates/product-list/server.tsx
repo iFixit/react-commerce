@@ -224,7 +224,10 @@ export const getProductListServerSideProps = ({
 
       const pageProps: ProductListTemplateProps = {
          productList,
-         layoutProps: await layoutProps,
+         layoutProps: {
+            ...(await layoutProps),
+            includeTitle: false,
+         },
          appProps: {
             ...appProps,
             ...(adminMessage ? { adminMessage } : {}),

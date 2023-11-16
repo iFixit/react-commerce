@@ -9,7 +9,7 @@ type GetLayoutServerSidePropsArgs = {
 
 export type DefaultLayoutProps = Awaited<
    ReturnType<typeof getLayoutServerSideProps>
-> & { title?: string };
+> & { title?: string; includeTitle?: boolean };
 
 export type WithLayoutProps<T> = T & { layoutProps: DefaultLayoutProps };
 
