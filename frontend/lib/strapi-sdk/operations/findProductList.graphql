@@ -33,6 +33,7 @@ fragment ProductListFields on ProductList {
       ...ImageFields
    }
    brandLogoWidth
+   indexVariantsInsteadOfDevice
    parent {
       data {
          attributes {

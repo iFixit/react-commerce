@@ -3632,6 +3632,7 @@ export type FindProductListQuery = {
             filters?: string | null;
             forceNoindex?: boolean | null;
             brandLogoWidth?: number | null;
+            indexVariantsInsteadOfDevice?: boolean | null;
             optionalFilters?: string | null;
             heroImage?: {
                __typename?: 'UploadFileEntityResponse';
@@ -3976,6 +3977,7 @@ export type ProductListFieldsFragment = {
    filters?: string | null;
    forceNoindex?: boolean | null;
    brandLogoWidth?: number | null;
+   indexVariantsInsteadOfDevice?: boolean | null;
    optionalFilters?: string | null;
    heroImage?: {
       __typename?: 'UploadFileEntityResponse';
@@ -6261,6 +6263,7 @@ export const ProductListFieldsFragmentDoc = `
     ...ImageFields
   }
   brandLogoWidth
+  indexVariantsInsteadOfDevice
   parent {
     data {
       attributes {

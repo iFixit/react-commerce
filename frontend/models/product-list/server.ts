@@ -114,6 +114,8 @@ export async function findProductList(
       filters: productList?.filters ?? null,
       optionalFilters: productList?.optionalFilters ?? null,
       forceNoindex: productList?.forceNoindex ?? null,
+      indexVariantsInsteadOfDevice:
+         productList?.indexVariantsInsteadOfDevice ?? null,
       heroImage: imageFromStrapi(productList?.heroImage),
       brandLogo: imageFromStrapi(productList?.brandLogo, {
          format: 'large',
