@@ -113,6 +113,7 @@ export default function SolutionCard({
 }) {
    const bufferPx = useBreakpointValue({ base: -46, lg: -6 });
    const { ref } = LinkToTOC<HTMLDivElement>(solution.id, bufferPx);
+   solution.partCollections = [];
 
    return (
       <Box
