@@ -68,16 +68,25 @@ function useMetaTitle(productList: ProductList): string {
 }
 
 function useIsFilteredProductList(): boolean {
-   const currentRefinements = useCurrentRefinements();
+   const ignoredFilters = ['facet_tags.Item Type'];
 
-   const refinementAttributes = currentRefinements.items.map(
-      (item) => item.attribute
+   const filters = useFilters();
+   const isFiltered = Object.keys(filters).some(
+      (filter) => !ignoredFilters.includes(filter) && filters[filter].length > 0
    );
-   const isItemTypeFilter =
-      refinementAttributes.length === 1 &&
-      refinementAttributes[0] === 'facet_tags.Item Type';
+   return isFiltered;
+}
 
-   return currentRefinements.items.length > 0 && !isItemTypeFilter;
+function useFilters() {
+   const currentRefinements = useCurrentRefinements();
+   const filtersAndValues = currentRefinements.items.reduce((record, item) => {
+      record[item.attribute] = item.refinements.map(
+         (refinement) => refinement.value
+      );
+      return record;
+   }, {} as Record<string, (string | number)[]>);
+
+   return filtersAndValues;
 }
 
 function useCanonicalUrl(productList: ProductList): string {
