@@ -922,7 +922,7 @@ const ConclusionSection = function ConclusionSectionInner({
 
 function Conclusion({ conclusion: conclusions }: { conclusion: Section[] }) {
    return (
-      <Box pt={4} gridArea="Conclusion">
+      <Box pt={{ base: 0, sm: 6 }} gridArea="Conclusion">
          {conclusions.map((conclusion) => (
             <ConclusionSection
                key={conclusion.heading}
@@ -989,7 +989,7 @@ function RelatedProblems({
          width={{ base: '100%' }}
          alignSelf="start"
          fontSize="14px"
-         pt={4}
+         pt={{ base: 0, sm: 6 }}
          gridArea="RelatedProblems"
       >
          {hasRelatedPages && <LinkedProblems problems={linkedProblems} />}
@@ -1040,7 +1040,7 @@ function RelatedProblemsV2({
          width={{ base: '100%' }}
          alignSelf="start"
          fontSize="14px"
-         pt={4}
+         pt={{ base: 0, sm: 6 }}
          gridArea="RelatedProblems"
       >
          {hasRelatedPages && <LinkedProblems problems={uniqProblems} />}
