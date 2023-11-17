@@ -714,7 +714,7 @@ function RelatedProblems({
          width={{ base: '100%' }}
          alignSelf="start"
          fontSize="14px"
-         pt={{ base: 0, sm: 6 }}
+         pt={{ base: 6, xl: 0 }}
          gridArea="RelatedProblems"
       >
          {hasRelatedPages && <LinkedProblems problems={linkedProblems} />}
