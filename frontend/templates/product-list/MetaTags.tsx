@@ -20,8 +20,9 @@ export function MetaTags({ productList }: MetaTagsProps) {
    const metaTitle = useMetaTitle(productList);
    const metaDescription =
       productList.metaDescription ?? productList.description;
-   const canonicalUrl = useCanonicalUrl(productList);
-   const shouldNoIndex = useShouldNoIndex(productList);
+   const itemType = useDevicePartsItemType(productList) ?? null;
+   const canonicalUrl = useCanonicalUrl(productList, itemType);
+   const shouldNoIndex = useShouldNoIndex(productList, itemType);
    const structuredData = useStructuredData(productList);
 
    return (
@@ -81,13 +82,14 @@ function useIsFilteredProductList(): boolean {
    return currentRefinements.items.length > 0 && !isItemTypeFilter;
 }
 
-function useCanonicalUrl(productList: ProductList): string {
+function useCanonicalUrl(
+   productList: ProductList,
+   itemType: string | null
+): string {
    const appContext = useAppContext();
    const pagination = usePagination();
 
    const page = pagination.currentRefinement + 1;
-
-   const itemType = useDevicePartsItemType(productList);
 
    const itemTypeHandle = itemType
       ? `/${encodeURIComponent(stylizeDeviceItemType(itemType))}`
@@ -98,10 +100,12 @@ function useCanonicalUrl(productList: ProductList): string {
    )}${itemTypeHandle}${page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''}`;
 }
 
-function useShouldNoIndex(productList: ProductList): boolean {
+function useShouldNoIndex(
+   productList: ProductList,
+   itemType: string | null
+): boolean {
    const pagination = usePagination();
    const isFiltered = useIsFilteredProductList();
-   const itemType = useDevicePartsItemType(productList);
 
    const productListExemptions =
       noIndexExemptions[productList.deviceTitle ?? ''];
