@@ -102,20 +102,15 @@ export function useUpdateLineItemQuantity() {
                   quantity: Math.abs(variables.quantity),
                };
             });
-            if (variables.quantity < 0) {
-               trackInAnalyticsRemoveFromCart({
-                  items: addOrRemoveAnalyticsItems,
-                  value: Number(variables.item.price.amount),
-                  currency: variables.item.price.currencyCode,
-               });
-            } else {
-               trackInAnalyticsAddToCart({
-                  items: addOrRemoveAnalyticsItems,
-                  value: Number(variables.item.price.amount),
-                  currency: variables.item.price.currencyCode,
-               });
-            }
-
+            const trackChangeInCart =
+               variables.quantity < 0
+                  ? trackInAnalyticsRemoveFromCart
+                  : trackInAnalyticsAddToCart;
+            trackChangeInCart({
+               items: addOrRemoveAnalyticsItems,
+               value: Number(variables.item.price.amount),
+               currency: variables.item.price.currencyCode,
+            });
             const cart = client.getQueryData<Cart>(cartKeys.cart);
             if (cart) {
                trackPiwikCartUpdate({
