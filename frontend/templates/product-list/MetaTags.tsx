@@ -4,7 +4,7 @@ import { productListPath } from '@helpers/path-helpers';
 import { stylizeDeviceItemType } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
 import type { ProductList } from '@models/product-list';
-import { noIndexExemptions } from '@seo/product-list';
+import { noIndexExemptions, useHreflangs } from '@seo/product-list';
 import Head from 'next/head';
 import { useCurrentRefinements, usePagination } from 'react-instantsearch';
 import { jsonLdScriptProps } from 'react-schemaorg';
@@ -22,6 +22,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
       productList.metaDescription ?? productList.description;
    const itemType = useDevicePartsItemType(productList) ?? null;
    const canonicalUrl = useCanonicalUrl(productList, itemType);
+   const hreflangs = useHreflangs(productList, itemType);
    const shouldNoIndex = useShouldNoIndex(productList, itemType);
    const structuredData = useStructuredData(productList);
 
@@ -47,6 +48,15 @@ export function MetaTags({ productList }: MetaTagsProps) {
          {productList.heroImage?.url && (
             <meta property="og:image" content={productList.heroImage.url} />
          )}
+         {hreflangs &&
+            Object.entries(hreflangs).map(([lang, url]) => (
+               <link
+                  rel="alternate"
+                  key={`hreflang-${lang}`}
+                  hrefLang={lang}
+                  href={url.toString()}
+               />
+            ))}
          <script {...structuredData} />
       </Head>
    );
