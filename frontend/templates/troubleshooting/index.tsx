@@ -220,11 +220,11 @@ const Wiki: NextPageWithLayout<{
                            </Stack>
                         )}
                      </Stack>
+                     <Conclusion conclusion={filteredConclusions} />
                      <RelatedProblemsComponent
                         hasRelatedPages={hasRelatedPages}
                         wikiData={wikiData}
                      />
-                     <Conclusion conclusion={filteredConclusions} />
                      <AnswersCTA answersUrl={wikiData.answersUrl} />
                   </Stack>
                </Flex>
@@ -911,18 +911,18 @@ const ConclusionSection = function ConclusionSectionInner({
    const { onClick } = useTOCBufferPxScrollOnClick(conclusion.id);
 
    return (
-      <Stack spacing={3} id={conclusion.id} ref={ref}>
+      <Box id={conclusion.id} ref={ref}>
          <HeadingSelfLink id={conclusion.id} onClick={onClick}>
             {conclusion.heading}
          </HeadingSelfLink>
          <PrerenderedHTML html={conclusion.body} template="troubleshooting" />
-      </Stack>
+      </Box>
    );
 };
 
 function Conclusion({ conclusion: conclusions }: { conclusion: Section[] }) {
    return (
-      <Box gridArea="Conclusion">
+      <Box pt={4} gridArea="Conclusion">
          {conclusions.map((conclusion) => (
             <ConclusionSection
                key={conclusion.heading}
