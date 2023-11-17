@@ -1,5 +1,5 @@
 import { IFIXIT_ORIGIN } from '@config/env';
-import { getVariantIdFromVariantURI, invariant } from '@ifixit/helpers';
+import { getProductIdFromProductUrl, invariant } from '@ifixit/helpers';
 import { SentryError } from '@ifixit/sentry';
 import type { Product } from '@models/product';
 import { ProductList, ProductListType } from '@models/product-list';
@@ -101,7 +101,7 @@ export function shopifyStoreAdminProductUrl({
    product,
    storeCode,
 }: ShopifyAdminProductUrlProps) {
-   const adminProductId = getVariantIdFromVariantURI(product.id);
+   const adminProductId = getProductIdFromProductUrl(product.id);
    return `${shopifyStoreAdminUrl({ storeCode })}/products/${adminProductId}`;
 }
 

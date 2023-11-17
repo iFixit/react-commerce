@@ -65,6 +65,15 @@ export function getVariantIdFromVariantURI(variantURI: string): string {
    return variantURI.replace(/^gid:\/\/shopify\/ProductVariant\//, '');
 }
 
+export function getProductIdFromProductUrl(productURI: string) {
+   if (!productURI.startsWith('gid://')) {
+      throw new Error(
+         'Variant URI must be a global shopify product variant id uri'
+      );
+   }
+   return productURI.replace(/^gid:\/\/shopify\/Product\//, '');
+}
+
 export function getProductVariantURI(variantId: string | number): string {
    return `gid://shopify/ProductVariant/${variantId}`;
 }
