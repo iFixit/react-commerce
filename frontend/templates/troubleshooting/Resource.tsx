@@ -22,7 +22,11 @@ import { PrerenderedHTML } from '@components/common';
 import { DifficultyThemeLookup, GuideDifficultyNames } from './DifficultyBadge';
 import { Rating } from '@components/ui';
 import { Money, formatMoney, shouldShowProductRating } from '@ifixit/helpers';
-import { SectionProduct, SectionGuide } from './hooks/useTroubleshootingProps';
+import {
+   SectionProduct,
+   SectionGuide,
+   SectionPartCollection,
+} from './hooks/useTroubleshootingProps';
 
 export function GuideResource({ guide }: { guide: SectionGuide }) {
    return (
@@ -63,6 +67,30 @@ export function ProductResource({ product }: { product: SectionProduct }) {
       >
          <ResourceProductRating product={product} />
          <ResourceProductPrice price={price} />
+      </Resource>
+   );
+}
+
+export function PartCollectionResource({
+   partCollection,
+}: {
+   partCollection: SectionPartCollection;
+}) {
+   const { title, url, description, imageUrl } = partCollection;
+
+   return (
+      <Resource
+         href={url}
+         title={title}
+         imageUrl={imageUrl}
+         spacing={1}
+         showBuyButton={'Find Your Parts'}
+         openInNewTab={true}
+         showStackedImages={true}
+      >
+         <Text color="gray.600" fontSize="12px">
+            {description}
+         </Text>
       </Resource>
    );
 }
@@ -160,6 +188,7 @@ function hasKey<O extends Object>(obj: O, key: PropertyKey): key is keyof O {
 
 function Resource({
    title,
+   showStackedImages,
    imageUrl,
    timeRequired,
    difficulty,
@@ -170,13 +199,14 @@ function Resource({
    children,
 }: React.PropsWithChildren<{
    title: string;
+   showStackedImages?: boolean;
    imageUrl?: string | null;
    introduction?: string | null;
    timeRequired?: string;
    difficulty?: string;
    spacing: SystemProps['margin'];
    href: string;
-   showBuyButton?: boolean;
+   showBuyButton?: string | boolean;
    openInNewTab?: boolean;
 }>) {
    const difficultyTheme =
@@ -186,20 +216,45 @@ function Resource({
    const { themeColor, iconColor, icon } = difficultyTheme;
    const breakpoint = useBreakpoint();
    const isMobile = breakpoint === 'base';
+   const buyButtonText =
+      typeof showBuyButton === 'string' ? showBuyButton : 'Buy';
 
    return (
       <ResourceBox>
          {imageUrl && (
-            <Image
+            <Box
+               position="relative"
+               mr={2}
                boxSize="64px"
+               minWidth="64px"
+               borderRadius="md"
                outline="1px solid"
                outlineColor="gray.300"
-               borderRadius="md"
-               objectFit="cover"
-               alt={title}
-               src={imageUrl}
-               mr={2}
-            />
+            >
+               {showStackedImages && (
+                  // Renders an empty box to fake the stacked image effect
+                  <Box
+                     width="100%"
+                     height="100%"
+                     borderRadius="inherit"
+                     outline="inherit"
+                     outlineColor="inherit"
+                     position="absolute"
+                     top="0"
+                     transform="rotate(6deg)"
+                  />
+               )}
+               <Image
+                  outline="inherit"
+                  outlineColor="inherit"
+                  borderRadius="inherit"
+                  objectFit="cover"
+                  alt={title}
+                  src={imageUrl}
+                  position="relative"
+                  zIndex="1"
+               />
+            </Box>
          )}
          <Flex flex="1" flexDirection={{ base: 'column', sm: 'row' }}>
             <Stack
@@ -249,7 +304,7 @@ function Resource({
                   buttonSize="xs"
                   openInNewTab={false}
                   url={href}
-                  buyButtonText="Buy"
+                  buyButtonText={buyButtonText}
                />
             )}
             {!isMobile && showBuyButton && (
@@ -258,7 +313,7 @@ function Resource({
                   buttonSize="sm"
                   openInNewTab={openInNewTab}
                   url={href}
-                  buyButtonText="Buy"
+                  buyButtonText={buyButtonText}
                />
             )}
          </Flex>
