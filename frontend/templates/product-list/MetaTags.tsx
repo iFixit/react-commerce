@@ -68,7 +68,7 @@ function useMetaTitle(productList: ProductList): string {
 }
 
 function useIsFilteredProductList(): boolean {
-   const ignoredFilters = ['facet_tags.Item Type'];
+   const ignoredFilters = ['facet_tags.Item Type', 'worksin'];
 
    const filters = useFilters();
    const isFiltered = Object.keys(filters).some(
@@ -87,6 +87,14 @@ function useFilters() {
    }, {} as Record<string, (string | number)[]>);
 
    return filtersAndValues;
+}
+
+function useVariant(): string | undefined {
+   const variantRefinements = useFilters()['worksin'];
+   const variant = variantRefinements
+      ? variantRefinements[0]?.toString()
+      : undefined;
+   return variant;
 }
 
 function useCanonicalUrl(productList: ProductList): string {
@@ -119,11 +127,16 @@ function useShouldNoIndex(productList: ProductList): boolean {
       : productListExemptions?.root;
 
    const hasResults = pagination.nbHits >= (isNoIndexExempt ? 1 : 2);
+   const variant = useVariant();
+   const isMissingVariant = !variant;
+   const indexVariantsInsteadOfDevice =
+      productList.indexVariantsInsteadOfDevice && isMissingVariant;
 
    return (
       isFiltered ||
       !hasResults ||
       productList.forceNoindex ||
+      indexVariantsInsteadOfDevice ||
       !productList.isOnStrapi
    );
 }
