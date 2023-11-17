@@ -13,7 +13,8 @@
          "@templates/*": ["templates/*"],
          "@layouts/*": ["layouts/*"],
          "@public/*": ["public/*"],
-         "@pages/*": ["pages/*"]
+         "@pages/*": ["pages/*"],
+         "@seo/*": ["seo/*"]
       },
       "preserveSymlinks": true,
       "plugins": [
