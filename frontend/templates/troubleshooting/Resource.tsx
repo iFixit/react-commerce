@@ -9,6 +9,7 @@ import {
    HStack,
    Text,
    Box,
+   Flex,
    SystemProps,
    Button,
    ButtonProps,
@@ -122,6 +123,7 @@ function BuyButton({
          flexShrink={0}
          size={buttonSize}
          colorScheme={colorScheme}
+         marginLeft="auto"
          {...buttonStyling}
       >
          {buyButtonText}
@@ -199,63 +201,67 @@ function Resource({
                mr={2}
             />
          )}
-         <Stack
-            justify="flex-start"
-            align="flex-start"
-            spacing={spacing}
-            alignSelf="stretch"
-            flex="2"
-         >
-            <LinkOverlay
-               href={href}
-               lineHeight="1.07"
-               fontWeight="semibold"
-               fontSize="sm"
-               color="gray.900"
-               isExternal={openInNewTab}
+         <Flex flex="1" flexDirection={{ base: 'column', sm: 'row' }}>
+            <Stack
+               justify="flex-start"
+               align="flex-start"
+               spacing={spacing}
+               alignSelf="stretch"
+               flex="2"
             >
-               {title}
-            </LinkOverlay>
-            {children}
-            {(timeRequired || difficulty) && (
-               <Wrap spacing={1}>
-                  {timeRequired && (
-                     <Badge display="flex">
-                        <FaIcon icon={faClock} mr={1} color="gray.500" />
-                        {timeRequired}
-                     </Badge>
-                  )}
-                  {difficulty && (
-                     <Badge display="flex" colorScheme={themeColor}>
-                        <FaIcon
-                           icon={icon}
-                           mr={1}
-                           color={(iconColor as string) || `${themeColor}.500`}
-                        />
-                        {difficulty}
-                     </Badge>
-                  )}
-               </Wrap>
+               <LinkOverlay
+                  href={href}
+                  lineHeight="1.07"
+                  fontWeight="semibold"
+                  fontSize="sm"
+                  color="gray.900"
+                  isExternal={openInNewTab}
+               >
+                  {title}
+               </LinkOverlay>
+               {children}
+               {(timeRequired || difficulty) && (
+                  <Wrap spacing={1}>
+                     {timeRequired && (
+                        <Badge display="flex">
+                           <FaIcon icon={faClock} mr={1} color="gray.500" />
+                           {timeRequired}
+                        </Badge>
+                     )}
+                     {difficulty && (
+                        <Badge display="flex" colorScheme={themeColor}>
+                           <FaIcon
+                              icon={icon}
+                              mr={1}
+                              color={
+                                 (iconColor as string) || `${themeColor}.500`
+                              }
+                           />
+                           {difficulty}
+                        </Badge>
+                     )}
+                  </Wrap>
+               )}
+            </Stack>
+            {isMobile && showBuyButton && (
+               <BuyButton
+                  colorScheme="brand"
+                  buttonSize="xs"
+                  openInNewTab={false}
+                  url={href}
+                  buyButtonText="Buy"
+               />
             )}
-         </Stack>
-         {isMobile && showBuyButton && (
-            <BuyButton
-               colorScheme="brand"
-               buttonSize="xs"
-               openInNewTab={false}
-               url={href}
-               buyButtonText="Buy"
-            />
-         )}
-         {!isMobile && showBuyButton && (
-            <BuyButton
-               colorScheme="brand"
-               buttonSize="sm"
-               openInNewTab={openInNewTab}
-               url={href}
-               buyButtonText="Buy"
-            />
-         )}
+            {!isMobile && showBuyButton && (
+               <BuyButton
+                  colorScheme="brand"
+                  buttonSize="sm"
+                  openInNewTab={openInNewTab}
+                  url={href}
+                  buyButtonText="Buy"
+               />
+            )}
+         </Flex>
       </ResourceBox>
    );
 }
