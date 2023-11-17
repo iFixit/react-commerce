@@ -940,14 +940,14 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
             color="gray.500"
             alignSelf={{ base: 'start', sm: 'center' }}
          />
-         <Flex
+         <HStack
             align="center"
             flex="auto"
             justify="space-between"
             sx={{
                '@media (max-width: 375px)': {
                   flexDirection: 'column',
-                  gap: 1.5,
+                  spacing: '1.5',
                   alignItems: 'end',
                },
             }}
@@ -958,7 +958,7 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
             <Button href={answersUrl} as="a" colorScheme="brand" ml={3}>
                Browse our forum
             </Button>
-         </Flex>
+         </HStack>
       </Alert>
    );
 }
