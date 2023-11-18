@@ -108,9 +108,11 @@ function useCanonicalUrl(productList: ProductList): string {
    const itemTypeHandle = itemType
       ? `/${encodeURIComponent(stylizeDeviceItemType(itemType))}`
       : '';
+   const variant = useVariant();
 
    return `${appContext.ifixitOrigin}${productListPath(
-      productList
+      productList,
+      productList.indexVariantsInsteadOfDevice ? variant : undefined
    )}${itemTypeHandle}${page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''}`;
 }
 
