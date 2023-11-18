@@ -6,7 +6,10 @@ import { ProductList, ProductListType } from '@models/product-list';
 import type { IncomingHttpHeaders } from 'http';
 import { GetServerSidePropsContext } from 'next';
 import { getProductIdFromGlobalId } from './product-helpers';
-import { stylizeDeviceTitle } from './product-list-helpers';
+import {
+   stylizeDeviceItemType,
+   stylizeDeviceTitle,
+} from './product-list-helpers';
 
 export function productPath(handle: string) {
    return `/products/${handle}`;
@@ -19,6 +22,7 @@ type ProductListPathAttributes = Pick<
 
 export function productListPath(
    productList: ProductListPathAttributes,
+   itemType?: string,
    variant?: string | undefined
 ): string {
    switch (productList.type) {
@@ -33,7 +37,10 @@ export function productListPath(
          const deviceHandle = encodeURIComponent(
             stylizeDeviceTitle(productList.deviceTitle, variant)
          );
-         return `/Parts/${deviceHandle}`;
+         const itemTypeHandle =
+            itemType && encodeURIComponent(stylizeDeviceItemType(itemType));
+         const basePath = `/Parts/${deviceHandle}`;
+         return itemTypeHandle ? `${basePath}/${itemTypeHandle}` : basePath;
       }
       case ProductListType.AllTools: {
          return '/Tools';
