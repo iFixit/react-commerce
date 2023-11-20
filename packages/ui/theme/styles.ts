@@ -12,5 +12,8 @@ export const styles: ThemeOverride['styles'] = {
          backgroundColor: 'blueGray.50',
          fontSize: 'md', // set cascading font-size at body, leave html at 16px to preserve rem
       },
+      img: {
+         maxWidth: '100%', // Images won't overflow their container
+      },
    },
 };
