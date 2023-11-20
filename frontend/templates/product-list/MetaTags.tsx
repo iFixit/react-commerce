@@ -54,7 +54,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
                   rel="alternate"
                   key={`hreflang-${lang}`}
                   hrefLang={lang}
-                  href={url.toString()}
+                  href={url}
                />
             ))}
          <script {...structuredData} />
