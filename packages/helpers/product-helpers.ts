@@ -49,6 +49,16 @@ export function getEncodedVariantURI(variantId: string | number): string {
    return window.btoa(getProductVariantURI(variantId));
 }
 
+export function getDecodedVariantURI(variantId: string | number): string {
+   const uri = window.atob(getProductVariantURI(variantId));
+   if (!uri.startsWith('gid://')) {
+      throw new Error(
+         'Variant URI must be a global shopify product variant id uri'
+      );
+   }
+   return uri;
+}
+
 export function getVariantIdFromEncodedVariantURI(
    encodedShopifyVariantURI: string
 ): string {

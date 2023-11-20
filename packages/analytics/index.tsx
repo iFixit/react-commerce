@@ -70,13 +70,10 @@ export function convertCartLineItemsToAnalyticsItem(
    items: CartLineItem[]
 ): AnalyticsItem[] {
    return items.map((item) => {
-      const shopifyVariantId = item.shopifyVariantId.startsWith('gid://')
-         ? getVariantIdFromVariantURI(item.shopifyVariantId)
-         : getVariantIdFromEncodedVariantURI(item.shopifyVariantId);
       return {
          item_id: item.itemcode,
          item_name: `${item.name} - ${item.variantTitle}`,
-         item_variant: shopifyVariantId,
+         item_variant: getVariantIdFromVariantURI(item.shopifyVariantId),
          quantity: item.quantity,
          price: Number(item.price.amount),
       };
