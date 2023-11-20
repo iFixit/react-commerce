@@ -46,7 +46,16 @@ export function isLifetimeWarranty(
 }
 
 export function getEncodedVariantURI(variantId: string | number): string {
-   return window.btoa(getProductVariantURI(variantId));
+   return encodeVariantURI(getProductVariantURI(variantId));
+}
+
+export function encodeVariantURI(uri: string): string {
+   if (!uri.startsWith('gid://')) {
+      throw new Error(
+         'Variant URI must be a global shopify product variant id uri'
+      );
+   }
+   return window.btoa(uri);
 }
 
 export function getDecodedVariantURI(variantId: string | number): string {

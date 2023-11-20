@@ -10,11 +10,6 @@ import {
 } from '@chakra-ui/react';
 import { useAddToCart } from '@ifixit/cart-sdk';
 import { CrossSellProduct } from '@ifixit/cart-sdk/types';
-import { trackGA4AddToCart } from '@ifixit/analytics';
-import {
-   getDecodedVariantURI,
-   getVariantIdFromEncodedVariantURI,
-} from '@ifixit/helpers';
 import NextLink from 'next/link';
 import { useCallback } from 'react';
 import { ProductVariantPrice, useUserPrice } from '../../commerce';
@@ -40,7 +35,7 @@ export function CrossSellItem({ item, ...otherProps }: CrossSellItemProps) {
             name: item.name,
             variantTitle: 'New',
             itemcode: item.itemcode,
-            shopifyVariantId: getDecodedVariantURI(item.shopifyVariantId),
+            shopifyVariantId: item.shopifyVariantId,
             quantity: 1,
             imageSrc: item.imageSrc,
             price: userPrice.price,

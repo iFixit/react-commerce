@@ -73,7 +73,7 @@ export function convertCartLineItemsToAnalyticsItem(
       return {
          item_id: item.itemcode,
          item_name: `${item.name} - ${item.variantTitle}`,
-         item_variant: getVariantIdFromVariantURI(item.shopifyVariantId),
+         item_variant: getVariantIdFromEncodedVariantURI(item.shopifyVariantId),
          quantity: item.quantity,
          price: Number(item.price.amount),
       };

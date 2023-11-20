@@ -2,6 +2,7 @@ import { Alert, Box, Button } from '@chakra-ui/react';
 import { faExclamationCircle } from '@fortawesome/pro-solid-svg-icons';
 import { useAddToCart, useCartLineItem } from '@ifixit/cart-sdk';
 import { FaIcon } from '@ifixit/icons';
+import { encodeVariantURI } from '@ifixit/helpers';
 import { useCartDrawer, useIsScrolledPast, useUserPrice } from '@ifixit/ui';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import * as React from 'react';
@@ -149,7 +150,7 @@ function useOptimisticAddToCart(
             internalDisplayName:
                selectedVariant.internalDisplayName ?? undefined,
             itemcode: selectedVariant.sku,
-            shopifyVariantId: selectedVariant.id,
+            shopifyVariantId: encodeVariantURI(selectedVariant.id),
             quantity: 1,
             imageSrc: selectedVariant.image?.url || product.images[0]?.url,
             price: userPrice.price,
