@@ -21,7 +21,8 @@ type ProductListPathAttributes = Pick<
 
 export function productListPath(
    productList: ProductListPathAttributes,
-   itemType?: string
+   itemType?: string,
+   variant?: string | undefined
 ): string {
    switch (productList.type) {
       case ProductListType.AllParts: {
@@ -33,7 +34,7 @@ export function productListPath(
             'device product list does not have device title'
          );
          const deviceHandle = encodeURIComponent(
-            stylizeDeviceTitle(productList.deviceTitle)
+            stylizeDeviceTitle(productList.deviceTitle, variant)
          );
          const itemTypeHandle =
             itemType && encodeURIComponent(stylizeDeviceItemType(itemType));

@@ -54,7 +54,7 @@ export function MetaTags({ productList }: MetaTagsProps) {
                   rel="alternate"
                   key={`hreflang-${lang}`}
                   hrefLang={lang}
-                  href={url.toString()}
+                  href={url}
                />
             ))}
          <script {...structuredData} />
@@ -80,16 +80,33 @@ function useMetaTitle(productList: ProductList): string {
 }
 
 function useIsFilteredProductList(): boolean {
-   const currentRefinements = useCurrentRefinements();
+   const ignoredFilters = ['facet_tags.Item Type', 'worksin'];
 
-   const refinementAttributes = currentRefinements.items.map(
-      (item) => item.attribute
+   const filters = useFilters();
+   const isFiltered = Object.keys(filters).some(
+      (filter) => !ignoredFilters.includes(filter) && filters[filter].length > 0
    );
-   const isItemTypeFilter =
-      refinementAttributes.length === 1 &&
-      refinementAttributes[0] === 'facet_tags.Item Type';
+   return isFiltered;
+}
 
-   return currentRefinements.items.length > 0 && !isItemTypeFilter;
+function useFilters() {
+   const currentRefinements = useCurrentRefinements();
+   const filtersAndValues = currentRefinements.items.reduce((record, item) => {
+      record[item.attribute] = item.refinements.map(
+         (refinement) => refinement.value
+      );
+      return record;
+   }, {} as Record<string, (string | number)[]>);
+
+   return filtersAndValues;
+}
+
+function useVariant(): string | undefined {
+   const variantRefinements = useFilters()['worksin'];
+   const variant = variantRefinements
+      ? variantRefinements[0]?.toString()
+      : undefined;
+   return variant;
 }
 
 function useCanonicalUrl(
@@ -104,9 +121,12 @@ function useCanonicalUrl(
    const itemTypeHandle = itemType
       ? `/${encodeURIComponent(stylizeDeviceItemType(itemType))}`
       : '';
+   const variant = useVariant();
 
    return `${appContext.ifixitOrigin}${productListPath(
-      productList
+      productList,
+      undefined,
+      productList.indexVariantsInsteadOfDevice ? variant : undefined
    )}${itemTypeHandle}${page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''}`;
 }
 
@@ -125,11 +145,16 @@ function useShouldNoIndex(
       : productListExemptions?.root;
 
    const hasResults = pagination.nbHits >= (isNoIndexExempt ? 1 : 2);
+   const variant = useVariant();
+   const isMissingVariant = !variant;
+   const indexVariantsInsteadOfDevice =
+      productList.indexVariantsInsteadOfDevice && isMissingVariant;
 
    return (
       isFiltered ||
       !hasResults ||
       productList.forceNoindex ||
+      indexVariantsInsteadOfDevice ||
       !productList.isOnStrapi
    );
 }

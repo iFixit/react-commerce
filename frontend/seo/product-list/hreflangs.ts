@@ -3,13 +3,49 @@ import { ProductList } from '@models/product-list';
 
 type Collection = keyof typeof usHreflangsPaths;
 type Hreflangs = {
-   de: URL;
-   'en-au': URL;
-   'en-ca': URL;
-   'en-eu': URL;
-   'en-gb': URL;
-   'en-us': URL;
-   fr: URL;
+   en: string;
+   'x-default': string;
+   'en-au': string;
+   'en-nz': string;
+   'en-ca': string;
+   'de-at': string;
+   'de-be': string;
+   'de-ch': string;
+   'de-de': string;
+   'de-nl': string;
+   'fr-be': string;
+   'fr-ch': string;
+   'fr-fr': string;
+   'en-gb': string;
+   'en-at': string;
+   'en-ax': string;
+   'en-be': string;
+   'en-bg': string;
+   'en-ch': string;
+   'en-cz': string;
+   'en-de': string;
+   'en-dk': string;
+   'en-ee': string;
+   'en-es': string;
+   'en-fi': string;
+   'en-fr': string;
+   'en-gr': string;
+   'en-hr': string;
+   'en-hu': string;
+   'en-ie': string;
+   'en-it': string;
+   'en-lt': string;
+   'en-lu': string;
+   'en-lv': string;
+   'en-mt': string;
+   'en-nl': string;
+   'en-no': string;
+   'en-pl': string;
+   'en-pt': string;
+   'en-ro': string;
+   'en-se': string;
+   'en-si': string;
+   'en-sk': string;
 };
 
 const usHreflangsPaths = {
@@ -93,6 +129,14 @@ const auCaHreflangPaths: Partial<Record<Collection, string>> = {
    'apple-macbook-parts': 'mac-parts',
 };
 
+const deOrigin = 'https://store.ifixit.de';
+const auOrigin = 'https://australia.ifixit.com';
+const caOrigin = 'https://canada.ifixit.com';
+const euOrigin = 'https://eustore.ifixit.com';
+const ukOrigin = 'https://store.ifixit.co.uk';
+const usOrigin = 'https://www.ifixit.com';
+const frOrigin = 'https://store.ifixit.fr';
+
 const collections = Object.keys(
    usHreflangsPaths
 ) as unknown as Array<Collection>;
@@ -105,14 +149,64 @@ const hreflangs: CollectionHreflangs = collections.reduce(
       const auCaPath = `collections/${auCaCollection}`;
       const euPath = `collections/${euCollection}`;
       const usPath = usHreflangsPaths[collection];
+      const usUrl = new URL(usPath, usOrigin).toString();
+      const auUrl = new URL(auCaPath, auOrigin).toString();
+      const caUrl = new URL(auCaPath, caOrigin).toString();
+      const deUrl = new URL(euPath, deOrigin).toString();
+      const frUrl = new URL(euPath, frOrigin).toString();
+      const ukUrl = new URL(euPath, ukOrigin).toString();
+      const euUrl = new URL(euPath, euOrigin).toString();
       hreflangs[collection] = {
-         de: new URL(euPath, 'https://store.ifixit.de'),
-         'en-au': new URL(auCaPath, 'https://australia.ifixit.com'),
-         'en-ca': new URL(auCaPath, 'https://canada.ifixit.com'),
-         'en-eu': new URL(euPath, 'https://eustore.ifixit.com'),
-         'en-gb': new URL(euPath, 'https://store.ifixit.co.uk'),
-         'en-us': new URL(usPath, 'https://www.ifixit.com'),
-         fr: new URL(euPath, 'https://store.ifixit.fr'),
+         // us
+         en: usUrl,
+         'x-default': usUrl,
+         // au
+         'en-au': auUrl,
+         'en-nz': auUrl,
+         // ca
+         'en-ca': caUrl,
+         // de
+         'de-at': deUrl,
+         'de-be': deUrl,
+         'de-ch': deUrl,
+         'de-de': deUrl,
+         'de-nl': deUrl,
+         // fr
+         'fr-be': frUrl,
+         'fr-ch': frUrl,
+         'fr-fr': frUrl,
+         // uk
+         'en-gb': ukUrl,
+         // eu
+         'en-at': euUrl,
+         'en-ax': euUrl,
+         'en-be': euUrl,
+         'en-bg': euUrl,
+         'en-ch': euUrl,
+         'en-cz': euUrl,
+         'en-de': euUrl,
+         'en-dk': euUrl,
+         'en-ee': euUrl,
+         'en-es': euUrl,
+         'en-fi': euUrl,
+         'en-fr': euUrl,
+         'en-gr': euUrl,
+         'en-hr': euUrl,
+         'en-hu': euUrl,
+         'en-ie': euUrl,
+         'en-it': euUrl,
+         'en-lt': euUrl,
+         'en-lu': euUrl,
+         'en-lv': euUrl,
+         'en-mt': euUrl,
+         'en-nl': euUrl,
+         'en-no': euUrl,
+         'en-pl': euUrl,
+         'en-pt': euUrl,
+         'en-ro': euUrl,
+         'en-se': euUrl,
+         'en-si': euUrl,
+         'en-sk': euUrl,
       };
       return hreflangs;
    },
