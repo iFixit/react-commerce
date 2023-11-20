@@ -19,7 +19,7 @@ export const NavigationMenu = forwardRef<BoxProps, 'nav'>(
             display={{ base: 'none', lg: 'block' }}
             {...otherProps}
          >
-            <Flex as="ul" role="menubar" h="full" position="relative">
+            <Flex as="ul" role="menubar" h="full" position="relative" m="0">
                {children}
             </Flex>
          </Box>
@@ -92,7 +92,6 @@ export const NavigationSubmenu = forwardRef<FlexProps, 'ul'>(
             transform="translateY(100%)"
             display="none"
             bg="gray.800"
-            margin="0"
             {...otherProps}
          >
             {children}
