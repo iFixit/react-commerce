@@ -28,6 +28,7 @@ export function CartDrawerTrigger({
                bg: 'gray.900',
             }}
             data-testid="cart-drawer-open"
+            border="0"
          />
          {hasItemsInCart && (
             <BlueDot position="absolute" top="-2px" right="3px" />
