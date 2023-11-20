@@ -39,6 +39,7 @@
       "@ifixit/breadcrumbs": "workspace:*",
       "@ifixit/cart-sdk": "workspace:*",
       "@ifixit/eslint-plugin": "workspace:^",
+      "@ifixit/react-feature-flags": "workspace:*",
       "@ifixit/footer": "workspace:*",
       "@ifixit/helpers": "workspace:*",
       "@ifixit/icons": "workspace:*",

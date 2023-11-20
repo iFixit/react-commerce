@@ -3,21 +3,13 @@ import {
    AlertIcon,
    Avatar,
    Box,
-   BoxProps,
    Button,
    Flex,
-   FlexProps,
    HStack,
    Heading,
    HeadingProps,
-   IconButton,
    Image,
    Link,
-   LinkProps,
-   Menu,
-   MenuButton,
-   MenuItem,
-   MenuList,
    Modal,
    ModalBody,
    ModalCloseButton,
@@ -38,25 +30,18 @@ import { PixelPing } from '@components/analytics/PixelPing';
 import { PrerenderedHTML } from '@components/common';
 import { ViewStats } from '@components/common/ViewStats';
 import { IntlDate } from '@components/ui/IntlDate';
-import {
-   faAngleDown,
-   faCircleNodes,
-   faClockRotateLeft,
-   faList,
-   faPenToSquare,
-} from '@fortawesome/pro-solid-svg-icons';
-import { BreadCrumbs } from '@ifixit/breadcrumbs';
+import { faCircleNodes, faList } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
 import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
 import { useRef } from 'react';
+import { useFlag } from '@ifixit/react-feature-flags';
 import ProblemCard from './Problem';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
 import { GoogleNoScript, TagManager } from './components/TagManager';
 import type {
    Author,
-   BreadcrumbEntry,
    Problem,
    Section,
    TroubleshootingData,
@@ -68,6 +53,8 @@ import {
    TOCContextProvider,
    useTOCBufferPxScrollOnClick,
 } from './tocContext';
+import { uniqBy } from 'lodash';
+import { NavBar } from './components/NavBar';
 
 const RelatedProblemsRecord = {
    title: 'Related Problems',
@@ -109,6 +96,13 @@ const Wiki: NextPageWithLayout<{
 
    const contentContainerRef = useRef<HTMLDivElement>(null);
 
+   const tocWidth = '220px';
+
+   const relatedProblemsFlag = useFlag('extended-related-problems');
+   const RelatedProblemsComponent = relatedProblemsFlag
+      ? RelatedProblemsV2
+      : RelatedProblems;
+
    return (
       <>
          <GoogleNoScript />
@@ -135,8 +129,8 @@ const Wiki: NextPageWithLayout<{
                display="grid"
                sx={{
                   gridTemplateColumns: {
-                     base: '[toc] 0 [wrapper] 1fr',
-                     lg: '[toc] 220px [wrapper] 1fr',
+                     base: `[toc] 0 [wrapper] 1fr`,
+                     lg: `[toc] ${tocWidth} [wrapper] 1fr`,
                   },
                }}
                ref={contentContainerRef}
@@ -164,6 +158,14 @@ const Wiki: NextPageWithLayout<{
                   marginInline={{ sm: 'auto' }}
                   spacing={{ base: 4, lg: 12 }}
                   flexWrap={{ base: 'wrap', xl: 'nowrap' }}
+                  sx={{
+                     '@media (min-width: 1340px) and (max-width: 1719px)': {
+                        marginLeft: '0',
+                     },
+                     '@media (min-width: 1720px)': {
+                        transform: `translateX(calc(${tocWidth} / -2))`,
+                     },
+                  }}
                >
                   <Stack id="main" spacing={4}>
                      <TroubleshootingHeading wikiData={wikiData} />
@@ -189,7 +191,7 @@ const Wiki: NextPageWithLayout<{
                      <Conclusion conclusion={filteredConclusions} />
                      <AnswersCTA answersUrl={wikiData.answersUrl} />
                   </Stack>
-                  <RelatedProblems
+                  <RelatedProblemsComponent
                      hasRelatedPages={hasRelatedPages}
                      wikiData={wikiData}
                   />
@@ -412,266 +414,6 @@ function CausesRelatedProblem() {
             <Box as="span">Related Problems</Box>
          </Link>
       </Stack>
-   );
-}
-
-function NavBar({
-   editUrl,
-   historyUrl,
-   deviceGuideUrl,
-   devicePartsUrl,
-   breadcrumbs,
-}: {
-   editUrl: string;
-   historyUrl: string;
-   breadcrumbs: BreadcrumbEntry[];
-} & NavTabsProps) {
-   const bc = breadcrumbs.map((breadcrumb) => ({
-      label: breadcrumb.title,
-      url: breadcrumb.url,
-   }));
-   const padding = { base: '16px', sm: '32px' };
-   const breadcrumbMinHeight = '48px';
-   return (
-      <Flex
-         w="100%"
-         backgroundColor="white"
-         borderBottomColor="gray.200"
-         borderBottomWidth={{ base: '0', sm: '1px' }}
-         justify="center"
-         minHeight={breadcrumbMinHeight}
-      >
-         <Flex
-            className="NavBar"
-            maxW="1280px"
-            width="100%"
-            flexDirection={{ base: 'column-reverse', sm: 'row' }}
-            justify="stretch"
-         >
-            <BreadCrumbs
-               breadCrumbs={bc.slice(0, -1)}
-               paddingInline={padding}
-               minHeight={breadcrumbMinHeight}
-               borderTop={{ base: '1px', sm: '0' }}
-               borderTopColor="gray.200"
-               bgColor={{ base: 'blueGray.50', sm: 'transparent' }}
-               fontSize={{ base: '13px', md: '14px' }}
-            />
-            <Flex flexShrink="1" fontSize="14px">
-               <Box
-                  sx={{
-                     '::before, ::after': {
-                        minWidth: padding,
-                        display: { base: 'default', sm: 'none' },
-                        position: 'absolute',
-                        top: '0',
-                        content: '""',
-                        height: '100%',
-                        zIndex: '1',
-                        isolation: 'isolate',
-                     },
-                     '::before': {
-                        left: '0',
-                        background:
-                           'linear-gradient(to right, #fff 60%, rgba(255, 255, 255, 0))',
-                     },
-                     '::after': {
-                        right: '0',
-                        background:
-                           'linear-gradient(to left, #fff 60%, rgba(255, 255, 255, 0))',
-                     },
-                  }}
-                  position="relative"
-                  flex="1 2"
-                  overflowX="auto"
-               >
-                  <NavTabs
-                     overflowX="auto"
-                     flexGrow="1"
-                     paddingInline={{ base: 0, sm: 2 }}
-                     deviceGuideUrl={deviceGuideUrl}
-                     devicePartsUrl={devicePartsUrl}
-                  />
-               </Box>
-               <EditButton editUrl={editUrl} />
-               <ActionsMenu historyUrl={historyUrl} />
-            </Flex>
-         </Flex>
-      </Flex>
-   );
-}
-
-function EditButton({ editUrl }: { editUrl: string }) {
-   return (
-      <Button
-         leftIcon={<FaIcon icon={faPenToSquare} />}
-         variant="link"
-         as={Link}
-         bgColor="transparent"
-         textColor="brand"
-         borderLeftColor="gray.200"
-         borderLeftWidth="1px"
-         borderRightColor="gray.200"
-         borderRightWidth="1px"
-         borderRadius="0px"
-         py="9px"
-         px={4}
-         fontFamily="heading"
-         lineHeight="1.29"
-         fontWeight="semibold"
-         fontSize="sm"
-         color="brand.500"
-         textAlign="center"
-         href={editUrl}
-         minW="fit-content"
-      >
-         Edit
-      </Button>
-   );
-}
-
-function ActionsMenu({ historyUrl }: { historyUrl: string }) {
-   return (
-      <Menu>
-         {({ isOpen }) => {
-            return (
-               <>
-                  <MenuButton
-                     as={IconButton}
-                     aria-label="Options"
-                     icon={
-                        <FaIcon
-                           color={isOpen ? 'brand.500' : 'gray.500'}
-                           icon={faAngleDown}
-                        />
-                     }
-                     variant="link"
-                     borderRightColor="gray.200"
-                     borderRightWidth={1}
-                     borderRightRadius={0}
-                  />
-                  <MenuList>
-                     <MenuItem
-                        as={Link}
-                        _hover={{ textDecoration: 'none' }}
-                        href={historyUrl}
-                        icon={<FaIcon icon={faClockRotateLeft} />}
-                     >
-                        History
-                     </MenuItem>
-                  </MenuList>
-               </>
-            );
-         }}
-      </Menu>
-   );
-}
-
-type NavTabsProps = {
-   deviceGuideUrl?: string;
-   devicePartsUrl?: string;
-};
-
-function NavTabs({
-   devicePartsUrl,
-   deviceGuideUrl,
-   ...props
-}: NavTabsProps & FlexProps) {
-   // The type here works because all the styles we want to use are available on
-   // both Box and Link
-   const baseStyleProps: BoxProps & LinkProps = {
-      outline: '2px solid transparent',
-      outlineOffset: '2px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingTop: 2,
-      paddingBottom: 2,
-      paddingInlineStart: 4,
-      paddingInlineEnd: 4,
-      position: 'relative',
-   };
-
-   const bottomFeedbackStyleProps = {
-      content: '""',
-      position: 'absolute',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      height: '3px',
-      borderRadius: '2px 2px 0px 0px',
-   };
-
-   const selectedStyleProps = {
-      ...baseStyleProps,
-      borderColor: 'blue.500',
-      color: 'gray.900',
-      fontWeight: 'medium',
-      _visited: {
-         color: 'gray.900',
-      },
-      _hover: {
-         textDecoration: 'none',
-         background: 'gray.100',
-         '::after': {
-            background: 'blue.700',
-         },
-      },
-      _after: {
-         ...bottomFeedbackStyleProps,
-         background: 'blue.500',
-      },
-   };
-
-   const notSelectedStyleProps = {
-      ...baseStyleProps,
-      borderColor: 'transparent',
-      color: 'gray.500',
-      fontWeight: 'normal',
-      _hover: {
-         textDecoration: 'none',
-      },
-      _visited: {
-         color: 'gray.500',
-      },
-      sx: {
-         '&:hover:not(.isDisabled)': {
-            color: 'gray.700',
-            background: 'gray.100',
-         },
-         '&.isDisabled': {
-            opacity: 0.4,
-            cursor: 'not-allowed',
-            color: 'gray.700',
-            background: 'gray.100',
-         },
-      },
-   };
-
-   return (
-      <Flex {...props} gap={1.5} height="100%">
-         {devicePartsUrl ? (
-            <Link {...notSelectedStyleProps} href={devicePartsUrl}>
-               Parts
-            </Link>
-         ) : (
-            <Box className="isDisabled" {...notSelectedStyleProps}>
-               Parts
-            </Box>
-         )}
-
-         {deviceGuideUrl ? (
-            <Link {...notSelectedStyleProps} href={deviceGuideUrl}>
-               Guides
-            </Link>
-         ) : (
-            <Box className="isDisabled" {...notSelectedStyleProps}>
-               Guides
-            </Box>
-         )}
-
-         <Box {...selectedStyleProps}>Answers</Box>
-      </Flex>
    );
 }
 
@@ -947,28 +689,77 @@ function RelatedProblems({
    );
 
    return (
-      <>
-         <Stack
-            id={RelatedProblemsRecord.uniqueId}
-            ref={ref}
-            className="sidebar"
-            spacing={{ base: 4, xl: 6 }}
-            width={{ base: '100%' }}
-            alignSelf="start"
-            fontSize="14px"
-            flex={{ xl: '1 0 320px' }}
-            mt={{ base: 3, md: 0 }}
-         >
-            <DeviceCard
-               imageUrl={imageUrl}
-               displayTitle={displayTitle}
-               description={description}
-               countOfAssociatedProblems={countOfAssociatedProblems}
-               deviceGuideUrl={deviceGuideUrl}
-            />
-            {hasRelatedPages && <LinkedProblems problems={linkedProblems} />}
-         </Stack>
-      </>
+      <Stack
+         id={RelatedProblemsRecord.uniqueId}
+         ref={ref}
+         className="sidebar"
+         spacing={{ base: 4, xl: 6 }}
+         width={{ base: '100%' }}
+         alignSelf="start"
+         fontSize="14px"
+         flex={{ xl: '1 0 320px' }}
+         mt={{ base: 3, md: 0 }}
+      >
+         <DeviceCard
+            imageUrl={imageUrl}
+            displayTitle={displayTitle}
+            description={description}
+            countOfAssociatedProblems={countOfAssociatedProblems}
+            deviceGuideUrl={deviceGuideUrl}
+         />
+         {hasRelatedPages && <LinkedProblems problems={linkedProblems} />}
+      </Stack>
+   );
+}
+
+function RelatedProblemsV2({
+   wikiData,
+   hasRelatedPages,
+}: {
+   wikiData: TroubleshootingData;
+   hasRelatedPages?: boolean;
+}) {
+   const {
+      linkedProblems,
+      relatedProblems,
+      deviceGuideUrl,
+      countOfAssociatedProblems,
+   } = wikiData;
+   const { displayTitle, imageUrl, description } = wikiData.category;
+
+   const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
+   const { ref } = LinkToTOC<HTMLHeadingElement>(
+      RelatedProblemsRecord.uniqueId,
+      bufferPx
+   );
+   const problems = linkedProblems.concat(relatedProblems);
+   // We don't want to omit any linked problems, but we also don't want to add
+   // an unlimited number of additional problems from the device.
+   const maxProblems = Math.max(6, linkedProblems.length);
+   const uniqProblems = uniqBy(problems, 'title').slice(0, maxProblems);
+
+   return (
+      <Stack
+         id={RelatedProblemsRecord.uniqueId}
+         ref={ref}
+         data-test="related-problems-v2"
+         className="sidebar"
+         spacing={{ base: 4, xl: 6 }}
+         width={{ base: '100%' }}
+         alignSelf="start"
+         fontSize="14px"
+         flex={{ xl: '1 0 320px' }}
+         mt={{ base: 3, md: 0 }}
+      >
+         <DeviceCard
+            imageUrl={imageUrl}
+            displayTitle={displayTitle}
+            description={description}
+            countOfAssociatedProblems={countOfAssociatedProblems}
+            deviceGuideUrl={deviceGuideUrl}
+         />
+         {hasRelatedPages && <LinkedProblems problems={uniqProblems} />}
+      </Stack>
    );
 }
 
@@ -1012,9 +803,9 @@ function DeviceCard({
                   <Box fontWeight="semibold" my="auto">
                      {displayTitle}
                   </Box>
-                  <Box display={{ base: 'none', sm: '-webkit-box' }} mt={3}>
+                  <Box display={{ base: 'none', sm: '-webkit-box' }} mt={1}>
                      <PrerenderedHTML
-                        noOfLines={3}
+                        noOfLines={4}
                         template="troubleshooting"
                         html={description}
                      />
@@ -1033,8 +824,8 @@ function DeviceCard({
                >
                   <Text>
                      {countOfAssociatedProblems === 1
-                        ? '1 Problem'
-                        : countOfAssociatedProblems + ' Problems'}
+                        ? '1 common problem'
+                        : countOfAssociatedProblems + ' common problems'}
                   </Text>
                   <Link href={deviceGuideUrl} textColor="brand.500">
                      {countOfAssociatedProblems === 1

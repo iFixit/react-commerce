@@ -2,6 +2,8 @@ import * as Sentry from '@sentry/nextjs';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
 import { GetServerSidePropsContext } from 'next';
 import { Scope } from '@sentry/nextjs';
+import { SentryErrorIntegration as Integration } from './SentryErrorIntegration';
+export { Integration as SentryErrorIntegration };
 
 type Fetcher = typeof fetch;
 
@@ -85,22 +87,6 @@ export class SentryError extends Error {
    constructor(message: string, readonly sentryDetails: SentryDetails = {}) {
       super(message);
    }
-}
-
-export function injectSentryErrorHandler() {
-   Sentry.addGlobalEventProcessor((event, hint) => {
-      const exception = hint.originalException;
-
-      if (exception instanceof SentryError) {
-         const currentScope = Sentry.getCurrentHub().getScope();
-         const newScope = Scope.clone(currentScope);
-
-         newScope.update(exception.sentryDetails);
-         newScope.applyToEvent(event, hint);
-      }
-
-      return event;
-   });
 }
 
 export function captureException(e: any, sentryDetails: SentryDetails) {

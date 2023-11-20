@@ -1,11 +1,14 @@
 import { IFIXIT_ORIGIN } from '@config/env';
-import { getProductIdFromProductUrl, invariant } from '@ifixit/helpers';
+import { getProductIdFromGlobalId, invariant } from '@ifixit/helpers';
 import { SentryError } from '@ifixit/sentry';
 import type { Product } from '@models/product';
 import { ProductList, ProductListType } from '@models/product-list';
 import type { IncomingHttpHeaders } from 'http';
 import { GetServerSidePropsContext } from 'next';
-import { stylizeDeviceTitle } from './product-list-helpers';
+import {
+   stylizeDeviceItemType,
+   stylizeDeviceTitle,
+} from './product-list-helpers';
 
 export function productPath(handle: string) {
    return `/products/${handle}`;
@@ -17,7 +20,8 @@ type ProductListPathAttributes = Pick<
 >;
 
 export function productListPath(
-   productList: ProductListPathAttributes
+   productList: ProductListPathAttributes,
+   itemType?: string
 ): string {
    switch (productList.type) {
       case ProductListType.AllParts: {
@@ -31,7 +35,10 @@ export function productListPath(
          const deviceHandle = encodeURIComponent(
             stylizeDeviceTitle(productList.deviceTitle)
          );
-         return `/Parts/${deviceHandle}`;
+         const itemTypeHandle =
+            itemType && encodeURIComponent(stylizeDeviceItemType(itemType));
+         const basePath = `/Parts/${deviceHandle}`;
+         return itemTypeHandle ? `${basePath}/${itemTypeHandle}` : basePath;
       }
       case ProductListType.AllTools: {
          return '/Tools';
@@ -101,7 +108,7 @@ export function shopifyStoreAdminProductUrl({
    product,
    storeCode,
 }: ShopifyAdminProductUrlProps) {
-   const adminProductId = getProductIdFromProductUrl(product.id);
+   const adminProductId = getProductIdFromGlobalId(product.id);
    return `${shopifyStoreAdminUrl({ storeCode })}/products/${adminProductId}`;
 }
 

@@ -1,4 +1,4 @@
-import { injectSentryErrorHandler } from './../packages/sentry/index';
+import { SentryErrorIntegration } from './../packages/sentry/index';
 import { SENTRY_SAMPLING_ENABLED, VERCEL_ENV } from '@config/env';
 import { isCurrentProductionDeployment } from '@helpers/vercel-helpers';
 import * as Sentry from '@sentry/nextjs';
@@ -30,7 +30,6 @@ Sentry.init({
          'next.runtime': 'edge',
       },
    },
+   integrations: [new SentryErrorIntegration()],
    sampleRate,
 });
-
-injectSentryErrorHandler();

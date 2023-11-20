@@ -1,14 +1,15 @@
+import type { Strapi } from '@strapi/strapi';
 import { chunk } from 'lodash';
 import { MediaItem } from './types';
 
 type ConstructorArgs = {
-   strapi: Strapi.Strapi;
+   strapi: Strapi;
 };
 
 const FILES_TABLE_NAME = 'files';
 
 export class MediaRepository {
-   private strapi: Strapi.Strapi;
+   private strapi: Strapi;
    private mediaById: Record<string, MediaItem> = {};
 
    constructor({ strapi }: ConstructorArgs) {
