@@ -21,6 +21,7 @@ export function useItemTypeProductList(productList: ProductList) {
    if (!hasItemTypeOverrides) {
       return {
          ...productList,
+         h1: getDefaultH1Override(productList, selectedItemType),
          title: getDefaultTitleOverride(productList, selectedItemType),
       };
    }
@@ -66,7 +67,7 @@ export function useItemTypeProductList(productList: ProductList) {
          overrideTitle ??
          getDefaultTitleOverride(productList, selectedItemType),
       metaTitle: overrideMetaTitle ?? productList.metaTitle,
-      h1: overrideTitle ?? productList.h1,
+      h1: overrideTitle ?? getDefaultH1Override(productList, selectedItemType),
       description: overrideDescription,
       metaDescription: overrideMetaDescription,
       tagline: overrideTagline,
@@ -94,4 +95,13 @@ function getDefaultTitleOverride(
       return productList.title;
 
    return `${productList.title.replace(/parts$/i, '').trim()} ${itemType}`;
+}
+
+function getDefaultH1Override(
+   productList: ProductList,
+   itemType: string
+): string | null {
+   if (!productList.h1) return null;
+   if (productList.type !== ProductListType.DeviceParts) return productList.h1;
+   return `${productList.h1.replace(/parts$/i, '').trim()} ${itemType}`;
 }
