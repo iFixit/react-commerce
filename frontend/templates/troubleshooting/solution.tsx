@@ -24,6 +24,7 @@ import {
 } from './Resource';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
 import { LinkToTOC, useTOCBufferPxScrollOnClick } from './tocContext';
+import { useFlag } from '@ifixit/react-feature-flags';
 
 function SolutionHeader({
    index,
@@ -113,7 +114,11 @@ export default function SolutionCard({
 }) {
    const bufferPx = useBreakpointValue({ base: -46, lg: -6 });
    const { ref } = LinkToTOC<HTMLDivElement>(solution.id, bufferPx);
-   solution.partCollections = [];
+   const partCollectionLinkCardFlag = useFlag('part-collection-linkcards');
+
+   solution.partCollections = partCollectionLinkCardFlag
+      ? solution.partCollections
+      : [];
 
    return (
       <Box
