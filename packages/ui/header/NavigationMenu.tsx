@@ -64,6 +64,8 @@ export const NavigationMenuButton = forwardRef<FlexProps, 'button'>(
             fontSize="sm"
             fontWeight="semibold"
             borderRadius="md"
+            border="0"
+            color="white"
             _focus={{
                boxShadow: 'outline',
                outline: 'none',
@@ -90,6 +92,7 @@ export const NavigationSubmenu = forwardRef<FlexProps, 'ul'>(
             transform="translateY(100%)"
             display="none"
             bg="gray.800"
+            margin="0"
             {...otherProps}
          >
             {children}
