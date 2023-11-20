@@ -1,3 +1,4 @@
+import type { Schema, Strapi } from '@strapi/strapi';
 import {
    forEach,
    isPlainObject,
@@ -9,7 +10,6 @@ import {
 // @ts-ignore
 import fetch from 'node-fetch';
 import qs from 'qs';
-import type { ContentTypeSchema } from '../content-types';
 import { ContentTypeNotFoundError } from './errors/ContentTypeNotFoundError';
 import {
    ContentTypeItem,
@@ -28,8 +28,8 @@ type FetchArgs = {
 };
 
 export abstract class ContentTypeRepository {
-   protected strapi!: Strapi.Strapi;
-   protected schema!: ContentTypeSchema;
+   protected strapi!: Strapi;
+   protected schema!: Schema.ContentType;
 
    abstract import(args: LoadArgs): Promise<void>;
 
@@ -60,7 +60,7 @@ export abstract class ContentTypeRepository {
    }
 
    protected get query() {
-      return this.strapi.db.query(this.schema.uid);
+      return this.strapi.db!.query(this.schema.uid);
    }
 
    protected async fetch<T = any>({
@@ -180,6 +180,7 @@ export abstract class ContentTypeRepository {
          (value) => {
             if (value.type === 'relation') {
                // We only need one side of the relation to be populated.
+               // @ts-ignore
                return value.inversedBy != null;
             }
             return (

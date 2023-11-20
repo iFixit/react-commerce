@@ -171,13 +171,13 @@ function LinkCards({
          {uniqueGuides.map((guide: SectionGuide) => (
             <GuideResource key={guide.guideid} guide={guide} />
          ))}
-         {products.map((product: SectionProduct, index) => (
-            <ProductResource key={index} product={product} />
+         {products.map((product: SectionProduct, productsIndex) => (
+            <ProductResource key={productsIndex} product={product} />
          ))}
          {partCollections.map(
-            (partCollection: SectionPartCollection, index) => (
+            (partCollection: SectionPartCollection, partCollectionsIndex) => (
                <PartCollectionResource
-                  key={index}
+                  key={partCollectionsIndex}
                   partCollection={partCollection}
                />
             )

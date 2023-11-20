@@ -1,5 +1,4 @@
-import '@strapi/strapi';
-import type { ContentTypeSchema } from '../content-types';
+import type { Common, Strapi } from '@strapi/strapi';
 import { downloadBackup } from './backup/download';
 import { exportBackup } from './backup/export';
 import { importBackup } from './backup/import';
@@ -26,7 +25,7 @@ type ImportContentTypesOptions = {
    canDeleteExistingContent?: boolean;
 };
 
-export default ({ strapi }: { strapi: Strapi.Strapi }) => ({
+export default ({ strapi }: { strapi: Strapi }) => ({
    exportBackup,
    downloadBackup,
    importBackup,
@@ -35,12 +34,14 @@ export default ({ strapi }: { strapi: Strapi.Strapi }) => ({
       canDeleteExistingContent = false,
    }: ImportContentTypesOptions): Promise<SeedResult> {
       const mediaRepo = new MediaRepository({ strapi });
-      const allTypeUIDs = Object.keys(strapi.contentTypes);
+      const allTypeUIDs: Common.UID.ContentType[] = Object.keys(
+         strapi.contentTypes
+      ) as any;
       const apiTypeUIDs = allTypeUIDs.filter((type) =>
          type.startsWith('api::')
       );
       const repos = apiTypeUIDs.map((uid) => {
-         const schema: ContentTypeSchema = strapi.contentType(uid);
+         const schema = strapi.contentType(uid);
          switch (schema.kind) {
             case 'collectionType': {
                return new CollectionTypeRepository({
@@ -114,20 +115,20 @@ export default ({ strapi }: { strapi: Strapi.Strapi }) => ({
          isActive: true,
       };
       //Check if any account exists.
-      const admins = await strapi.db.query('admin::user').findMany({});
+      const admins = await strapi.db!.query('admin::user').findMany({});
 
       if (admins.length > 0) {
          strapi.log.info('👤 Admin user already exists');
       } else {
          try {
             let tempPass = data.password;
-            let superAdminRole = await strapi.db.query('admin::role').findOne({
+            let superAdminRole = await strapi.db!.query('admin::role').findOne({
                where: {
                   code: 'strapi-super-admin',
                },
             });
             if (!superAdminRole) {
-               superAdminRole = await strapi.db.query('admin::role').create({
+               superAdminRole = await strapi.db!.query('admin::role').create({
                   data: {
                      name: 'Super Admin',
                      code: 'strapi-super-admin',

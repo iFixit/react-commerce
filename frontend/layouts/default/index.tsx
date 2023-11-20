@@ -80,6 +80,7 @@ import type { DefaultLayoutProps } from './server';
 
 const DefaultLayoutComponent = function ({
    title,
+   includeTitle = true,
    stores,
    currentStore,
    shopifyCredentials,
@@ -103,7 +104,9 @@ const DefaultLayoutComponent = function ({
          >
             <Box>
                <Head>
-                  <title key="title">{title || 'iFixit'}</title>
+                  {includeTitle && (
+                     <title key="title">{title || 'iFixit'}</title>
+                  )}
                   <link
                      rel="apple-touch-icon"
                      sizes="57x57"

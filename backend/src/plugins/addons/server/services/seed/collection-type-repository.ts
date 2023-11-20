@@ -1,3 +1,4 @@
+import type { Common, Strapi } from '@strapi/strapi';
 import { chunk } from 'lodash';
 import { ContentTypeRepository, LoadArgs } from './content-type-repository';
 import { ContentTypeNotFoundError } from './errors/ContentTypeNotFoundError';
@@ -7,8 +8,8 @@ const PAGE_SIZE = 100;
 const MAX_ITEMS_COUNT = 10000;
 
 type ConstructorArgs = {
-   strapi: Strapi.Strapi;
-   uid: string;
+   strapi: Strapi;
+   uid: Common.UID.ContentType;
 };
 
 export class CollectionTypeRepository extends ContentTypeRepository {
@@ -75,9 +76,13 @@ export class CollectionTypeRepository extends ContentTypeRepository {
          const nestedAttributes = this.keepNestedAttributes(attributes);
 
          try {
-            await this.strapi.entityService.update(this.schema.uid as any, id, {
-               data: nestedAttributes,
-            });
+            await this.strapi.entityService!.update(
+               this.schema.uid as any,
+               id,
+               {
+                  data: nestedAttributes,
+               }
+            );
          } catch (error) {
             strapi.log.error(
                'Ops! Something went wrong while adding nested fields to item!'

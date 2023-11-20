@@ -77,8 +77,6 @@ export function PartCollectionResource({
 }) {
    const { title, url, description, imageUrl } = partCollection;
 
-   console.log('rendering part collection: ' + partCollection);
-
    return (
       <Resource
          href={url}
@@ -232,6 +230,7 @@ function Resource({
                outlineColor="gray.300"
             >
                {showStackedImages && (
+                  // Renders an empty box to fake the stacked image effect
                   <Box
                      width="100%"
                      height="100%"
