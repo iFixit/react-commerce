@@ -68,9 +68,11 @@ export function ProductListChildrenSection({
                         <ProductListCard
                            as="a"
                            href={productListPath({
-                              deviceTitle: child.deviceTitle,
-                              handle: child.handle,
-                              type: child.type,
+                              productList: {
+                                 deviceTitle: child.deviceTitle,
+                                 handle: child.handle,
+                                 type: child.type,
+                              },
                            })}
                            productList={{
                               title: child.title,

@@ -157,7 +157,7 @@ function FeaturedCategories({ categories }: FeaturedCategoriesProps) {
                   }}
                >
                   <NextLink
-                     href={productListPath(category)}
+                     href={productListPath({ productList: category })}
                      passHref
                      legacyBehavior
                   >

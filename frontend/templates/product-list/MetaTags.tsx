@@ -123,11 +123,13 @@ function useCanonicalUrl(
       : '';
    const variant = useVariant();
 
-   return `${appContext.ifixitOrigin}${productListPath(
+   return `${appContext.ifixitOrigin}${productListPath({
       productList,
-      undefined,
-      productList.indexVariantsInsteadOfDevice ? variant : undefined
-   )}${itemTypeHandle}${page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''}`;
+      itemType: undefined,
+      variant: productList.indexVariantsInsteadOfDevice ? variant : undefined,
+   })}${itemTypeHandle}${
+      page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''
+   }`;
 }
 
 function useShouldNoIndex(

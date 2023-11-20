@@ -221,10 +221,10 @@ export function useHreflangs(
    productList: ProductList,
    itemType: string | null
 ): Hreflangs | null {
-   const path = productListPath(productList, itemType ?? undefined).replace(
-      /^\//,
-      ''
-   );
+   const path = productListPath({
+      productList,
+      itemType: itemType ?? undefined,
+   }).replace(/^\//, '');
    const collection = pathToCollection[path] ?? null;
    return collection ? hreflangs[collection] : null;
 }

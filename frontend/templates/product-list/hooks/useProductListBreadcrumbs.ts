@@ -16,7 +16,7 @@ export function useProductListBreadcrumbs(
    productList.ancestors.forEach((ancestor) => {
       breadcrumbs.push({
          label: ancestor.title,
-         url: productListPath(ancestor),
+         url: productListPath({ productList: ancestor }),
       });
    });
 
@@ -27,7 +27,7 @@ export function useProductListBreadcrumbs(
    if (productList.type === ProductListType.DeviceParts && itemType) {
       breadcrumbs.push({
          label: productList.title,
-         url: productListPath(productList),
+         url: productListPath({ productList }),
       });
       breadcrumbs.push({
          label: itemType,
