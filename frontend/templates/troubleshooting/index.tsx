@@ -97,6 +97,7 @@ const Wiki: NextPageWithLayout<{
    const contentContainerRef = useRef<HTMLDivElement>(null);
 
    const tocWidth = '220px';
+   const sidebarWidth = '320px';
 
    const relatedProblemsFlag = useFlag('extended-related-problems');
    const RelatedProblemsComponent = relatedProblemsFlag
@@ -144,7 +145,7 @@ const Wiki: NextPageWithLayout<{
                   listItemProps={{ paddingLeft: { lg: 4 } }}
                   gridArea="toc"
                />
-               <Stack
+               <Flex
                   className="wrapper"
                   gridArea="wrapper"
                   display={{ base: 'block', sm: 'flex' }}
@@ -156,7 +157,6 @@ const Wiki: NextPageWithLayout<{
                   paddingBottom={8}
                   minW={0}
                   marginInline={{ sm: 'auto' }}
-                  spacing={{ base: 4, lg: 12 }}
                   flexWrap={{ base: 'wrap', xl: 'nowrap' }}
                   sx={{
                      '@media (min-width: 1340px) and (max-width: 1719px)': {
@@ -167,35 +167,52 @@ const Wiki: NextPageWithLayout<{
                      },
                   }}
                >
-                  <Stack id="main" spacing={4}>
-                     <TroubleshootingHeading wikiData={wikiData} />
-                     <Causes
-                        introduction={introSections}
-                        solutions={wikiData.solutions}
-                        problems={wikiData.linkedProblems}
-                     />
-                     <Stack className="intro" spacing={6} pt={{ sm: 3 }}>
-                        <IntroductionSections introduction={introSections} />
-                     </Stack>
-                     {wikiData.solutions.length > 0 && (
-                        <Stack spacing={6}>
-                           {wikiData.solutions.map((solution, index) => (
-                              <SolutionCard
-                                 key={solution.heading}
-                                 index={index + 1}
-                                 solution={solution}
-                              />
-                           ))}
+                  <Stack
+                     id="main"
+                     display={{ base: 'flex', lg: 'grid' }}
+                     columnGap={{ lg: 12 }}
+                     spacing={4}
+                     sx={{
+                        gridTemplateAreas: {
+                           lg: `
+                              "Content RelatedProblems"
+                              "Conclusion RelatedProblems"
+                              "AnswersCTA RelatedProblems"
+                           `,
+                        },
+                        gridTemplateColumns: { lg: `1fr ${sidebarWidth}` },
+                     }}
+                  >
+                     <Stack spacing={4} gridArea="Content">
+                        <TroubleshootingHeading wikiData={wikiData} />
+                        <Causes
+                           introduction={introSections}
+                           solutions={wikiData.solutions}
+                           problems={wikiData.linkedProblems}
+                        />
+                        <Stack className="intro" spacing={6} pt={{ sm: 3 }}>
+                           <IntroductionSections introduction={introSections} />
                         </Stack>
-                     )}
+                        {wikiData.solutions.length > 0 && (
+                           <Stack spacing={6}>
+                              {wikiData.solutions.map((solution, index) => (
+                                 <SolutionCard
+                                    key={solution.heading}
+                                    index={index + 1}
+                                    solution={solution}
+                                 />
+                              ))}
+                           </Stack>
+                        )}
+                     </Stack>
                      <Conclusion conclusion={filteredConclusions} />
+                     <RelatedProblemsComponent
+                        hasRelatedPages={hasRelatedPages}
+                        wikiData={wikiData}
+                     />
                      <AnswersCTA answersUrl={wikiData.answersUrl} />
                   </Stack>
-                  <RelatedProblemsComponent
-                     hasRelatedPages={hasRelatedPages}
-                     wikiData={wikiData}
-                  />
-               </Stack>
+               </Flex>
             </Box>
          </TOCContextProvider>
          {viewStats && <ViewStats {...viewStats} />}
@@ -619,43 +636,43 @@ const ConclusionSection = function ConclusionSectionInner({
    const { onClick } = useTOCBufferPxScrollOnClick(conclusion.id);
 
    return (
-      <Stack spacing={3} id={conclusion.id} ref={ref}>
-         <HeadingSelfLink pt={4} id={conclusion.id} onClick={onClick}>
+      <Box id={conclusion.id} ref={ref}>
+         <HeadingSelfLink id={conclusion.id} onClick={onClick}>
             {conclusion.heading}
          </HeadingSelfLink>
          <PrerenderedHTML html={conclusion.body} template="troubleshooting" />
-      </Stack>
+      </Box>
    );
 };
 
 function Conclusion({ conclusion: conclusions }: { conclusion: Section[] }) {
    return (
-      <>
+      <Box pt={{ base: 0, sm: 6 }} gridArea="Conclusion">
          {conclusions.map((conclusion) => (
             <ConclusionSection
                key={conclusion.heading}
                conclusion={conclusion}
             />
          ))}
-      </>
+      </Box>
    );
 }
 
 function AnswersCTA({ answersUrl }: { answersUrl: string }) {
    return (
-      <Alert p={3} fontSize="sm">
+      <Alert p={3} fontSize="sm" gridArea="AnswersCTA">
          <AlertIcon
             color="gray.500"
             alignSelf={{ base: 'start', sm: 'center' }}
          />
-         <Flex
+         <HStack
             align="center"
             flex="auto"
             justify="space-between"
             sx={{
                '@media (max-width: 375px)': {
                   flexDirection: 'column',
-                  gap: '6px',
+                  spacing: '1.5',
                   alignItems: 'end',
                },
             }}
@@ -666,7 +683,7 @@ function AnswersCTA({ answersUrl }: { answersUrl: string }) {
             <Button href={answersUrl} as="a" colorScheme="brand" ml={3}>
                Browse our forum
             </Button>
-         </Flex>
+         </HStack>
       </Alert>
    );
 }
@@ -697,9 +714,10 @@ function RelatedProblems({
          width={{ base: '100%' }}
          alignSelf="start"
          fontSize="14px"
-         flex={{ xl: '1 0 320px' }}
-         mt={{ base: 3, md: 0 }}
+         pt={{ base: 6, xl: 0 }}
+         gridArea="RelatedProblems"
       >
+         {hasRelatedPages && <LinkedProblems problems={linkedProblems} />}
          <DeviceCard
             imageUrl={imageUrl}
             displayTitle={displayTitle}
@@ -707,7 +725,6 @@ function RelatedProblems({
             countOfAssociatedProblems={countOfAssociatedProblems}
             deviceGuideUrl={deviceGuideUrl}
          />
-         {hasRelatedPages && <LinkedProblems problems={linkedProblems} />}
       </Stack>
    );
 }
@@ -748,9 +765,10 @@ function RelatedProblemsV2({
          width={{ base: '100%' }}
          alignSelf="start"
          fontSize="14px"
-         flex={{ xl: '1 0 320px' }}
-         mt={{ base: 3, md: 0 }}
+         pt={{ base: 0, sm: 6 }}
+         gridArea="RelatedProblems"
       >
+         {hasRelatedPages && <LinkedProblems problems={uniqProblems} />}
          <DeviceCard
             imageUrl={imageUrl}
             displayTitle={displayTitle}
@@ -758,7 +776,6 @@ function RelatedProblemsV2({
             countOfAssociatedProblems={countOfAssociatedProblems}
             deviceGuideUrl={deviceGuideUrl}
          />
-         {hasRelatedPages && <LinkedProblems problems={uniqProblems} />}
       </Stack>
    );
 }
@@ -777,7 +794,12 @@ function DeviceCard({
    deviceGuideUrl: string | undefined;
 }) {
    return (
-      <Stack className="question" spacing={1.5} display="flex">
+      <Stack
+         className="question"
+         spacing={1.5}
+         display="flex"
+         order={{ xl: -1 }}
+      >
          <Box
             bgColor="white"
             border="1px solid"
@@ -789,14 +811,15 @@ function DeviceCard({
                <Image
                   src={imageUrl}
                   alt={displayTitle}
-                  width={{ base: '75px', md: '104px' }}
-                  height={{ base: '56px', md: '78px' }}
+                  minWidth={{ base: '75px', md: '104px' }}
+                  minHeight={{ base: '56px', md: '78px' }}
                   htmlWidth={104}
                   htmlHeight={78}
                   objectFit="cover"
                   borderRadius="md"
                   outline="1px solid"
                   outlineColor="gray.300"
+                  overflow="hidden"
                   aspectRatio="4 / 3"
                />
                <Box display="block" lineHeight="normal">
@@ -852,7 +875,7 @@ function LinkedProblems({ problems }: { problems: Problem[] }) {
          </Heading>
          <SimpleGrid
             className="list"
-            columns={{ base: 1, sm: 2, xl: 1 }}
+            columns={{ base: 1, sm: 2, lg: 1 }}
             spacing={3}
          >
             {problems.map((problem) => (

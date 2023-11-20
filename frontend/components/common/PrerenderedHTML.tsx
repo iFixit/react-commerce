@@ -22,7 +22,7 @@ export const PrerenderedHTML = forwardRef<PrerenderedHTMLProps, 'div'>(
       return (
          <Box
             ref={ref}
-            className={`prerendered ${className}`}
+            className={className ? `prerendered ${className}` : 'prerendered'}
             sx={styleMap[template]}
             dangerouslySetInnerHTML={{ __html: html }}
             {...others}
