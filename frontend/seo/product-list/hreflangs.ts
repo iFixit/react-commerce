@@ -115,6 +115,7 @@ const usHreflangsPaths = {
    macbook: 'Parts/MacBook',
    'apple-macbook-parts': 'Parts/Mac_Laptop',
    parts: 'Parts',
+   'black-friday-deals': 'Shop/Black_Friday',
 };
 
 const euHreflangPaths: Partial<Record<Collection, string>> = {
