@@ -116,7 +116,7 @@ export default function SolutionCard({
    const { ref } = LinkToTOC<HTMLDivElement>(solution.id, bufferPx);
    const partCollectionLinkCardFlag = useFlag('part-collection-linkcards');
 
-   solution.partCollections = partCollectionLinkCardFlag
+   const partCollections = partCollectionLinkCardFlag
       ? solution.partCollections
       : [];
 
@@ -144,7 +144,7 @@ export default function SolutionCard({
                <LinkCards
                   guides={solution.guides}
                   products={solution.products}
-                  partCollections={solution.partCollections}
+                  partCollections={partCollections}
                />
             )}
          </Stack>
