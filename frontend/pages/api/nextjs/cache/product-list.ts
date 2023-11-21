@@ -18,4 +18,7 @@ export default withCache({
    },
    ttl: Duration(1).hour,
    staleWhileRevalidate: Duration(1).day,
+   clientOptions: {
+      commandTimeout: 1000,
+   },
 });
