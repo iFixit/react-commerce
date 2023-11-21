@@ -1,5 +1,5 @@
 {
-   "extends": "@ifixit/tsconfig/base.json",
+   "extends": "@ifixit/tsconfig/react-library.json",
    "include": ["."],
    "exclude": ["dist", "build", "node_modules"],
    "compilerOptions": {

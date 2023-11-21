@@ -1,6 +1,8 @@
 import * as raw_flags from './flags.json';
 import type { FlagList as FormalFlagList } from './flag_schema';
 
+import { useSafeLocalStorage } from '@ifixit/local-storage';
+
 export const flags: FormalFlagList = raw_flags;
 export type FlagKey = keyof typeof raw_flags;
 
@@ -13,11 +15,11 @@ export function checkFlag(flagName: FlagKey) {
 
    const enableFlag = 'enable-' + flagName;
 
+   const safeLocalStorage = useSafeLocalStorage();
+
    if (typeof flagValue === 'object') {
-      if (flagValue.userToggle && typeof localStorage !== 'undefined') {
-         if (localStorage?.getItem(enableFlag) === 'true') {
-            return true;
-         }
+      if (safeLocalStorage?.getItem(enableFlag) === 'true') {
+         return true;
       }
    }
 
