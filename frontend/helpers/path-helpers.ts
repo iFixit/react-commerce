@@ -19,12 +19,17 @@ type ProductListPathAttributes = Pick<
    ProductList,
    'type' | 'handle' | 'deviceTitle'
 >;
+type ProductListPathProps = {
+   productList: ProductListPathAttributes;
+   itemType?: string;
+   variant?: string | undefined;
+};
 
-export function productListPath(
-   productList: ProductListPathAttributes,
-   itemType?: string,
-   variant?: string | undefined
-): string {
+export function productListPath({
+   productList,
+   itemType,
+   variant,
+}: ProductListPathProps): string {
    switch (productList.type) {
       case ProductListType.AllParts: {
          return '/Parts';

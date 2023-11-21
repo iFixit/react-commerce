@@ -1,7 +1,6 @@
 import { PRODUCT_LIST_PAGE_PARAM } from '@config/constants';
 import { metaTitleWithSuffix } from '@helpers/metadata-helpers';
 import { productListPath } from '@helpers/path-helpers';
-import { stylizeDeviceItemType } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
 import type { ProductList } from '@models/product-list';
 import { noIndexExemptions, useHreflangs } from '@seo/product-list';
@@ -115,19 +114,14 @@ function useCanonicalUrl(
 ): string {
    const appContext = useAppContext();
    const pagination = usePagination();
-
+   const variant = useVariant();
    const page = pagination.currentRefinement + 1;
 
-   const itemTypeHandle = itemType
-      ? `/${encodeURIComponent(stylizeDeviceItemType(itemType))}`
-      : '';
-   const variant = useVariant();
-
-   return `${appContext.ifixitOrigin}${productListPath(
+   return `${appContext.ifixitOrigin}${productListPath({
       productList,
-      undefined,
-      productList.indexVariantsInsteadOfDevice ? variant : undefined
-   )}${itemTypeHandle}${page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''}`;
+      itemType: itemType ?? undefined,
+      variant: productList.indexVariantsInsteadOfDevice ? variant : undefined,
+   })}${page > 1 ? `?${PRODUCT_LIST_PAGE_PARAM}=${page}` : ''}`;
 }
 
 function useShouldNoIndex(
