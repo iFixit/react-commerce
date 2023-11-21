@@ -297,7 +297,7 @@ function formatItemTypeOverrides(
 function convertToProductListItemTypeOverrides(
    itemOverrides: ApiProductListItemOverrides[]
 ): ProductListItemTypeOverride[] {
-   const formatedOverrides = itemOverrides.map(
+   const formattedOverrides = itemOverrides.map(
       (itemOverride): ProductListItemTypeOverride | null => {
          if (
             itemOverride == null ||
@@ -316,7 +316,7 @@ function convertToProductListItemTypeOverrides(
          }
       }
    );
-   return filterNullableItems(formatedOverrides);
+   return filterNullableItems(formattedOverrides);
 }
 
 function createPublicAlgoliaKey(appId: string, apiKey: string): string {

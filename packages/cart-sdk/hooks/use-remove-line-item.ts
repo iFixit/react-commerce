@@ -1,11 +1,15 @@
-import { trackPiwikCartChange } from '@ifixit/analytics';
+import {
+   convertCartLineItemsToAnalyticsItem,
+   trackInAnalyticsRemoveFromCart,
+   trackPiwikCartUpdate,
+} from '@ifixit/analytics';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Cart } from '../types';
+import { Cart, CartLineItem } from '../types';
 import { cartKeys } from '../utils';
 
 interface DeleteLineItemInput {
-   itemcode: string;
+   item: CartLineItem;
 }
 
 /**
@@ -17,7 +21,7 @@ export function useRemoveLineItem() {
    const mutation = useMutation(
       async (input) => {
          await iFixitApiClient.delete(
-            `store/user/cart/product/${input.itemcode}`,
+            `store/user/cart/product/${input.item.itemcode}`,
             'remove-line-item'
          );
          return true;
@@ -33,7 +37,7 @@ export function useRemoveLineItem() {
                   return current;
                }
                const deletedItem = current.lineItems.find(
-                  (item) => item.itemcode === input.itemcode
+                  (item) => item.itemcode === input.item.itemcode
                );
                if (deletedItem == null) {
                   return current;
@@ -42,14 +46,23 @@ export function useRemoveLineItem() {
                   current.totals.itemsCount - deletedItem.quantity,
                   0
                );
+               const updateTotalPrice = Math.max(
+                  Number(current.totals.price.amount) -
+                     deletedItem.quantity * Number(deletedItem.price.amount),
+                  0
+               ).toFixed(2);
                return {
                   ...current,
                   hasItemsInCart: updatedItemCount > 0,
                   lineItems: current.lineItems.filter(
-                     (product) => product.itemcode !== input.itemcode
+                     (product) => product.itemcode !== input.item.itemcode
                   ),
                   totals: {
                      ...current.totals,
+                     price: {
+                        ...current.totals.price,
+                        amount: updateTotalPrice,
+                     },
                      itemsCount: updatedItemCount,
                   },
                };
@@ -63,9 +76,21 @@ export function useRemoveLineItem() {
                context?.previousCart
             );
          },
-         onSuccess: () => {
+         onSuccess: (data, variables) => {
             const cart = client.getQueryData<Cart>(cartKeys.cart);
-            trackPiwikCartChange(cart?.lineItems ?? []);
+            trackInAnalyticsRemoveFromCart({
+               items: convertCartLineItemsToAnalyticsItem([variables.item]),
+               value:
+                  variables.item.quantity * Number(variables.item.price.amount),
+               currency: variables.item.price.currencyCode,
+            });
+            if (cart) {
+               trackPiwikCartUpdate({
+                  items: convertCartLineItemsToAnalyticsItem(cart.lineItems),
+                  value: Number(cart.totals.price.amount),
+                  currency: cart.totals.price.currencyCode,
+               });
+            }
          },
          onSettled: () => {
             client.invalidateQueries(cartKeys.cart);

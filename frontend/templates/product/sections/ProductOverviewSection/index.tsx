@@ -20,7 +20,6 @@ import {
 } from '@chakra-ui/react';
 import { PrerenderedHTML } from '@components/common';
 import { faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
-import { trackGA4ViewItem } from '@ifixit/analytics';
 import { useAppContext } from '@ifixit/app';
 import {
    getVariantIdFromVariantURI,
@@ -45,6 +44,7 @@ import { ProductOptions } from './ProductOptions';
 import { ProductRating } from './ProductRating';
 import { ProductVideos } from './ProductVideos';
 import { Prop65Warning } from './Prop65Warning';
+import { trackInAnalyticsViewItem } from '@ifixit/analytics';
 import { ValuePropositionList } from './ValuePropositionList';
 
 export interface ProductOverviewSectionProps {
@@ -72,7 +72,7 @@ export function ProductOverviewSection({
             (variant) => variant.id === variantId
          );
          if (newVariant) {
-            trackGA4ViewItem({
+            trackInAnalyticsViewItem({
                currency: newVariant.price.currencyCode,
                value: newVariant.price.amount,
                items: [

@@ -4,21 +4,10 @@ import {
    getShopifyLanguageFromCurrentURL,
 } from '@ifixit/helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
+import { AnalyticsItem, AnalyticsItemsEvent } from '..';
 
-type GTagItem = {
-   item_id: string | null | undefined;
-   item_name: string | null;
-   item_variant: string | null;
-   quantity: number | null | undefined;
-   price: number;
-};
-type GTagItemsEvent = {
-   items: GTagItem[];
-   value: number;
-   currency: string;
-};
 type GTagViewItemsListEvent = {
-   items: GTagItem[];
+   items: AnalyticsItem[];
    item_list_id: string;
    item_list_name: string;
 };
@@ -56,19 +45,19 @@ export function setupMinimumGA4(
    }
 }
 
-export function trackGA4ViewItem(event: GTagItemsEvent) {
+export function trackGA4ViewItem(event: AnalyticsItemsEvent) {
    gtag('event', 'view_item', event);
 }
 
-export function trackGA4ViewCart(event: GTagItemsEvent) {
+export function trackGA4ViewCart(event: AnalyticsItemsEvent) {
    gtag('event', 'view_cart', event);
 }
 
-export function trackGA4AddToCart(event: GTagItemsEvent) {
+export function trackGA4AddToCart(event: AnalyticsItemsEvent) {
    gtag('event', 'add_to_cart', event);
 }
 
-export function trackGA4RemoveFromCart(event: GTagItemsEvent) {
+export function trackGA4RemoveFromCart(event: AnalyticsItemsEvent) {
    gtag('event', 'remove_from_cart', event);
 }
 

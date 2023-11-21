@@ -1,11 +1,10 @@
 import { IFIXIT_ORIGIN } from '@config/env';
-import { invariant } from '@ifixit/helpers';
+import { getProductIdFromGlobalId, invariant } from '@ifixit/helpers';
 import { SentryError } from '@ifixit/sentry';
 import type { Product } from '@models/product';
 import { ProductList, ProductListType } from '@models/product-list';
 import type { IncomingHttpHeaders } from 'http';
 import { GetServerSidePropsContext } from 'next';
-import { getProductIdFromGlobalId } from './product-helpers';
 import {
    stylizeDeviceItemType,
    stylizeDeviceTitle,

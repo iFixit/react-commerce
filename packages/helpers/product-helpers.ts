@@ -46,7 +46,26 @@ export function isLifetimeWarranty(
 }
 
 export function getEncodedVariantURI(variantId: string | number): string {
-   return window.btoa(getProductVariantURI(variantId));
+   return encodeVariantURI(getProductVariantURI(variantId));
+}
+
+export function encodeVariantURI(uri: string): string {
+   if (!uri.startsWith('gid://')) {
+      throw new Error(
+         'Variant URI must be a global shopify product variant id uri'
+      );
+   }
+   return window.btoa(uri);
+}
+
+export function getDecodedVariantURI(variantId: string | number): string {
+   const uri = window.atob(getProductVariantURI(variantId));
+   if (!uri.startsWith('gid://')) {
+      throw new Error(
+         'Variant URI must be a global shopify product variant id uri'
+      );
+   }
+   return uri;
 }
 
 export function getVariantIdFromEncodedVariantURI(
@@ -63,6 +82,15 @@ export function getVariantIdFromVariantURI(variantURI: string): string {
       );
    }
    return variantURI.replace(/^gid:\/\/shopify\/ProductVariant\//, '');
+}
+
+export function getProductIdFromGlobalId(globalProductId: string) {
+   if (!globalProductId.startsWith('gid://')) {
+      throw new Error(
+         'globalProductId must be a global shopify product id uri'
+      );
+   }
+   return globalProductId.replace(/^gid:\/\/shopify\/Product\//, '');
 }
 
 export function getProductVariantURI(variantId: string | number): string {

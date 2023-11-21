@@ -9,7 +9,7 @@ import { ReplacementGuidesSection } from '@components/sections/ReplacementGuides
 import { ServiceValuePropositionSection } from '@components/sections/ServiceValuePropositionSection';
 import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
 import { DEFAULT_STORE_CODE } from '@config/env';
-import { trackPiwikEcommerceView, trackGA4ViewItem } from '@ifixit/analytics';
+import { trackInAnalyticsViewItem } from '@ifixit/analytics';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import {
    assertNever,
@@ -49,12 +49,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
 
    React.useEffect(() => {
-      trackPiwikEcommerceView({
-         productSku: selectedVariant.sku ?? selectedVariant.id,
-         productName: selectedVariant.internalDisplayName ?? product.title,
-         price: selectedVariant.price,
-      });
-      trackGA4ViewItem({
+      trackInAnalyticsViewItem({
          currency: selectedVariant.price.currencyCode,
          value: selectedVariant.price.amount,
          items: [
