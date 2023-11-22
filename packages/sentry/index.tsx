@@ -2,8 +2,8 @@ import * as Sentry from '@sentry/nextjs';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
 import { GetServerSidePropsContext } from 'next';
 import { Scope } from '@sentry/nextjs';
-import { SentryErrorIntegration as Integration } from './SentryErrorIntegration';
-export { Integration as SentryErrorIntegration };
+
+export * from './SentryErrorIntegration';
 
 type Fetcher = typeof fetch;
 
