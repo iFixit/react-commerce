@@ -542,6 +542,10 @@ importers:
   packages/eslint: {}
 
   packages/feature_flags:
+    dependencies:
+      '@ifixit/local-storage':
+        specifier: workspace:*
+        version: link:../local-storage
     devDependencies:
       '@ifixit/tsconfig':
         specifier: workspace:*

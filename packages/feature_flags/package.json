@@ -7,6 +7,9 @@
    "exports": {
       ".": "./index.ts"
    },
+   "dependencies": {
+      "@ifixit/local-storage": "workspace:*"
+   },
    "devDependencies": {
       "@ifixit/tsconfig": "workspace:*",
       "typescript": "5.2.2"

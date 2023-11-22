@@ -1,11 +1,11 @@
 {
    "name": "@ifixit/local-storage",
    "version": "0.0.0",
-   "main": "./index.tsx",
-   "types": "./index.tsx",
+   "main": "./index.ts",
+   "types": "./index.ts",
    "license": "MIT",
    "exports": {
-      ".": "./index.tsx"
+      ".": "./index.ts"
    },
    "devDependencies": {
       "@ifixit/tsconfig": "workspace:*",
