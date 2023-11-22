@@ -87,7 +87,7 @@ const usHreflangsPaths = {
    'samsung-galaxy-s8': 'Parts/Samsung_Galaxy_S8',
    'iphone-6s': 'Parts/iPhone_6s',
    'iphone-6': 'Parts/iPhone_6',
-   'pc-laptop-parts': 'Tools/PC',
+   'pc-laptop-parts': 'Parts/PC_Laptop',
    'iphone-se-2020': 'Parts/iPhone_SE_2020',
    'samsung-galaxy-s9-plus': 'Parts/Samsung_Galaxy_S9_Plus',
    'apple-mac-mini-parts': 'Parts/Mac_Mini',
