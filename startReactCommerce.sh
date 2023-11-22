@@ -27,14 +27,30 @@ while [[ ! "${userInput}" =~ ^(y|n)$ ]]; do
     userInput=$(echo "${userInput}" | tr '[:upper:]' '[:lower:]' | xargs)
 done
 
-# Continue based on the user's input
-if [[ "${userInput}" == "y" ]]; then
-    # Login to exisiting user:
-    pnpm login --registry=https://verdaccio.ubreakit.com    
-else
-    # Add new verdaccio user:
-    pnpm adduser --registry=https://verdaccio.ubreakit.com
-fi
+while true; do
+    if [[ "${userInput}" == "y" ]]; then
+        echo "Please log in to your Verdaccio account."
+        pnpm login --registry=https://verdaccio.ubreakit.com
+    else
+        echo "No Verdaccio account detected. Creating a new account for you..."
+        pnpm adduser --registry=https://verdaccio.ubreakit.com
+    fi
+
+    # Check for login or adduser success
+    if [ $? -eq 0 ]; then
+        echo "Successfully logged in to Verdaccio."
+        break
+    else
+        echo "Error with Verdaccio account credentials. Please check your input and try again."
+        read -p "Do you want to retry? (y/n): " retryInput
+        retryInput=$(echo "${retryInput}" | tr '[:upper:]' '[:lower:]' | xargs)
+
+        if [[ "${retryInput}" != "y" ]]; then
+            echo "Exiting script."
+            exit 1
+        fi
+    fi
+done
 
 npmrcPath=~/.npmrc
 envFilePath=.env.local
