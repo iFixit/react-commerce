@@ -9,7 +9,7 @@ export default ({ strapi }: { strapi: Strapi }) => ({
          const seedService = getAddonsService(strapi, 'seed');
          const result = await seedService.importContentTypes({
             strapiOrigin,
-            canDeleteExistingContent: true,
+            overrideExistingContent: true,
          });
          ctx.body = result;
       } else {
