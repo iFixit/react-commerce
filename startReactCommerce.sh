@@ -84,18 +84,16 @@ fi
 # Read ALGOLIA_API_KEY value from .env.local file
 apiKey=$(grep -o '^ALGOLIA_API_KEY=.*' "$envFilePath" | cut -d '=' -f 2)
 
-# Check if ALGOLIA_API_KEY value is empty
-if [ -z "$apiKey" ]; then
-    echo "ALGOLIA_API_KEY is empty. Filling in the value..."
-    if [ -n "${algoliaApiKey+set}" ]; then
-        echo "Algolia api key successfully passed in."
-    else
-        echo "You must set the algoliaApiKey variable in your environment."
-        echo -e 'Try running with: \n\nexport algoliaApiKey=YOUR_API_KEY \nnvm use && ./startReactCommerce.sh\n'
-        echo -e 'Or you can run it in one line with: \n\nnvm use && algoliaApiKey=xyz123 ./startReactCommerce.sh'
-        return 1
-    fi
+# Check if the algoliaApiKey environment variable is set
+if [ -z "$algoliaApiKey" ]; then
+    echo "You must set the algoliaApiKey variable in your environment."
+    echo -e 'Try running with: \n\nexport algoliaApiKey=YOUR_API_KEY \nnvm use && ./startReactCommerce.sh\n'
+    echo -e 'Or you can run it in one line with: \n\nnvm use && algoliaApiKey=xyz123 ./startReactCommerce.sh'
+    exit 1
+else
+    # Update ALGOLIA_API_KEY in .env.local file
     awk -v placeholder="\"$algoliaApiKey\"" '/^ALGOLIA_API_KEY=/{gsub(/=.*/, "=" placeholder)} 1' "$envFilePath" > "$envFilePath.tmp" && mv "$envFilePath.tmp" "$envFilePath"
+    echo "ALGOLIA_API_KEY updated in $envFilePath"
 fi
 
 pnpm install:all
