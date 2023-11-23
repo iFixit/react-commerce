@@ -100,6 +100,11 @@ const moduleExports = {
             permanent: true,
          },
          {
+            source: '/products/steam-deck-fan',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/products/steam-deck-original-model-fan`,
+            permanent: true,
+         },
+         {
             source: '/Parts/sitemap.xml',
             destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/sitemap/parts.xml`,
             permanent: true,
