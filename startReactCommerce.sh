@@ -61,6 +61,8 @@ token=$(cat ~/.npmrc |  grep -o '\/\/verdaccio\.ubreakit\.com\/:_authToken="[^"]
 if [ -z "$token" ]; then
     echo "Token not found in ~/.npmrc"
     return 1
+else
+    export VERDACCIO_AUTH_TOKEN=$token
 fi
 
 # Update .env.local with VERDACCIO_AUTH_TOKEN
