@@ -250,17 +250,20 @@ function Resource({
                   outline="inherit"
                   outlineColor="inherit"
                   borderRadius="inherit"
-                  objectFit="cover"
+                  objectFit="contain"
+                  width="100%"
+                  height="100%"
                   alt={title}
                   src={imageUrl}
                   position="relative"
                   zIndex="1"
+                  bgColor="white"
                />
             </Box>
          )}
          <Flex flex="1" flexDirection={{ base: 'column', sm: 'row' }}>
             <Stack
-               justify="flex-start"
+               justify="center"
                align="flex-start"
                spacing={spacing}
                alignSelf="stretch"
