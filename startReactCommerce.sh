@@ -56,13 +56,19 @@ npmrcPath=~/.npmrc
 envFilePath=.env.local
 
 # Extract token from ~/.npmrc
-token=$(cat ~/.npmrc |  grep -o '\/\/verdaccio\.ubreakit\.com\/:_authToken="[^"]*"' | sed 's/\/\/verdaccio\.ubreakit\.com\/:_authToken="//' | sed 's/"$//')
+token=$(cat $npmrcPath |  grep -o '\/\/verdaccio\.ubreakit\.com\/:_authToken="[^"]*"' | sed 's/\/\/verdaccio\.ubreakit\.com\/:_authToken="//' | sed 's/"$//')
 
 if [ -z "$token" ]; then
     echo "Token not found in ~/.npmrc"
     return 1
 else
-    export VERDACCIO_AUTH_TOKEN=$token
+    if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
+        # For Windows
+        set VERDACCIO_AUTH_TOKEN=$token
+    else
+        # For Unix-like systems
+        export VERDACCIO_AUTH_TOKEN=$token
+    fi
 fi
 
 # Update .env.local with VERDACCIO_AUTH_TOKEN
