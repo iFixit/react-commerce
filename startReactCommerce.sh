@@ -81,9 +81,6 @@ if [ ! -f "$envFilePath" ]; then
     cp "$exampleEnvFilePath" "$envFilePath"
 fi
 
-# Read ALGOLIA_API_KEY value from .env.local file
-apiKey=$(grep -o '^ALGOLIA_API_KEY=.*' "$envFilePath" | cut -d '=' -f 2)
-
 # Check if the algoliaApiKey environment variable is set
 if [ -z "$algoliaApiKey" ]; then
     echo "You must set the algoliaApiKey variable in your environment."
