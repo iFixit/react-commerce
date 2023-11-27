@@ -4,7 +4,7 @@
    "description": "Monorepo for iFixit e-commerce",
    "main": "N/A",
    "engines": {
-      "node": ">= 18.x.x",
+      "node": ">= 18.17.x",
       "pnpm": ">= 8.5.0"
    },
    "scripts": {
