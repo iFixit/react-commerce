@@ -24,6 +24,7 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
                  height: 80,
                  width: 80,
               };
+      const { placeholder, ...restImageSizeProps } = imageSizeProps;
       return (
          <Flex
             ref={ref}
@@ -69,7 +70,7 @@ export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
                      alt=""
                      style={{ objectFit: 'contain' }}
                      priority
-                     {...imageSizeProps}
+                     {...restImageSizeProps}
                   />
                </Flex>
             )}
