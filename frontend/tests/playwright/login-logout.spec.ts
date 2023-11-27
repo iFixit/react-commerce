@@ -53,6 +53,7 @@ test.describe('Login Logout', () => {
       expect(sessionCookieAfter!.value).not.toEqual(sessionCookie!.value);
       expect(sessionCookieAfter!.value).not.toEqual(cominorSession!.value);
 
+      await page.goto('/Tools');
       await expect(page.getByRole('link', { name: 'Login' })).toBeVisible();
       await expect(
          page.getByRole('menuitem', { name: 'Log Out' })
