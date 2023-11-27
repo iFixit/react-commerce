@@ -130,6 +130,7 @@ function BuyButton({
    buttonSize,
    openInNewTab,
    colorScheme,
+   margin,
 }: {
    url: string;
    buyButtonText: string;
@@ -137,6 +138,7 @@ function BuyButton({
    buttonSize: ThemingProps<'Button'>['size'];
    openInNewTab?: boolean;
    colorScheme: ThemingProps<'Button'>['colorScheme'];
+   margin: SystemProps['margin'];
 }) {
    const openSettings = openInNewTab
       ? { target: '_blank', rel: 'noopener' }
@@ -151,7 +153,7 @@ function BuyButton({
          flexShrink={0}
          size={buttonSize}
          colorScheme={colorScheme}
-         marginLeft="auto"
+         margin={margin}
          {...buttonStyling}
       >
          {buyButtonText}
@@ -305,6 +307,7 @@ function Resource({
                   openInNewTab={false}
                   url={href}
                   buyButtonText={buyButtonText}
+                  margin="8px 0 0 0"
                />
             )}
             {!isMobile && showBuyButton && (
@@ -314,6 +317,7 @@ function Resource({
                   openInNewTab={openInNewTab}
                   url={href}
                   buyButtonText={buyButtonText}
+                  margin="0 0 0 12px"
                />
             )}
          </Flex>
