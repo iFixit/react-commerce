@@ -205,7 +205,9 @@ const Wiki: NextPageWithLayout<{
                            </Stack>
                         )}
                      </Stack>
-                     <Conclusion conclusion={filteredConclusions} />
+                     {filteredConclusions.length > 0 && (
+                        <Conclusion conclusion={filteredConclusions} />
+                     )}
                      <RelatedProblemsComponent
                         hasRelatedPages={hasRelatedPages}
                         wikiData={wikiData}
