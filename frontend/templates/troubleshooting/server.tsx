@@ -75,13 +75,15 @@ function getTroubleshootingApiUrl(
    const wikiname = context.params?.wikiname;
 
    if (wikiname && typeof wikiname === 'string') {
-      return `Troubleshooting/${wikiname}`;
+      const encodedWikiname = encodeURIComponent(wikiname);
+      return `Troubleshooting/${encodedWikiname}`;
    }
 
    const wikiid = context.params?.wikiid;
 
    if (wikiid && typeof wikiid === 'string') {
-      return `Troubleshooting/wikiid/${wikiid}`;
+      const encodedWikiid = encodeURIComponent(wikiid);
+      return `Troubleshooting/wikiid/${encodedWikiid}`;
    }
 
    return null;

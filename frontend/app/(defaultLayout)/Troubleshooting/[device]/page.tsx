@@ -53,8 +53,8 @@ async function getTroubleshootingListData(
       origin: ifixitOrigin,
       headers: VarnishBypassHeader,
    });
-
-   const url = `Troubleshooting/Collection/${device}`;
+   const encodedDevice = encodeURIComponent(device);
+   const url = `Troubleshooting/Collection/${encodedDevice}`;
 
    try {
       return await client.get<TroubleshootingListProps>(
