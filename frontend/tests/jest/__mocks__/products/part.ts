@@ -184,6 +184,7 @@ export const mockedPartProduct: Product = {
       },
    ],
    images: partProductImages,
+   fallbackImages: [],
    options: [
       {
          id: 'gid://shopify/ProductOption/8466995773530',
