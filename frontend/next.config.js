@@ -162,19 +162,52 @@ const moduleExports = {
       ];
    },
    images: {
-      domains: [
-         'localhost',
-         'cdn.shopify.com',
-         'strapi.cominor.com',
-         'www.cominor.com',
-         'ifixit.com',
-         'valkyrie.cdn.ifixit.com',
-         'cart-products.cdn.ifixit.com',
-         'assets.cdn.ifixit.com',
-         'www.cominor.com',
-         'guide-images.cdn.ifixit.com',
-         process.env.STRAPI_IMAGE_DOMAIN,
-      ].filter((domain) => domain),
+      remotePatterns: [
+         {
+            hostname: 'localhost',
+            protocol: 'https',
+         },
+         {
+            hostname: 'cdn.shopify.com',
+            protocol: 'https',
+         },
+         {
+            hostname: 'strapi.cominor.com',
+            protocol: 'https',
+         },
+         {
+            hostname: 'www.cominor.com',
+            protocol: 'https',
+         },
+         {
+            hostname: 'ifixit.com',
+            protocol: 'https',
+         },
+         {
+            hostname: 'valkyrie.cdn.ifixit.com',
+            protocol: 'https',
+         },
+         {
+            hostname: 'cart-products.cdn.ifixit.com',
+            protocol: 'https',
+         },
+         {
+            hostname: 'assets.cdn.ifixit.com',
+            protocol: 'https',
+         },
+         {
+            hostname: 'guide-images.cdn.ifixit.com',
+            protocol: 'https',
+         },
+         {
+            hostname: process.env.STRAPI_IMAGE_DOMAIN,
+            protocol: 'https',
+         },
+         {
+            hostname: 'main.govinor.com',
+            protocol: 'https',
+         },
+      ],
       minimumCacheTTL: 3600,
    },
    i18n: {
