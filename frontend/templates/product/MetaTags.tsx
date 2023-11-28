@@ -44,6 +44,8 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
       });
    }, [product.images, selectedVariant.id]);
 
+   const allImages = [...genericImages, ...selectedVariantImages];
+
    const priceValidUntil = new Date();
    priceValidUntil.setFullYear(priceValidUntil.getFullYear() + 1);
 
@@ -102,13 +104,8 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
             ));
          })}
 
-         {genericImages.length > 0 &&
-            genericImages.map((image) => (
-               <meta key={image.id} property="og:image" content={image.url} />
-            ))}
-
-         {selectedVariantImages.length > 0 &&
-            selectedVariantImages.map((image) => (
+         {allImages.length > 0 &&
+            allImages.map((image) => (
                <meta key={image.id} property="og:image" content={image.url} />
             ))}
 
@@ -147,9 +144,7 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
                   name: product.vendor || 'iFixit',
                },
                description: shortDescription || '',
-               image: [...genericImages, ...selectedVariantImages].map(
-                  (image) => image.url
-               ),
+               image: allImages.map((image) => image.url),
                mpn: selectedVariant.sku || undefined,
                offers: {
                   '@type': 'Offer',
