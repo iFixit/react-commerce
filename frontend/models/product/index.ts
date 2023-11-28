@@ -202,11 +202,11 @@ function imagesFromQueryProduct(
 
 function isGenericOrActiveVariantImage(
    image: ProductVariantImage,
-   variant: ProductVariant[]
+   variants: ProductVariant[]
 ) {
    return (
       image.variantId == null ||
-      variant.some(
+      variants.some(
          (variant) => isActiveVariant(variant) && variant.id === image.variantId
       )
    );
