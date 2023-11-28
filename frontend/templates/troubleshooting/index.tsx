@@ -172,6 +172,7 @@ const Wiki: NextPageWithLayout<{
                      display={{ base: 'flex', lg: 'grid' }}
                      columnGap={{ lg: 12 }}
                      spacing={4}
+                     height="max-content"
                      sx={{
                         gridTemplateAreas: {
                            lg: `
