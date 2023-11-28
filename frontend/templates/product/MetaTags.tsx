@@ -44,7 +44,18 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
       });
    }, [product.images, selectedVariant.id]);
 
-   const allImages = [...genericImages, ...selectedVariantImages];
+   // Fallback images should only be used when there are no others to represent
+   // the variant.
+   const fallbackImages =
+      genericImages.length == 0 && selectedVariantImages.length == 0
+         ? product.fallbackImages
+         : [];
+
+   const allImages = [
+      ...genericImages,
+      ...selectedVariantImages,
+      ...fallbackImages,
+   ];
 
    const priceValidUntil = new Date();
    priceValidUntil.setFullYear(priceValidUntil.getFullYear() + 1);

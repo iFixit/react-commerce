@@ -12,6 +12,8 @@ export const ImageSchema = z.object({
    thumbnailUrl: z.string().nullable().optional(),
 });
 
+export const ImageAltFallback = '*fallback';
+
 export type Image = z.infer<typeof ImageSchema>;
 
 interface ImageOptions {

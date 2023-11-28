@@ -46,6 +46,7 @@ import {
 } from './components/product-video';
 import { getProductSections, ProductSectionSchema } from './sections';
 import { ProductDataApiResponse } from '@lib/ifixit-api/productData';
+import { ImageAltFallback } from '@models/components/image';
 
 export type {
    ProductVariant,
@@ -65,6 +66,7 @@ export const ProductSchema = z.object({
    productcode: z.string().optional(),
    tags: z.array(z.string()),
    images: z.array(ProductVariantImageSchema),
+   fallbackImages: z.array(ProductVariantImageSchema),
    options: z.array(ProductOptionSchema),
    variants: z.array(ProductVariantSchema),
    isEnabled: z.boolean(),
@@ -139,6 +141,9 @@ export async function getProduct({
       productcode: parseItemcode(aVariantSku).productcode,
       tags: shopifyProduct.tags,
       images: imagesFromQueryProduct(shopifyProduct, variants),
+      // Images that are relevant for variants that have no images at all
+      // Do not mix these in with variant images nor product group images.
+      fallbackImages: fallbackImagesFromQueryProduct(shopifyProduct),
       options: shopifyProduct.options.map((option) =>
          productOptionFromShopify(
             option,
@@ -182,9 +187,9 @@ function imagesFromQueryProduct(
    variants: ProductVariant[]
 ): ProductVariantImage[] {
    const allImages = filterFalsyItems(
-      queryProduct.images.nodes.map((image) =>
-         getProductVariantImage(queryProduct, image)
-      )
+      queryProduct.images.nodes
+         .filter((image) => image.altText !== ImageAltFallback)
+         .map((image) => getProductVariantImage(queryProduct, image))
    );
 
    const hasActiveVariants = variants.some(isActiveVariant);
@@ -197,6 +202,16 @@ function imagesFromQueryProduct(
 
    return allImages.filter(
       (image) => image.variantId == null || image.variantId === variants[0]?.id
+   );
+}
+
+function fallbackImagesFromQueryProduct(
+   queryProduct: ShopifyProduct
+): ProductVariantImage[] {
+   return filterFalsyItems(
+      queryProduct.images.nodes
+         .filter((image) => image.altText === ImageAltFallback)
+         .map((image) => getProductVariantImage(queryProduct, image))
    );
 }
 
