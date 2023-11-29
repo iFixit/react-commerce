@@ -233,17 +233,7 @@ const groupScrewdriverBits = (
    });
 
    return {
-      groupedBits: Object.values(grouped).sort((a, b) => {
-         const aBitCount = Object.keys(a.sizes).reduce(
-            (acc, driverSize) => acc + a.sizes[driverSize].length,
-            0
-         );
-         const bBitCount = Object.keys(b.sizes).reduce(
-            (acc, driverSize) => acc + b.sizes[driverSize].length,
-            0
-         );
-         return aBitCount === 0 ? 1 : bBitCount === 0 ? -1 : 0;
-      }),
+      groupedBits: Object.values(grouped),
       driverSizeColors,
    };
 };
