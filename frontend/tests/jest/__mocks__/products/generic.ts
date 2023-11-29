@@ -265,6 +265,7 @@ export const mockedProduct: Product = {
       'A new replacement 2750 mAh battery compatible with the iPhone 6s Plus. 3.80 Volts (V), 10.45 Watt Hours (Wh). This replacement does not require soldering and is compatible with all iPhone 6s Plus models (not iPhone 6, 6 Plus, or 6s).',
    oemPartnership: null,
    images: productImages,
+   fallbackImages: [],
    options: [
       {
          id: 'gid://shopify/ProductOption/5958025085018',

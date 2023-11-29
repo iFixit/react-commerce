@@ -179,6 +179,7 @@ export const mockedBatteryProduct: Product = {
       },
    ],
    images: batteryProductImages,
+   fallbackImages: [],
    options: [
       {
          id: 'gid://shopify/ProductOption/8434015174746',
