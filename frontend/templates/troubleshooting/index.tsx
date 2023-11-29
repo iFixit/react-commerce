@@ -72,7 +72,12 @@ const Wiki: NextPageWithLayout<{
       (conclusion) => conclusion.heading !== 'Related Pages'
    );
 
-   const hasRelatedPages = wikiData.linkedProblems.length > 0;
+   const relatedProblemsFlag = useFlag('extended-related-problems');
+
+   const relatedProblemsLength =
+      wikiData.linkedProblems.length +
+      (relatedProblemsFlag ? wikiData.relatedProblems.length : 0);
+   const hasRelatedPages = relatedProblemsLength > 0;
 
    const firstIntroSection = wikiData.introduction[0] || {};
    const otherIntroSections = wikiData.introduction.slice(1);
@@ -99,7 +104,6 @@ const Wiki: NextPageWithLayout<{
    const tocWidth = '220px';
    const sidebarWidth = '320px';
 
-   const relatedProblemsFlag = useFlag('extended-related-problems');
    const RelatedProblemsComponent = relatedProblemsFlag
       ? RelatedProblemsV2
       : RelatedProblems;
