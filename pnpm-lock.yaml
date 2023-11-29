@@ -312,7 +312,7 @@ importers:
         specifier: 28.1.2
         version: 28.1.2(@types/node@18.11.5)
       jest-css-modules-transform:
-        specifier: ^4.4.2
+        specifier: 4.4.2
         version: 4.4.2
       jest-environment-jsdom:
         specifier: 28.1.2
@@ -324,7 +324,7 @@ importers:
         specifier: 0.49.2
         version: 0.49.2(typescript@5.2.2)
       next-plugin-bundle-stats:
-        specifier: ^4.1.11
+        specifier: 4.1.11
         version: 4.1.11(react-dom@18.2.0)(react@18.2.0)(webpack@5.73.0)
       playwright-msw:
         specifier: 2.1.0
@@ -370,7 +370,7 @@ importers:
         specifier: 18.2.7
         version: 18.2.7
       react:
-        specifier: '>=18.2.0'
+        specifier: 18.2.0
         version: 18.2.0
       typescript:
         specifier: 5.2.2
@@ -432,7 +432,7 @@ importers:
         specifier: workspace:*
         version: link:../tsconfig
       '@types/node':
-        specifier: '*'
+        specifier: 18.11.5
         version: 18.11.5
       '@types/prompts':
         specifier: 2.4.1
@@ -484,7 +484,7 @@ importers:
         specifier: 18.2.7
         version: 18.2.7
       framer-motion:
-        specifier: '>=4.0.0 <11.0.0'
+        specifier: 10.12.0
         version: 10.12.0(react-dom@18.2.0)(react@18.2.0)
       lodash:
         specifier: 4.17.21
@@ -576,13 +576,13 @@ importers:
         version: link:../tracking-hooks
     devDependencies:
       '@babel/core':
-        specifier: '>=7.0.0 <8.0.0'
+        specifier: 7.17.9
         version: 7.17.9
       '@emotion/react':
-        specifier: '>=11.0.0 <12.0.0'
+        specifier: 11.10.5
         version: 11.10.5(@babel/core@7.17.9)(@types/react@18.2.0)(react@18.2.0)
       '@emotion/styled':
-        specifier: '>=11.0.0 <12.0.0'
+        specifier: 11.10.5
         version: 11.10.5(@babel/core@7.17.9)(@emotion/react@11.10.5)(@types/react@18.2.0)(react@18.2.0)
       '@fortawesome/pro-solid-svg-icons':
         specifier: 6.4.0
@@ -597,16 +597,16 @@ importers:
         specifier: 18.2.7
         version: 18.2.7
       framer-motion:
-        specifier: '>=4.0.0 <11.0.0'
+        specifier: 10.12.0
         version: 10.12.0(react-dom@18.2.0)(react@18.2.0)
       react:
-        specifier: '>=18.2.0'
+        specifier: 18.2.0
         version: 18.2.0
       react-dom:
-        specifier: '>=18.2.0'
+        specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
       regenerator-runtime:
-        specifier: '*'
+        specifier: 0.9.0
         version: 0.9.0
       typescript:
         specifier: 5.2.2
@@ -634,13 +634,13 @@ importers:
         version: 0.2.0(@fortawesome/fontawesome-svg-core@6.4.0)(react@18.2.0)
     devDependencies:
       '@babel/core':
-        specifier: '>=7.0.0 <8.0.0'
+        specifier: 7.17.9
         version: 7.17.9
       '@emotion/react':
-        specifier: '>=11.0.0 <12.0.0'
+        specifier: 11.10.5
         version: 11.10.5(@babel/core@7.17.9)(@types/react@18.2.0)(react@18.2.0)
       '@emotion/styled':
-        specifier: '>=11.0.0 <12.0.0'
+        specifier: 11.10.5
         version: 11.10.5(@babel/core@7.17.9)(@emotion/react@11.10.5)(@types/react@18.2.0)(react@18.2.0)
       '@ifixit/tsconfig':
         specifier: workspace:*
@@ -652,13 +652,13 @@ importers:
         specifier: 18.2.7
         version: 18.2.7
       framer-motion:
-        specifier: '>=4.0.0 <11.0.0'
+        specifier: 10.12.0
         version: 10.12.0(react-dom@18.2.0)(react@18.2.0)
       react:
-        specifier: '>=18.2.0'
+        specifier: 18.2.0
         version: 18.2.0
       react-dom:
-        specifier: '>=18.2.0'
+        specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
       typescript:
         specifier: 5.2.2
@@ -767,19 +767,19 @@ importers:
         version: 7.80.0(next@13.4.1)(react@18.2.0)
     devDependencies:
       '@babel/core':
-        specifier: '>=7.0.0 <8.0.0'
+        specifier: 7.17.9
         version: 7.17.9
       '@ifixit/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
       next:
-        specifier: ^10.0.8 || ^11.0 || ^12.0 || ^13.0
+        specifier: 13.4.1
         version: 13.4.1(@babel/core@7.17.9)(react-dom@18.2.0)(react@18.2.0)
       react:
-        specifier: '>=18.2.0'
+        specifier: 18.2.0
         version: 18.2.0
       react-dom:
-        specifier: '>=18.2.0'
+        specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
       typescript:
         specifier: 5.2.2
@@ -851,13 +851,13 @@ importers:
         version: link:../newsletter-sdk
     devDependencies:
       '@babel/core':
-        specifier: '>=7.0.0 <8.0.0'
+        specifier: 7.17.9
         version: 7.17.9
       '@emotion/react':
-        specifier: ^11.10.5
+        specifier: 11.10.5
         version: 11.10.5(@babel/core@7.17.9)(@types/react@18.2.0)(react@18.2.0)
       '@emotion/styled':
-        specifier: '>=11.0.0 <12.0.0'
+        specifier: 11.10.5
         version: 11.10.5(@babel/core@7.17.9)(@emotion/react@11.10.5)(@types/react@18.2.0)(react@18.2.0)
       '@ifixit/tsconfig':
         specifier: workspace:*
@@ -869,7 +869,7 @@ importers:
         specifier: 18.2.7
         version: 18.2.7
       framer-motion:
-        specifier: '>=4.0.0 <11.0.0'
+        specifier: 10.12.0
         version: 10.12.0(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: 18.2.0
@@ -878,7 +878,7 @@ importers:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
       regenerator-runtime:
-        specifier: '*'
+        specifier: 0.9.0
         version: 0.9.0
       typescript:
         specifier: 5.2.2
@@ -7003,7 +7003,7 @@ packages:
       '@oclif/parser': 3.8.11
       '@oclif/plugin-help': 3.2.1
       debug: 4.3.4
-      semver: 7.5.1
+      semver: 7.5.4
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -12151,12 +12151,6 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /is-core-module@2.12.1:
-    resolution: {integrity: sha512-Q4ZuBAe2FUsKtyQJoQHlvP8OvBERxO3jEmy1I7hcRXcJBGGHFh/aJBswbXuS9sgrDH2QUO8ilkwNPHvHMd8clg==}
-    dependencies:
-      has: 1.0.3
-    dev: true
-
   /is-core-module@2.13.1:
     resolution: {integrity: sha512-hHrIjvZsftOsvKSn2TRYl63zvxsgE0K+0mYMoH6gD4omR5IWB2KynivBQczo3+wF1cCkjzvptnI9Q0sPU66ilw==}
     dependencies:
@@ -14124,7 +14118,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       hosted-git-info: 4.1.0
-      is-core-module: 2.12.1
+      is-core-module: 2.13.1
       semver: 7.5.4
       validate-npm-package-license: 3.0.4
     dev: true
