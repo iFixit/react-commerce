@@ -29,16 +29,16 @@
       "react-dom": ">=16.8.6 <17.0.0 || >=17.0.0 <18.0.0"
    },
    "devDependencies": {
-      "@babel/core": ">=7.0.0 <8.0.0",
-      "@emotion/react": "^11.10.5",
-      "@emotion/styled": ">=11.0.0 <12.0.0",
+      "@babel/core": "7.17.9",
+      "@emotion/react": "11.10.5",
+      "@emotion/styled": "11.10.5",
       "@ifixit/tsconfig": "workspace:*",
       "@types/react": "18.2.0",
       "@types/react-dom": "18.2.7",
-      "framer-motion": ">=4.0.0 <11.0.0",
+      "framer-motion": "10.12.0",
       "react": "18.2.0",
       "react-dom": "18.2.0",
-      "regenerator-runtime": "*",
+      "regenerator-runtime": "0.9.0",
       "typescript": "5.2.2"
    }
 }

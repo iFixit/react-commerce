@@ -29,13 +29,13 @@
       "@types/react-dom": "18.2.7",
       "@ifixit/tsconfig": "workspace:*",
       "typescript": "5.2.2",
-      "react": ">=18.2.0",
-      "@emotion/react": ">=11.0.0 <12.0.0",
-      "framer-motion": ">=4.0.0 <11.0.0",
+      "react": "18.2.0",
+      "@emotion/react": "11.10.5",
+      "framer-motion": "10.12.0",
       "@fortawesome/pro-solid-svg-icons": "6.4.0",
-      "@emotion/styled": ">=11.0.0 <12.0.0",
-      "react-dom": ">=18.2.0",
-      "@babel/core": ">=7.0.0 <8.0.0",
-      "regenerator-runtime": "*"
+      "@emotion/styled": "11.10.5",
+      "react-dom": "18.2.0",
+      "@babel/core": "7.17.9",
+      "regenerator-runtime": "0.9.0"
    }
 }
