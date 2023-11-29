@@ -122,6 +122,7 @@ export const mockedToolProduct: Product = {
       },
    ],
    images: toolProductImages,
+   fallbackImages: [],
    options: [
       {
          id: 'gid://shopify/ProductOption/8433952227418',
