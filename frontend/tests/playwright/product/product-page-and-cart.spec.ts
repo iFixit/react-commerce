@@ -93,7 +93,7 @@ test.describe('Product Page and Cart Interactions', () => {
    });
 
    test.describe('Product Stock Levels', () => {
-      test.skip('Low Stock Product Inventory Management Visibility', async ({
+      test('Low Stock Product Inventory Management Visibility', async ({
          productPage,
          cartDrawer,
       }) => {
@@ -141,7 +141,7 @@ test.describe('Product Page and Cart Interactions', () => {
          await productPage.assertInventoryMessage('Only 1 left');
       });
 
-      test.skip('Out of Stock Product Notifications and Variant Switching', async ({
+      test('Out of Stock Product Notifications and Variant Switching', async ({
          productPage,
          cartDrawer,
          clientRequestHandler,
