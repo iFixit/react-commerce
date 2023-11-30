@@ -176,6 +176,7 @@ const Wiki: NextPageWithLayout<{
                      display={{ base: 'flex', lg: 'grid' }}
                      columnGap={{ lg: 12 }}
                      spacing={4}
+                     height="max-content"
                      sx={{
                         gridTemplateAreas: {
                            lg: `
@@ -209,7 +210,9 @@ const Wiki: NextPageWithLayout<{
                            </Stack>
                         )}
                      </Stack>
-                     <Conclusion conclusion={filteredConclusions} />
+                     {filteredConclusions.length > 0 && (
+                        <Conclusion conclusion={filteredConclusions} />
+                     )}
                      <RelatedProblemsComponent
                         hasRelatedPages={hasRelatedPages}
                         wikiData={wikiData}
