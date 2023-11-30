@@ -26,6 +26,7 @@ import {
    InstantSearchSSRProvider,
 } from 'react-instantsearch';
 import { useSearchCache } from './useSearchCache';
+import { getRouteData } from '@helpers/path-helpers';
 
 export type InstantSearchProviderProps = React.PropsWithChildren<AlgoliaProps>;
 
@@ -89,11 +90,9 @@ export function InstantSearchProvider({
          location: Location;
       }) {
          const baseUrl = getBaseOrigin(location);
-         const pathParts = location.pathname
-            .split('/')
-            .filter((part) => part !== '');
-         const firstPathSegment = pathParts.length >= 1 ? pathParts[0] : '';
-         const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
+         const { firstPathSegment, deviceHandle } = getRouteData(
+            location.pathname
+         );
          const isDevicePartsPage = firstPathSegment === 'Parts' && deviceHandle;
          const devicePath = isDevicePartsPage
             ? getDevicePath(deviceHandle, routeState)
@@ -150,12 +149,9 @@ export function InstantSearchProvider({
          qsModule: typeof qs;
          location: Location;
       }) {
-         const pathParts = location.pathname
-            .split('/')
-            .filter((part) => part !== '');
-         const firstPathSegment = pathParts.length >= 1 ? pathParts[0] : '';
-         const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
-         const itemType = pathParts.length >= 3 ? pathParts[2] : '';
+         const { firstPathSegment, deviceHandle, itemType } = getRouteData(
+            location.pathname
+         );
          const isDevicePartsPage = firstPathSegment === 'Parts' && deviceHandle;
          const devicePathHasVariant =
             isDevicePartsPage && deviceHandle.includes(':');
