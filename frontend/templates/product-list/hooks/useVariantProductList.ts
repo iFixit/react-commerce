@@ -13,12 +13,29 @@ export function useVariantProductList(
    const { variant } = splitDeviceAndVariant(deviceHandle);
    if (!variant) return productList;
 
-   const deviceTitle = destylizeDeviceTitle(deviceHandle);
-   const deviceVariantTitle = destylizeDeviceTitleAndVariant(deviceHandle);
+   const modelNumberPattern = productList.wikiInfo?.find(
+      (info) => info.name === 'model_number_pattern'
+   )?.value;
+   const modelNumberRegex = modelNumberPattern
+      ? new RegExp(modelNumberPattern?.replace(/[\*⎵]/g, '.'), 'g')
+      : null;
+   const replaceModelNumber =
+      modelNumberRegex && variant.match(modelNumberRegex);
+
+   const deviceTitle = destylizeDeviceTitle(decodeURIComponent(deviceHandle));
+   const deviceVariantTitle = destylizeDeviceTitleAndVariant(
+      decodeURIComponent(deviceHandle)
+   );
    return Object.fromEntries(
       Object.entries(productList).map(([key, value]) => {
          if (typeof value === 'string') {
-            return [key, value.replace(deviceTitle, deviceVariantTitle)];
+            value = replaceModelNumber
+               ? value.replace(modelNumberRegex, variant)
+               : value;
+            return [
+               key,
+               value.replace(new RegExp(deviceTitle), deviceVariantTitle),
+            ];
          }
          return [key, value];
       })
