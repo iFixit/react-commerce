@@ -67,7 +67,7 @@ export function stylizeDeviceItemType(itemType: string): string {
  * Example: "PlayStation_4:CUH-11XXA" becomes "PlayStation 4"
  */
 export function destylizeDeviceTitle(handle: string): string {
-   const { device, variant } = splitDeviceAndVariant(handle);
+   const { device } = splitDeviceAndVariant(handle);
    return device.replace(/_/g, ' ');
 }
 
