@@ -17,7 +17,7 @@ export function useVariantProductList(
       (info) => info.name === 'model_number_pattern'
    )?.value;
    const modelNumberRegex = modelNumberPattern
-      ? new RegExp(modelNumberPattern?.replace(/[\*⎵]/g, '.'), 'g')
+      ? new RegExp(modelNumberPattern?.replace(/[*⎵]/g, '.'), 'g')
       : null;
    const replaceModelNumber =
       modelNumberRegex && variant.match(modelNumberRegex);
