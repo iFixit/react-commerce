@@ -21,17 +21,20 @@ import {
    ProductListChildrenSection,
    RelatedPostsSection,
 } from './sections';
+import { useVariantProductList } from './hooks/useVariantProductList';
 
 const HITS_PER_PAGE = 24;
 
 export interface ProductListViewProps {
    productList: ProductList;
    algoliaSSR?: boolean;
+   deviceHandle?: string;
 }
 
 export function ProductListView({
    productList,
    algoliaSSR,
+   deviceHandle,
 }: ProductListViewProps) {
    // This temporary hack allows to correctly populate the itemType facet during SSR
    // see: https://github.com/algolia/instantsearch/issues/5571
@@ -39,6 +42,7 @@ export function ProductListView({
    const filters = computeProductListAlgoliaFilterPreset(productList);
    const optionalFilters =
       computeProductListAlgoliaOptionalFilters(productList);
+   productList = useVariantProductList(productList, deviceHandle);
    const itemTypeProductList = useItemTypeProductList(productList);
    const availableItemTypes = useAvailableItemTypes();
 
