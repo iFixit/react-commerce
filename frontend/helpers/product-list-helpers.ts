@@ -11,6 +11,11 @@ type ProductListAttributes = {
    optionalFilters?: string | null;
 };
 
+type DeviceAndVariant = {
+   device: string;
+   variant: string;
+};
+
 export function computeProductListAlgoliaFilterPreset<
    T extends ProductListAttributes
 >(productList: T): string | undefined {
@@ -62,7 +67,7 @@ export function stylizeDeviceItemType(itemType: string): string {
  * Example: "PlayStation_4:CUH-11XXA" becomes "PlayStation 4"
  */
 export function destylizeDeviceTitle(handle: string): string {
-   const [device, _variant] = handle.split(':');
+   const { device, variant } = splitDeviceAndVariant(handle);
    return device.replace(/_/g, ' ');
 }
 
@@ -73,7 +78,15 @@ export function destylizeDeviceTitle(handle: string): string {
  * Example: "PlayStation_4:CUH-11XXA" becomes "PlayStation 4 CUH-11XXA"
  */
 export function destylizeDeviceTitleAndVariant(handle: string): string {
-   return handle.replace(/_|:/g, ' ');
+   const { device, variant } = splitDeviceAndVariant(handle);
+   const splitHandle = variant ? `${device} ${variant}` : device;
+   return splitHandle.replace(/_/g, ' ');
+}
+
+export function splitDeviceAndVariant(handle: string): DeviceAndVariant {
+   const [device, ...restParts] = handle.split(':');
+   const variant = restParts.join(':');
+   return { device, variant };
 }
 
 /**

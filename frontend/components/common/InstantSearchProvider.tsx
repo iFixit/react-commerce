@@ -6,6 +6,7 @@ import {
    destylizeDeviceTitleAndVariant,
    getFacetWidgetType,
    isValidRefinementListValue,
+   splitDeviceAndVariant,
    stylizeDeviceItemType,
    stylizeDeviceTitle,
 } from '@helpers/product-list-helpers';
@@ -335,9 +336,7 @@ function getBaseOrigin(location: Location): string {
 }
 
 function getDevicePath(handle: string, routeState: RouteState): string {
-   const [device, ...restParts] = handle.split(':');
-   const variant = restParts.join(':');
-
+   const { device, variant } = splitDeviceAndVariant(handle);
    const variantFromRouteState = routeState.filter?.worksin;
 
    if (variant && !variantFromRouteState) {
