@@ -702,8 +702,11 @@ function RelatedProblems({
    wikiData: TroubleshootingData;
    hasRelatedPages?: boolean;
 }) {
-   const { linkedProblems, deviceGuideUrl, countOfAssociatedProblems } =
-      wikiData;
+   const {
+      linkedProblems,
+      deviceTroubleshootingUrl,
+      countOfAssociatedProblems,
+   } = wikiData;
    const { displayTitle, imageUrl, description } = wikiData.category;
 
    const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
@@ -730,7 +733,7 @@ function RelatedProblems({
             displayTitle={displayTitle}
             description={description}
             countOfAssociatedProblems={countOfAssociatedProblems}
-            deviceGuideUrl={deviceGuideUrl}
+            deviceTroubleshootingUrl={deviceTroubleshootingUrl}
          />
       </Stack>
    );
@@ -746,7 +749,7 @@ function RelatedProblemsV2({
    const {
       linkedProblems,
       relatedProblems,
-      deviceGuideUrl,
+      deviceTroubleshootingUrl,
       countOfAssociatedProblems,
    } = wikiData;
    const { displayTitle, imageUrl, description } = wikiData.category;
@@ -781,7 +784,7 @@ function RelatedProblemsV2({
             displayTitle={displayTitle}
             description={description}
             countOfAssociatedProblems={countOfAssociatedProblems}
-            deviceGuideUrl={deviceGuideUrl}
+            deviceTroubleshootingUrl={deviceTroubleshootingUrl}
          />
       </Stack>
    );
@@ -792,13 +795,13 @@ function DeviceCard({
    displayTitle,
    description,
    countOfAssociatedProblems,
-   deviceGuideUrl,
+   deviceTroubleshootingUrl,
 }: {
    imageUrl: string;
    displayTitle: string;
    description: string;
    countOfAssociatedProblems: number;
-   deviceGuideUrl: string | undefined;
+   deviceTroubleshootingUrl: string | undefined;
 }) {
    return (
       <Stack
@@ -857,7 +860,7 @@ function DeviceCard({
                         ? '1 common problem'
                         : countOfAssociatedProblems + ' common problems'}
                   </Text>
-                  <Link href={deviceGuideUrl} textColor="brand.500">
+                  <Link href={deviceTroubleshootingUrl} textColor="brand.500">
                      {countOfAssociatedProblems === 1
                         ? 'View problem'
                         : 'View all'}
