@@ -173,19 +173,19 @@ const Wiki: NextPageWithLayout<{
                >
                   <Stack
                      id="main"
-                     display={{ base: 'flex', lg: 'grid' }}
-                     columnGap={{ lg: 12 }}
+                     display={{ base: 'flex', xl: 'grid' }}
+                     columnGap={{ xl: 12 }}
                      spacing={4}
                      height="max-content"
                      sx={{
                         gridTemplateAreas: {
-                           lg: `
+                           xl: `
                               "Content RelatedProblems"
                               "Conclusion RelatedProblems"
                               "AnswersCTA RelatedProblems"
                            `,
                         },
-                        gridTemplateColumns: { lg: `1fr ${sidebarWidth}` },
+                        gridTemplateColumns: { xl: `1fr ${sidebarWidth}` },
                      }}
                   >
                      <Stack spacing={4} gridArea="Content">
@@ -643,25 +643,38 @@ const ConclusionSection = function ConclusionSectionInner({
    const { onClick } = useTOCBufferPxScrollOnClick(conclusion.id);
 
    return (
-      <Box id={conclusion.id} ref={ref}>
-         <HeadingSelfLink id={conclusion.id} onClick={onClick}>
+      <Stack
+         id={conclusion.id}
+         ref={ref}
+         spacing={{ base: 4, sm: 6 }}
+         sx={{
+            '.HeadingSelfLink + .prerendered > ul:first-child': {
+               marginTop: '0',
+            },
+         }}
+      >
+         <HeadingSelfLink
+            id={conclusion.id}
+            onClick={onClick}
+            pt={{ base: 0, sm: 6 }}
+         >
             {conclusion.heading}
          </HeadingSelfLink>
          <PrerenderedHTML html={conclusion.body} template="troubleshooting" />
-      </Box>
+      </Stack>
    );
 };
 
 function Conclusion({ conclusion: conclusions }: { conclusion: Section[] }) {
    return (
-      <Box pt={{ base: 0, sm: 6 }} gridArea="Conclusion">
+      <Stack spacing={{ base: 4, xl: 6 }} gridArea="Conclusion">
          {conclusions.map((conclusion) => (
             <ConclusionSection
                key={conclusion.heading}
                conclusion={conclusion}
             />
          ))}
-      </Box>
+      </Stack>
    );
 }
 
@@ -724,7 +737,6 @@ function RelatedProblems({
          width={{ base: '100%' }}
          alignSelf="start"
          fontSize="14px"
-         pt={{ base: 6, xl: 0 }}
          gridArea="RelatedProblems"
       >
          {hasRelatedPages && <LinkedProblems problems={linkedProblems} />}
