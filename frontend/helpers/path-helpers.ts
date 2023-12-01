@@ -169,7 +169,8 @@ export function joinPaths(...paths: string[]) {
 }
 
 export function getRouteData(route: string) {
-   const pathParts = route.split('/').filter((part) => part !== '');
+   const [baseRoute, ..._rest] = route.split('?');
+   const pathParts = baseRoute.split('/').filter((part) => part !== '');
    const firstPathSegment = pathParts.length >= 1 ? pathParts[0] : '';
    const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
    const itemType = pathParts.length >= 3 ? pathParts[2] : '';
