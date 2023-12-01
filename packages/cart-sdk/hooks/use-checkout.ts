@@ -167,9 +167,12 @@ function useStandardCheckout() {
          const checkout = await createCheckout(lineItems);
          checkoutUrl = checkout.webUrl;
       }
+
+      const checkout = new URL(checkoutUrl);
+      checkout.hostname = shopifyClient.shopDomain;
       const ssoUrl = new URL(ssoRoute);
-      ssoUrl.searchParams.set('return_to', checkoutUrl);
-      return isUserLoggedIn ? ssoUrl.href : checkoutUrl;
+      ssoUrl.searchParams.set('return_to', checkout.toString());
+      return isUserLoggedIn ? ssoUrl.href : checkout.toString();
    };
 }
 
