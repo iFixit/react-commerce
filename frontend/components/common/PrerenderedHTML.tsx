@@ -305,6 +305,7 @@ const troubleshootingStyles: SystemStyleObject = {
 
       '& + ul, & + ol': {
          overflowX: 'auto', // clear sibling lists
+         minWidth: '25%', // prevent unreadable collapsing lists
       },
 
       '&.imageBox_center': {
