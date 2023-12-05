@@ -129,7 +129,7 @@ function Bit({
          </Flex>
          <Flex flexGrow={1} alignItems="center" gap="3" p="3">
             <Flex gap="1">
-               {bitCount > 0 && (
+               {bitCount && (
                   <>
                      <Text flexGrow={1}>{bitCount}</Text>
                      <Text color="gray.400">×</Text>
