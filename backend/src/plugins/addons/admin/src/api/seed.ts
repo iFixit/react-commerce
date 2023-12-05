@@ -1,5 +1,5 @@
 import { useRequest } from './request';
-import type { SeedResult } from '../../../server/services/seed';
+import type { SeedResult } from '../../../server/services/seed/custom';
 
 type Input = {
    strapiOrigin: string;
