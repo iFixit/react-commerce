@@ -71,7 +71,12 @@ const Wiki: NextPageWithLayout<{
       (conclusion) => conclusion.heading !== 'Related Pages'
    );
 
-   const hasRelatedPages = wikiData.linkedProblems.length > 0;
+   const relatedProblemsFlag = useFlag('extended-related-problems');
+
+   const relatedProblemsLength =
+      wikiData.linkedProblems.length +
+      (relatedProblemsFlag ? wikiData.relatedProblems.length : 0);
+   const hasRelatedPages = relatedProblemsLength > 0;
 
    const firstIntroSection = wikiData.introduction[0] || {};
    const otherIntroSections = wikiData.introduction.slice(1);
@@ -111,7 +116,6 @@ const Wiki: NextPageWithLayout<{
       },
    };
 
-   const relatedProblemsFlag = useFlag('extended-related-problems');
    const RelatedProblemsComponent = relatedProblemsFlag
       ? RelatedProblemsV2
       : RelatedProblems;
@@ -180,18 +184,19 @@ const Wiki: NextPageWithLayout<{
                >
                   <Stack
                      id="main"
-                     display={{ base: 'flex', lg: 'grid' }}
-                     columnGap={{ lg: 12 }}
+                     display={{ base: 'flex', xl: 'grid' }}
+                     columnGap={{ xl: 12 }}
                      spacing={4}
+                     height="max-content"
                      sx={{
                         gridTemplateAreas: {
-                           lg: `
+                           xl: `
                               "Content RelatedProblems"
                               "Conclusion RelatedProblems"
                               "AnswersCTA RelatedProblems"
                            `,
                         },
-                        gridTemplateColumns: { lg: `1fr ${sidebarWidth}` },
+                        gridTemplateColumns: { xl: `1fr ${sidebarWidth}` },
                      }}
                   >
                      <Stack spacing={4} gridArea="Content">
@@ -229,10 +234,12 @@ const Wiki: NextPageWithLayout<{
                            </Stack>
                         )}
                      </Stack>
-                     <Conclusion
-                        conclusion={filteredConclusions}
-                        bufferPx={bufferPx}
-                     />
+                     {filteredConclusions.length > 0 && (
+                        <Conclusion
+                           conclusion={filteredConclusions}
+                           bufferPx={bufferPx}
+                        />
+                     )}
                      <RelatedProblemsComponent
                         hasRelatedPages={hasRelatedPages}
                         wikiData={wikiData}
@@ -529,12 +536,25 @@ const ConclusionSection = function ConclusionSectionInner({
    const { onClick } = useTOCBufferPxScrollOnClick(conclusion.id);
 
    return (
-      <Box id={conclusion.id} ref={ref}>
-         <HeadingSelfLink id={conclusion.id} onClick={onClick}>
+      <Stack
+         id={conclusion.id}
+         ref={ref}
+         spacing={{ base: 4, sm: 6 }}
+         sx={{
+            '.HeadingSelfLink + .prerendered > ul:first-child': {
+               marginTop: '0',
+            },
+         }}
+      >
+         <HeadingSelfLink
+            id={conclusion.id}
+            onClick={onClick}
+            pt={{ base: 0, sm: 6 }}
+         >
             {conclusion.heading}
          </HeadingSelfLink>
          <PrerenderedHTML html={conclusion.body} template="troubleshooting" />
-      </Box>
+      </Stack>
    );
 };
 
@@ -596,8 +616,11 @@ function RelatedProblems({
    hasRelatedPages?: boolean;
    bufferPx?: number;
 }) {
-   const { linkedProblems, deviceGuideUrl, countOfAssociatedProblems } =
-      wikiData;
+   const {
+      linkedProblems,
+      deviceTroubleshootingUrl,
+      countOfAssociatedProblems,
+   } = wikiData;
    const { displayTitle, imageUrl, description } = wikiData.category;
    const ref = createRef<HTMLDivElement>();
 
@@ -616,7 +639,7 @@ function RelatedProblems({
             displayTitle={displayTitle}
             description={description}
             countOfAssociatedProblems={countOfAssociatedProblems}
-            deviceGuideUrl={deviceGuideUrl}
+            deviceTroubleshootingUrl={deviceTroubleshootingUrl}
          />
       </Stack>
    );
@@ -634,7 +657,7 @@ function RelatedProblemsV2({
    const {
       linkedProblems,
       relatedProblems,
-      deviceGuideUrl,
+      deviceTroubleshootingUrl,
       countOfAssociatedProblems,
    } = wikiData;
    const { displayTitle, imageUrl, description } = wikiData.category;
@@ -665,7 +688,7 @@ function RelatedProblemsV2({
             displayTitle={displayTitle}
             description={description}
             countOfAssociatedProblems={countOfAssociatedProblems}
-            deviceGuideUrl={deviceGuideUrl}
+            deviceTroubleshootingUrl={deviceTroubleshootingUrl}
          />
       </Stack>
    );
@@ -676,13 +699,13 @@ function DeviceCard({
    displayTitle,
    description,
    countOfAssociatedProblems,
-   deviceGuideUrl,
+   deviceTroubleshootingUrl,
 }: {
    imageUrl: string;
    displayTitle: string;
    description: string;
    countOfAssociatedProblems: number;
-   deviceGuideUrl: string | undefined;
+   deviceTroubleshootingUrl: string | undefined;
 }) {
    return (
       <Stack
@@ -741,7 +764,7 @@ function DeviceCard({
                         ? '1 common problem'
                         : countOfAssociatedProblems + ' common problems'}
                   </Text>
-                  <Link href={deviceGuideUrl} textColor="brand.500">
+                  <Link href={deviceTroubleshootingUrl} textColor="brand.500">
                      {countOfAssociatedProblems === 1
                         ? 'View problem'
                         : 'View all'}

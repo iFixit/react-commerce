@@ -1,109 +1,14 @@
-import type { Common, Strapi } from '@strapi/strapi';
+import type { Strapi } from '@strapi/strapi';
 import { downloadBackup } from './backup/download';
 import { exportBackup } from './backup/export';
 import { importBackup } from './backup/import';
-import { CollectionTypeRepository } from './collection-type-repository';
-import { MediaRepository } from './media-repository';
-import { SingleTypeRepository } from './single-type-repository';
-
-export type SeedResult = {
-   contentTypes: Record<
-      string,
-      {
-         count: number;
-      }
-   >;
-   media: {
-      count: number;
-   };
-};
-
-const FALLBACK_STRAPI_ORIGIN = 'https://main.govinor.com';
-
-type ImportContentTypesOptions = {
-   strapiOrigin?: string;
-   canDeleteExistingContent?: boolean;
-};
+import { importContentTypes } from './custom';
 
 export default ({ strapi }: { strapi: Strapi }) => ({
    exportBackup,
    downloadBackup,
    importBackup,
-   async importContentTypes({
-      strapiOrigin = FALLBACK_STRAPI_ORIGIN,
-      canDeleteExistingContent = false,
-   }: ImportContentTypesOptions): Promise<SeedResult> {
-      const mediaRepo = new MediaRepository({ strapi });
-      const allTypeUIDs: Common.UID.ContentType[] = Object.keys(
-         strapi.contentTypes
-      ) as any;
-      const apiTypeUIDs = allTypeUIDs.filter((type) =>
-         type.startsWith('api::')
-      );
-      const repos = apiTypeUIDs.map((uid) => {
-         const schema = strapi.contentType(uid);
-         switch (schema.kind) {
-            case 'collectionType': {
-               return new CollectionTypeRepository({
-                  strapi,
-                  uid,
-               });
-            }
-            case 'singleType': {
-               return new SingleTypeRepository({
-                  strapi,
-                  uid,
-               });
-            }
-         }
-      });
-
-      let shouldSeed = false;
-      if (canDeleteExistingContent) {
-         shouldSeed = true;
-      } else {
-         for (const repo of repos) {
-            const isRepoSeeded = await repo.isSeeded();
-            if (!isRepoSeeded) {
-               shouldSeed = true;
-               break;
-            }
-         }
-      }
-
-      if (repos.length === 0 || !shouldSeed) {
-         strapi.log.info('🌱 Nothing to seed. Skipping..');
-         return { contentTypes: {}, media: { count: 0 } };
-      }
-
-      await mediaRepo.dangerouslyReset();
-
-      for (const repo of repos) {
-         await repo.dangerouslyReset();
-         await repo.import({
-            strapiOrigin,
-         });
-         mediaRepo.addMedia(repo.mediaItems);
-         await repo.saveAttributes();
-      }
-
-      await mediaRepo.save();
-
-      let seedByCollection: SeedResult['contentTypes'] = {};
-
-      for (const repo of repos) {
-         await repo.saveNestedAttributes();
-         seedByCollection[repo.uid] = {
-            count: repo.count,
-         };
-         strapi.log.info(`🌱 ${repo.displayName} seeded.`);
-      }
-
-      return {
-         contentTypes: seedByCollection,
-         media: { count: mediaRepo.count },
-      };
-   },
+   importContentTypes,
    async createAdminUser() {
       const data: Record<string, any> = {
          username: process.env.ADMIN_USER || 'admin',

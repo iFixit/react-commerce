@@ -300,14 +300,14 @@ export const mockedLayoutProps: Pick<ProductTemplateProps, 'layoutProps'> = {
                   },
                   {
                      type: MenuItemType.Link,
-                     name: 'Careers',
-                     url: 'https://www.ifixit.com/about-us/careers',
+                     name: 'Discuss iFixit',
+                     url: 'https://meta.ifixit.com/',
                      description: null,
                   },
                   {
                      type: MenuItemType.Link,
-                     name: 'Feedback',
-                     url: 'https://meta.ifixit.com/',
+                     name: 'Careers',
+                     url: 'https://www.ifixit.com/about-us/careers',
                      description: null,
                   },
                   {

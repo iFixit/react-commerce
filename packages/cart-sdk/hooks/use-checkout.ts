@@ -154,22 +154,25 @@ function useStandardCheckout() {
          throw new Error(CartError.EmptyCart);
       }
       const localCheckout = getLocalCheckout();
-      let checkoutUrl: string | null = null;
+      let checkoutUrlStr: string | null = null;
       if (localCheckout != null) {
          try {
             const checkout = await updateCheckout(localCheckout.id, lineItems);
             if (checkout != null) {
-               checkoutUrl = checkout.webUrl;
+               checkoutUrlStr = checkout.webUrl;
             }
          } catch (error) {}
       }
-      if (checkoutUrl == null) {
+      if (checkoutUrlStr == null) {
          const checkout = await createCheckout(lineItems);
-         checkoutUrl = checkout.webUrl;
+         checkoutUrlStr = checkout.webUrl;
       }
+
+      const checkoutUrl = new URL(checkoutUrlStr);
+      checkoutUrl.host = shopifyClient.shopDomain;
       const ssoUrl = new URL(ssoRoute);
-      ssoUrl.searchParams.set('return_to', checkoutUrl);
-      return isUserLoggedIn ? ssoUrl.href : checkoutUrl;
+      ssoUrl.searchParams.set('return_to', checkoutUrl.toString());
+      return isUserLoggedIn ? ssoUrl.href : checkoutUrl.toString();
    };
 }
 

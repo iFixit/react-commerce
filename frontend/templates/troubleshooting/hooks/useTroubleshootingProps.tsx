@@ -88,6 +88,7 @@ export type TroubleshootingApiData = {
    answersUrl: string;
    viewStats?: ViewStatsProps;
    deviceGuideUrl?: string;
+   deviceTroubleshootingUrl?: string;
    devicePartsUrl?: string;
    canonicalUrl: string;
    lastUpdatedDate: number;
