@@ -55,6 +55,7 @@ import {
 } from './tocContext';
 import { uniqBy } from 'lodash';
 import { NavBar } from './components/NavBar';
+import { Causes, CauseData } from './components/Causes';
 
 const RelatedProblemsRecord = {
    title: 'Related Problems',
@@ -186,9 +187,12 @@ const Wiki: NextPageWithLayout<{
                      <Stack spacing={4} gridArea="Content">
                         <TroubleshootingHeading wikiData={wikiData} />
                         <Causes
-                           introduction={introSections}
-                           solutions={wikiData.solutions}
-                           problems={wikiData.linkedProblems}
+                           sx={{
+                              mb: { base: 4, mdPlus: 7 },
+                              pb: 4,
+                              borderBottom: '1px',
+                              borderColor: 'gray.300',
+                           }}
                         />
                         <Stack className="intro" spacing={6} pt={{ sm: 3 }}>
                            <IntroductionSections introduction={introSections} />
@@ -296,141 +300,6 @@ function TroubleshootingHeading({
             />
          </Stack>
       </HStack>
-   );
-}
-
-function Causes({
-   introduction,
-   solutions,
-   problems,
-}: {
-   introduction: Section[];
-   solutions: Section[];
-   problems: Problem[];
-}) {
-   const lgBreakpoint = useToken('breakpoints', 'lg');
-
-   const sx = {
-      display: 'block',
-      [`@media (min-width: ${lgBreakpoint})`]: {
-         display: 'none',
-      },
-   };
-
-   return (
-      <Box
-         mb={{ base: 4, md: 7 }}
-         pb={4}
-         borderBottom="1px"
-         borderColor="gray.300"
-         sx={sx}
-      >
-         <HeadingSelfLink as="h2" fontWeight="semibold" selfLinked id="causes">
-            {'Causes'}
-         </HeadingSelfLink>
-         <Stack
-            as="nav"
-            align="flex-start"
-            color="brand.500"
-            mt={4}
-            spacing={2}
-         >
-            {introduction.map((intro) => (
-               <CausesIntro key={intro.heading} {...intro} />
-            ))}
-            {solutions.map((solution, index) => (
-               <CausesSolution
-                  key={solution.heading}
-                  {...solution}
-                  index={index}
-               />
-            ))}
-            {problems.length > 0 && <CausesRelatedProblem />}
-         </Stack>
-      </Box>
-   );
-}
-
-function CausesIntro({ heading, id }: Section) {
-   const { onClick } = useTOCBufferPxScrollOnClick(id);
-
-   return (
-      <Stack>
-         <Link
-            href={`#${id}`}
-            fontWeight="semibold"
-            display="flex"
-            onClick={onClick}
-         >
-            <Square
-               size={6}
-               border="1px solid"
-               borderColor="brand.700"
-               borderRadius="md"
-               mr={2}
-            >
-               <FaIcon icon={faList} color="brand.500" />
-            </Square>
-            <Box as="span">{heading}</Box>
-         </Link>
-      </Stack>
-   );
-}
-
-function CausesSolution({ heading, id, index }: Section & { index: number }) {
-   const { onClick } = useTOCBufferPxScrollOnClick(id);
-
-   return (
-      <Stack>
-         <Link
-            href={`#${id}`}
-            fontWeight="semibold"
-            display="flex"
-            onClick={onClick}
-         >
-            <Square
-               size={6}
-               bgColor="brand.500"
-               border="1px solid"
-               borderColor="brand.700"
-               borderRadius="md"
-               color="white"
-               mr={2}
-               fontSize="sm"
-            >
-               {index + 1}
-            </Square>
-            <Box as="span">{heading}</Box>
-         </Link>
-      </Stack>
-   );
-}
-
-function CausesRelatedProblem() {
-   const { onClick } = useTOCBufferPxScrollOnClick(
-      RelatedProblemsRecord.uniqueId
-   );
-
-   return (
-      <Stack>
-         <Link
-            href={`#${RelatedProblemsRecord.uniqueId}`}
-            fontWeight="semibold"
-            display="flex"
-            onClick={onClick}
-         >
-            <Square
-               size={6}
-               border="1px solid"
-               borderColor="brand.700"
-               borderRadius="md"
-               mr={2}
-            >
-               <FaIcon icon={faCircleNodes} color="brand.500" />
-            </Square>
-            <Box as="span">Related Problems</Box>
-         </Link>
-      </Stack>
    );
 }
 

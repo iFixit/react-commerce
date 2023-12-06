@@ -24,6 +24,7 @@ import { faAngleDown } from '@fortawesome/pro-solid-svg-icons';
 import { debounce } from 'lodash';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/router';
+import { Causes } from './components/Causes';
 
 export function TOC({
    listItemProps,
@@ -84,7 +85,7 @@ function LargeTOC({
          }
          {...props}
       >
-         <TOCItems tocItems={items} listItemProps={listItemProps} />
+         <Causes />
       </FlexScrollGradient>
    );
 }
