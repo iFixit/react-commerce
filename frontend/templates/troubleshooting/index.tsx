@@ -32,7 +32,7 @@ import { IntlDate } from '@components/ui/IntlDate';
 import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
-import { useRef } from 'react';
+import { createRef, useRef } from 'react';
 import { useFlag } from '@ifixit/react-feature-flags';
 import ProblemCard from './Problem';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
