@@ -25,16 +25,11 @@ import { Causes } from './components/Causes';
 import type { TOCData } from './hooks/useTroubleshootingProps';
 
 export function TOC({
-   listItemProps,
    contentRef,
    ...props
 }: FlexProps & {
-   listItemProps?: ListItemProps;
    contentRef: RefObject<HTMLElement>;
 }) {
-   const { getItems } = useTOCContext();
-   const items = getItems().filter((item) => item.title !== 'Related Problems');
-
    useScrollToOnloadEffect();
 
    return (
@@ -50,7 +45,6 @@ export function TOC({
          <LargeTOC />
          <MobileTOC
             contentRef={contentRef}
-            listItemProps={listItemProps}
             flexGrow={1}
             position="fixed"
             top={0}
@@ -61,11 +55,7 @@ export function TOC({
    );
 }
 
-function LargeTOC({
-   items,
-   listItemProps,
-   ...props
-}: FlexProps & { listItemProps?: ListItemProps; items: TOCRecord[] }) {
+function LargeTOC(props: FlexProps) {
    return (
       <FlexScrollGradient
          gradientPX={96}
@@ -88,11 +78,9 @@ function LargeTOC({
 }
 
 export function MobileTOC({
-   listItemProps,
    contentRef,
    ...props
 }: FlexProps & {
-   listItemProps?: ListItemProps;
    contentRef: RefObject<HTMLElement>;
 }) {
    const { getItems } = useTOCContext<TOCData>();
@@ -304,55 +292,6 @@ export function useScrollToActiveEffect(
          top: el.offsetTop - el.parentElement.clientHeight / 2,
       });
    }, [ref, active]);
-}
-
-function TOCItem({
-   title,
-   elementRef,
-   active,
-   uniqueId,
-   scrollToBufferPx: _scrollToBufferPx,
-   scrollTo,
-   ...props
-}: TOCRecord & ListItemProps) {
-   const ref = useRef<HTMLLIElement>(null);
-
-   const blue100 = useToken('colors', 'blue.100');
-
-   const onClick = () => {
-      const el = elementRef.current;
-      if (!el) {
-         return;
-      }
-
-      scrollTo();
-
-      debouncedHighlightEl(el, blue100);
-   };
-
-   useScrollToActiveEffect(ref, active);
-
-   return (
-      <ListItem
-         paddingY={1}
-         paddingLeft={4}
-         paddingRight={3}
-         color={active ? 'brand.600' : 'gray.500'}
-         background={active ? 'blue.100' : undefined}
-         borderTopRightRadius={active ? 'md' : undefined}
-         borderBottomRightRadius={active ? 'md' : undefined}
-         ref={ref}
-         _hover={{
-            color: active ? undefined : 'gray.800',
-         }}
-         cursor="pointer"
-         {...props}
-      >
-         <Text fontWeight={500} fontSize="sm" onClick={onClick}>
-            {title}
-         </Text>
-      </ListItem>
-   );
 }
 
 const debouncedHighlightEl = debounce(highlightEl, 1000, {
