@@ -25,6 +25,7 @@ import { debounce } from 'lodash';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { Causes } from './components/Causes';
+import type { TOCData } from './hooks/useTroubleshootingProps';
 
 export function TOC({
    listItemProps,
