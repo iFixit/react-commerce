@@ -17,7 +17,6 @@ import {
    ModalHeader,
    ModalOverlay,
    SimpleGrid,
-   Square,
    Stack,
    Text,
    VisuallyHidden,
@@ -30,8 +29,6 @@ import { PixelPing } from '@components/analytics/PixelPing';
 import { PrerenderedHTML } from '@components/common';
 import { ViewStats } from '@components/common/ViewStats';
 import { IntlDate } from '@components/ui/IntlDate';
-import { faCircleNodes, faList } from '@fortawesome/pro-solid-svg-icons';
-import { FaIcon } from '@ifixit/icons';
 import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
@@ -156,6 +153,7 @@ const Wiki: NextPageWithLayout<{
                   contentRef={contentContainerRef}
                   borderRight={{ mdPlus: '1px solid' }}
                   borderColor={{ mdPlus: 'gray.300' }}
+                  maxWidth="calc(100% + 2 * var(--chakra-space-4))"
                   gridArea="toc"
                />
                <Flex
@@ -198,14 +196,24 @@ const Wiki: NextPageWithLayout<{
                   >
                      <Stack spacing={4} gridArea="Content">
                         <TroubleshootingHeading wikiData={wikiData} />
-                        <Causes
-                           sx={{
-                              mb: { base: 4, mdPlus: 7 },
-                              pb: 4,
-                              borderBottom: '1px',
-                              borderColor: 'gray.300',
-                           }}
-                        />
+                        <Box sx={{ ...layoutSwitch }}>
+                           <HeadingSelfLink
+                              as="h2"
+                              fontWeight="semibold"
+                              selfLinked
+                              id="causes"
+                           >
+                              {'Causes'}
+                           </HeadingSelfLink>
+                           <Causes
+                              sx={{
+                                 mb: { base: 4, mdPlus: 7 },
+                                 pb: 4,
+                                 borderBottom: '1px',
+                                 borderColor: 'gray.300',
+                              }}
+                           />
+                        </Box>
                         <Stack className="intro" spacing={6} pt={{ sm: 3 }}>
                            <IntroductionSections introduction={introSections} />
                         </Stack>
@@ -372,7 +380,7 @@ function AuthorInformation({
    const primaryAuthor: Author | undefined = authors[0];
    const otherAuthors = authors.slice(1);
    return (
-      <Flex align="center" gap={1.5}>
+      <HStack align="center" spacing={1.5}>
          {primaryAuthor && <AuthorAvatar author={primaryAuthor} />}
          <Flex justify="center" direction="column">
             {primaryAuthor && (
@@ -388,7 +396,7 @@ function AuthorInformation({
                historyUrl={historyUrl}
             />
          </Flex>
-      </Flex>
+      </HStack>
    );
 }
 
@@ -538,7 +546,7 @@ function Conclusion({
    bufferPx?: number;
 }) {
    return (
-      <Box pt={{ base: 0, sm: 6 }} gridArea="Conclusion">
+      <Stack spacing={6} gridArea="Conclusion">
          {conclusions.map((conclusion) => (
             <ConclusionSection
                key={conclusion.heading}
@@ -546,7 +554,7 @@ function Conclusion({
                bufferPx={bufferPx}
             />
          ))}
-      </Box>
+      </Stack>
    );
 }
 
@@ -598,12 +606,9 @@ function RelatedProblems({
          id={RelatedProblemsRecord.uniqueId}
          ref={ref}
          className="sidebar"
-         spacing={{ base: 4, xl: 6 }}
-         width={{ base: '100%' }}
-         alignSelf="start"
-         fontSize="14px"
-         pt={{ base: 6, xl: 0 }}
          gridArea="RelatedProblems"
+         spacing={{ base: 4, xl: 6 }}
+         sx={{ ...sidebarStyles }}
       >
          {hasRelatedPages && <LinkedProblems problems={linkedProblems} />}
          <DeviceCard
@@ -650,12 +655,9 @@ function RelatedProblemsV2({
          ref={ref}
          data-test="related-problems-v2"
          className="sidebar"
-         spacing={{ base: 4, xl: 6 }}
-         width={{ base: '100%' }}
-         alignSelf="start"
-         fontSize="14px"
-         pt={{ base: 0, sm: 6 }}
          gridArea="RelatedProblems"
+         spacing={{ base: 4, xl: 6 }}
+         sx={{ ...sidebarStyles }}
       >
          {hasRelatedPages && <LinkedProblems problems={uniqProblems} />}
          <DeviceCard
@@ -696,7 +698,7 @@ function DeviceCard({
             borderRadius="md"
             overflow="hidden"
          >
-            <Flex gap={2} padding={3} align="center">
+            <HStack spacing={2} padding={3} align="center">
                <Image
                   src={imageUrl}
                   alt={displayTitle}
@@ -723,7 +725,7 @@ function DeviceCard({
                      />
                   </Box>
                </Box>
-            </Flex>
+            </HStack>
             {countOfAssociatedProblems && (
                <Flex
                   justifyContent="space-between"
@@ -774,6 +776,20 @@ function LinkedProblems({ problems }: { problems: Problem[] }) {
       </Stack>
    );
 }
+
+const sidebarStyles = {
+   width: '100%',
+   alignSelf: 'start',
+   fontSize: '14px',
+   pt: { base: 6, xl: 0 },
+   height: { mdPlus: '100vh' },
+   '@media (min-width: 1025px)': {
+      position: 'sticky',
+      top: 8,
+      overflowY: 'scroll',
+      pb: '44px',
+   },
+};
 
 Wiki.getLayout = function getLayout(page, pageProps) {
    return <DefaultLayout {...pageProps.layoutProps}>{page}</DefaultLayout>;

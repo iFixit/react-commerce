@@ -3,15 +3,12 @@ import {
    Button,
    Flex,
    FlexProps,
-   List,
-   ListItem,
-   ListItemProps,
+   Heading,
    ListProps,
    Menu,
    MenuButton,
    MenuItem,
    MenuList,
-   Text,
    useBreakpointValue,
    useDisclosure,
    useToken,
@@ -46,6 +43,8 @@ export function TOC({
          position="sticky"
          top={0}
          zIndex={{ base: 'docked', mdPlus: 'initial' }}
+         paddingBlock={6}
+         paddingRight={3}
          {...props}
       >
          <LargeTOC />
@@ -73,16 +72,16 @@ function LargeTOC({
          display={{ base: 'none', mdPlus: 'block' }}
          nestedFlexProps={
             {
-               as: List,
                flexDirection: 'column',
                spacing: 1,
-               paddingBlock: 6,
-               paddingRight: 3,
                flex: 'auto',
             } as FlexProps & ListProps
          }
          {...props}
       >
+         <Heading as="h3" fontSize="sm" fontWeight="medium" pl={4}>
+            Causes
+         </Heading>
          <Causes />
       </FlexScrollGradient>
    );
