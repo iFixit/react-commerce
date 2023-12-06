@@ -27,11 +27,14 @@ export type ScrollToOptions = {
    addIdToUrl?: boolean;
 };
 
-export type TOCItems = Record<string, TOCRecord>;
-export type MinimalTOCRecord = { title: string; uniqueId: string };
-export type TOCContext = {
+export type TOCItems<T extends TOCRecord> = Record<string, T>;
+export type MinimalTOCRecord<T> = {
+   title: string;
+   uniqueId: string;
+} & T;
+export type TOCContext<T> = {
    addItem: (
-      minimalTOCRecord: MinimalTOCRecord,
+      minimalTOCRecord: MinimalTOCRecord<T>,
       ref: RefObject<HTMLElement>
    ) => void;
    updateItemRef: (
@@ -40,11 +43,11 @@ export type TOCContext = {
       scrollToBufferPx?: number
    ) => void;
    removeItem: (uniqueId: string) => void;
-   getItems: () => TOCRecord[];
-   getItem: (uniqueId: string) => TOCRecord | undefined;
+   getItems: () => (TOCRecord & T)[];
+   getItem: (uniqueId: string) => (TOCRecord & T) | undefined;
 };
 
-export const TOCContext = createContext<TOCContext | null>(null);
+const TOCContext = createContext(null as TOCContext<any> | null);
 
 function scrollTo(
    ref: RefObject<HTMLElement>,
@@ -66,8 +69,8 @@ function scrollTo(
    }
 }
 
-function createRecord(
-   minimalTOCRecord: MinimalTOCRecord,
+function createRecord<T>(
+   minimalTOCRecord: MinimalTOCRecord<T>,
    ref?: RefObject<HTMLElement>
 ) {
    const elementRef = ref || { current: null };
@@ -80,17 +83,17 @@ function createRecord(
    };
 }
 
-function createTOCItems(minimalTOCRecords: MinimalTOCRecord[]) {
+function createTOCItems<T>(minimalTOCRecords: MinimalTOCRecord<T>[]) {
    const records = minimalTOCRecords.map((minimalTOCRecord) =>
       createRecord(minimalTOCRecord, { current: null })
-   );
+   ) as (TOCRecord & T)[];
    return Object.fromEntries(
       records.map((record) => [record.uniqueId, record])
    );
 }
 
-function updateTOCItemRef(
-   existingItems: TOCItems,
+function updateTOCItemRef<T extends TOCRecord>(
+   existingItems: TOCItems<T>,
    uniqueId: string,
    ref?: RefObject<HTMLElement>,
    scrollToBufferPx?: number
@@ -117,15 +120,18 @@ function updateTOCItemRef(
    return newItems;
 }
 
-function removeTOCItem(existingItems: TOCItems, uniqueId: string) {
+function removeTOCItem<T extends TOCRecord>(
+   existingItems: TOCItems<T>,
+   uniqueId: string
+) {
    const newItems = { ...existingItems };
    delete newItems[uniqueId];
    return newItems;
 }
 
-function useCRUDFunctions(
-   items: TOCItems,
-   setItems: Dispatch<SetStateAction<TOCItems>>
+function useCRUDFunctions<T>(
+   items: TOCItems<T & TOCRecord>,
+   setItems: Dispatch<SetStateAction<TOCItems<T & TOCRecord>>>
 ) {
    const updateItemRef = useCallback(
       (
@@ -141,7 +147,7 @@ function useCRUDFunctions(
    );
 
    const addItem = useCallback(
-      (minimalTOCRecord: MinimalTOCRecord, ref: RefObject<HTMLElement>) => {
+      (minimalTOCRecord: MinimalTOCRecord<T>, ref: RefObject<HTMLElement>) => {
          setItems((items) => {
             const exists = Object.keys(items).includes(
                minimalTOCRecord.uniqueId
@@ -191,9 +197,9 @@ function useCRUDFunctions(
    };
 }
 
-function useObserveItems(
-   items: TOCItems,
-   setItems: Dispatch<SetStateAction<TOCItems>>
+function useObserveItems<T extends TOCRecord>(
+   items: TOCItems<T>,
+   setItems: Dispatch<SetStateAction<TOCItems<T>>>
 ) {
    const updateClosestItem = useCallback(() => {
       setItems((items) => {
@@ -230,15 +236,15 @@ function useObserveItems(
    }, [updateClosestItem]);
 }
 
-export type TOCContextProviderProps = PropsWithChildren<{
-   defaultItems?: MinimalTOCRecord[];
+export type TOCContextProviderProps<T> = PropsWithChildren<{
+   defaultItems?: MinimalTOCRecord<T>[];
 }>;
 
-export const TOCContextProvider = ({
+export function TOCContextProvider<T>({
    children,
    defaultItems,
-}: TOCContextProviderProps) => {
-   const [items, setItems] = useState<TOCItems>(
+}: TOCContextProviderProps<T>) {
+   const [items, setItems] = useState<TOCItems<T & TOCRecord>>(
       createTOCItems(defaultItems || [])
    );
 
@@ -254,20 +260,20 @@ export const TOCContextProvider = ({
       getItem,
    };
    return <TOCContext.Provider value={context}>{children}</TOCContext.Provider>;
-};
+}
 
-export const useTOCContext = () => {
-   const context = useContext(TOCContext);
+export function useTOCContext<T>() {
+   const context = useContext(TOCContext) as TOCContext<T>;
    if (!context) {
       throw new SentryError('useTOCContext must be used within a TOCContext');
    }
    return context;
-};
+}
 
-export function AddToTOCClientSide<T extends HTMLElement>(
-   minimalTOCRecord: MinimalTOCRecord
+export function AddToTOCClientSide<T extends HTMLElement, U>(
+   minimalTOCRecord: MinimalTOCRecord<U>
 ) {
-   const { addItem, removeItem } = useTOCContext();
+   const { addItem, removeItem } = useTOCContext<U>();
    const ref = useRef<T>(null);
 
    useEffect(() => {
@@ -323,7 +329,7 @@ export function useTOCBufferPxScrollOnClick(id: string) {
    };
 }
 
-function sortVertically(records: TOCRecord[]): TOCRecord[] {
+function sortVertically<T extends TOCRecord>(records: T[]): T[] {
    return records.sort((a, b) => {
       const aTop = a.elementRef.current?.offsetTop || 0;
       const bTop = b.elementRef.current?.offsetTop || 0;
@@ -331,7 +337,7 @@ function sortVertically(records: TOCRecord[]): TOCRecord[] {
    });
 }
 
-function getClosest(items: TOCItems) {
+function getClosest<T extends TOCRecord>(items: TOCItems<T>) {
    const visibleItems = Object.values(items).filter((record) => {
       const el = record.elementRef.current;
       if (!el) {

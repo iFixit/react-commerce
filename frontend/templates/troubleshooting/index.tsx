@@ -50,6 +50,7 @@ import SolutionCard from './solution';
 import { TOC } from './toc';
 import {
    LinkToTOC,
+   MinimalTOCRecord,
    TOCContextProvider,
    useTOCBufferPxScrollOnClick,
 } from './tocContext';
@@ -90,9 +91,12 @@ const Wiki: NextPageWithLayout<{
       .concat(wikiData.solutions)
       .concat(filteredConclusions);
 
-   const tocItems = sections
-      .map((section) => ({ title: section.heading, uniqueId: section.id }))
-      .concat(hasRelatedPages ? RelatedProblemsRecord : [])
+   const tocItems: MinimalTOCRecord<CauseData>[] = sections
+      .map((section) => ({
+         title: section.heading,
+         uniqueId: section.id,
+         ...section,
+      }))
       .filter((tocItem) => tocItem.title);
 
    const contentContainerRef = useRef<HTMLDivElement>(null);

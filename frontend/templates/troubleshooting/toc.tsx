@@ -95,7 +95,7 @@ export function MobileTOC({
    listItemProps?: ListItemProps;
    contentRef: RefObject<HTMLElement>;
 }) {
-   const { getItems } = useTOCContext();
+   const { getItems } = useTOCContext<TOCData>();
    const items = getItems();
    const wantsMobile = useBreakpointValue({ base: true, mdPlus: false });
    const activeItem = items.find((item) => item.active);
@@ -145,7 +145,7 @@ export function MobileTOC({
 }
 
 function useScrollToOnloadEffect() {
-   const { getItem } = useTOCContext();
+   const { getItem } = useTOCContext<TOCData>();
 
    const [ranEffect, setRanEffect] = useState(false);
 
@@ -286,21 +286,10 @@ function MobileTOCItem({
    );
 }
 
-function TOCItems({
-   tocItems,
-   listItemProps,
-}: {
-   tocItems: TOCRecord[];
-   listItemProps?: ListItemProps;
-}) {
-   const items = tocItems.map((props, index) => {
-      return <TOCItem key={index} {...props} {...listItemProps} />;
-   });
-
-   return <>{items}</>;
-}
-
-function useScrollToActiveEffect(ref: RefObject<HTMLElement>, active: boolean) {
+export function useScrollToActiveEffect(
+   ref: RefObject<HTMLElement>,
+   active: boolean
+) {
    useEffect(() => {
       const el = ref.current;
       if (!el) {
