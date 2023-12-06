@@ -2,17 +2,10 @@
 
 import { Center, Divider, Heading, Text, VStack } from '@chakra-ui/react';
 import { AppProviders } from '@components/common/AppProviders';
-import { DEFAULT_STORE_CODE } from '@config/env';
-import { getLayoutServerSideProps } from '@layouts/default/server';
-import IFixitPageFrame from '../components/ifixit-page-frame';
+import { DefaultLayoutProps } from '@layouts/default/server';
+import IFixitPageFrame from './ifixit-page-frame';
 
-export default async function NotFound() {
-   const layoutPropsPromise = getLayoutServerSideProps({
-      storeCode: DEFAULT_STORE_CODE,
-   });
-
-   const layoutProps = await layoutPropsPromise;
-
+export default function NotFoundPage(layoutProps: DefaultLayoutProps) {
    return (
       <AppProviders>
          <IFixitPageFrame {...layoutProps}>

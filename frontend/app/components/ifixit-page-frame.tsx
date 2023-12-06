@@ -14,7 +14,7 @@ import {
    MenuList,
    Portal,
 } from '@chakra-ui/react';
-import { GoogleAnalytics } from './GoogleAnalytics';
+import { GoogleAnalytics } from '../(defaultLayout)/components/GoogleAnalytics';
 import { SmartLink } from '@components/ui/SmartLink';
 import {
    faArrowRight,
