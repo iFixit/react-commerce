@@ -41,17 +41,13 @@ export function TOC({
 
    return (
       <Box
-         height={{ lg: '100vh' }}
+         height={{ mdPlus: '100vh' }}
          position="sticky"
          top={0}
-         zIndex={{ base: 'docked', lg: 'initial' }}
+         zIndex={{ base: 'docked', mdPlus: 'initial' }}
          {...props}
       >
-         <LargeTOC
-            items={items}
-            listItemProps={listItemProps}
-            display={{ base: 'none', lg: 'flex' }}
-         />
+         <LargeTOC />
          <MobileTOC
             contentRef={contentRef}
             listItemProps={listItemProps}
@@ -73,6 +69,7 @@ function LargeTOC({
    return (
       <FlexScrollGradient
          gradientPX={96}
+         display={{ base: 'none', mdPlus: 'block' }}
          nestedFlexProps={
             {
                as: List,
@@ -100,7 +97,7 @@ export function MobileTOC({
 }) {
    const { getItems } = useTOCContext();
    const items = getItems();
-   const wantsMobile = useBreakpointValue({ base: true, lg: false });
+   const wantsMobile = useBreakpointValue({ base: true, mdPlus: false });
    const activeItem = items.find((item) => item.active);
 
    const [showMobileTOC, setShowMobileTOC] = useState(false);

@@ -97,8 +97,18 @@ const Wiki: NextPageWithLayout<{
 
    const contentContainerRef = useRef<HTMLDivElement>(null);
 
+   const bufferPx = useBreakpointValue({ base: -40, mdPlus: 0 });
+
    const tocWidth = '220px';
    const sidebarWidth = '320px';
+
+   const layoutSwitchBreakpoint = useToken('breakpoints', 'mdPlus');
+   const layoutSwitch = {
+      display: 'block',
+      [`@media (min-width: ${layoutSwitchBreakpoint})`]: {
+         display: 'none',
+      },
+   };
 
    const relatedProblemsFlag = useFlag('extended-related-problems');
    const RelatedProblemsComponent = relatedProblemsFlag
@@ -132,7 +142,7 @@ const Wiki: NextPageWithLayout<{
                sx={{
                   gridTemplateColumns: {
                      base: `[toc] 0 [wrapper] 1fr`,
-                     lg: `[toc] ${tocWidth} [wrapper] 1fr`,
+                     mdPlus: `[toc] ${tocWidth} [wrapper] 1fr`,
                   },
                }}
                ref={contentContainerRef}
@@ -140,10 +150,8 @@ const Wiki: NextPageWithLayout<{
                <TOC
                   className="summary"
                   contentRef={contentContainerRef}
-                  borderRight={{ lg: '1px solid' }}
-                  borderColor={{ lg: 'gray.300' }}
-                  maxWidth={{ base: 'calc(100% + 2 * var(--chakra-space-4))' }}
-                  listItemProps={{ paddingLeft: { lg: 4 } }}
+                  borderRight={{ mdPlus: '1px solid' }}
+                  borderColor={{ mdPlus: 'gray.300' }}
                   gridArea="toc"
                />
                <Flex
@@ -209,7 +217,10 @@ const Wiki: NextPageWithLayout<{
                            </Stack>
                         )}
                      </Stack>
-                     <Conclusion conclusion={filteredConclusions} />
+                     <Conclusion
+                        conclusion={filteredConclusions}
+                        bufferPx={bufferPx}
+                     />
                      <RelatedProblemsComponent
                         hasRelatedPages={hasRelatedPages}
                         wikiData={wikiData}
@@ -289,7 +300,7 @@ function TroubleshootingHeading({
                as="h1"
                id="top"
                selfLinked
-               fontSize={{ base: '24px', md: '30px' }}
+               fontSize={{ base: '24px', mdPlus: '30px' }}
             >
                {wikiData.title}
             </HeadingSelfLink>
@@ -472,8 +483,8 @@ function IntroductionSection({
    intro,
    ...headingProps
 }: { intro: Section } & HeadingProps) {
-   const bufferPx = useBreakpointValue({ base: -46, lg: -6 });
-   const { ref } = LinkToTOC<HTMLHeadingElement>(intro.id, bufferPx);
+   const bufferPxAlt = useBreakpointValue({ base: -46, lg: -6 });
+   const { ref } = LinkToTOC<HTMLHeadingElement>(intro.id, bufferPxAlt);
    const { onClick } = useTOCBufferPxScrollOnClick(intro.id);
 
    return (
@@ -497,10 +508,11 @@ function IntroductionSection({
 
 const ConclusionSection = function ConclusionSectionInner({
    conclusion,
+   bufferPx,
 }: {
    conclusion: Section;
+   bufferPx?: number;
 }) {
-   const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
    const { ref } = LinkToTOC<HTMLHeadingElement>(conclusion.id, bufferPx);
    const { onClick } = useTOCBufferPxScrollOnClick(conclusion.id);
 
@@ -514,13 +526,20 @@ const ConclusionSection = function ConclusionSectionInner({
    );
 };
 
-function Conclusion({ conclusion: conclusions }: { conclusion: Section[] }) {
+function Conclusion({
+   conclusion: conclusions,
+   bufferPx,
+}: {
+   conclusion: Section[];
+   bufferPx?: number;
+}) {
    return (
       <Box pt={{ base: 0, sm: 6 }} gridArea="Conclusion">
          {conclusions.map((conclusion) => (
             <ConclusionSection
                key={conclusion.heading}
                conclusion={conclusion}
+               bufferPx={bufferPx}
             />
          ))}
       </Box>
@@ -563,16 +582,12 @@ function RelatedProblems({
 }: {
    wikiData: TroubleshootingData;
    hasRelatedPages?: boolean;
+   bufferPx?: number;
 }) {
    const { linkedProblems, deviceGuideUrl, countOfAssociatedProblems } =
       wikiData;
    const { displayTitle, imageUrl, description } = wikiData.category;
-
-   const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
-   const { ref } = LinkToTOC<HTMLHeadingElement>(
-      RelatedProblemsRecord.uniqueId,
-      bufferPx
-   );
+   const ref = createRef<HTMLDivElement>();
 
    return (
       <Stack
@@ -601,9 +616,11 @@ function RelatedProblems({
 function RelatedProblemsV2({
    wikiData,
    hasRelatedPages,
+   bufferPx,
 }: {
    wikiData: TroubleshootingData;
    hasRelatedPages?: boolean;
+   bufferPx?: number;
 }) {
    const {
       linkedProblems,
@@ -613,7 +630,6 @@ function RelatedProblemsV2({
    } = wikiData;
    const { displayTitle, imageUrl, description } = wikiData.category;
 
-   const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
    const { ref } = LinkToTOC<HTMLHeadingElement>(
       RelatedProblemsRecord.uniqueId,
       bufferPx
@@ -680,8 +696,8 @@ function DeviceCard({
                <Image
                   src={imageUrl}
                   alt={displayTitle}
-                  minWidth={{ base: '75px', md: '104px' }}
-                  minHeight={{ base: '56px', md: '78px' }}
+                  minWidth={{ base: '75px', mdPlus: '104px' }}
+                  minHeight={{ base: '56px', mdPlus: '78px' }}
                   htmlWidth={104}
                   htmlHeight={78}
                   objectFit="cover"
@@ -736,7 +752,7 @@ function LinkedProblems({ problems }: { problems: Problem[] }) {
       <Stack spacing={3}>
          <Heading
             as="h3"
-            fontSize={{ base: '20px', md: '24px' }}
+            fontSize={{ base: '20px', mdPlus: '24px' }}
             fontWeight="medium"
             lineHeight="normal"
          >
