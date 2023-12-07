@@ -64,6 +64,7 @@ export function ProductResource({ product }: { product: SectionProduct }) {
          spacing={1}
          showBuyButton={true}
          openInNewTab={true}
+         imageRatio={1}
       >
          <ResourceProductRating product={product} />
          <ResourceProductPrice price={price} />
@@ -199,6 +200,7 @@ function Resource({
    showBuyButton,
    openInNewTab,
    children,
+   imageRatio = 4 / 3,
 }: React.PropsWithChildren<{
    title: string;
    showStackedImages?: boolean;
@@ -210,6 +212,7 @@ function Resource({
    href: string;
    showBuyButton?: string | boolean;
    openInNewTab?: boolean;
+   imageRatio?: number;
 }>) {
    const difficultyTheme =
       difficulty && hasKey(DifficultyThemeLookup, difficulty)
@@ -230,7 +233,7 @@ function Resource({
                   borderRadius="md"
                   outline="1px solid"
                   outlineColor="gray.300"
-                  aspectRatio={4 / 3}
+                  aspectRatio={imageRatio}
                >
                   {showStackedImages && (
                      // Renders an empty box to fake the stacked image effect
