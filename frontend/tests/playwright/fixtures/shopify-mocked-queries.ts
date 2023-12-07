@@ -983,4 +983,5 @@ export const findProductQueryMock: FindProductQuery = {
       },
       vendor: '',
    },
+   urlRedirects: { edges: [] },
 };

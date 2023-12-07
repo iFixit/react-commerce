@@ -56,6 +56,7 @@ export type {
 export type Product = z.infer<typeof ProductSchema>;
 
 export const ProductSchema = z.object({
+   __typename: z.literal('Product'),
    id: z.string(),
    handle: z.string(),
    title: z.string(),
@@ -131,6 +132,7 @@ export async function getProduct({
    const noindex = shopifyProduct.noindex?.value === '1';
 
    return {
+      __typename: 'Product',
       id: shopifyProduct.id,
       handle: shopifyProduct.handle,
       noindex,

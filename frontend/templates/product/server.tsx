@@ -38,6 +38,15 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
          { forceMiss }
       );
 
+      if (product?.__typename === 'ShopifyProductRedirect') {
+         return {
+            redirect: {
+               destination: product.target,
+               permanent: true,
+            },
+         };
+      }
+
       if (product == null) {
          return {
             notFound: true,

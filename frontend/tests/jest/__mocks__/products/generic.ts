@@ -181,6 +181,7 @@ const productVariants: ProductVariant[] = [
 ];
 
 export const mockedProduct: Product = {
+   __typename: 'Product',
    id: 'gid://shopify/Product/1231231231231',
    title: 'Mocked Product Title',
    handle: 'iphone-6s-plus-replacement-battery',
