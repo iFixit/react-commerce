@@ -5,6 +5,7 @@ import { Product, getProduct } from '.';
 import { findStoreByCode } from '../store';
 import { fetchProductData } from '@lib/ifixit-api/productData';
 import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
+import { z } from 'zod';
 
 export type FindProductArgs = {
    handle: string;
@@ -12,11 +13,16 @@ export type FindProductArgs = {
    ifixitOrigin: string;
 };
 
+type ShopifyProductRedirect = z.infer<typeof ShopifyProductRedirectSchema>;
+export const ShopifyProductRedirectSchema = z.object({
+   target: z.string(),
+});
+
 export async function findProduct({
    handle,
    storeCode,
    ifixitOrigin,
-}: FindProductArgs): Promise<Product | null> {
+}: FindProductArgs): Promise<Product | ShopifyProductRedirect | null> {
    const store = await findStoreByCode(storeCode);
    const { storefrontDomain, storefrontDelegateAccessToken } = store.shopify;
    invariant(
@@ -32,6 +38,7 @@ export async function findProduct({
          timeAsync('shopify_api.findProduct', () =>
             storefront.findProduct({
                handle,
+               pathQuery: `path:/products/${handle}`,
             })
          ),
          timeAsync('strapi.findProduct', () =>
@@ -45,13 +52,14 @@ export async function findProduct({
          ),
       ]);
 
+   const urlRedirect = shopifyQueryResponse.urlRedirects.edges[0]?.node?.target;
    const product = await getProduct({
       shopifyProduct: shopifyQueryResponse.product,
       strapiProduct: strapiQueryResponse.products?.data[0],
       iFixitProduct: iFixitQueryResponse,
    });
    if (product == null) {
-      return null;
+      return urlRedirect ? { target: urlRedirect } : null;
    }
 
    return product;

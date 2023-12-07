@@ -38,6 +38,15 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
          { forceMiss }
       );
 
+      if (product && 'target' in product) {
+         return {
+            redirect: {
+               destination: product.target,
+               permanent: true,
+            },
+         };
+      }
+
       if (product == null) {
          return {
             notFound: true,
