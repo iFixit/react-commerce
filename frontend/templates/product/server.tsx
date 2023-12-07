@@ -54,10 +54,16 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
       }
 
       if (product.redirectUrl) {
-         const query = new URL(urlFromContext(context)).search;
+         const destination = new URL(product.redirectUrl);
+         const requestParams = new URL(urlFromContext(context)).searchParams;
+         requestParams.forEach((value, key) => {
+            if (!destination.searchParams.has(key)) {
+               destination.searchParams.append(key, value);
+            }
+         });
          return {
             redirect: {
-               destination: `${product.redirectUrl}${query}`,
+               destination: destination.href,
                permanent: true,
             },
          };
