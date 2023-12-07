@@ -170,7 +170,7 @@ function ResourceBox({
          borderColor="gray.400"
          borderWidth="1px"
          borderRadius="md"
-         minHeight="88px"
+         minHeight="72px"
          padding={3}
          display="flex"
          width="100%"
@@ -224,41 +224,42 @@ function Resource({
    return (
       <ResourceBox>
          {imageUrl && (
-            <Box
-               position="relative"
-               mr={2}
-               boxSize="64px"
-               minWidth="64px"
-               borderRadius="md"
-               outline="1px solid"
-               outlineColor="gray.300"
-            >
-               {showStackedImages && (
-                  // Renders an empty box to fake the stacked image effect
-                  <Box
-                     width="100%"
-                     height="100%"
-                     borderRadius="inherit"
+            <Box width="64px" position="relative" mr={2}>
+               <Box
+                  width="100%"
+                  borderRadius="md"
+                  outline="1px solid"
+                  outlineColor="gray.300"
+                  aspectRatio={4 / 3}
+               >
+                  {showStackedImages && (
+                     // Renders an empty box to fake the stacked image effect
+                     <Box
+                        aspectRatio="inherit"
+                        width="inherit"
+                        height="inherit"
+                        borderRadius="inherit"
+                        outline="inherit"
+                        outlineColor="inherit"
+                        position="absolute"
+                        top="0"
+                        transform="rotate(6deg)"
+                     />
+                  )}
+                  <Image
                      outline="inherit"
                      outlineColor="inherit"
-                     position="absolute"
-                     top="0"
-                     transform="rotate(6deg)"
+                     borderRadius="inherit"
+                     objectFit="contain"
+                     width="100%"
+                     height="100%"
+                     alt={title}
+                     src={imageUrl}
+                     position="relative"
+                     zIndex="1"
+                     bgColor="white"
                   />
-               )}
-               <Image
-                  outline="inherit"
-                  outlineColor="inherit"
-                  borderRadius="inherit"
-                  objectFit="contain"
-                  width="100%"
-                  height="100%"
-                  alt={title}
-                  src={imageUrl}
-                  position="relative"
-                  zIndex="1"
-                  bgColor="white"
-               />
+               </Box>
             </Box>
          )}
          <Flex flex="1" flexDirection={{ base: 'column', sm: 'row' }}>
