@@ -15,6 +15,7 @@ export type FindProductArgs = {
 
 type ShopifyProductRedirect = z.infer<typeof ShopifyProductRedirectSchema>;
 export const ShopifyProductRedirectSchema = z.object({
+   __typename: z.literal('ShopifyProductRedirect'),
    target: z.string(),
 });
 
@@ -59,7 +60,9 @@ export async function findProduct({
       iFixitProduct: iFixitQueryResponse,
    });
    if (product == null) {
-      return urlRedirect ? { target: urlRedirect } : null;
+      return urlRedirect
+         ? { __typename: 'ShopifyProductRedirect', target: urlRedirect }
+         : null;
    }
 
    return product;
