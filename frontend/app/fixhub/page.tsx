@@ -100,38 +100,67 @@ const ArduinoConnector = () => {
    const [port, setPort] = useState(null);
    const [writer, setWriter] =
       useState<WritableStreamDefaultWriter<any> | null>(null);
+   const [reader, setReader] =
+      useState<ReadableStreamDefaultReader<any> | null>(null);
    const [ledState, setLedState] = useState(false);
 
    const connectDevice = async () => {
       try {
          const newPort = await navigator.serial.requestPort({
-            filters: [{ usbVendorId: VENDOR_ID }],
+            //filters: [{ usbVendorId: VENDOR_ID }],
          });
          await newPort.open({ baudRate: 9600 });
 
          const newWriter = newPort.writable.getWriter();
+         const newReader = newPort.readable.getReader();
          setPort(newPort);
          setWriter(newWriter);
+         setReader(newReader);
+         console.log(newPort);
       } catch (error) {
          console.error('Connection failed: ', error);
       }
    };
 
-   const toggleLed = async () => {
+   const sendCommand = async () => {
       if (!writer) {
          console.error('No device connected');
          return;
       }
 
-      // Toggle the LED state
-      setLedState(!ledState);
-      const data = new Uint8Array([ledState ? 0x02 : 0x01]); // 0x01 to turn on, 0x02 to turn off
-      await writer.write(data);
+      const encoder = new TextEncoder();
+      await writer.write(encoder.encode('heater details\n'));
+      //writer.releaseLock();
+
+      const textDecoder = new TextDecoder();
+
+      let output = '';
+      try {
+         while (true) {
+            const { value, done } = await reader.read();
+            if (done) {
+               break; // Exit the loop when the stream is closed
+            }
+            const decodedString = textDecoder.decode(value);
+            output += decodedString;
+            alert(output);
+         }
+      } catch (error) {
+         console.error('Error reading the stream', error);
+      } finally {
+         //reader.releaseLock(); // Release the lock when done
+      }
+
+      console.log(output);
    };
 
    const disconnectDevice = async () => {
       if (writer) {
          writer.releaseLock();
+      }
+
+      if (reader) {
+         reader.releaseLock();
       }
 
       if (port) {
@@ -147,7 +176,7 @@ const ArduinoConnector = () => {
             <button onClick={connectDevice}>Connect to Arduino</button>
          ) : (
             <div>
-               <button onClick={toggleLed} disabled={!port}>
+               <button onClick={sendCommand} disabled={!port}>
                   {ledState ? 'Turn off' : 'Turn on'}
                </button>
                <button onClick={disconnectDevice} disabled={!port}>
