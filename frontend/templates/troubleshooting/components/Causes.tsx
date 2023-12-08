@@ -1,8 +1,7 @@
 import { Box, Link, Square } from '@chakra-ui/react';
-import { IconDefinition, faList } from '@fortawesome/pro-solid-svg-icons';
+import { faList } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
 import { useRef } from 'react';
-import type { TOCData } from '../hooks/useTroubleshootingProps';
 import { useScrollToActiveEffect } from '../toc';
 import {
    TOCRecord,
@@ -10,19 +9,27 @@ import {
    useTOCContext,
 } from '../tocContext';
 
-export function Causes(...props: any) {
-   const intros = useTOCContext<IntroData>()
+function isIntroData(data: TOCEntry): data is IntroData & TOCRecord {
+   return data.type === 'Introduction';
+}
+function isCauseData(data: TOCEntry): data is SolutionData & TOCRecord {
+   return data.type === 'Solution';
+}
+
+function isConclusionData(data: TOCEntry): data is ConclusionData & TOCRecord {
+   return data.type === 'Conclusion';
+}
+
+export function Causes(props: React.ComponentProps<typeof Box>) {
+   const intros: (IntroData & TOCRecord)[] = useTOCContext<TOCEntry>()
       .getItems()
-      .filter(
-         (intro) =>
-            intro.heading === 'Introduction' || intro.heading === 'First Steps'
-      );
-   const causes = useTOCContext<CauseData>()
+      .filter(isIntroData);
+   const solutions: (SolutionData & TOCRecord)[] = useTOCContext<TOCEntry>()
       .getItems()
-      .filter(
-         (cause) =>
-            cause.heading !== 'Introduction' && cause.heading !== 'First Steps'
-      );
+      .filter(isCauseData);
+   const conclusions: (ConclusionData & TOCRecord)[] = useTOCContext<TOCEntry>()
+      .getItems()
+      .filter(isConclusionData);
 
    return (
       <Box
@@ -36,7 +43,7 @@ export function Causes(...props: any) {
          {intros.map((intro) => (
             <Intro key={intro.uniqueId} {...intro} />
          ))}
-         {causes.map((cause, index) => (
+         {solutions.map((cause, index) => (
             <Cause key={cause.uniqueId} causeNumber={index + 1} {...cause} />
          ))}
       </Box>
@@ -49,7 +56,7 @@ function Cause({
    id,
    active,
    causeNumber,
-}: CauseData & TOCRecord) {
+}: SolutionData & TOCRecord) {
    const { onClick } = useTOCBufferPxScrollOnClick(id);
    const ref = useRef<HTMLAnchorElement>(null);
 
@@ -103,13 +110,26 @@ function Intro({ uniqueId, heading, id, active }: IntroData & TOCRecord) {
    );
 }
 
-export type CauseData = TOCData & {
+export type SectionData = {
+   id: string;
+   heading: string;
+};
+
+export type SolutionData = SectionData & {
+   type: 'Solution';
    causeNumber?: number;
 };
 
-export type IntroData = TOCData & {
-   faIcon: IconDefinition;
+export type IntroData = SectionData & {
+   type: 'Introduction';
 };
+
+export type ConclusionData = SectionData & {
+   type: 'Conclusion';
+};
+
+export type SectionRecord = IntroData | SolutionData | ConclusionData;
+export type TOCEntry = SectionRecord & TOCRecord;
 
 const linkStyles = {
    display: 'flex',
