@@ -53,12 +53,26 @@ import {
 } from './tocContext';
 import { uniqBy } from 'lodash';
 import { NavBar } from './components/NavBar';
-import { Causes, CauseData } from './components/Causes';
+import { Causes, SectionRecord } from './components/Causes';
 
 const RelatedProblemsRecord = {
    title: 'Related Problems',
    uniqueId: 'related-problems',
 };
+
+function tagEntry<T extends object, Type extends string>(
+   type: Type,
+   value: T
+): T & { type: Type } {
+   return { type, ...value };
+}
+
+function tagEntries<T extends object, Type extends string>(
+   type: Type,
+   values: T[]
+) {
+   return values.map((t) => tagEntry(type, t));
+}
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -89,11 +103,26 @@ const Wiki: NextPageWithLayout<{
       ? [cleanFirstIntroSection, ...otherIntroSections]
       : wikiData.introduction;
 
-   const sections = introSections
-      .concat(wikiData.solutions)
-      .concat(filteredConclusions);
+   const taggedIntroSections: SectionRecord[] = tagEntries(
+      'Introduction',
+      introSections
+   );
 
-   const tocItems: MinimalTOCRecord<CauseData>[] = sections
+   const taggedSolutions: SectionRecord[] = tagEntries(
+      'Solution',
+      wikiData.solutions
+   );
+
+   const taggedConclusions: SectionRecord[] = tagEntries(
+      'Conclusion',
+      filteredConclusions
+   );
+
+   const sections = taggedIntroSections
+      .concat(taggedSolutions)
+      .concat(taggedConclusions);
+
+   const tocItems: MinimalTOCRecord<SectionRecord>[] = sections
       .map((section) => ({
          title: section.heading,
          uniqueId: section.id,
