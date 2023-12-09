@@ -35,7 +35,6 @@ export function Causes(props: React.ComponentProps<typeof Box>) {
       <Box
          as="nav"
          color="brand.500"
-         mt={4}
          fontSize="sm"
          fontWeight="medium"
          {...props}
@@ -45,6 +44,9 @@ export function Causes(props: React.ComponentProps<typeof Box>) {
          ))}
          {solutions.map((cause, index) => (
             <Cause key={cause.uniqueId} causeNumber={index + 1} {...cause} />
+         ))}
+         {conclusions.map((conclusion) => (
+            <Conclusion key={conclusion.uniqueId} {...conclusion} />
          ))}
       </Box>
    );
@@ -110,6 +112,35 @@ function Intro({ uniqueId, heading, id, active }: IntroData & TOCRecord) {
    );
 }
 
+function Conclusion({
+   uniqueId,
+   heading,
+   id,
+   active,
+}: ConclusionData & TOCRecord) {
+   const { onClick } = useTOCBufferPxScrollOnClick(id);
+   const ref = useRef<HTMLAnchorElement>(null);
+
+   useScrollToActiveEffect(ref, active);
+
+   return (
+      <Link
+         href={`#${uniqueId}`}
+         onClick={onClick}
+         ref={ref}
+         color={{
+            mdPlus: active ? 'brand.500' : 'gray.500',
+         }}
+         {...linkStyles}
+      >
+         <Square className="conclusion" {...squareStyles}>
+            <FaIcon icon={faCircleNodes} color="brand.500" />
+         </Square>
+         <Box as="span">{heading}</Box>
+      </Link>
+   );
+}
+
 export type SectionData = {
    id: string;
    heading: string;
@@ -166,7 +197,7 @@ const squareStyles = {
    transition:
       'background-color var(--chakra-transition-duration-fast) ease-out',
    sx: {
-      '&.intro': {
+      '&.intro, &.conclusion': {
          borderColor: 'brand.700',
          color: 'white',
       },
