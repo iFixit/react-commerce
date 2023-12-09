@@ -193,6 +193,7 @@ const linkStyles = {
 };
 
 const squareStyles = {
+   backgroundColor: 'white',
    color: 'white',
    size: { base: 6, mdPlus: 5 },
    border: '1px solid',

@@ -187,6 +187,7 @@ const Wiki: NextPageWithLayout<{
                   borderRight={{ mdPlus: '1px solid' }}
                   borderColor={{ mdPlus: 'gray.300' }}
                   maxWidth="calc(100% + 2 * var(--chakra-space-4))"
+                  overflowY="scroll"
                   gridArea="toc"
                />
                <Flex
@@ -241,6 +242,7 @@ const Wiki: NextPageWithLayout<{
                            </HeadingSelfLink>
                            <Causes
                               sx={{
+                                 mt: 3,
                                  mb: { base: 4, mdPlus: 7 },
                                  pb: 4,
                                  borderBottom: '1px',
