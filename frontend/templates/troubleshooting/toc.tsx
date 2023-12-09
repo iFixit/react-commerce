@@ -3,7 +3,6 @@ import {
    Button,
    Flex,
    FlexProps,
-   Heading,
    ListProps,
    Menu,
    MenuButton,
@@ -69,9 +68,6 @@ function LargeTOC(props: FlexProps) {
          }
          {...props}
       >
-         <Heading as="h3" fontSize="sm" fontWeight="medium" pl={4}>
-            Causes
-         </Heading>
          <Causes />
       </FlexScrollGradient>
    );

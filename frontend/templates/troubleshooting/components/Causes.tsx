@@ -1,5 +1,5 @@
-import { Box, Link, Square } from '@chakra-ui/react';
-import { faList } from '@fortawesome/pro-solid-svg-icons';
+import { Box, Heading, HeadingProps, Link, Square } from '@chakra-ui/react';
+import { faList, faCircleNodes } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
 import { useRef } from 'react';
 import { useScrollToActiveEffect } from '../toc';
@@ -32,23 +32,28 @@ export function Causes(props: React.ComponentProps<typeof Box>) {
       .filter(isConclusionData);
 
    return (
-      <Box
-         as="nav"
-         color="brand.500"
-         fontSize="sm"
-         fontWeight="medium"
-         {...props}
-      >
-         {intros.map((intro) => (
-            <Intro key={intro.uniqueId} {...intro} />
-         ))}
-         {solutions.map((cause, index) => (
-            <Cause key={cause.uniqueId} causeNumber={index + 1} {...cause} />
-         ))}
-         {conclusions.map((conclusion) => (
-            <Conclusion key={conclusion.uniqueId} {...conclusion} />
-         ))}
-      </Box>
+      <>
+         <TOCHeading>Troubleshooting</TOCHeading>
+         <Box
+            as="nav"
+            color="brand.500"
+            fontSize="sm"
+            fontWeight="medium"
+            {...props}
+         >
+            {intros.map((intro) => (
+               <Intro key={intro.uniqueId} {...intro} />
+            ))}
+            <TOCHeading>Causes</TOCHeading>
+            {solutions.map((cause, index) => (
+               <Cause key={cause.uniqueId} causeNumber={index + 1} {...cause} />
+            ))}
+            <TOCHeading>Conclusion</TOCHeading>
+            {conclusions.map((conclusion) => (
+               <Conclusion key={conclusion.uniqueId} {...conclusion} />
+            ))}
+         </Box>
+      </>
    );
 }
 
@@ -203,3 +208,23 @@ const squareStyles = {
       },
    },
 };
+
+function TOCHeading({
+   children,
+}: {
+   children: React.ReactNode & HeadingProps;
+}) {
+   return (
+      <Heading
+         as="h3"
+         fontSize="sm"
+         fontWeight="medium"
+         my={3}
+         pl={4}
+         color="gray.400"
+         display={{ base: 'none', mdPlus: 'block' }}
+      >
+         {children}
+      </Heading>
+   );
+}
