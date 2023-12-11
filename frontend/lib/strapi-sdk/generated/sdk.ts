@@ -6609,7 +6609,7 @@ export const BitTableSectionFieldsFragmentDoc = `
   id
   title
   description
-  bits {
+  bits(pagination: {limit: 1000}) {
     data {
       ...ScrewdriverBitFields
     }

@@ -94,6 +94,7 @@ const partProductVariants: ProductVariant[] = [
 ];
 
 export const mockedPartProduct: Product = {
+   __typename: 'Product',
    id: 'gid://shopify/Product/6581511684186',
    title: 'Galaxy A51 Screen',
    handle: 'galaxy-a51-screen',

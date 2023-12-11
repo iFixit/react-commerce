@@ -8052,6 +8052,7 @@ export type ProductVariantFieldsFragment = {
 
 export type FindProductQueryVariables = Exact<{
    handle?: InputMaybe<Scalars['String']>;
+   pathQuery?: InputMaybe<Scalars['String']>;
 }>;
 
 export type FindProductQuery = {
@@ -8296,6 +8297,13 @@ export type FindProductQuery = {
          }>;
       };
    } | null;
+   urlRedirects: {
+      __typename?: 'UrlRedirectConnection';
+      edges: Array<{
+         __typename?: 'UrlRedirectEdge';
+         node: { __typename?: 'UrlRedirect'; target: string };
+      }>;
+   };
 };
 
 export type ProductOptionFieldsFragment = {
@@ -8478,7 +8486,7 @@ export const ProductOptionFieldsFragmentDoc = `
 }
     `;
 export const FindProductDocument = `
-    query findProduct($handle: String) {
+    query findProduct($handle: String, $pathQuery: String) {
   product(handle: $handle) {
     id
     title
@@ -8562,6 +8570,13 @@ export const FindProductDocument = `
       }
     }
     vendor
+  }
+  urlRedirects(first: 1, query: $pathQuery) {
+    edges {
+      node {
+        target
+      }
+    }
   }
 }
     ${ProductPreviewFieldsFragmentDoc}

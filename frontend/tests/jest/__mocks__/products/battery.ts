@@ -90,6 +90,7 @@ const batteryProductVariants: ProductVariant[] = [
 ];
 
 export const mockedBatteryProduct: Product = {
+   __typename: 'Product',
    id: 'gid://shopify/Product/6556284026970',
    title: 'Moto G7 Play Battery',
    handle: 'moto-g7-play-replacement-battery',
