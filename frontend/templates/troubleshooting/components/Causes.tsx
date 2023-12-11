@@ -199,6 +199,7 @@ const squareStyles = {
    border: '1px solid',
    borderColor: { base: 'brand.700', mdPlus: 'gray.500' },
    borderRadius: 'md',
+   fontSize: 'xs',
    mr: 2,
    transition:
       'background-color var(--chakra-transition-duration-fast) ease-out',
@@ -222,8 +223,13 @@ function TOCHeading({
          fontWeight="medium"
          my={3}
          pl={4}
-         color="gray.400"
+         color="gray.900"
          display={{ base: 'none', mdPlus: 'block' }}
+         sx={{
+            '&:first-child': {
+               mt: 1,
+            },
+         }}
       >
          {children}
       </Heading>
