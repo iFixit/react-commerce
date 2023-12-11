@@ -232,14 +232,6 @@ const Wiki: NextPageWithLayout<{
                      <Stack spacing={4} gridArea="Content">
                         <TroubleshootingHeading wikiData={wikiData} />
                         <Box sx={{ ...layoutSwitch }}>
-                           <HeadingSelfLink
-                              as="h2"
-                              fontWeight="semibold"
-                              selfLinked
-                              id="causes"
-                           >
-                              {'Causes'}
-                           </HeadingSelfLink>
                            <Causes
                               sx={{
                                  mt: 3,
@@ -840,8 +832,8 @@ const sidebarStyles = {
    '@media (min-width: 1025px)': {
       position: 'sticky',
       top: 8,
+      maxHeight: 'calc(100vh - 44px)',
       overflowY: 'auto',
-      pb: '44px',
    },
 };
 

@@ -219,12 +219,11 @@ function TOCHeading({
    return (
       <Heading
          as="h3"
-         fontSize="sm"
-         fontWeight="medium"
+         fontSize={{ base: '20px', mdPlus: 'sm' }}
+         fontWeight={{ base: 'semibold', mdPlus: 'medium' }}
          my={3}
-         pl={4}
+         pl={{ mdPlus: 4 }}
          color="gray.900"
-         display={{ base: 'none', mdPlus: 'block' }}
          sx={{
             '&:first-child': {
                mt: 1,
