@@ -187,7 +187,7 @@ const Wiki: NextPageWithLayout<{
                   borderRight={{ mdPlus: '1px solid' }}
                   borderColor={{ mdPlus: 'gray.300' }}
                   maxWidth="calc(100% + 2 * var(--chakra-space-4))"
-                  overflowY="scroll"
+                  overflowY="auto"
                   gridArea="toc"
                />
                <Flex
@@ -840,7 +840,7 @@ const sidebarStyles = {
    '@media (min-width: 1025px)': {
       position: 'sticky',
       top: 8,
-      overflowY: 'scroll',
+      overflowY: 'auto',
       pb: '44px',
    },
 };

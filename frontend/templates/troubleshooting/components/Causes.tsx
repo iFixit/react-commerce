@@ -193,20 +193,20 @@ const linkStyles = {
 };
 
 const squareStyles = {
-   backgroundColor: 'white',
    color: 'white',
    size: { base: 6, mdPlus: 5 },
    border: '1px solid',
    borderColor: { base: 'brand.700', mdPlus: 'gray.500' },
    borderRadius: 'md',
-   fontSize: 'xs',
+   fontSize: { base: 'sm', mdPlus: 'xs' },
    mr: 2,
    transition:
       'background-color var(--chakra-transition-duration-fast) ease-out',
    sx: {
       '&.intro, &.conclusion': {
+         backgroundColor: 'white',
          borderColor: 'brand.700',
-         color: 'white',
+         fontSize: 'sm',
       },
    },
 };
