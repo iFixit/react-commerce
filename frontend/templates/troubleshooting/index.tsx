@@ -233,6 +233,8 @@ const Wiki: NextPageWithLayout<{
                         <TroubleshootingHeading wikiData={wikiData} />
                         <Box sx={{ ...layoutSwitch }}>
                            <Causes
+                              hasRelatedPages={hasRelatedPages}
+                              layoutSwitch={layoutSwitch}
                               sx={{
                                  mt: 3,
                                  mb: { base: 4, mdPlus: 7 },

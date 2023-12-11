@@ -1,4 +1,11 @@
-import { Box, Heading, HeadingProps, Link, Square } from '@chakra-ui/react';
+import {
+   Box,
+   Heading,
+   HeadingProps,
+   Link,
+   Square,
+   useToken,
+} from '@chakra-ui/react';
 import { faList, faCircleNodes } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
 import { useRef } from 'react';
@@ -20,7 +27,10 @@ function isConclusionData(data: TOCEntry): data is ConclusionData & TOCRecord {
    return data.type === 'Conclusion';
 }
 
-export function Causes(props: React.ComponentProps<typeof Box>) {
+export function Causes(
+   props: React.ComponentProps<typeof Box>,
+   hasRelatedPages: boolean
+) {
    const intros: (IntroData & TOCRecord)[] = useTOCContext<TOCEntry>()
       .getItems()
       .filter(isIntroData);
@@ -52,6 +62,7 @@ export function Causes(props: React.ComponentProps<typeof Box>) {
             {conclusions.map((conclusion) => (
                <Conclusion key={conclusion.uniqueId} {...conclusion} />
             ))}
+            {hasRelatedPages && <Problem />}
          </Box>
       </>
    );
@@ -109,7 +120,7 @@ function Intro({ uniqueId, heading, id, active }: IntroData & TOCRecord) {
          }}
          {...linkStyles}
       >
-         <Square className="intro" {...squareStyles}>
+         <Square className="hasIcon" {...squareStyles}>
             <FaIcon icon={faList} color="brand.500" />
          </Square>
          <Box as="span">{heading}</Box>
@@ -138,10 +149,30 @@ function Conclusion({
          }}
          {...linkStyles}
       >
-         <Square className="conclusion" {...squareStyles}>
+         <Square className="hasIcon" {...squareStyles}>
             <FaIcon icon={faCircleNodes} color="brand.500" />
          </Square>
          <Box as="span">{heading}</Box>
+      </Link>
+   );
+}
+
+function Problem() {
+   return (
+      <Link
+         href={`#related-problems`}
+         {...linkStyles}
+         sx={{
+            display: 'flex',
+            [`@media (min-width: ${useToken('breakpoints', 'mdPlus')})`]: {
+               display: 'none',
+            },
+         }}
+      >
+         <Square className="hasIcon" {...squareStyles}>
+            <FaIcon icon={faCircleNodes} color="brand.500" />
+         </Square>
+         <Box as="span">Related Problems</Box>
       </Link>
    );
 }
@@ -203,7 +234,7 @@ const squareStyles = {
    transition:
       'background-color var(--chakra-transition-duration-fast) ease-out',
    sx: {
-      '&.intro, &.conclusion': {
+      '&.hasIcon': {
          backgroundColor: 'white',
          borderColor: 'brand.700',
          fontSize: 'sm',
