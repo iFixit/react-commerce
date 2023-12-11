@@ -27,6 +27,7 @@ import { useLocalPreference, Wrapper } from '@ifixit/ui';
 import { productPreviewFromAlgoliaHit } from '@models/components/product-preview';
 import {
    ProductList as TProductList,
+   ProductListType,
    ProductSearchHit,
 } from '@models/product-list';
 import {
@@ -87,7 +88,11 @@ export function FilterableProductsSection({
    const hasCurrentRefinements = currentRefinements.items.length > 0;
    const [viewType, setViewType] = useLocalPreference(
       PRODUCT_VIEW_TYPE_STORAGE_KEY,
-      ProductViewType.List,
+      [ProductListType.AllTools, ProductListType.ToolsCategory].includes(
+         productList.type
+      )
+         ? ProductViewType.Grid
+         : ProductViewType.List,
       (data) =>
          data === ProductViewType.List || data === ProductViewType.Grid
             ? data
