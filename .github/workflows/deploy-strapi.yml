@@ -31,7 +31,7 @@ jobs:
            id: login-ecr
            uses: aws-actions/amazon-ecr-login@v1
            with:
-               mask-password: true
+              mask-password: true
 
          - name: Build, Tag, and Push Base Image to Amazon ECR Private
            env:
