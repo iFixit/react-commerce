@@ -830,8 +830,8 @@ const sidebarStyles = {
    alignSelf: 'start',
    fontSize: '14px',
    pt: { base: 6, xl: 0 },
-   height: { mdPlus: '100vh' },
-   '@media (min-width: 1025px)': {
+   height: { xl: '100vh' },
+   '@media (min-width: 1280px)': {
       position: 'sticky',
       top: 8,
       maxHeight: 'calc(100vh - 44px)',
