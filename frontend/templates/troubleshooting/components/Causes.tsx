@@ -31,15 +31,11 @@ export function Causes(
    props: React.ComponentProps<typeof Box>,
    hasRelatedPages: boolean
 ) {
-   const intros: (IntroData & TOCRecord)[] = useTOCContext<TOCEntry>()
-      .getItems()
-      .filter(isIntroData);
-   const solutions: (SolutionData & TOCRecord)[] = useTOCContext<TOCEntry>()
-      .getItems()
-      .filter(isCauseData);
-   const conclusions: (ConclusionData & TOCRecord)[] = useTOCContext<TOCEntry>()
-      .getItems()
-      .filter(isConclusionData);
+   const items = useTOCContext<TOCEntry>().getItems();
+
+   const intros: (IntroData & TOCRecord)[] = items.filter(isIntroData);
+   const solutions: (SolutionData & TOCRecord)[] = items.filter(isCauseData);
+   const conclusions: (ConclusionData & TOCRecord)[] = items.filter(isConclusionData);
 
    return (
       <>
