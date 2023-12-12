@@ -28,7 +28,7 @@ function isConclusionData(data: TOCEntry): data is ConclusionData & TOCRecord {
 }
 
 export function Causes(
-   props: React.ComponentProps<typeof Box>,
+   props: BoxProps,
    hasRelatedPages: boolean
 ) {
    const items = useTOCContext<TOCEntry>().getItems();
