@@ -109,6 +109,14 @@ export type TroubleshootingData = Omit<TroubleshootingApiData, 'solutions'> & {
    solutions: SolutionSection[];
 };
 
+export type TOCData = {
+   introduction?: Section[];
+   solutions?: Section[];
+   conclusion?: Section[];
+   heading: string;
+   id: string;
+};
+
 export type BreadcrumbEntry = {
    title: string;
    url: string;

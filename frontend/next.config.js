@@ -2,9 +2,6 @@
 /** @type {import('next').NextConfig} */
 
 const {
-   getLegacyPartItemTypeRedirects,
-} = require('./next-config/redirects/part-collections');
-const {
    getLegacyToolRedirects,
 } = require('./next-config/redirects/tool-collections');
 
@@ -87,7 +84,6 @@ const moduleExports = {
    },
    async redirects() {
       return [
-         ...getLegacyPartItemTypeRedirects(),
          ...getLegacyToolRedirects(),
          {
             source: '/Store/Guide/:guideid',

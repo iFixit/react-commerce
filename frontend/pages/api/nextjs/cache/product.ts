@@ -1,7 +1,10 @@
 import { Duration } from '@lib/duration';
 import { withCache } from '@lib/swr-cache';
 import { ProductSchema } from '@models/product';
-import { findProduct } from '@models/product/server';
+import {
+   ShopifyProductRedirectSchema,
+   findProduct,
+} from '@models/product/server';
 import { z } from 'zod';
 
 export type {
@@ -18,7 +21,9 @@ export default withCache({
       storeCode: z.string(),
       ifixitOrigin: z.string(),
    }),
-   valueSchema: ProductSchema.nullable(),
+   valueSchema: z
+      .union([ProductSchema, ShopifyProductRedirectSchema])
+      .nullable(),
    async getFreshValue({ handle, storeCode, ifixitOrigin }) {
       return findProduct({
          handle,

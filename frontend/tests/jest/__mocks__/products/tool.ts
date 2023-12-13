@@ -80,6 +80,7 @@ const toolProductVariants: ProductVariant[] = [
 ];
 
 export const mockedToolProduct: Product = {
+   __typename: 'Product',
    id: 'gid://shopify/Product/6556235071578',
    title: 'Hakko 5B SA Curved Tweezers',
    handle: 'hakko-5b-sa-curved-tweezers',

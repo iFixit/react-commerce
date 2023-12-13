@@ -14,12 +14,12 @@
       "qs": "6.10.3",
       "@tanstack/react-query": "4.29.19",
       "zod": "3.22.4",
-      "fast-csv": "4.3.6"
+      "fast-csv": "4.3.6",
+      "@types/node-fetch": "2.6.4"
    },
    "devDependencies": {
       "@strapi/strapi": "4.15.0",
-      "typescript": "5.2.2",
-      "@types/node-fetch": "2.6.4"
+      "typescript": "5.2.2"
    },
    "author": {
       "name": "A Strapi developer"

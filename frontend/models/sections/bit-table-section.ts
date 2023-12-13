@@ -1,7 +1,7 @@
 import { filterFalsyItems } from '@helpers/application-helpers';
 import type { BitTableSectionFieldsFragment } from '@lib/strapi-sdk';
 import {
-   ScrewDriverBitSchema,
+   ScrewdriverBitSchema,
    screwdriverBitsFromStrapiFragment,
 } from '@models/components/screwdriver-bit';
 import { z } from 'zod';
@@ -13,7 +13,7 @@ export const BitTableSectionSchema = z.object({
    id: z.string(),
    title: z.string().nullable(),
    description: z.string().nullable(),
-   bits: z.array(ScrewDriverBitSchema),
+   bits: z.array(ScrewdriverBitSchema),
 });
 
 export function bitTableSectionFromStrapi(
