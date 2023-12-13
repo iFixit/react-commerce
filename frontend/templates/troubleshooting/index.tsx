@@ -137,10 +137,8 @@ const Wiki: NextPageWithLayout<{
    const tocWidth = '220px';
    const sidebarWidth = '320px';
 
-   const layoutSwitchBreakpoint = useToken('breakpoints', 'mdPlus');
    const layoutSwitch = {
-      display: 'block',
-      [`@media (min-width: ${layoutSwitchBreakpoint})`]: {
+      [`@media (min-width: ${useToken('breakpoints', 'mdPlus')})`]: {
          display: 'none',
       },
    };
