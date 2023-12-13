@@ -55,7 +55,7 @@ export function Causes(
             {solutions.map((cause, index) => (
                <Cause key={cause.uniqueId} causeNumber={index + 1} {...cause} />
             ))}
-            <TOCHeading className="conclusion">Conclusion</TOCHeading>
+            <TOCHeading>Conclusion</TOCHeading>
             {conclusions.map((conclusion) => (
                <Conclusion key={conclusion.uniqueId} {...conclusion} />
             ))}
@@ -240,15 +240,12 @@ const squareStyles = {
 
 function TOCHeading({
    children,
-   className,
 }: {
    children: React.ReactNode & HeadingProps;
-   className?: string;
 }) {
    return (
       <Heading
          as="h3"
-         className={className}
          fontSize={{ base: '20px', mdPlus: 'sm' }}
          fontWeight={{ base: 'semibold', mdPlus: 'medium' }}
          my={3}
@@ -258,7 +255,7 @@ function TOCHeading({
             '&:first-child': {
                mt: 1,
             },
-            '&.conclusion': {
+            '&:not(:first-child)': {
                [`@media (min-width: ${useToken('breakpoints', 'mdPlus')})`]: {
                   display: 'none',
                },
