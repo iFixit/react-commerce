@@ -160,7 +160,6 @@ function Problem() {
          href={`#related-problems`}
          {...linkStyles}
          sx={{
-            display: 'flex',
             [`@media (min-width: ${useToken('breakpoints', 'mdPlus')})`]: {
                display: 'none',
             },
