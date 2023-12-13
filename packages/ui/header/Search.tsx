@@ -64,7 +64,7 @@ export const SearchInput = forwardRef<InputGroupProps, 'input'>(
                   h="4"
                   mr="-2"
                   mb="-1px"
-                  color="gray.400"
+                  color="gray.600"
                />
             </InputLeftElement>
             <Input
@@ -72,18 +72,16 @@ export const SearchInput = forwardRef<InputGroupProps, 'input'>(
                name="query"
                placeholder="Search"
                _placeholder={{
-                  color: 'gray.400',
+                  color: 'gray.500',
                }}
                tabIndex={0}
                variant="filled"
-               bg="gray.800"
+               bg="gray.200"
+               color="gray.700"
                fontSize="sm"
                borderRadius="full"
-               _hover={{
-                  bg: 'gray.700',
-               }}
                _focus={{
-                  bg: 'gray.700',
+                  bg: 'gray.100',
                }}
             />
          </InputGroup>
