@@ -55,7 +55,7 @@ export function Causes({
             {solutions.map((cause, index) => (
                <Cause key={cause.uniqueId} causeNumber={index + 1} {...cause} />
             ))}
-            <TOCHeading>Conclusion</TOCHeading>
+            {conclusions.length && <TOCHeading>Conclusion</TOCHeading>}
             {conclusions.map((conclusion) => (
                <Conclusion key={conclusion.uniqueId} {...conclusion} />
             ))}
