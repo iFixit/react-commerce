@@ -1357,7 +1357,7 @@ export type Checkout = Node & {
    note?: Maybe<Scalars['String']>;
    /** The resulting order from a paid checkout. */
    order?: Maybe<Order>;
-   /** The Order Status Page for this Checkout, null when checkout isn't completed. */
+   /** The <b>Order status</b> page for this Checkout, null when checkout isn't completed. */
    orderStatusUrl?: Maybe<Scalars['URL']>;
    /** The amount left to be paid. This is equal to the cost of the line items, taxes, and shipping, minus discounts and gift cards. */
    paymentDue: MoneyV2;
