@@ -14,7 +14,7 @@ interface ProductListCardProps {
 
 export const ProductListCard = forwardRef<ProductListCardProps, 'div'>(
    ({ productList, variant = 'small', ...other }, ref) => {
-      const imageSizeProps: Partial<ImageProps> =
+      const imageSizeProps: Pick<ImageProps, 'width' | 'height'> =
          variant === 'small'
             ? {
                  height: 48,
