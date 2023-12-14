@@ -11,7 +11,7 @@ export function useCurrentProductList(
    productList: ProductList,
    algoliaUrl?: string
 ): ProductList {
-   let variantUpdatedProductList = useVariantProductList(
+   const variantUpdatedProductList = useVariantProductList(
       productList,
       algoliaUrl
    );
