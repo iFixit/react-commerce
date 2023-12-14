@@ -258,7 +258,11 @@ async function getSafeServerState({
       const appMarkup = (
          <AppProviders {...appProps}>
             <InstantSearchProvider {...appProps.algolia!}>
-               <ProductListView productList={productList} algoliaSSR={true} />
+               <ProductListView
+                  productList={productList}
+                  algoliaSSR={true}
+                  algoliaUrl={appProps.algolia?.url}
+               />
             </InstantSearchProvider>
          </AppProviders>
       );
