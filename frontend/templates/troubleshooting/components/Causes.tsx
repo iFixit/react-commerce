@@ -27,10 +27,10 @@ function isConclusionData(data: TOCEntry): data is ConclusionData & TOCRecord {
    return data.type === 'Conclusion';
 }
 
-export function Causes(
-   props: React.ComponentProps<typeof Box>,
-   hasRelatedPages: boolean
-) {
+export function Causes({
+   hasRelatedPages,
+   ...props
+}: { hasRelatedPages: boolean } & React.ComponentProps<typeof Box>) {
    const items = useTOCContext<TOCEntry>().getItems();
 
    const intros: (IntroData & TOCRecord)[] = items.filter(isIntroData);
