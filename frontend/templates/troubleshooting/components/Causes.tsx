@@ -160,7 +160,6 @@ function Problem() {
          href={`#related-problems`}
          {...linkStyles}
          sx={{
-            display: 'flex',
             [`@media (min-width: ${useToken('breakpoints', 'mdPlus')})`]: {
                display: 'none',
             },
@@ -255,6 +254,11 @@ function TOCHeading({
          sx={{
             '&:first-child': {
                mt: 1,
+            },
+            '&:not(:first-child)': {
+               [`@media (min-width: ${useToken('breakpoints', 'mdPlus')})`]: {
+                  display: 'none',
+               },
             },
          }}
       >
