@@ -22,16 +22,14 @@ jobs:
            uses: actions/checkout@v3
 
          - name: Configure AWS credentials
-           uses: aws-actions/configure-aws-credentials@v2
+           uses: aws-actions/configure-aws-credentials@v4
            with:
               role-to-assume: 'arn:aws:iam::884681002735:role/github_actions/github-actions-role'
               aws-region: us-east-1
 
          - name: Login to Amazon ECR
            id: login-ecr
-           uses: aws-actions/amazon-ecr-login@v1
-           with:
-              mask-password: true
+           uses: aws-actions/amazon-ecr-login@v2
 
          - name: Build, Tag, and Push Base Image to Amazon ECR Private
            env:
