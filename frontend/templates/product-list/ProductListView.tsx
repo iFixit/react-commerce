@@ -11,7 +11,7 @@ import type { ProductList } from '@models/product-list';
 import { PressQuotesSection } from '@templates/page/sections/PressQuotesSection';
 import { Configure, useMenu } from 'react-instantsearch';
 import { useAvailableItemTypes } from './hooks/useAvailableItemTypes';
-import { useItemTypeProductList } from './hooks/useItemTypeProductList';
+import { useCurrentProductList } from './hooks/useCurrentProductList';
 import { MetaTags } from './MetaTags';
 import { SecondaryNavigation } from './SecondaryNavigation';
 import {
@@ -21,7 +21,6 @@ import {
    ProductListChildrenSection,
    RelatedPostsSection,
 } from './sections';
-import { useVariantProductList } from './hooks/useVariantProductList';
 
 const HITS_PER_PAGE = 24;
 
@@ -42,11 +41,8 @@ export function ProductListView({
    const filters = computeProductListAlgoliaFilterPreset(productList);
    const optionalFilters =
       computeProductListAlgoliaOptionalFilters(productList);
-   productList = useVariantProductList(productList, algoliaUrl);
-   const itemTypeProductList = useItemTypeProductList(productList);
+   const currentProductList = useCurrentProductList(productList, algoliaUrl);
    const availableItemTypes = useAvailableItemTypes();
-
-   const currentProductList = itemTypeProductList ?? productList;
 
    if (algoliaSSR) {
       return (
