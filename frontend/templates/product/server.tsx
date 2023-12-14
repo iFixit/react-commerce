@@ -24,11 +24,14 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
       const { handle } = context.params || {};
       invariant(typeof handle === 'string', 'handle param is missing');
       const forceMiss = hasDisableCacheGets(context);
+      console.log('\n\n>> getLayoutServerSideProps');
       const { stores, ...otherLayoutProps } = await getLayoutServerSideProps({
          storeCode: DEFAULT_STORE_CODE,
          forceMiss,
       });
       const ifixitOrigin = ifixitOriginFromHost(context);
+
+      console.log('\n\n>> Product.get');
       const product = await Product.get(
          {
             handle,
@@ -39,6 +42,7 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
       );
 
       if (product?.__typename === 'ShopifyProductRedirect') {
+         console.log('\n\n>> ShopifyProductRedirect');
          return {
             redirect: {
                destination: product.target,
@@ -48,12 +52,14 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
       }
 
       if (product == null) {
+         console.log('\n\n>> Return notFound: true');
          return {
             notFound: true,
          };
       }
 
       if (product.redirectUrl) {
+         console.log('\n\n>> Redirect v2');
          const destination = new URL(product.redirectUrl);
          const requestParams = new URL(urlFromContext(context)).searchParams;
          requestParams.forEach((value, key) => {
@@ -90,6 +96,7 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
          return store;
       });
 
+      console.log('\n\n>> Create pageProps...');
       const pageProps: ProductTemplateProps = {
          layoutProps: {
             ...otherLayoutProps,
