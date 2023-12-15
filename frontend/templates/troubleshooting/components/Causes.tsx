@@ -55,7 +55,9 @@ export function Causes({
             {solutions.map((cause, index) => (
                <Cause key={cause.uniqueId} causeNumber={index + 1} {...cause} />
             ))}
-            {conclusions.length && <TOCHeading>Conclusion</TOCHeading>}
+            {(conclusions.length || hasRelatedPages) && (
+               <TOCHeading>Conclusion</TOCHeading>
+            )}
             {conclusions.map((conclusion) => (
                <Conclusion key={conclusion.uniqueId} {...conclusion} />
             ))}
