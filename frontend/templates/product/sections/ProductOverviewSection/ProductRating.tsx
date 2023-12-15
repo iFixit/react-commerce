@@ -14,11 +14,7 @@ export function ProductRating({ product }: ProductRatingProps) {
 
    return (
       <HStack mt="5" alignItems="unset">
-         <Rating
-            value={product.reviews.rating}
-            aria-label={`Rated ${product.reviews.rating} out of 5 stars`}
-            role="img"
-         />
+         <Rating value={product.reviews.rating} />
          <Text color="gray.600" aria-hidden={true}>
             {product.reviews.rating}
          </Text>

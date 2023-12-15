@@ -275,11 +275,7 @@ function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
             </HStack>
          )}
          <HStack my="4">
-            <Rating
-               value={review.rating}
-               aria-label={`Rated ${review.rating} out of 5 stars`}
-               role="img"
-            />
+            <Rating value={review.rating} />
             {review.created_date && (
                <Text mt="4" color="gray.500">
                   {formatReviewDate(review.created_date)}
