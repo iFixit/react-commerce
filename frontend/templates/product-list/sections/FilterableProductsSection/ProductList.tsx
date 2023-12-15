@@ -145,8 +145,14 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      </Flex>
                      {(product.rating >= 4 || product.rating_count > 10) && (
                         <HStack align="center" data-testid="reviewStars">
-                           <Rating value={product.rating} />
-                           <Text fontSize="sm">{product.rating_count}</Text>
+                           <Rating
+                              value={product.rating}
+                              aria-label={`Rated ${product.rating} out of 5 stars`}
+                              role="img"
+                           />
+                           <Text fontSize="sm" aria-hidden={true}>
+                              {product.rating_count}
+                           </Text>
                         </HStack>
                      )}
                      {showBadges && (
