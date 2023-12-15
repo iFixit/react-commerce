@@ -257,11 +257,6 @@ function TOCHeading({
             '&:first-child': {
                mt: 1,
             },
-            '&:not(:first-child)': {
-               [`@media (min-width: ${useToken('breakpoints', 'mdPlus')})`]: {
-                  display: 'none',
-               },
-            },
          }}
       >
          {children}
