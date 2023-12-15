@@ -238,6 +238,7 @@ const DifficultyBadge = forwardRef<DifficultyBadgeProps, 'div'>(
                   {...props}
                   colorScheme="green"
                   icon={faGaugeMin}
+                  aria-label="Difficulty"
                >
                   {difficulty}
                </IconBadge>
@@ -250,6 +251,7 @@ const DifficultyBadge = forwardRef<DifficultyBadgeProps, 'div'>(
                   {...props}
                   colorScheme="green"
                   icon={faGaugeLow}
+                  aria-label="Difficulty"
                >
                   {difficulty}
                </IconBadge>
@@ -274,6 +276,7 @@ const DifficultyBadge = forwardRef<DifficultyBadgeProps, 'div'>(
                   {...props}
                   colorScheme="red"
                   icon={faGaugeHigh}
+                  aria-label="Difficulty"
                >
                   {difficulty}
                </IconBadge>
@@ -286,6 +289,7 @@ const DifficultyBadge = forwardRef<DifficultyBadgeProps, 'div'>(
                   {...props}
                   colorScheme="red"
                   icon={faGaugeMax}
+                  aria-label="Difficulty"
                >
                   {difficulty}
                </IconBadge>
@@ -293,7 +297,12 @@ const DifficultyBadge = forwardRef<DifficultyBadgeProps, 'div'>(
          }
          default: {
             return (
-               <IconBadge ref={ref} {...props} icon={faGauge}>
+               <IconBadge
+                  ref={ref}
+                  {...props}
+                  icon={faGauge}
+                  aria-label="Difficulty"
+               >
                   {difficulty}
                </IconBadge>
             );

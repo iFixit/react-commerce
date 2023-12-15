@@ -31,6 +31,9 @@ export function ProductDescription({
                borderRadius="md"
                alignItems="flex-start"
                data-testid="product-note"
+               addRole={false}
+               aria-label="Note"
+               role="alert"
             >
                <FaIcon
                   icon={faCircleInfo}
@@ -51,6 +54,9 @@ export function ProductDescription({
                borderRadius="md"
                alignItems="flex-start"
                data-testid="product-disclaimer"
+               addRole={false}
+               aria-label="Disclaimer"
+               role="alert"
             >
                <FaIcon
                   icon={faCircleExclamation}
@@ -73,6 +79,9 @@ export function ProductDescription({
                borderRadius="md"
                alignItems="flex-start"
                data-testid="product-warning"
+               addRole={false}
+               aria-label="Warning"
+               role="alert"
             >
                <FaIcon
                   icon={faTriangleExclamation}
