@@ -1,5 +1,6 @@
 import {
    Box,
+   BoxProps,
    Circle,
    Flex,
    HStack,
@@ -102,6 +103,8 @@ export function ProductOptions({
                                  key={value}
                                  isActive={variant?.id === selected}
                                  label={value}
+                                 aria-label={`Select ${value}`}
+                                 role="radio"
                                  image={variantSpecificImage}
                                  exactMatch={exact}
                                  onClick={() => {
@@ -206,7 +209,7 @@ type ProductOptionProps = {
    isActive?: boolean;
    exactMatch?: boolean;
    onClick?: () => void;
-};
+} & BoxProps;
 
 type Image = {
    id?: string | null;
