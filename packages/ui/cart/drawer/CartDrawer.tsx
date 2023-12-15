@@ -21,6 +21,7 @@ import {
    Skeleton,
    Spinner,
    Text,
+   VisuallyHidden,
 } from '@chakra-ui/react';
 import { faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
@@ -85,7 +86,12 @@ export function CartDrawer() {
                               {cart.isLoading ? (
                                  <Spinner size="xs" />
                               ) : (
-                                 cart.data?.totals.itemsCount ?? 0
+                                 <>
+                                    <VisuallyHidden>
+                                       Number of Items in Cart:
+                                    </VisuallyHidden>
+                                    {cart.data?.totals.itemsCount ?? 0}
+                                 </>
                               )}
                            </Badge>
                         )}
