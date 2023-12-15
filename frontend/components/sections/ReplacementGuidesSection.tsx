@@ -10,6 +10,7 @@ import {
    SimpleGrid,
    Text,
    UnorderedList,
+   VisuallyHidden,
 } from '@chakra-ui/react';
 import {
    faClock,
@@ -193,6 +194,7 @@ function ReplacementGuideCard({ guide }: ReplacementGuideCardProps) {
                   {isPresent(guide.timeRequired) && (
                      <BadgeListItem>
                         <IconBadge icon={faClock} size="small">
+                           <VisuallyHidden>Time Required:</VisuallyHidden>
                            {guide.timeRequired}
                         </IconBadge>
                      </BadgeListItem>
@@ -238,8 +240,8 @@ const DifficultyBadge = forwardRef<DifficultyBadgeProps, 'div'>(
                   {...props}
                   colorScheme="green"
                   icon={faGaugeMin}
-                  aria-label="Difficulty"
                >
+                  <VisuallyHidden>Difficulty:</VisuallyHidden>
                   {difficulty}
                </IconBadge>
             );
@@ -251,8 +253,8 @@ const DifficultyBadge = forwardRef<DifficultyBadgeProps, 'div'>(
                   {...props}
                   colorScheme="green"
                   icon={faGaugeLow}
-                  aria-label="Difficulty"
                >
+                  <VisuallyHidden>Difficulty:</VisuallyHidden>
                   {difficulty}
                </IconBadge>
             );
@@ -265,6 +267,7 @@ const DifficultyBadge = forwardRef<DifficultyBadgeProps, 'div'>(
                   colorScheme="amber"
                   icon={faGauge}
                >
+                  <VisuallyHidden>Difficulty:</VisuallyHidden>
                   {difficulty}
                </IconBadge>
             );
@@ -276,8 +279,8 @@ const DifficultyBadge = forwardRef<DifficultyBadgeProps, 'div'>(
                   {...props}
                   colorScheme="red"
                   icon={faGaugeHigh}
-                  aria-label="Difficulty"
                >
+                  <VisuallyHidden>Difficulty:</VisuallyHidden>
                   {difficulty}
                </IconBadge>
             );
@@ -289,20 +292,16 @@ const DifficultyBadge = forwardRef<DifficultyBadgeProps, 'div'>(
                   {...props}
                   colorScheme="red"
                   icon={faGaugeMax}
-                  aria-label="Difficulty"
                >
+                  <VisuallyHidden>Difficulty:</VisuallyHidden>
                   {difficulty}
                </IconBadge>
             );
          }
          default: {
             return (
-               <IconBadge
-                  ref={ref}
-                  {...props}
-                  icon={faGauge}
-                  aria-label="Difficulty"
-               >
+               <IconBadge ref={ref} {...props} icon={faGauge}>
+                  <VisuallyHidden>Difficulty:</VisuallyHidden>
                   {difficulty}
                </IconBadge>
             );
