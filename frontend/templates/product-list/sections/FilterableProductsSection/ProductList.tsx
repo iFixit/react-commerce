@@ -147,7 +147,7 @@ export function ProductListItem({ product }: ProductListItemProps) {
                         <HStack align="center" data-testid="reviewStars">
                            <Rating
                               value={product.rating}
-                              aria-label={`Rated ${product.rating} out of 5 stars`}
+                              aria-label={`Rated ${product.rating} out of 5 stars with ${product.rating_count} reviews`}
                               role="img"
                            />
                            <Text fontSize="sm" aria-hidden={true}>
