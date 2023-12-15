@@ -55,7 +55,9 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               data-testid="reviewStars"
             >
               <div
+                aria-label="Rated 4.5 out of 5 stars with 18 reviews"
                 class="chakra-stack css-fqllj7"
+                role="img"
               >
                 <svg
                   aria-hidden="true"
@@ -144,6 +146,7 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
                 </svg>
               </div>
               <p
+                aria-hidden="true"
                 class="chakra-text css-itvw0n"
               >
                 18
