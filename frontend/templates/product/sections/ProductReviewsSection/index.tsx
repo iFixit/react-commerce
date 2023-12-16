@@ -13,6 +13,7 @@ import {
    Progress,
    Stack,
    Text,
+   VisuallyHidden,
    VStack,
 } from '@chakra-ui/react';
 import { Rating } from '@components/ui';
@@ -186,6 +187,7 @@ function ReviewsStats({
                      <GridItem mt="-1px">
                         <Text as="span" fontSize="xs">
                            {rating}
+                           <VisuallyHidden>star reviews</VisuallyHidden>
                         </Text>
                      </GridItem>
                      <GridItem>
@@ -199,6 +201,9 @@ function ReviewsStats({
                            display="block"
                            textAlign="center"
                         >
+                           <VisuallyHidden>
+                              Number of {rating} star reviews:
+                           </VisuallyHidden>
                            {count}
                         </Badge>
                      </GridItem>
@@ -275,11 +280,7 @@ function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
             </HStack>
          )}
          <HStack my="4">
-            <Rating
-               value={review.rating}
-               aria-label={`Rated ${review.rating} out of 5 stars`}
-               role="img"
-            />
+            <Rating value={review.rating} />
             {review.created_date && (
                <Text mt="4" color="gray.500">
                   {formatReviewDate(review.created_date)}

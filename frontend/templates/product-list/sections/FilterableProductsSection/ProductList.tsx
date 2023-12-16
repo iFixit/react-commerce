@@ -10,6 +10,7 @@ import {
    LinkOverlay,
    Stack,
    Text,
+   VisuallyHidden,
    VStack,
 } from '@chakra-ui/react';
 import { Rating } from '@components/ui';
@@ -145,12 +146,11 @@ export function ProductListItem({ product }: ProductListItemProps) {
                      </Flex>
                      {(product.rating >= 4 || product.rating_count > 10) && (
                         <HStack align="center" data-testid="reviewStars">
-                           <Rating
-                              value={product.rating}
-                              aria-label={`Rated ${product.rating} out of 5 stars with ${product.rating_count} reviews`}
-                              role="img"
-                           />
-                           <Text fontSize="sm" aria-hidden={true}>
+                           <Rating value={product.rating} />
+                           <Text fontSize="sm">
+                              <VisuallyHidden>
+                                 Number of reviews:
+                              </VisuallyHidden>
                               {product.rating_count}
                            </Text>
                         </HStack>

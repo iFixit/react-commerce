@@ -16,7 +16,12 @@ export function Rating(props: RatingProps) {
    const halfStarsValue = Math.round(value * 2);
 
    return (
-      <HStack spacing="1" {...rest}>
+      <HStack
+         spacing="1"
+         {...rest}
+         aria-label={`Rated ${value} out of 5 stars`}
+         role="img"
+      >
          {stars.map((i) => {
             let appearance = RatingStarAppearance.Empty;
             if (halfStarsValue >= i * 2) {

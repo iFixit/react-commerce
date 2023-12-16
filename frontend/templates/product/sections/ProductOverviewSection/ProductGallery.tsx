@@ -223,6 +223,7 @@ const ArrowButton = ({
       _hover={{
          backgroundColor: 'transparent',
       }}
+      aria-label={`Scroll to ${direction} image`}
    >
       <Circle
          size="32px"
