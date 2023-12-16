@@ -81,7 +81,6 @@ export function CartDrawer() {
                               justifyContent="center"
                               bg="gray.100"
                               color="gray.400"
-                              data-testid="cart-drawer-item-count"
                            >
                               {cart.isLoading ? (
                                  <Spinner size="xs" />
@@ -90,7 +89,12 @@ export function CartDrawer() {
                                     <VisuallyHidden>
                                        Number of Items in Cart:
                                     </VisuallyHidden>
-                                    {cart.data?.totals.itemsCount ?? 0}
+                                    <Box
+                                       as="span"
+                                       data-testid="cart-drawer-item-count"
+                                    >
+                                       {cart.data?.totals.itemsCount ?? 0}
+                                    </Box>
                                  </>
                               )}
                            </Badge>
