@@ -9,6 +9,7 @@ import {
    SimpleGrid,
    Text,
    useTheme,
+   VisuallyHidden,
    VStack,
 } from '@chakra-ui/react';
 import { faImageSlash } from '@fortawesome/pro-duotone-svg-icons';
@@ -103,8 +104,6 @@ export function ProductOptions({
                                  key={value}
                                  isActive={variant?.id === selected}
                                  label={value}
-                                 aria-label={`Select ${value}`}
-                                 role="radio"
                                  image={variantSpecificImage}
                                  exactMatch={exact}
                                  onClick={() => {
@@ -244,7 +243,11 @@ function ProductOptionValue({
       >
          <ProductOptionImage image={image} exactMatch={exactMatch} />
          <Text fontSize="13px" color={exactMatch ? 'gray.800' : 'gray.400'}>
+            <VisuallyHidden>Option</VisuallyHidden>
             {label}
+            <VisuallyHidden>
+               {isActive ? 'selected' : 'not selected'}
+            </VisuallyHidden>
          </Text>
       </Box>
    );
