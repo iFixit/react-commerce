@@ -68,7 +68,7 @@ function LargeTOC(props: FlexProps) {
          }
          {...props}
       >
-         <Causes />
+         <Causes hasRelatedPages={false} />
       </FlexScrollGradient>
    );
 }
