@@ -90,13 +90,13 @@ export default function TroubleshootingProblems({
    title,
 }: TroubleshootingProblemsProps) {
    return (
-      <Box className="wrapper" maxWidth="1280px" mt="32px" mx="auto" px="32px">
-         <Stack as="main" spacing="12px">
+      <Box className="wrapper" maxWidth="1280px" mt={8} mx="auto" px={8}>
+         <Stack as="main" spacing={3}>
             <Box className="header">
                <Heading color="gray.800" fontSize="30px" fontWeight="medium">
                   Most Common {title} Troubleshooting Problems
                </Heading>
-               <Text mt="8px">
+               <Text mt={2}>
                   When your {title} runs into issues, it can be a source of
                   frustration and inconvenience. Never fear &mdash; we&apos;ve
                   compiled a comprehensive guide to diagnose and fix the most
@@ -106,8 +106,8 @@ export default function TroubleshootingProblems({
             <SimpleGrid
                className="list"
                columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
-               spacing="24px"
-               py="12px"
+               spacing={6}
+               py={3}
             >
                {mockProblems.map((problem: ProblemProps, index: number) => (
                   <Problem
@@ -159,8 +159,8 @@ function Problem({
                />
             </Flex>
          )}
-         <Stack className="content" spacing="12px" p="16px" flex="auto">
-            <Stack className="title" spacing="4px" flex="1">
+         <Stack className="content" spacing={3} p={4} flex="auto">
+            <Stack className="title" spacing={1} flex="1">
                <Text color="brand.500" fontWeight="semibold" noOfLines={4}>
                   {problemTitle}
                </Text>
@@ -168,8 +168,8 @@ function Problem({
                   {description}
                </Text>
             </Stack>
-            {badges && <HStack className="badges" spacing="6px"></HStack>}
-            <HStack className="device" spacing="6px" alignItems="center">
+            {badges && <HStack className="badges" spacing={1.5}></HStack>}
+            <HStack className="device" spacing={1.5} alignItems="center">
                <Image src={imageSrcThumb} alt={altText} {...thumbImageStyles} />
                <Box fontSize="sm" fontWeight="semibold" noOfLines={2}>
                   {deviceTitle}
