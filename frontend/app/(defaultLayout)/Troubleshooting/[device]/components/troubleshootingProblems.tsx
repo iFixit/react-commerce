@@ -11,6 +11,7 @@ import {
    Stack,
    Text,
 } from '@chakra-ui/react';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faVolumeXmark } from '@fortawesome/pro-duotone-svg-icons';
 import { FaIcon, FaIconProps } from '@ifixit/icons';
 
@@ -151,7 +152,7 @@ function Problem({
          ) : (
             <Flex {...imagePlaceholderStyles}>
                <FaIcon
-                  icon={problemTypeIcon}
+                  icon={problemTypeIcon as IconProp}
                   size="3x"
                   color="brand.400"
                   m="auto"
