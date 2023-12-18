@@ -285,11 +285,23 @@ async function getSafeServerState({
 function getDevicePathSegments(
    context: GetServerSidePropsContext<ParsedUrlQuery>
 ) {
-   const { deviceHandleItemType } = context.params || {};
-   if (Array.isArray(deviceHandleItemType)) {
-      return deviceHandleItemType;
-   }
-   return [];
+   /**
+    * We should be able to use `context.params` here,
+    * but see: https://github.com/vercel/next.js/issues/49646
+    *
+    * Basically something like device:variant%2FWithASlash
+    * Will be parsed into:
+    *   ['device', 'variant', 'WithASlash']
+    * Instead of:
+    *  ['device', 'variant/WithASlash']
+    */
+   const path = context.resolvedUrl.split('?')[0];
+   // turn into an array of path segments
+   const segments = path.split('/').filter(Boolean);
+   // remove the first segment, which is always 'Parts'
+   segments.shift();
+   const decodedSegments = segments.map(decodeURIComponent);
+   return decodedSegments;
 }
 
 function getDeviceCanonicalPath(
