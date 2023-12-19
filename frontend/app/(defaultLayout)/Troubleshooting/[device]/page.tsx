@@ -78,7 +78,7 @@ export async function generateMetadata({
 
    const metaTitle = `Troubleshooting Problems for ${device} - iFixit`;
    const metaDescription =
-      'Is your ${device} not working? You are not alone. View common problems and explore potential solutions. Learn the steps you can take to troubleshoot and fix the problem yourself.';
+     `Is your ${device} not working? You are not alone. View common problems and explore potential solutions. Learn the steps you can take to troubleshoot and fix the problem yourself.`;
 
    return {
       metadataBase: new URL(ifixitOrigin),
