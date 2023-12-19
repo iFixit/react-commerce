@@ -27,13 +27,11 @@ const HITS_PER_PAGE = 24;
 export interface ProductListViewProps {
    productList: ProductList;
    algoliaSSR?: boolean;
-   algoliaUrl?: string;
 }
 
 export function ProductListView({
    productList,
    algoliaSSR,
-   algoliaUrl,
 }: ProductListViewProps) {
    // This temporary hack allows to correctly populate the itemType facet during SSR
    // see: https://github.com/algolia/instantsearch/issues/5571

@@ -1,7 +1,6 @@
 import { ProductList } from '@models/product-list';
 import {
    destylizeDeviceTitle,
-   destylizeDeviceTitleAndVariant,
    splitDeviceAndVariant,
 } from '@helpers/product-list-helpers';
 import { getRouteData } from '@helpers/path-helpers';

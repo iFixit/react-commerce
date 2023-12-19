@@ -14,10 +14,7 @@ const ProductListTemplate: NextPageWithLayout<ProductListTemplateProps> = ({
             productList={productList}
             algoliaUrl={appProps.algolia?.url}
          >
-            <ProductListView
-               productList={productList}
-               algoliaUrl={appProps.algolia?.url}
-            />
+            <ProductListView productList={productList} />
          </CurrentProductListProvider>
       </InstantSearchProvider>
    );

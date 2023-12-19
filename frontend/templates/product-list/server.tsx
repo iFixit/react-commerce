@@ -266,7 +266,6 @@ async function getSafeServerState({
                   <ProductListView
                      productList={productList}
                      algoliaSSR={true}
-                     algoliaUrl={appProps.algolia?.url}
                   />
                </CurrentProductListProvider>
             </InstantSearchProvider>
