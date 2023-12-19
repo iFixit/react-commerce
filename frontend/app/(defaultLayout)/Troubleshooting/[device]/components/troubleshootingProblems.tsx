@@ -100,7 +100,7 @@ export default function TroubleshootingProblems({
                   When your {title} runs into issues, it can be a source of
                   frustration and inconvenience. Never fear &mdash; we&apos;ve
                   compiled a comprehensive guide to diagnose and fix the most
-                  common problems that can plague your refrigerator.{' '}
+                  common problems that can plague your refrigerator.
                </Text>
             </Box>
             <SimpleGrid
