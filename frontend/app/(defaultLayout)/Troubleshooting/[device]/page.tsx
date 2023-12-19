@@ -4,9 +4,9 @@ import { getiFixitOrigin } from '@helpers/path-helpers';
 import { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
-import TroubleshootingList, {
-   TroubleshootingListProps,
-} from './components/troubleshootingList';
+import TroubleshootingProblems, {
+   TroubleshootingProblemsProps,
+} from './components/troubleshootingProblems';
 import {
    IFixitAPIClient,
    VarnishBypassHeader,
@@ -25,7 +25,7 @@ export default async function Page({ params, searchParams }: PageProps) {
    ensureFlag();
 
    const pageProps = await getPageProps({ params, searchParams });
-   return <TroubleshootingList {...pageProps} />;
+   return <TroubleshootingProblems {...pageProps} />;
 }
 
 function ensureFlag() {
@@ -37,15 +37,15 @@ function ensureFlag() {
 async function getPageProps({
    params,
    searchParams: _searchParams,
-}: PageProps): Promise<TroubleshootingListProps> {
+}: PageProps): Promise<TroubleshootingProblemsProps> {
    const { device } = params;
-   const data = await getTroubleshootingListData(device);
+   const data = await getTroubleshootingProblemsData(device);
    return data;
 }
 
-async function getTroubleshootingListData(
+async function getTroubleshootingProblemsData(
    device: string
-): Promise<TroubleshootingListProps> {
+): Promise<TroubleshootingProblemsProps> {
    const nextHeaders = headers();
    const ifixitOrigin = getiFixitOrigin(nextHeaders);
 
@@ -57,9 +57,9 @@ async function getTroubleshootingListData(
    const url = `Troubleshooting/Collection/${encodedDevice}`;
 
    try {
-      return await client.get<TroubleshootingListProps>(
+      return await client.get<TroubleshootingProblemsProps>(
          url,
-         'troubleshootingList'
+         'troubleshootingProblems'
       );
    } catch (e) {
       notFound();
@@ -76,9 +76,8 @@ export async function generateMetadata({
    const ifixitOrigin = getiFixitOrigin(nextHeaders);
    const canonicalUrl = `${ifixitOrigin}/Troubleshooting/${device}`;
 
-   const metaTitle = `Troubleshooting Collection for ${device} - iFixit`;
-   const metaDescription =
-      'Uses the App Router to render a page with a dynamic path.';
+   const metaTitle = `Troubleshooting Problems for ${device} - iFixit`;
+   const metaDescription = `Is your ${device} not working? You are not alone. View common problems and explore potential solutions. Learn the steps you can take to troubleshoot and fix the problem yourself.`;
 
    return {
       metadataBase: new URL(ifixitOrigin),
