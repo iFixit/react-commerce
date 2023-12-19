@@ -167,7 +167,7 @@ export default function NavigationDisplay({
                      fontSize={`${fontSize.md}`}
                      fontWeight={`${fontWeight.normal}`}
                   >
-                     {'Join the Community'}
+                     {'Community'}
                   </Button>
                )}
             </ButtonGroup>
