@@ -20,22 +20,13 @@ export function useVariantProductList(
    const modelNumberPattern = productList.wikiInfo?.find(
       (info) => info.name === 'model_number_pattern'
    )?.value;
-   const modelNumberRegex = modelNumberPattern
-      ? new RegExp(modelNumberPattern?.replace(/[*⎵]/g, '.'), 'g')
-      : null;
-   const replaceModelNumber =
-      modelNumberRegex && variant.match(modelNumberRegex);
 
    const deviceTitle = destylizeDeviceTitle(decodeURIComponent(deviceHandle));
-   const deviceVariantTitle = destylizeDeviceTitleAndVariant(
-      decodeURIComponent(deviceHandle)
-   );
+   const deviceVariantTitle = getVariantTitle(deviceHandle, modelNumberPattern);
+
    return Object.fromEntries(
       Object.entries(productList).map(([key, value]) => {
          if (typeof value === 'string') {
-            value = replaceModelNumber
-               ? value.replace(modelNumberRegex, variant)
-               : value;
             return [
                key,
                value.replace(new RegExp(deviceTitle), deviceVariantTitle),
@@ -44,4 +35,18 @@ export function useVariantProductList(
          return [key, value];
       })
    );
+}
+
+function getVariantTitle(deviceHandle: string, modelNumberPattern?: string) {
+   const { variant } = splitDeviceAndVariant(deviceHandle);
+   const deviceTitle = destylizeDeviceTitle(decodeURIComponent(deviceHandle));
+   if (modelNumberPattern) {
+      const modelNumberRegex = new RegExp(
+         modelNumberPattern?.replace(/\*+$/, '').replace(/[*⎵]/g, '.'),
+         'g'
+      );
+      return deviceTitle.replace(modelNumberRegex, variant);
+   } else {
+      return `${deviceTitle} ${variant}`;
+   }
 }
