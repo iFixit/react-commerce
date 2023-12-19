@@ -4,9 +4,9 @@ import { getiFixitOrigin } from '@helpers/path-helpers';
 import { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
-import TroubleshootingList, {
-   TroubleshootingListProps,
-} from './components/troubleshootingList';
+import TroubleshootingProblems, {
+   TroubleshootingProblemsProps,
+} from './components/troubleshootingProblems';
 import {
    IFixitAPIClient,
    VarnishBypassHeader,
@@ -25,7 +25,7 @@ export default async function Page({ params, searchParams }: PageProps) {
    ensureFlag();
 
    const pageProps = await getPageProps({ params, searchParams });
-   return <TroubleshootingList {...pageProps} />;
+   return <TroubleshootingProblems {...pageProps} />;
 }
 
 function ensureFlag() {
@@ -37,15 +37,15 @@ function ensureFlag() {
 async function getPageProps({
    params,
    searchParams: _searchParams,
-}: PageProps): Promise<TroubleshootingListProps> {
+}: PageProps): Promise<TroubleshootingProblemsProps> {
    const { device } = params;
-   const data = await getTroubleshootingListData(device);
+   const data = await getTroubleshootingProblemsData(device);
    return data;
 }
 
-async function getTroubleshootingListData(
+async function getTroubleshootingProblemsData(
    device: string
-): Promise<TroubleshootingListProps> {
+): Promise<TroubleshootingProblemsProps> {
    const nextHeaders = headers();
    const ifixitOrigin = getiFixitOrigin(nextHeaders);
 
@@ -57,9 +57,9 @@ async function getTroubleshootingListData(
    const url = `Troubleshooting/Collection/${encodedDevice}`;
 
    try {
-      return await client.get<TroubleshootingListProps>(
+      return await client.get<TroubleshootingProblemsProps>(
          url,
-         'troubleshootingList'
+         'troubleshootingProblems'
       );
    } catch (e) {
       notFound();
