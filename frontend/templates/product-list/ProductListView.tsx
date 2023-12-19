@@ -41,7 +41,7 @@ export function ProductListView({
    const filters = computeProductListAlgoliaFilterPreset(productList);
    const optionalFilters =
       computeProductListAlgoliaOptionalFilters(productList);
-   const currentProductList = useCurrentProductList(productList, algoliaUrl);
+   const { currentProductList } = useCurrentProductList();
    const availableItemTypes = useAvailableItemTypes();
 
    if (algoliaSSR) {

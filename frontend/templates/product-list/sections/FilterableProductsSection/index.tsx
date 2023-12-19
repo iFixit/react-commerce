@@ -48,6 +48,7 @@ import { ProductList, ProductListItem } from './ProductList';
 import { ProductViewType, Toolbar } from './Toolbar';
 import { useHasAnyVisibleFacet } from './useHasAnyVisibleFacet';
 import { debouncedTrackGA4ViewItemList } from '@ifixit/analytics/google';
+import { useCurrentProductList } from '@templates/product-list/hooks/useCurrentProductList';
 
 const PRODUCT_VIEW_TYPE_STORAGE_KEY = 'productViewType';
 
@@ -241,6 +242,7 @@ type EmptyStateProps = BoxProps & {
 
 const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
    ({ productList, ...otherProps }, ref) => {
+      let { currentProductList } = useCurrentProductList();
       const { setSearchQuery } = useSearchQuery();
       const clearRefinements = useClearRefinements({ excludedAttributes: [] });
 
@@ -252,17 +254,17 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
 
       const isFiltered = hasRefinements || hasSearchQuery;
 
-      const itemType = useDevicePartsItemType(productList);
+      const itemType = useDevicePartsItemType(currentProductList);
       const title = getProductListTitle(
          {
-            title: productList.title,
-            type: productList.type,
+            title: currentProductList.title,
+            type: currentProductList.type,
          },
          itemType
       );
       const encodedQuery = encodeURIComponent(searchBox.query);
 
-      const ancestors = productList.ancestors;
+      const ancestors = currentProductList.ancestors;
       const parentCategory = ancestors[ancestors.length - 1];
 
       const appContext = useAppContext();
