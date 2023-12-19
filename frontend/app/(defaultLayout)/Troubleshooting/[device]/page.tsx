@@ -76,9 +76,9 @@ export async function generateMetadata({
    const ifixitOrigin = getiFixitOrigin(nextHeaders);
    const canonicalUrl = `${ifixitOrigin}/Troubleshooting/${device}`;
 
-   const metaTitle = `Troubleshooting Collection for ${device} - iFixit`;
+   const metaTitle = `Troubleshooting Problems for ${device} - iFixit`;
    const metaDescription =
-      'Uses the App Router to render a page with a dynamic path.';
+      'Is your ${device} not working? You are not alone. View common problems and explore potential solutions. Learn the steps you can take to troubleshoot and fix the problem yourself.';
 
    return {
       metadataBase: new URL(ifixitOrigin),
