@@ -1,3 +1,4 @@
+import { ClientOptions } from '@lib/redis';
 /**
  * withCache is a function that enables caching the result of any async operation using a stale while revalidate strategy.
  * The function takes a set of options and returns a NextApiHandler that you can use in your API routes to perform
@@ -21,7 +22,7 @@ import * as http from 'http';
 import * as https from 'https';
 import type { NextApiHandler } from 'next';
 import { z } from 'zod';
-import { cache } from './adapters';
+import { getCache } from './adapters';
 import {
    CacheEntry,
    createCacheEntry,
@@ -47,6 +48,7 @@ interface CacheOptions<
    ) => Promise<z.infer<ValueSchema>>;
    ttl?: number;
    staleWhileRevalidate?: number;
+   clientOptions?: ClientOptions;
 }
 
 type GetOptions = {
@@ -72,11 +74,13 @@ export const withCache = <
    getFreshValue,
    ttl,
    staleWhileRevalidate,
+   clientOptions = {},
 }: CacheOptions<VariablesSchema, ValueSchema>): NextApiHandlerWithProps<
    z.infer<VariablesSchema>,
    z.infer<ValueSchema>
 > => {
    const logger: Logger = defaultLog;
+   const cache = getCache(clientOptions);
 
    const requestRevalidation = async (variables: z.infer<VariablesSchema>) => {
       const start = performance.now();
@@ -111,6 +115,7 @@ export const withCache = <
          req.write(postData);
          req.end(() => {
             const elapsed = performance.now() - start;
+            logger.info('revalidation request end', postData);
             logger.success.event(`${statName}.revalidation.request_end`);
             logger.success.timing(
                `${statName}.revalidation.request_end`,
@@ -211,7 +216,7 @@ export const withCache = <
          return res.status(200).json({ success: true });
       } catch (error) {
          logger.error(printError(error));
-         return res.status(500).json({ success: false });
+         throw error;
       }
    };
 

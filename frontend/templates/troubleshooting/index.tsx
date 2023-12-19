@@ -1,78 +1,78 @@
+import {
+   Alert,
+   AlertIcon,
+   Avatar,
+   Box,
+   Button,
+   Flex,
+   HStack,
+   Heading,
+   HeadingProps,
+   Image,
+   Link,
+   Modal,
+   ModalBody,
+   ModalCloseButton,
+   ModalContent,
+   ModalHeader,
+   ModalOverlay,
+   SimpleGrid,
+   Stack,
+   Text,
+   VisuallyHidden,
+   chakra,
+   useBreakpointValue,
+   useDisclosure,
+   useToken,
+} from '@chakra-ui/react';
+import { PixelPing } from '@components/analytics/PixelPing';
+import { PrerenderedHTML } from '@components/common';
+import { ViewStats } from '@components/common/ViewStats';
+import { IntlDate } from '@components/ui/IntlDate';
 import { DefaultLayout } from '@layouts/default';
 import { DefaultLayoutProps } from '@layouts/default/server';
 import Head from 'next/head';
-import React, { useRef } from 'react';
-import {
-   Avatar,
-   Alert,
-   AlertIcon,
-   Box,
-   BoxProps,
-   Button,
-   Flex,
-   FlexProps,
-   Heading,
-   IconButton,
-   Image,
-   Link,
-   LinkProps,
-   Menu,
-   MenuButton,
-   MenuItem,
-   MenuList,
-   Modal,
-   ModalOverlay,
-   ModalContent,
-   ModalHeader,
-   ModalBody,
-   ModalCloseButton,
-   Stack,
-   Square,
-   Text,
-   useDisclosure,
-   VisuallyHidden,
-   chakra,
-   HStack,
-   SimpleGrid,
-   useToken,
-   HeadingProps,
-   useBreakpointValue,
-} from '@chakra-ui/react';
-import { PrerenderedHTML } from '@components/common';
+import { createRef, useRef } from 'react';
+import { useFlag } from '@ifixit/react-feature-flags';
+import ProblemCard from './Problem';
+import { HeadingSelfLink } from './components/HeadingSelfLink';
+import { GoogleNoScript, TagManager } from './components/TagManager';
 import type {
    Author,
-   BreadcrumbEntry,
    Problem,
    Section,
    TroubleshootingData,
 } from './hooks/useTroubleshootingProps';
 import SolutionCard from './solution';
-import { FaIcon } from '@ifixit/icons';
-import {
-   faAngleDown,
-   faCircleNodes,
-   faClockRotateLeft,
-   faList,
-   faPenToSquare,
-} from '@fortawesome/pro-solid-svg-icons';
-import { BreadCrumbs } from '@ifixit/breadcrumbs';
-import { HeadingSelfLink } from './components/HeadingSelfLink';
-import ProblemCard from './Problem';
-import { PixelPing } from '@components/analytics/PixelPing';
-import { TagManager, GoogleNoScript } from './components/TagManager';
+import { TOC } from './toc';
 import {
    LinkToTOC,
+   MinimalTOCRecord,
    TOCContextProvider,
    useTOCBufferPxScrollOnClick,
 } from './tocContext';
-import { TOC } from './toc';
-import { ViewStats } from '@components/common/ViewStats';
-import { IntlDate } from '@components/ui/IntlDate';
+import { uniqBy } from 'lodash';
+import { NavBar } from './components/NavBar';
+import { Causes, SectionRecord } from './components/Causes';
 
 const RelatedProblemsRecord = {
    title: 'Related Problems',
    uniqueId: 'related-problems',
 };
+
+function tagEntry<T extends object, Type extends string>(
+   type: Type,
+   value: T
+): T & { type: Type } {
+   return { type, ...value };
+}
+
+function tagEntries<T extends object, Type extends string>(
+   type: Type,
+   values: T[]
+) {
+   return values.map((t) => tagEntry(type, t));
+}
 
 const Wiki: NextPageWithLayout<{
    wikiData: TroubleshootingData;
@@ -85,7 +85,12 @@ const Wiki: NextPageWithLayout<{
       (conclusion) => conclusion.heading !== 'Related Pages'
    );
 
-   const hasRelatedPages = wikiData.linkedProblems.length > 0;
+   const relatedProblemsFlag = useFlag('extended-related-problems');
+
+   const relatedProblemsLength =
+      wikiData.linkedProblems.length +
+      (relatedProblemsFlag ? wikiData.relatedProblems.length : 0);
+   const hasRelatedPages = relatedProblemsLength > 0;
 
    const firstIntroSection = wikiData.introduction[0] || {};
    const otherIntroSections = wikiData.introduction.slice(1);
@@ -98,16 +103,49 @@ const Wiki: NextPageWithLayout<{
       ? [cleanFirstIntroSection, ...otherIntroSections]
       : wikiData.introduction;
 
-   const sections = introSections
-      .concat(wikiData.solutions)
-      .concat(filteredConclusions);
+   const taggedIntroSections: SectionRecord[] = tagEntries(
+      'Introduction',
+      introSections
+   );
 
-   const tocItems = sections
-      .map((section) => ({ title: section.heading, uniqueId: section.id }))
-      .concat(hasRelatedPages ? RelatedProblemsRecord : [])
+   const taggedSolutions: SectionRecord[] = tagEntries(
+      'Solution',
+      wikiData.solutions
+   );
+
+   const taggedConclusions: SectionRecord[] = tagEntries(
+      'Conclusion',
+      filteredConclusions
+   );
+
+   const sections = taggedIntroSections
+      .concat(taggedSolutions)
+      .concat(taggedConclusions);
+
+   const tocItems: MinimalTOCRecord<SectionRecord>[] = sections
+      .map((section) => ({
+         title: section.heading,
+         uniqueId: section.id,
+         ...section,
+      }))
       .filter((tocItem) => tocItem.title);
 
    const contentContainerRef = useRef<HTMLDivElement>(null);
+
+   const bufferPx = useBreakpointValue({ base: -40, mdPlus: 0 });
+
+   const tocWidth = '220px';
+   const sidebarWidth = '320px';
+
+   const layoutSwitch = {
+      [`@media (min-width: ${useToken('breakpoints', 'mdPlus')})`]: {
+         display: 'none',
+      },
+   };
+
+   const RelatedProblemsComponent = relatedProblemsFlag
+      ? RelatedProblemsV2
+      : RelatedProblems;
 
    return (
       <>
@@ -135,8 +173,8 @@ const Wiki: NextPageWithLayout<{
                display="grid"
                sx={{
                   gridTemplateColumns: {
-                     base: '[toc] 0 [wrapper] 1fr',
-                     lg: '[toc] 220px [wrapper] 1fr',
+                     base: `[toc] 0 [wrapper] 1fr`,
+                     mdPlus: `[toc] ${tocWidth} [wrapper] 1fr`,
                   },
                }}
                ref={contentContainerRef}
@@ -144,13 +182,13 @@ const Wiki: NextPageWithLayout<{
                <TOC
                   className="summary"
                   contentRef={contentContainerRef}
-                  borderRight={{ lg: '1px solid' }}
-                  borderColor={{ lg: 'gray.300' }}
-                  maxWidth={{ base: 'calc(100% + 2 * var(--chakra-space-4))' }}
-                  listItemProps={{ paddingLeft: { lg: 4 } }}
+                  borderRight={{ mdPlus: '1px solid' }}
+                  borderColor={{ mdPlus: 'gray.300' }}
+                  maxWidth="calc(100% + 2 * var(--chakra-space-4))"
+                  overflowY="auto"
                   gridArea="toc"
                />
-               <Stack
+               <Flex
                   className="wrapper"
                   gridArea="wrapper"
                   display={{ base: 'block', sm: 'flex' }}
@@ -162,38 +200,76 @@ const Wiki: NextPageWithLayout<{
                   paddingBottom={8}
                   minW={0}
                   marginInline={{ sm: 'auto' }}
-                  spacing={{ base: 4, lg: 12 }}
                   flexWrap={{ base: 'wrap', xl: 'nowrap' }}
+                  sx={{
+                     '@media (min-width: 1340px) and (max-width: 1719px)': {
+                        marginLeft: '0',
+                     },
+                     '@media (min-width: 1720px)': {
+                        transform: `translateX(calc(${tocWidth} / -2))`,
+                     },
+                  }}
                >
-                  <Stack id="main" spacing={4}>
-                     <TroubleshootingHeading wikiData={wikiData} />
-                     <Causes
-                        introduction={introSections}
-                        solutions={wikiData.solutions}
-                        problems={wikiData.linkedProblems}
-                     />
-                     <Stack className="intro" spacing={6} pt={{ sm: 3 }}>
-                        <IntroductionSections introduction={introSections} />
-                     </Stack>
-                     {wikiData.solutions.length > 0 && (
-                        <Stack spacing={6}>
-                           {wikiData.solutions.map((solution, index) => (
-                              <SolutionCard
-                                 key={solution.heading}
-                                 index={index + 1}
-                                 solution={solution}
-                              />
-                           ))}
+                  <Stack
+                     id="main"
+                     display={{ base: 'flex', xl: 'grid' }}
+                     columnGap={{ xl: 12 }}
+                     spacing={4}
+                     height="max-content"
+                     sx={{
+                        gridTemplateAreas: {
+                           xl: `
+                              "Content RelatedProblems"
+                              "Conclusion RelatedProblems"
+                              "AnswersCTA RelatedProblems"
+                           `,
+                        },
+                        gridTemplateColumns: { xl: `1fr ${sidebarWidth}` },
+                     }}
+                  >
+                     <Stack spacing={4} gridArea="Content">
+                        <TroubleshootingHeading wikiData={wikiData} />
+                        <Box sx={{ ...layoutSwitch }}>
+                           <Causes
+                              hasRelatedPages={hasRelatedPages}
+                              layoutSwitch={layoutSwitch}
+                              sx={{
+                                 mt: 3,
+                                 mb: { base: 4, mdPlus: 7 },
+                                 pb: 4,
+                                 borderBottom: '1px',
+                                 borderColor: 'gray.300',
+                              }}
+                           />
+                        </Box>
+                        <Stack className="intro" spacing={6} pt={{ sm: 3 }}>
+                           <IntroductionSections introduction={introSections} />
                         </Stack>
+                        {wikiData.solutions.length > 0 && (
+                           <Stack spacing={6}>
+                              {wikiData.solutions.map((solution, index) => (
+                                 <SolutionCard
+                                    key={solution.heading}
+                                    index={index + 1}
+                                    solution={solution}
+                                 />
+                              ))}
+                           </Stack>
+                        )}
+                     </Stack>
+                     {filteredConclusions.length > 0 && (
+                        <Conclusion
+                           conclusion={filteredConclusions}
+                           bufferPx={bufferPx}
+                        />
                      )}
-                     <Conclusion conclusion={filteredConclusions} />
+                     <RelatedProblemsComponent
+                        hasRelatedPages={hasRelatedPages}
+                        wikiData={wikiData}
+                     />
                      <AnswersCTA answersUrl={wikiData.answersUrl} />
                   </Stack>
-                  <RelatedProblems
-                     hasRelatedPages={hasRelatedPages}
-                     wikiData={wikiData}
-                  />
-               </Stack>
+               </Flex>
             </Box>
          </TOCContextProvider>
          {viewStats && <ViewStats {...viewStats} />}
@@ -266,7 +342,7 @@ function TroubleshootingHeading({
                as="h1"
                id="top"
                selfLinked
-               fontSize={{ base: '24px', md: '30px' }}
+               fontSize={{ base: '24px', mdPlus: '30px' }}
             >
                {wikiData.title}
             </HeadingSelfLink>
@@ -277,401 +353,6 @@ function TroubleshootingHeading({
             />
          </Stack>
       </HStack>
-   );
-}
-
-function Causes({
-   introduction,
-   solutions,
-   problems,
-}: {
-   introduction: Section[];
-   solutions: Section[];
-   problems: Problem[];
-}) {
-   const lgBreakpoint = useToken('breakpoints', 'lg');
-
-   const sx = {
-      display: 'block',
-      [`@media (min-width: ${lgBreakpoint})`]: {
-         display: 'none',
-      },
-   };
-
-   return (
-      <Box
-         mb={{ base: 4, md: 7 }}
-         pb={4}
-         borderBottom="1px"
-         borderColor="gray.300"
-         sx={sx}
-      >
-         <HeadingSelfLink as="h2" fontWeight="semibold" selfLinked id="causes">
-            {'Causes'}
-         </HeadingSelfLink>
-         <Stack
-            as="nav"
-            align="flex-start"
-            color="brand.500"
-            mt={4}
-            spacing={2}
-         >
-            {introduction.map((intro) => (
-               <CausesIntro key={intro.heading} {...intro} />
-            ))}
-            {solutions.map((solution, index) => (
-               <CausesSolution
-                  key={solution.heading}
-                  {...solution}
-                  index={index}
-               />
-            ))}
-            {problems.length > 0 && <CausesRelatedProblem />}
-         </Stack>
-      </Box>
-   );
-}
-
-function CausesIntro({ heading, id }: Section) {
-   const { onClick } = useTOCBufferPxScrollOnClick(id);
-
-   return (
-      <Stack>
-         <Link
-            href={`#${id}`}
-            fontWeight="semibold"
-            display="flex"
-            onClick={onClick}
-         >
-            <Square
-               size={6}
-               border="1px solid"
-               borderColor="brand.700"
-               borderRadius="md"
-               mr={2}
-            >
-               <FaIcon icon={faList} color="brand.500" />
-            </Square>
-            <Box as="span">{heading}</Box>
-         </Link>
-      </Stack>
-   );
-}
-
-function CausesSolution({ heading, id, index }: Section & { index: number }) {
-   const { onClick } = useTOCBufferPxScrollOnClick(id);
-
-   return (
-      <Stack>
-         <Link
-            href={`#${id}`}
-            fontWeight="semibold"
-            display="flex"
-            onClick={onClick}
-         >
-            <Square
-               size={6}
-               bgColor="brand.500"
-               border="1px solid"
-               borderColor="brand.700"
-               borderRadius="md"
-               color="white"
-               mr={2}
-               fontSize="sm"
-            >
-               {index + 1}
-            </Square>
-            <Box as="span">{heading}</Box>
-         </Link>
-      </Stack>
-   );
-}
-
-function CausesRelatedProblem() {
-   const { onClick } = useTOCBufferPxScrollOnClick(
-      RelatedProblemsRecord.uniqueId
-   );
-
-   return (
-      <Stack>
-         <Link
-            href={`#${RelatedProblemsRecord.uniqueId}`}
-            fontWeight="semibold"
-            display="flex"
-            onClick={onClick}
-         >
-            <Square
-               size={6}
-               border="1px solid"
-               borderColor="brand.700"
-               borderRadius="md"
-               mr={2}
-            >
-               <FaIcon icon={faCircleNodes} color="brand.500" />
-            </Square>
-            <Box as="span">Related Problems</Box>
-         </Link>
-      </Stack>
-   );
-}
-
-function NavBar({
-   editUrl,
-   historyUrl,
-   deviceGuideUrl,
-   devicePartsUrl,
-   breadcrumbs,
-}: {
-   editUrl: string;
-   historyUrl: string;
-   breadcrumbs: BreadcrumbEntry[];
-} & NavTabsProps) {
-   const bc = breadcrumbs.map((breadcrumb) => ({
-      label: breadcrumb.title,
-      url: breadcrumb.url,
-   }));
-   const padding = { base: '16px', sm: '32px' };
-   const breadcrumbMinHeight = '48px';
-   return (
-      <Flex
-         w="100%"
-         backgroundColor="white"
-         borderBottomColor="gray.200"
-         borderBottomWidth={{ base: '0', sm: '1px' }}
-         justify="center"
-         minHeight={breadcrumbMinHeight}
-      >
-         <Flex
-            className="NavBar"
-            maxW="1280px"
-            width="100%"
-            flexDirection={{ base: 'column-reverse', sm: 'row' }}
-            justify="stretch"
-         >
-            <BreadCrumbs
-               breadCrumbs={bc.slice(0, -1)}
-               paddingInline={padding}
-               minHeight={breadcrumbMinHeight}
-               borderTop={{ base: '1px', sm: '0' }}
-               borderTopColor="gray.200"
-               bgColor={{ base: 'blueGray.50', sm: 'transparent' }}
-               fontSize={{ base: '13px', md: '14px' }}
-            />
-            <Flex flexShrink="1" fontSize="14px">
-               <Box
-                  sx={{
-                     '::before, ::after': {
-                        minWidth: padding,
-                        display: { base: 'default', sm: 'none' },
-                        position: 'absolute',
-                        top: '0',
-                        content: '""',
-                        height: '100%',
-                        zIndex: '1',
-                        isolation: 'isolate',
-                     },
-                     '::before': {
-                        left: '0',
-                        background:
-                           'linear-gradient(to right, #fff 60%, rgba(255, 255, 255, 0))',
-                     },
-                     '::after': {
-                        right: '0',
-                        background:
-                           'linear-gradient(to left, #fff 60%, rgba(255, 255, 255, 0))',
-                     },
-                  }}
-                  position="relative"
-                  flex="1 2"
-                  overflowX="auto"
-               >
-                  <NavTabs
-                     overflowX="auto"
-                     flexGrow="1"
-                     paddingInline={{ base: 0, sm: 2 }}
-                     deviceGuideUrl={deviceGuideUrl}
-                     devicePartsUrl={devicePartsUrl}
-                  />
-               </Box>
-               <EditButton editUrl={editUrl} />
-               <ActionsMenu historyUrl={historyUrl} />
-            </Flex>
-         </Flex>
-      </Flex>
-   );
-}
-
-function EditButton({ editUrl }: { editUrl: string }) {
-   return (
-      <Button
-         leftIcon={<FaIcon icon={faPenToSquare} />}
-         variant="link"
-         as={Link}
-         bgColor="transparent"
-         textColor="brand"
-         borderLeftColor="gray.200"
-         borderLeftWidth="1px"
-         borderRightColor="gray.200"
-         borderRightWidth="1px"
-         borderRadius="0px"
-         py="9px"
-         px={4}
-         fontFamily="heading"
-         lineHeight="1.29"
-         fontWeight="semibold"
-         fontSize="sm"
-         color="brand.500"
-         textAlign="center"
-         href={editUrl}
-         minW="fit-content"
-      >
-         Edit
-      </Button>
-   );
-}
-
-function ActionsMenu({ historyUrl }: { historyUrl: string }) {
-   return (
-      <Menu>
-         {({ isOpen }) => {
-            return (
-               <>
-                  <MenuButton
-                     as={IconButton}
-                     aria-label="Options"
-                     icon={
-                        <FaIcon
-                           color={isOpen ? 'brand.500' : 'gray.500'}
-                           icon={faAngleDown}
-                        />
-                     }
-                     variant="link"
-                     borderRightColor="gray.200"
-                     borderRightWidth={1}
-                     borderRightRadius={0}
-                  />
-                  <MenuList>
-                     <MenuItem
-                        as={Link}
-                        _hover={{ textDecoration: 'none' }}
-                        href={historyUrl}
-                        icon={<FaIcon icon={faClockRotateLeft} />}
-                     >
-                        History
-                     </MenuItem>
-                  </MenuList>
-               </>
-            );
-         }}
-      </Menu>
-   );
-}
-
-type NavTabsProps = {
-   deviceGuideUrl?: string;
-   devicePartsUrl?: string;
-};
-
-function NavTabs({
-   devicePartsUrl,
-   deviceGuideUrl,
-   ...props
-}: NavTabsProps & FlexProps) {
-   // The type here works because all the styles we want to use are available on
-   // both Box and Link
-   const baseStyleProps: BoxProps & LinkProps = {
-      outline: '2px solid transparent',
-      outlineOffset: '2px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingTop: 2,
-      paddingBottom: 2,
-      paddingInlineStart: 4,
-      paddingInlineEnd: 4,
-      position: 'relative',
-   };
-
-   const bottomFeedbackStyleProps = {
-      content: '""',
-      position: 'absolute',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      height: '3px',
-      borderRadius: '2px 2px 0px 0px',
-   };
-
-   const selectedStyleProps = {
-      ...baseStyleProps,
-      borderColor: 'blue.500',
-      color: 'gray.900',
-      fontWeight: 'medium',
-      _visited: {
-         color: 'gray.900',
-      },
-      _hover: {
-         textDecoration: 'none',
-         background: 'gray.100',
-         '::after': {
-            background: 'blue.700',
-         },
-      },
-      _after: {
-         ...bottomFeedbackStyleProps,
-         background: 'blue.500',
-      },
-   };
-
-   const notSelectedStyleProps = {
-      ...baseStyleProps,
-      borderColor: 'transparent',
-      color: 'gray.500',
-      fontWeight: 'normal',
-      _hover: {
-         textDecoration: 'none',
-      },
-      _visited: {
-         color: 'gray.500',
-      },
-      sx: {
-         '&:hover:not(.isDisabled)': {
-            color: 'gray.700',
-            background: 'gray.100',
-         },
-         '&.isDisabled': {
-            opacity: 0.4,
-            cursor: 'not-allowed',
-            color: 'gray.700',
-            background: 'gray.100',
-         },
-      },
-   };
-
-   return (
-      <Flex {...props} gap={1.5} height="100%">
-         {devicePartsUrl ? (
-            <Link {...notSelectedStyleProps} href={devicePartsUrl}>
-               Parts
-            </Link>
-         ) : (
-            <Box className="isDisabled" {...notSelectedStyleProps}>
-               Parts
-            </Box>
-         )}
-
-         {deviceGuideUrl ? (
-            <Link {...notSelectedStyleProps} href={deviceGuideUrl}>
-               Guides
-            </Link>
-         ) : (
-            <Box className="isDisabled" {...notSelectedStyleProps}>
-               Guides
-            </Box>
-         )}
-
-         <Box {...selectedStyleProps}>Answers</Box>
-      </Flex>
    );
 }
 
@@ -729,7 +410,7 @@ function AuthorInformation({
    const primaryAuthor: Author | undefined = authors[0];
    const otherAuthors = authors.slice(1);
    return (
-      <Flex align="center" gap={1.5}>
+      <HStack align="center" spacing={1.5}>
          {primaryAuthor && <AuthorAvatar author={primaryAuthor} />}
          <Flex justify="center" direction="column">
             {primaryAuthor && (
@@ -745,7 +426,7 @@ function AuthorInformation({
                historyUrl={historyUrl}
             />
          </Flex>
-      </Flex>
+      </HStack>
    );
 }
 
@@ -844,8 +525,8 @@ function IntroductionSection({
    intro,
    ...headingProps
 }: { intro: Section } & HeadingProps) {
-   const bufferPx = useBreakpointValue({ base: -46, lg: -6 });
-   const { ref } = LinkToTOC<HTMLHeadingElement>(intro.id, bufferPx);
+   const bufferPxAlt = useBreakpointValue({ base: -46, lg: -6 });
+   const { ref } = LinkToTOC<HTMLHeadingElement>(intro.id, bufferPxAlt);
    const { onClick } = useTOCBufferPxScrollOnClick(intro.id);
 
    return (
@@ -869,16 +550,30 @@ function IntroductionSection({
 
 const ConclusionSection = function ConclusionSectionInner({
    conclusion,
+   bufferPx,
 }: {
    conclusion: Section;
+   bufferPx?: number;
 }) {
-   const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
    const { ref } = LinkToTOC<HTMLHeadingElement>(conclusion.id, bufferPx);
    const { onClick } = useTOCBufferPxScrollOnClick(conclusion.id);
 
    return (
-      <Stack spacing={3} id={conclusion.id} ref={ref}>
-         <HeadingSelfLink pt={4} id={conclusion.id} onClick={onClick}>
+      <Stack
+         id={conclusion.id}
+         ref={ref}
+         spacing={{ base: 4, sm: 6 }}
+         sx={{
+            '.HeadingSelfLink + .prerendered > ul:first-child': {
+               marginTop: '0',
+            },
+         }}
+      >
+         <HeadingSelfLink
+            id={conclusion.id}
+            onClick={onClick}
+            pt={{ base: 0, sm: 6 }}
+         >
             {conclusion.heading}
          </HeadingSelfLink>
          <PrerenderedHTML html={conclusion.body} template="troubleshooting" />
@@ -886,29 +581,52 @@ const ConclusionSection = function ConclusionSectionInner({
    );
 };
 
-function Conclusion({ conclusion: conclusions }: { conclusion: Section[] }) {
+function Conclusion({
+   conclusion: conclusions,
+   bufferPx,
+}: {
+   conclusion: Section[];
+   bufferPx?: number;
+}) {
    return (
-      <>
+      <Stack spacing={6} gridArea="Conclusion">
          {conclusions.map((conclusion) => (
             <ConclusionSection
                key={conclusion.heading}
                conclusion={conclusion}
+               bufferPx={bufferPx}
             />
          ))}
-      </>
+      </Stack>
    );
 }
 
 function AnswersCTA({ answersUrl }: { answersUrl: string }) {
    return (
-      <Alert p={3} mt={4}>
-         <AlertIcon color="gray.500" />
-         <chakra.span pr={3} mr="auto">
-            Haven&apos;t found the solution to your problem?
-         </chakra.span>
-         <Button href={answersUrl} as="a" colorScheme="brand">
-            Browse our forum
-         </Button>
+      <Alert p={3} fontSize="sm" gridArea="AnswersCTA">
+         <AlertIcon
+            color="gray.500"
+            alignSelf={{ base: 'start', sm: 'center' }}
+         />
+         <HStack
+            align="center"
+            flex="auto"
+            justify="space-between"
+            sx={{
+               '@media (max-width: 375px)': {
+                  flexDirection: 'column',
+                  spacing: '1.5',
+                  alignItems: 'end',
+               },
+            }}
+         >
+            <chakra.span>
+               Haven&apos;t found the solution to your problem?
+            </chakra.span>
+            <Button href={answersUrl} as="a" colorScheme="brand" ml={3}>
+               Browse our forum
+            </Button>
+         </HStack>
       </Alert>
    );
 }
@@ -919,115 +637,205 @@ function RelatedProblems({
 }: {
    wikiData: TroubleshootingData;
    hasRelatedPages?: boolean;
+   bufferPx?: number;
 }) {
-   const { linkedProblems, deviceGuideUrl, countOfAssociatedProblems } =
-      wikiData;
+   const {
+      linkedProblems,
+      deviceTroubleshootingUrl,
+      countOfAssociatedProblems,
+   } = wikiData;
+   const { displayTitle, imageUrl, description } = wikiData.category;
+   const ref = createRef<HTMLDivElement>();
+
+   return (
+      <Stack
+         id={RelatedProblemsRecord.uniqueId}
+         ref={ref}
+         className="sidebar"
+         gridArea="RelatedProblems"
+         spacing={{ base: 4, xl: 6 }}
+         sx={{ ...sidebarStyles }}
+      >
+         {hasRelatedPages && <LinkedProblems problems={linkedProblems} />}
+         <DeviceCard
+            imageUrl={imageUrl}
+            displayTitle={displayTitle}
+            description={description}
+            countOfAssociatedProblems={countOfAssociatedProblems}
+            deviceTroubleshootingUrl={deviceTroubleshootingUrl}
+         />
+      </Stack>
+   );
+}
+
+function RelatedProblemsV2({
+   wikiData,
+   hasRelatedPages,
+   bufferPx,
+}: {
+   wikiData: TroubleshootingData;
+   hasRelatedPages?: boolean;
+   bufferPx?: number;
+}) {
+   const {
+      linkedProblems,
+      relatedProblems,
+      deviceTroubleshootingUrl,
+      countOfAssociatedProblems,
+   } = wikiData;
    const { displayTitle, imageUrl, description } = wikiData.category;
 
-   const bufferPx = useBreakpointValue({ base: -40, lg: 0 });
    const { ref } = LinkToTOC<HTMLHeadingElement>(
       RelatedProblemsRecord.uniqueId,
       bufferPx
    );
+   const problems = linkedProblems.concat(relatedProblems);
+   // We don't want to omit any linked problems, but we also don't want to add
+   // an unlimited number of additional problems from the device.
+   const maxProblems = Math.max(6, linkedProblems.length);
+   const uniqProblems = uniqBy(problems, 'title').slice(0, maxProblems);
 
    return (
-      <>
-         <Stack
-            id={RelatedProblemsRecord.uniqueId}
-            ref={ref}
-            className="sidebar"
-            spacing={{ base: 4, xl: 6 }}
-            width={{ base: '100%' }}
-            alignSelf="start"
-            fontSize="14px"
-            flex={{ xl: '1 0 320px' }}
-            mt={{ base: 3, md: 0 }}
-         >
-            <Stack className="question" spacing={1.5} display="flex">
-               <Box
-                  bgColor="white"
-                  border="1px solid"
-                  borderColor="gray.300"
-                  borderRadius="md"
-                  overflow="hidden"
-               >
-                  <Flex gap={2} padding={3} align="center">
-                     <Image
-                        src={imageUrl}
-                        alt={displayTitle}
-                        boxSize={{ base: '56px', md: '96px' }}
-                        htmlWidth={96}
-                        htmlHeight={96}
-                        objectFit="cover"
-                        borderRadius="md"
-                        outline="1px solid"
-                        outlineColor="gray.300"
-                     />
-                     <Box display="block" lineHeight="normal">
-                        <Box fontWeight="semibold" my="auto">
-                           {displayTitle}
-                        </Box>
-                        <Box
-                           display={{ base: 'none', sm: '-webkit-box' }}
-                           mt={3}
-                        >
-                           <PrerenderedHTML
-                              noOfLines={4}
-                              template="troubleshooting"
-                              html={description}
-                           />
-                        </Box>
-                     </Box>
-                  </Flex>
-                  {countOfAssociatedProblems && (
-                     <Flex
-                        justifyContent="space-between"
-                        alignItems="center"
-                        w="100%"
-                        padding={3}
-                        bg="gray.100"
-                        borderTop="1px solid"
-                        borderColor="gray.300"
-                     >
-                        <Text>
-                           {countOfAssociatedProblems === 1
-                              ? '1 Problem'
-                              : countOfAssociatedProblems + ' Problems'}
-                        </Text>
-                        <Link href={deviceGuideUrl} textColor="brand.500">
-                           {countOfAssociatedProblems === 1
-                              ? 'View problem'
-                              : 'View all'}
-                        </Link>
-                     </Flex>
-                  )}
-               </Box>
-            </Stack>
-            {hasRelatedPages && (
-               <Stack spacing={3}>
-                  <Heading
-                     as="h3"
-                     fontSize={{ base: '20px', md: '24px' }}
-                     fontWeight="medium"
-                     lineHeight="normal"
-                  >
-                     {RelatedProblemsRecord.title}
-                  </Heading>
-                  <SimpleGrid
-                     className="list"
-                     columns={{ base: 1, sm: 2, xl: 1 }}
-                     spacing={3}
-                  >
-                     {linkedProblems.map((problem) => (
-                        <ProblemCard problem={problem} key={problem.title} />
-                     ))}
-                  </SimpleGrid>
-               </Stack>
-            )}
-         </Stack>
-      </>
+      <Stack
+         id={RelatedProblemsRecord.uniqueId}
+         ref={ref}
+         data-test="related-problems-v2"
+         className="sidebar"
+         gridArea="RelatedProblems"
+         spacing={{ base: 4, xl: 6 }}
+         sx={{ ...sidebarStyles }}
+      >
+         {hasRelatedPages && <LinkedProblems problems={uniqProblems} />}
+         <DeviceCard
+            imageUrl={imageUrl}
+            displayTitle={displayTitle}
+            description={description}
+            countOfAssociatedProblems={countOfAssociatedProblems}
+            deviceTroubleshootingUrl={deviceTroubleshootingUrl}
+         />
+      </Stack>
    );
 }
+
+function DeviceCard({
+   imageUrl,
+   displayTitle,
+   description,
+   countOfAssociatedProblems,
+   deviceTroubleshootingUrl,
+}: {
+   imageUrl: string;
+   displayTitle: string;
+   description: string;
+   countOfAssociatedProblems: number;
+   deviceTroubleshootingUrl: string | undefined;
+}) {
+   return (
+      <Stack
+         className="question"
+         spacing={1.5}
+         display="flex"
+         order={{ xl: -1 }}
+      >
+         <Box
+            bgColor="white"
+            border="1px solid"
+            borderColor="gray.300"
+            borderRadius="md"
+            overflow="hidden"
+         >
+            <HStack spacing={2} padding={3} align="center">
+               <Image
+                  src={imageUrl}
+                  alt={displayTitle}
+                  minWidth={{ base: '75px', mdPlus: '104px' }}
+                  minHeight={{ base: '56px', mdPlus: '78px' }}
+                  htmlWidth={104}
+                  htmlHeight={78}
+                  objectFit="cover"
+                  borderRadius="md"
+                  outline="1px solid"
+                  outlineColor="gray.300"
+                  overflow="hidden"
+                  aspectRatio="4 / 3"
+               />
+               <Box display="block" lineHeight="normal">
+                  <Box fontWeight="semibold" my="auto">
+                     {displayTitle}
+                  </Box>
+                  <Box display={{ base: 'none', sm: '-webkit-box' }} mt={1}>
+                     <PrerenderedHTML
+                        noOfLines={4}
+                        template="troubleshooting"
+                        html={description}
+                     />
+                  </Box>
+               </Box>
+            </HStack>
+            {countOfAssociatedProblems && (
+               <Flex
+                  justifyContent="space-between"
+                  alignItems="center"
+                  w="100%"
+                  padding={3}
+                  bg="gray.100"
+                  borderTop="1px solid"
+                  borderColor="gray.300"
+               >
+                  <Text>
+                     {countOfAssociatedProblems === 1
+                        ? '1 common problem'
+                        : countOfAssociatedProblems + ' common problems'}
+                  </Text>
+                  <Link href={deviceTroubleshootingUrl} textColor="brand.500">
+                     {countOfAssociatedProblems === 1
+                        ? 'View problem'
+                        : 'View all'}
+                  </Link>
+               </Flex>
+            )}
+         </Box>
+      </Stack>
+   );
+}
+
+function LinkedProblems({ problems }: { problems: Problem[] }) {
+   return (
+      <Stack spacing={3}>
+         <Heading
+            as="h3"
+            fontSize={{ base: '20px', mdPlus: '24px' }}
+            fontWeight="medium"
+            lineHeight="normal"
+         >
+            {RelatedProblemsRecord.title}
+         </Heading>
+         <SimpleGrid
+            className="list"
+            columns={{ base: 1, sm: 2, lg: 1 }}
+            spacing={3}
+         >
+            {problems.map((problem) => (
+               <ProblemCard problem={problem} key={problem.title} />
+            ))}
+         </SimpleGrid>
+      </Stack>
+   );
+}
+
+const sidebarStyles = {
+   width: '100%',
+   alignSelf: 'start',
+   fontSize: '14px',
+   pt: { base: 6, xl: 0 },
+   height: { xl: '100vh' },
+   '@media (min-width: 1280px)': {
+      position: 'sticky',
+      top: 8,
+      maxHeight: 'calc(100vh - 44px)',
+      overflowY: 'auto',
+   },
+};
 
 Wiki.getLayout = function getLayout(page, pageProps) {
    return <DefaultLayout {...pageProps.layoutProps}>{page}</DefaultLayout>;

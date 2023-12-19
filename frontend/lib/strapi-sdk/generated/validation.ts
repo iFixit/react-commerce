@@ -38,6 +38,8 @@ import {
    I18NLocaleFiltersInput,
    IdFilterInput,
    IntFilterInput,
+   ItemTypeFiltersInput,
+   ItemTypeInput,
    JsonFilterInput,
    MenuFiltersInput,
    MenuInput,
@@ -53,6 +55,10 @@ import {
    PublisherActionInput,
    ReusableSectionFiltersInput,
    ReusableSectionInput,
+   ScrewdriverBitFiltersInput,
+   ScrewdriverBitInput,
+   ScrewdriverBitTypeFiltersInput,
+   ScrewdriverBitTypeInput,
    SocialPostFiltersInput,
    SocialPostInput,
    StoreFiltersInput,
@@ -709,6 +715,33 @@ export function IntFilterInputSchema(): z.ZodObject<
    });
 }
 
+export function ItemTypeFiltersInputSchema(): z.ZodObject<
+   Properties<ItemTypeFiltersInput>
+> {
+   return z.object<Properties<ItemTypeFiltersInput>>({
+      akeneo_code: z.lazy(() => StringFilterInputSchema().nullish()),
+      and: z
+         .array(z.lazy(() => ItemTypeFiltersInputSchema().nullable()))
+         .nullish(),
+      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      id: z.lazy(() => IdFilterInputSchema().nullish()),
+      not: z.lazy(() => ItemTypeFiltersInputSchema().nullish()),
+      or: z
+         .array(z.lazy(() => ItemTypeFiltersInputSchema().nullable()))
+         .nullish(),
+      publishedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+   });
+}
+
+export function ItemTypeInputSchema(): z.ZodObject<Properties<ItemTypeInput>> {
+   return z.object<Properties<ItemTypeInput>>({
+      akeneo_code: z.string().nullish(),
+      fallback_image: z.string().nullish(),
+      publishedAt: z.unknown().nullish(),
+   });
+}
+
 export function JsonFilterInputSchema(): z.ZodObject<
    Properties<JsonFilterInput>
 > {
@@ -772,6 +805,8 @@ export function PageFiltersInputSchema(): z.ZodObject<
       id: z.lazy(() => IdFilterInputSchema().nullish()),
       locale: z.lazy(() => StringFilterInputSchema().nullish()),
       localizations: z.lazy(() => PageFiltersInputSchema().nullish()),
+      metaDescription: z.lazy(() => StringFilterInputSchema().nullish()),
+      metaTitle: z.lazy(() => StringFilterInputSchema().nullish()),
       not: z.lazy(() => PageFiltersInputSchema().nullish()),
       or: z.array(z.lazy(() => PageFiltersInputSchema().nullable())).nullish(),
       path: z.lazy(() => StringFilterInputSchema().nullish()),
@@ -783,6 +818,8 @@ export function PageFiltersInputSchema(): z.ZodObject<
 
 export function PageInputSchema(): z.ZodObject<Properties<PageInput>> {
    return z.object<Properties<PageInput>>({
+      metaDescription: z.string().nullish(),
+      metaTitle: z.string().nullish(),
       path: z.string().nullish(),
       publishedAt: z.unknown().nullish(),
       sections: z.array(z.lazy(() => z.unknown())).nullish(),
@@ -848,6 +885,9 @@ export function ProductListFiltersInputSchema(): z.ZodObject<
       handle: z.lazy(() => StringFilterInputSchema().nullish()),
       hideFromParent: z.lazy(() => BooleanFilterInputSchema().nullish()),
       id: z.lazy(() => IdFilterInputSchema().nullish()),
+      indexVariantsInsteadOfDevice: z.lazy(() =>
+         BooleanFilterInputSchema().nullish()
+      ),
       legacyDescription: z.lazy(() => StringFilterInputSchema().nullish()),
       legacyPageId: z.lazy(() => IntFilterInputSchema().nullish()),
       locale: z.lazy(() => StringFilterInputSchema().nullish()),
@@ -887,6 +927,7 @@ export function ProductListInputSchema(): z.ZodObject<
       heroImage: z.string().nullish(),
       hideFromParent: z.boolean().nullish(),
       image: z.string().nullish(),
+      indexVariantsInsteadOfDevice: z.boolean().nullish(),
       itemOverrides: z.array(z.lazy(() => z.unknown())).nullish(),
       legacyDescription: z.string().nullish(),
       legacyPageId: z.number().nullish(),
@@ -974,6 +1015,67 @@ export function ReusableSectionInputSchema(): z.ZodObject<
       publishedAt: z.unknown().nullish(),
       section: z.array(z.lazy(() => definedNonNullAnySchema)).nullish(),
       title: z.string().nullish(),
+   });
+}
+
+export function ScrewdriverBitFiltersInputSchema(): z.ZodObject<
+   Properties<ScrewdriverBitFiltersInput>
+> {
+   return z.object<Properties<ScrewdriverBitFiltersInput>>({
+      and: z
+         .array(z.lazy(() => ScrewdriverBitFiltersInputSchema().nullable()))
+         .nullish(),
+      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      id: z.lazy(() => IdFilterInputSchema().nullish()),
+      not: z.lazy(() => ScrewdriverBitFiltersInputSchema().nullish()),
+      or: z
+         .array(z.lazy(() => ScrewdriverBitFiltersInputSchema().nullable()))
+         .nullish(),
+      size: z.lazy(() => StringFilterInputSchema().nullish()),
+      slug: z.lazy(() => StringFilterInputSchema().nullish()),
+      type: z.lazy(() => ScrewdriverBitTypeFiltersInputSchema().nullish()),
+      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+   });
+}
+
+export function ScrewdriverBitInputSchema(): z.ZodObject<
+   Properties<ScrewdriverBitInput>
+> {
+   return z.object<Properties<ScrewdriverBitInput>>({
+      size: z.string().nullish(),
+      slug: z.string().nullish(),
+      type: z.string().nullish(),
+   });
+}
+
+export function ScrewdriverBitTypeFiltersInputSchema(): z.ZodObject<
+   Properties<ScrewdriverBitTypeFiltersInput>
+> {
+   return z.object<Properties<ScrewdriverBitTypeFiltersInput>>({
+      and: z
+         .array(z.lazy(() => ScrewdriverBitTypeFiltersInputSchema().nullable()))
+         .nullish(),
+      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      driverSize: z.lazy(() => StringFilterInputSchema().nullish()),
+      id: z.lazy(() => IdFilterInputSchema().nullish()),
+      name: z.lazy(() => StringFilterInputSchema().nullish()),
+      not: z.lazy(() => ScrewdriverBitTypeFiltersInputSchema().nullish()),
+      or: z
+         .array(z.lazy(() => ScrewdriverBitTypeFiltersInputSchema().nullable()))
+         .nullish(),
+      slug: z.lazy(() => StringFilterInputSchema().nullish()),
+      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+   });
+}
+
+export function ScrewdriverBitTypeInputSchema(): z.ZodObject<
+   Properties<ScrewdriverBitTypeInput>
+> {
+   return z.object<Properties<ScrewdriverBitTypeInput>>({
+      driverSize: z.string().nullish(),
+      icon: z.string().nullish(),
+      name: z.string().nullish(),
+      slug: z.string().nullish(),
    });
 }
 

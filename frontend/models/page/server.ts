@@ -1,5 +1,6 @@
 import { filterNullableItems } from '@helpers/application-helpers';
 import { createSectionId } from '@helpers/strapi-helpers';
+import { presence, timeAsync } from '@ifixit/helpers';
 import { FindPageQuery, strapi } from '@lib/strapi-sdk';
 import { bannersSectionFromStrapi } from '@models/sections/banners-section';
 import { featuredProductsSectionFromStrapi } from '@models/sections/featured-products-section';
@@ -8,10 +9,9 @@ import { quoteGallerySectionFromStrapi } from '@models/sections/quote-gallery-se
 import { socialGallerySectionFromStrapi } from '@models/sections/social-gallery-section';
 import { splitWithImageSectionFromStrapi } from '@models/sections/split-with-image-section';
 import type { Page, PageSection } from '.';
+import { pressQuotesSectionFromStrapi } from '../sections/press-quotes-section';
 import { browseSectionFromStrapi } from './sections/browse-section';
 import { heroSectionFromStrapi } from './sections/hero-section';
-import { pressQuotesSectionFromStrapi } from '../sections/press-quotes-section';
-import { timeAsync } from '@ifixit/helpers';
 
 interface FindPageArgs {
    path: string;
@@ -89,6 +89,8 @@ export async function findPage({ path }: FindPageArgs): Promise<Page | null> {
    return {
       path: page.path,
       title: page.title,
+      metaTitle: presence(page.metaTitle),
+      metaDescription: presence(page.metaDescription),
       sections,
    };
 }

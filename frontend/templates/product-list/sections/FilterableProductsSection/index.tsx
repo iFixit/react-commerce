@@ -349,7 +349,7 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
                   This collection does not have products.
                </Text>
                {parentCategory && (
-                  <Link href={productListPath(parentCategory)}>
+                  <Link href={productListPath({ productList: parentCategory })}>
                      Return to {parentCategory.title}
                   </Link>
                )}

@@ -181,9 +181,11 @@ const productVariants: ProductVariant[] = [
 ];
 
 export const mockedProduct: Product = {
+   __typename: 'Product',
    id: 'gid://shopify/Product/1231231231231',
    title: 'Mocked Product Title',
    handle: 'iphone-6s-plus-replacement-battery',
+   noindex: false,
    descriptionHtml:
       '<p>This replacement battery is what you need to bring that dead smartphone back to life.</p>\n\n<ul><li>This battery is brand new! Each one has been tested to confirm that there are no cycles on the cell and that the capacity is 95% or higher.</li></ul>',
    tags: [
@@ -264,6 +266,7 @@ export const mockedProduct: Product = {
       'A new replacement 2750 mAh battery compatible with the iPhone 6s Plus. 3.80 Volts (V), 10.45 Watt Hours (Wh). This replacement does not require soldering and is compatible with all iPhone 6s Plus models (not iPhone 6, 6 Plus, or 6s).',
    oemPartnership: null,
    images: productImages,
+   fallbackImages: [],
    options: [
       {
          id: 'gid://shopify/ProductOption/5958025085018',

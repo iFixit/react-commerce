@@ -9,18 +9,11 @@ import { ReplacementGuidesSection } from '@components/sections/ReplacementGuides
 import { ServiceValuePropositionSection } from '@components/sections/ServiceValuePropositionSection';
 import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
 import { DEFAULT_STORE_CODE } from '@config/env';
-import {
-   trackGoogleProductView,
-   trackInPiwikAndGA,
-   trackPiwikEcommerceView,
-   trackGA4ViewItem,
-} from '@ifixit/analytics';
+import { trackInAnalyticsViewItem } from '@ifixit/analytics';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import {
    assertNever,
    isLifetimeWarranty,
-   moneyToNumber,
-   parseItemcode,
    getVariantIdFromVariantURI,
 } from '@ifixit/helpers';
 import { DefaultLayout } from '@layouts/default';
@@ -42,9 +35,12 @@ import { CompatibilityNotesSection } from './sections/CompatibilityNotesSection'
 import { CompatibilitySection } from './sections/CompatibilitySection';
 import { ProductOverviewSection } from './sections/ProductOverviewSection';
 import { ProductReviewsSection } from './sections/ProductReviewsSection';
+import { trackInPiwik } from '@ifixit/analytics/piwik/track-event';
+import { BitTableSection } from '@components/sections/BitTableSection';
 
 const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
+
    const [selectedVariant, setSelectedVariantId] = useSelectedVariant(product);
 
    const internationalBuyBox = useInternationalBuyBox(product);
@@ -53,19 +49,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const isAdminUser = useAuthenticatedUser().data?.isAdmin ?? false;
 
    React.useEffect(() => {
-      trackPiwikEcommerceView({
-         productSku: selectedVariant.sku ?? selectedVariant.id,
-         productName: selectedVariant.internalDisplayName ?? product.title,
-         price: selectedVariant.price,
-      });
-      trackGoogleProductView({
-         id: selectedVariant.sku ?? selectedVariant.id,
-         name: product.title,
-         variant: selectedVariant.internalDisplayName ?? undefined,
-         category: parseItemcode(selectedVariant.sku ?? '')?.category,
-         price: moneyToNumber(selectedVariant.price).toFixed(2),
-      });
-      trackGA4ViewItem({
+      trackInAnalyticsViewItem({
          currency: selectedVariant.price.currencyCode,
          value: selectedVariant.price.amount,
          items: [
@@ -83,9 +67,10 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
 
    const trackFeaturedProductClick = React.useCallback(
       (product: ProductPreview) => {
-         trackInPiwikAndGA({
+         trackInPiwik({
             eventCategory: 'Featured Products - Product Page',
             eventAction: `Featured on Product Page - ${product.handle}`,
+            eventName: `${window.location.origin}${window.location.pathname}`,
          });
       },
       []
@@ -248,6 +233,18 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                            title={section.title}
                            description={section.description}
                            faqs={section.faqs}
+                        />
+                     );
+                  }
+
+                  case 'BitTable': {
+                     return (
+                        <BitTableSection
+                           key={section.id}
+                           id={section.id}
+                           title={section.title}
+                           description={section.description}
+                           bits={section.bits}
                         />
                      );
                   }

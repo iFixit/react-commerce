@@ -1,14 +1,14 @@
-import { CartLineItem } from '@ifixit/cart-sdk';
 import {
-   Money,
    getShopifyStoreDomainFromCurrentURL,
    getShopifyLanguageFromCurrentURL,
-   sumMoney,
 } from '@ifixit/helpers';
 import { piwikPush } from './piwikPush';
+import { AddToCartInput } from '@ifixit/cart-sdk';
+import { trackInPiwik } from './track-event';
+import { AnalyticsItem, AnalyticsItemsEvent } from '..';
 
 /**
- * @see https://developer.matomo.org/api-reference/tracking-javascript
+ * @see https://developers.piwik.pro/en/latest/data_collection/web/javascript_tracking_client/api.html
  */
 export function trackPiwikPageView(url: string) {
    piwikPush(['setCustomUrl', url]);
@@ -44,89 +44,44 @@ export function trackPiwikPreferredLanguage(
    }
 }
 
-/**
- * @see https://developer.matomo.org/api-reference/tracking-javascript
- * @see https://matomo.org/docs/ecommerce-analytics/#tracking-product-views-in-matomo
- */
-type ProductData = {
-   productSku: string;
-   productName?: string;
-   /**
-    * Category name, or up to five unique categories, e.g. ["Books", "New
-    * Releases", "Technology"]
-    */
-   categoryName?: string | [string, string?, string?, string?, string?];
-   price: Money;
-};
+export function trackPiwikV2ProductDetailView(items: AnalyticsItem[]) {
+   piwikPush(['ecommerceProductDetailView', items.map(formatProduct)]);
+}
 
-export function trackPiwikEcommerceView(product: ProductData) {
+export function trackPiwikV2AddToCart(items: AnalyticsItem[]) {
+   piwikPush(['ecommerceAddToCart', items.map(formatProduct)]);
+}
+
+export function trackPiwikV2RemoveFromCart(items: AnalyticsItem[]) {
+   piwikPush(['ecommerceRemoveFromCart', items.map(formatProduct)]);
+}
+
+export function trackPiwikCartUpdate(event: AnalyticsItemsEvent) {
    piwikPush([
-      'setEcommerceView',
-      product.productSku,
-      product.productName,
-      product.categoryName,
-      product.price.amount,
+      'ecommerceCartUpdate',
+      event.items.map(formatProduct),
+      event.value.toString(),
    ]);
 }
 
-export function trackPiwikCartChange(items: CartLineItem[]) {
-   trackClearCart();
-   if (items.length === 0) {
-      return;
-   }
-   items.forEach((item) => {
-      trackAddToCart({
-         productSku: item.itemcode,
-         productName: item.internalDisplayName,
-         price: item.price,
-         quantity: item.quantity,
-      });
+export function trackPiwikCustomAddToCart(
+   addToCartInput: AddToCartInput,
+   eventSpecification?: string
+) {
+   const event =
+      `Add to Cart` + (eventSpecification ? ` - ${eventSpecification}` : '');
+   const itemcodes =
+      addToCartInput.type === 'product'
+         ? addToCartInput.product.itemcode
+         : `${addToCartInput.bundle.currentItemCode}/` +
+           `${addToCartInput.bundle.items
+              .map((item) => item.itemcode)
+              .join(', ')}`;
+   trackInPiwik({
+      eventCategory: event,
+      eventAction: `${event} - ${itemcodes}`,
+      eventName: `${window.location.origin}${window.location.pathname}`,
    });
-
-   const totalPrice = sumMoney(items.map((i) => i.price));
-   trackCartUpdated(totalPrice);
-}
-
-/**
- * @see https://developer.matomo.org/api-reference/tracking-javascript
- * @see https://matomo.org/docs/ecommerce-analytics/#example-of-adding-a-product-to-the-order
- */
-type AddToCartData = {
-   productSku: string;
-   productName?: string;
-   /**
-    * Category name, or up to five unique categories, e.g. ["Books", "New
-    * Releases", "Technology"]
-    */
-   categoryName?: string | [string, string?, string?, string?, string?];
-   price?: Money;
-   /**
-    * How many of this item to add (Defaults to 1)
-    */
-   quantity?: number;
-};
-
-/**
- * @see https://developer.matomo.org/api-reference/tracking-javascript
- * @see https://matomo.org/docs/ecommerce-analytics/#example-of-adding-a-product-to-the-order
- */
-function trackAddToCart(product: AddToCartData) {
-   piwikPush([
-      'addEcommerceItem',
-      product.productSku,
-      product.productName,
-      product.categoryName,
-      product.price?.amount,
-      product.quantity,
-   ]);
-}
-
-function trackClearCart() {
-   piwikPush(['clearEcommerceCart']);
-}
-
-function trackCartUpdated(grandTotal: Money) {
-   piwikPush(['trackEcommerceCartUpdate', grandTotal.amount]);
 }
 
 type PiwikCustomDimensions = {
@@ -151,4 +106,14 @@ function getPiwikCustomDimensionsForEnv(
       default:
          return null;
    }
+}
+
+function formatProduct(item: AnalyticsItem) {
+   return {
+      sku: item.item_id,
+      name: item.item_name,
+      price: item.price.toString(),
+      quantity: item.quantity,
+      variant: item.item_variant,
+   };
 }

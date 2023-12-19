@@ -170,9 +170,10 @@ export function ProductGallery({
 
 function useVariantImages(product: Product, variantId: string) {
    return React.useMemo(() => {
-      return product.images.filter(
+      const variantImages = product.images.filter(
          (image) => image.variantId == null || image.variantId === variantId
       );
+      return variantImages.length ? variantImages : product.fallbackImages;
    }, [product, variantId]);
 }
 
@@ -222,6 +223,7 @@ const ArrowButton = ({
       _hover={{
          backgroundColor: 'transparent',
       }}
+      aria-label={`Scroll to ${direction} image`}
    >
       <Circle
          size="32px"

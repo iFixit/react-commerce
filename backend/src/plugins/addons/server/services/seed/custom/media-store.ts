@@ -1,21 +1,18 @@
-import { chunk } from 'lodash';
-import { MediaItem } from './types';
-
-type ConstructorArgs = {
-   strapi: Strapi.Strapi;
-};
+import type { Strapi } from '@strapi/strapi';
+import { chunk, mapValues } from 'lodash';
+import { MediaAttribute } from './content-record';
 
 const FILES_TABLE_NAME = 'files';
 
-export class MediaRepository {
-   private strapi: Strapi.Strapi;
-   private mediaById: Record<string, MediaItem> = {};
+export class MediaStore {
+   private strapi: Strapi;
+   private mediaById: Record<string, MediaAttribute> = {};
 
-   constructor({ strapi }: ConstructorArgs) {
+   constructor(strapi: Strapi) {
       this.strapi = strapi;
    }
 
-   async addMedia(media: MediaItem | MediaItem[]) {
+   async addMedia(media: MediaAttribute | MediaAttribute[]) {
       const list = Array.isArray(media) ? media : [media];
       list.forEach((item) => {
          this.mediaById[item.id] = item;
@@ -39,7 +36,7 @@ export class MediaRepository {
       await knex(FILES_TABLE_NAME).del();
    }
 
-   async save() {
+   async save(strapiOrigin: string) {
       const batches = chunk(this.items, 20);
       // @ts-ignore
       const knex = this.strapi.db.connection;
@@ -48,6 +45,12 @@ export class MediaRepository {
          await knex
             .insert(
                batch.map((item) => {
+                  const formats = mapValues(
+                     item.attributes.formats,
+                     (value, key) => {
+                        return { ...value, url: `${strapiOrigin}${value.url}` };
+                     }
+                  );
                   return {
                      id: item.id,
                      name: item.attributes.name,
@@ -55,12 +58,13 @@ export class MediaRepository {
                      caption: item.attributes.caption,
                      width: item.attributes.width,
                      height: item.attributes.height,
-                     formats: JSON.stringify(item.attributes.formats),
+                     // formats: JSON.stringify(item.attributes.formats),
+                     formats: JSON.stringify(formats),
                      hash: item.attributes.hash,
                      ext: item.attributes.ext,
                      mime: item.attributes.mime,
                      size: item.attributes.size,
-                     url: item.attributes.url,
+                     url: `${strapiOrigin}${item.attributes.url}`,
                      preview_url: item.attributes.previewUrl,
                      provider: item.attributes.provider,
                      provider_metadata: item.attributes.provider_metadata,

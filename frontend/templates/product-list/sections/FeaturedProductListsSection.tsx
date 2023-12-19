@@ -88,7 +88,7 @@ const ProductListLink = ({ productList }: ProductListLinkProps) => {
             )}
             <Divider orientation="vertical" />
             <NextLink
-               href={productListPath(productList)}
+               href={productListPath({ productList })}
                passHref
                legacyBehavior
             >

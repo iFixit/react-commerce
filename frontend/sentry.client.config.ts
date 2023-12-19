@@ -1,6 +1,6 @@
 import { SENTRY_SAMPLING_ENABLED, VERCEL_ENV } from '@config/env';
 import { isCurrentProductionDeployment } from '@helpers/vercel-helpers';
-import { injectSentryErrorHandler } from '@ifixit/sentry';
+import { SentryErrorIntegration } from '@ifixit/sentry';
 import { BrowserTracing } from '@sentry/browser';
 import * as Sentry from '@sentry/nextjs';
 
@@ -26,7 +26,7 @@ Sentry.init({
       return event;
    },
    dsn: SENTRY_DSN,
-   integrations: [new BrowserTracing()],
+   integrations: [new BrowserTracing(), new SentryErrorIntegration()],
    sampleRate,
    normalizeDepth: 5,
    tracesSampleRate: 0.05,
@@ -52,5 +52,3 @@ Sentry.init({
       'CustomEvent: Non-Error promise rejection captured with keys: currentTarget, detail, isTrusted, target',
    ],
 });
-
-injectSentryErrorHandler();

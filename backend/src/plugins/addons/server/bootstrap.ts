@@ -10,7 +10,7 @@ export default async ({ strapi }: { strapi: Strapi }) => {
          const seedService = getAddonsService(strapi, 'seed');
          await seedService.createAdminUser();
          await seedService.importContentTypes({
-            canDeleteExistingContent: false,
+            overrideExistingContent: false,
          });
       } catch (err: any) {
          strapi.log.error('💥 Error while seeding database');

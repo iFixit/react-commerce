@@ -1,4 +1,10 @@
-import { trackAddToCart } from '@ifixit/analytics';
+import {
+   convertAddToCartInputToAnalyticsItemEvent,
+   convertCartLineItemsToAnalyticsItem,
+   trackInAnalyticsAddToCart,
+   trackPiwikCartUpdate,
+   trackPiwikCustomAddToCart,
+} from '@ifixit/analytics';
 import { assertNever, getProductVariantSku } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -102,8 +108,17 @@ export function useAddToCart(analyticsMessage?: string) {
             );
          },
          onSuccess: (data, variables) => {
+            trackPiwikCustomAddToCart(variables, analyticsMessage);
+            const event = convertAddToCartInputToAnalyticsItemEvent(variables);
+            trackInAnalyticsAddToCart(event);
             const cart = client.getQueryData<Cart>(cartKeys.cart);
-            trackAddToCart(cart?.lineItems ?? [], variables, analyticsMessage);
+            if (cart) {
+               trackPiwikCartUpdate({
+                  items: convertCartLineItemsToAnalyticsItem(cart.lineItems),
+                  value: Number(cart.totals.price.amount),
+                  currency: cart.totals.price.currencyCode,
+               });
+            }
          },
          onSettled: () => {
             window.onbeforeunload = () => undefined;
@@ -130,12 +145,21 @@ function addLineItem(cart: Cart, inputLineItem: CartLineItem): Cart {
    } else {
       updatedLineItems.push(inputLineItem);
    }
+   const updateTotalPrice = Math.max(
+      Number(cart.totals.price.amount) +
+         inputLineItem.quantity * Number(inputLineItem.price.amount),
+      0
+   ).toFixed(2);
    return {
       ...cart,
       hasItemsInCart: true,
       lineItems: updatedLineItems,
       totals: {
          ...cart.totals,
+         price: {
+            ...cart.totals.price,
+            amount: updateTotalPrice,
+         },
          itemsCount: cart.totals.itemsCount + inputLineItem.quantity,
       },
    };

@@ -1,10 +1,13 @@
-query findProduct($handle: String) {
+query findProduct($handle: String, $pathQuery: String) {
    product(handle: $handle) {
       id
       title
       handle
       descriptionHtml
       tags
+      noindex: metafield(namespace: "seo", key: "hidden") {
+         value
+      }
       rating: metafield(namespace: "reviews", key: "rating") {
          value
       }
@@ -97,6 +100,13 @@ query findProduct($handle: String) {
          }
       }
       vendor
+   }
+   urlRedirects(first: 1, query: $pathQuery) {
+      edges {
+         node {
+            target
+         }
+      }
    }
 }
 

@@ -14,8 +14,7 @@ import {
    MenuList,
    Portal,
 } from '@chakra-ui/react';
-import { Matomo } from './Matomo';
-import { GoogleAnalytics } from './GoogleAnalytics';
+import { GoogleAnalytics } from './google-analytics';
 import { SmartLink } from '@components/ui/SmartLink';
 import {
    faArrowRight,
@@ -255,10 +254,9 @@ export default function IFixitPageFrame({
                </Flex>
             </Box>
             <Suspense>
-               <GoAffProComponent />
-               <Matomo />
                <GoogleAnalytics />
                <PiwikPro />
+               <GoAffProComponent />
             </Suspense>
          </ShopifyStorefrontProvider>
       </LayoutErrorBoundary>

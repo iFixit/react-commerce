@@ -6,7 +6,7 @@ import {
 import { escapeFilterValue, getClientOptions } from '@helpers/algolia-helpers';
 import { filterNullableItems } from '@helpers/application-helpers';
 import { getProductListTitle } from '@helpers/product-list-helpers';
-import { presentOrNull, timeAsync } from '@ifixit/helpers';
+import { presence, timeAsync } from '@ifixit/helpers';
 import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import {
    DeviceWiki,
@@ -102,18 +102,20 @@ export async function findProductList(
    const baseProductList: BaseProductList = {
       id,
       title,
-      h1: presentOrNull(productList?.h1),
+      h1: presence(productList?.h1),
       handle,
       deviceTitle,
-      tagline: presentOrNull(productList?.tagline),
+      tagline: presence(productList?.tagline),
       description,
-      metaDescription: presentOrNull(productList?.metaDescription),
-      metaTitle: presentOrNull(productList?.metaTitle),
+      metaDescription: presence(productList?.metaDescription),
+      metaTitle: presence(productList?.metaTitle),
       defaultShowAllChildrenOnLgSizes:
          productList?.defaultShowAllChildrenOnLgSizes ?? null,
       filters: productList?.filters ?? null,
       optionalFilters: productList?.optionalFilters ?? null,
       forceNoindex: productList?.forceNoindex ?? null,
+      indexVariantsInsteadOfDevice:
+         productList?.indexVariantsInsteadOfDevice ?? null,
       heroImage: imageFromStrapi(productList?.heroImage),
       brandLogo: imageFromStrapi(productList?.brandLogo, {
          format: 'large',
@@ -295,7 +297,7 @@ function formatItemTypeOverrides(
 function convertToProductListItemTypeOverrides(
    itemOverrides: ApiProductListItemOverrides[]
 ): ProductListItemTypeOverride[] {
-   const formatedOverrides = itemOverrides.map(
+   const formattedOverrides = itemOverrides.map(
       (itemOverride): ProductListItemTypeOverride | null => {
          if (
             itemOverride == null ||
@@ -314,7 +316,7 @@ function convertToProductListItemTypeOverrides(
          }
       }
    );
-   return filterNullableItems(formatedOverrides);
+   return filterNullableItems(formattedOverrides);
 }
 
 function createPublicAlgoliaKey(appId: string, apiKey: string): string {

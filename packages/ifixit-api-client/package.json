@@ -6,8 +6,7 @@
    "license": "MIT",
    "dependencies": {
       "@ifixit/app": "workspace:*",
-      "@ifixit/helpers": "workspace:*",
-      "@ifixit/sentry": "workspace:*"
+      "@ifixit/helpers": "workspace:*"
    },
    "devDependencies": {
       "@ifixit/tsconfig": "workspace:*",
@@ -17,7 +16,8 @@
       "typescript": "5.2.2"
    },
    "peerDependencies": {
-      "react": "18.2.0"
+      "react": "18.2.0",
+      "@ifixit/sentry": "workspace:*"
    },
    "scripts": {
       "build": "",

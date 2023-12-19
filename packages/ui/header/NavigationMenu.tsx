@@ -19,7 +19,7 @@ export const NavigationMenu = forwardRef<BoxProps, 'nav'>(
             display={{ base: 'none', lg: 'block' }}
             {...otherProps}
          >
-            <Flex as="ul" role="menubar" h="full" position="relative">
+            <Flex as="ul" role="menubar" h="full" position="relative" m="0">
                {children}
             </Flex>
          </Box>
@@ -64,6 +64,8 @@ export const NavigationMenuButton = forwardRef<FlexProps, 'button'>(
             fontSize="sm"
             fontWeight="semibold"
             borderRadius="md"
+            border="0"
+            color="white"
             _focus={{
                boxShadow: 'outline',
                outline: 'none',

@@ -2,7 +2,7 @@
 // is broken up into `shared`, `troubleshooting`, and `commerce` variables to control what
 // is included, and where via the styleMap.
 
-import { Box, SystemStyleObject, forwardRef, BoxProps } from '@chakra-ui/react';
+import { Box, BoxProps, SystemStyleObject, forwardRef } from '@chakra-ui/react';
 import 'lite-youtube-embed/src/lite-yt-embed.css';
 import { useEffect } from 'react';
 
@@ -22,7 +22,7 @@ export const PrerenderedHTML = forwardRef<PrerenderedHTMLProps, 'div'>(
       return (
          <Box
             ref={ref}
-            className={`prerendered ${className}`}
+            className={className ? `prerendered ${className}` : 'prerendered'}
             sx={styleMap[template]}
             dangerouslySetInnerHTML={{ __html: html }}
             {...others}
@@ -179,7 +179,6 @@ const troubleshootingStyles: SystemStyleObject = {
    'ul, ol': {
       marginTop: '1em',
       marginInlineStart: '1em',
-      overflowX: 'auto', // clear child media floats
       paddingInlineStart: 'calc(1em + 2px)',
 
       li: {
@@ -287,7 +286,10 @@ const troubleshootingStyles: SystemStyleObject = {
 
       video: {
          position: 'absolute',
-         inset: 0,
+         top: '0',
+         right: '0',
+         bottom: '0',
+         left: '0',
       },
    },
 
@@ -300,6 +302,11 @@ const troubleshootingStyles: SystemStyleObject = {
       marginTop: { base: 4, sm: 6 },
       minWidth: 'min-content', // narrow image text-wrap fix
       width: 'fit-content',
+
+      '& + ul, & + ol': {
+         overflowX: 'auto', // clear sibling lists
+         minWidth: '25%', // prevent unreadable collapsing lists
+      },
 
       '&.imageBox_center': {
          marginInline: 'auto',

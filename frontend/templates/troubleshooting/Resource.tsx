@@ -9,6 +9,7 @@ import {
    HStack,
    Text,
    Box,
+   Flex,
    SystemProps,
    Button,
    ButtonProps,
@@ -21,7 +22,11 @@ import { PrerenderedHTML } from '@components/common';
 import { DifficultyThemeLookup, GuideDifficultyNames } from './DifficultyBadge';
 import { Rating } from '@components/ui';
 import { Money, formatMoney, shouldShowProductRating } from '@ifixit/helpers';
-import { SectionProduct, SectionGuide } from './hooks/useTroubleshootingProps';
+import {
+   SectionProduct,
+   SectionGuide,
+   SectionPartCollection,
+} from './hooks/useTroubleshootingProps';
 
 export function GuideResource({ guide }: { guide: SectionGuide }) {
    return (
@@ -59,9 +64,34 @@ export function ProductResource({ product }: { product: SectionProduct }) {
          spacing={1}
          showBuyButton={true}
          openInNewTab={true}
+         imageRatio={1}
       >
          <ResourceProductRating product={product} />
          <ResourceProductPrice price={price} />
+      </Resource>
+   );
+}
+
+export function PartCollectionResource({
+   partCollection,
+}: {
+   partCollection: SectionPartCollection;
+}) {
+   const { title, url, description, imageUrl } = partCollection;
+
+   return (
+      <Resource
+         href={url}
+         title={title}
+         imageUrl={imageUrl}
+         spacing={1}
+         showBuyButton={'Find Your Parts'}
+         openInNewTab={true}
+         showStackedImages={true}
+      >
+         <Text color="gray.600" fontSize="12px">
+            {description}
+         </Text>
       </Resource>
    );
 }
@@ -101,6 +131,7 @@ function BuyButton({
    buttonSize,
    openInNewTab,
    colorScheme,
+   margin,
 }: {
    url: string;
    buyButtonText: string;
@@ -108,6 +139,7 @@ function BuyButton({
    buttonSize: ThemingProps<'Button'>['size'];
    openInNewTab?: boolean;
    colorScheme: ThemingProps<'Button'>['colorScheme'];
+   margin: SystemProps['margin'];
 }) {
    const openSettings = openInNewTab
       ? { target: '_blank', rel: 'noopener' }
@@ -122,6 +154,7 @@ function BuyButton({
          flexShrink={0}
          size={buttonSize}
          colorScheme={colorScheme}
+         margin={margin}
          {...buttonStyling}
       >
          {buyButtonText}
@@ -138,7 +171,7 @@ function ResourceBox({
          borderColor="gray.400"
          borderWidth="1px"
          borderRadius="md"
-         minHeight="88px"
+         minHeight="72px"
          padding={3}
          display="flex"
          width="100%"
@@ -158,6 +191,7 @@ function hasKey<O extends Object>(obj: O, key: PropertyKey): key is keyof O {
 
 function Resource({
    title,
+   showStackedImages,
    imageUrl,
    timeRequired,
    difficulty,
@@ -166,16 +200,19 @@ function Resource({
    showBuyButton,
    openInNewTab,
    children,
+   imageRatio = 4 / 3,
 }: React.PropsWithChildren<{
    title: string;
+   showStackedImages?: boolean;
    imageUrl?: string | null;
    introduction?: string | null;
    timeRequired?: string;
    difficulty?: string;
    spacing: SystemProps['margin'];
    href: string;
-   showBuyButton?: boolean;
+   showBuyButton?: string | boolean;
    openInNewTab?: boolean;
+   imageRatio?: number;
 }>) {
    const difficultyTheme =
       difficulty && hasKey(DifficultyThemeLookup, difficulty)
@@ -184,78 +221,113 @@ function Resource({
    const { themeColor, iconColor, icon } = difficultyTheme;
    const breakpoint = useBreakpoint();
    const isMobile = breakpoint === 'base';
+   const buyButtonText =
+      typeof showBuyButton === 'string' ? showBuyButton : 'Buy';
 
    return (
       <ResourceBox>
          {imageUrl && (
-            <Image
-               boxSize="64px"
-               outline="1px solid"
-               outlineColor="gray.300"
-               borderRadius="md"
-               objectFit="cover"
-               alt={title}
-               src={imageUrl}
-               mr={2}
-            />
+            <Box width="64px" position="relative" mr={2}>
+               <Box
+                  width="100%"
+                  borderRadius="md"
+                  outline="1px solid"
+                  outlineColor="gray.300"
+                  aspectRatio={imageRatio}
+               >
+                  {showStackedImages && (
+                     // Renders an empty box to fake the stacked image effect
+                     <Box
+                        aspectRatio="inherit"
+                        width="inherit"
+                        height="inherit"
+                        borderRadius="inherit"
+                        outline="inherit"
+                        outlineColor="inherit"
+                        position="absolute"
+                        top="0"
+                        transform="rotate(6deg)"
+                     />
+                  )}
+                  <Image
+                     outline="inherit"
+                     outlineColor="inherit"
+                     borderRadius="inherit"
+                     objectFit="contain"
+                     width="100%"
+                     height="100%"
+                     alt={title}
+                     src={imageUrl}
+                     position="relative"
+                     zIndex="1"
+                     bgColor="white"
+                  />
+               </Box>
+            </Box>
          )}
-         <Stack
-            justify="flex-start"
-            align="flex-start"
-            spacing={spacing}
-            alignSelf="stretch"
-            flex="2"
-         >
-            <LinkOverlay
-               href={href}
-               lineHeight="1.07"
-               fontWeight="semibold"
-               fontSize="sm"
-               color="gray.900"
-               isExternal={openInNewTab}
+         <Flex flex="1" flexDirection={{ base: 'column', sm: 'row' }}>
+            <Stack
+               justify="center"
+               align="flex-start"
+               spacing={spacing}
+               alignSelf="stretch"
+               flex="2"
             >
-               {title}
-            </LinkOverlay>
-            {children}
-            {(timeRequired || difficulty) && (
-               <Wrap spacing={1}>
-                  {timeRequired && (
-                     <Badge display="flex">
-                        <FaIcon icon={faClock} mr={1} color="gray.500" />
-                        {timeRequired}
-                     </Badge>
-                  )}
-                  {difficulty && (
-                     <Badge display="flex" colorScheme={themeColor}>
-                        <FaIcon
-                           icon={icon}
-                           mr={1}
-                           color={(iconColor as string) || `${themeColor}.500`}
-                        />
-                        {difficulty}
-                     </Badge>
-                  )}
-               </Wrap>
+               <LinkOverlay
+                  href={href}
+                  lineHeight="1.07"
+                  fontWeight="semibold"
+                  fontSize="sm"
+                  color="gray.900"
+                  isExternal={openInNewTab}
+               >
+                  {title}
+               </LinkOverlay>
+               {children}
+               {(timeRequired || difficulty) && (
+                  <Wrap spacing={1}>
+                     {timeRequired && (
+                        <Badge display="flex">
+                           <FaIcon icon={faClock} mr={1} color="gray.500" />
+                           {timeRequired}
+                        </Badge>
+                     )}
+                     {difficulty && (
+                        <Badge display="flex" colorScheme={themeColor}>
+                           <FaIcon
+                              icon={icon}
+                              mr={1}
+                              color={
+                                 (iconColor as string) || `${themeColor}.500`
+                              }
+                           />
+                           {difficulty}
+                        </Badge>
+                     )}
+                  </Wrap>
+               )}
+            </Stack>
+            {isMobile && showBuyButton && (
+               <BuyButton
+                  colorScheme="brand"
+                  buttonSize="xs"
+                  openInNewTab={false}
+                  url={href}
+                  buyButtonText={buyButtonText}
+                  margin="8px 0 0 0"
+               />
             )}
-         </Stack>
-         {isMobile && showBuyButton && (
-            <BuyButton
-               colorScheme="brand"
-               buttonSize="xs"
-               openInNewTab={false}
-               url={href}
-               buyButtonText="Buy"
-            />
-         )}
-         {!isMobile && showBuyButton && (
-            <BuyButton
-               colorScheme="brand"
-               buttonSize="sm"
-               openInNewTab={openInNewTab}
-               url={href}
-               buyButtonText="Buy"
-            />
-         )}
+            {!isMobile && showBuyButton && (
+               <BuyButton
+                  colorScheme="brand"
+                  buttonSize="sm"
+                  openInNewTab={openInNewTab}
+                  url={href}
+                  buyButtonText={buyButtonText}
+                  margin="0 0 0 12px"
+               />
+            )}
+         </Flex>
       </ResourceBox>
    );
 }

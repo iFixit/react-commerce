@@ -1,12 +1,14 @@
-import { SentryError } from '@ifixit/sentry';
 import { IFIXIT_ORIGIN } from '@config/env';
-import { invariant } from '@ifixit/helpers';
+import { getProductIdFromGlobalId, invariant } from '@ifixit/helpers';
+import { SentryError } from '@ifixit/sentry';
 import type { Product } from '@models/product';
 import { ProductList, ProductListType } from '@models/product-list';
+import type { IncomingHttpHeaders } from 'http';
 import { GetServerSidePropsContext } from 'next';
-import { getProductIdFromGlobalId } from './product-helpers';
-import { stylizeDeviceTitle } from './product-list-helpers';
-import { IncomingHttpHeaders } from 'http';
+import {
+   stylizeDeviceItemType,
+   stylizeDeviceTitle,
+} from './product-list-helpers';
 
 export function productPath(handle: string) {
    return `/products/${handle}`;
@@ -16,10 +18,17 @@ type ProductListPathAttributes = Pick<
    ProductList,
    'type' | 'handle' | 'deviceTitle'
 >;
+type ProductListPathProps = {
+   productList: ProductListPathAttributes;
+   itemType?: string;
+   variant?: string | undefined;
+};
 
-export function productListPath(
-   productList: ProductListPathAttributes
-): string {
+export function productListPath({
+   productList,
+   itemType,
+   variant,
+}: ProductListPathProps): string {
    switch (productList.type) {
       case ProductListType.AllParts: {
          return '/Parts';
@@ -30,9 +39,12 @@ export function productListPath(
             'device product list does not have device title'
          );
          const deviceHandle = encodeURIComponent(
-            stylizeDeviceTitle(productList.deviceTitle)
+            stylizeDeviceTitle(productList.deviceTitle, variant)
          );
-         return `/Parts/${deviceHandle}`;
+         const itemTypeHandle =
+            itemType && encodeURIComponent(stylizeDeviceItemType(itemType));
+         const basePath = `/Parts/${deviceHandle}`;
+         return itemTypeHandle ? `${basePath}/${itemTypeHandle}` : basePath;
       }
       case ProductListType.AllTools: {
          return '/Tools';
@@ -150,4 +162,8 @@ export function getiFixitOriginFromHost(headers: Headers) {
 
 export function ifixitOriginWithSubdomain(subdomain: string) {
    return IFIXIT_ORIGIN.replace(/(^https:\/\/)www/, `$1${subdomain}`);
+}
+
+export function joinPaths(...paths: string[]) {
+   return paths.map((path) => path.replace(/^\/|\/$/g, '')).join('/');
 }

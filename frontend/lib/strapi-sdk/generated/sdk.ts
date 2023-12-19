@@ -383,6 +383,20 @@ export type ComponentPageStatsStatsArgs = {
    sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
+export type ComponentProductBitTable = {
+   __typename?: 'ComponentProductBitTable';
+   bits?: Maybe<ScrewdriverBitRelationResponseCollection>;
+   description?: Maybe<Scalars['String']>;
+   id: Scalars['ID'];
+   title?: Maybe<Scalars['String']>;
+};
+
+export type ComponentProductBitTableBitsArgs = {
+   filters?: InputMaybe<ScrewdriverBitFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
 export type ComponentProductCrossSell = {
    __typename?: 'ComponentProductCrossSell';
    id: Scalars['ID'];
@@ -863,6 +877,7 @@ export type GenericMorph =
    | ComponentPageSplitWithImage
    | ComponentPageStatItem
    | ComponentPageStats
+   | ComponentProductBitTable
    | ComponentProductCrossSell
    | ComponentProductDeviceCompatibility
    | ComponentProductListBanner
@@ -889,12 +904,15 @@ export type GenericMorph =
    | Faq
    | Global
    | I18NLocale
+   | ItemType
    | Menu
    | Page
    | Product
    | ProductList
    | PublisherAction
    | ReusableSection
+   | ScrewdriverBit
+   | ScrewdriverBitType
    | SocialPost
    | Store
    | UploadFile
@@ -1024,6 +1042,49 @@ export type IntFilterInput = {
    startsWith?: InputMaybe<Scalars['Int']>;
 };
 
+export type ItemType = {
+   __typename?: 'ItemType';
+   akeneo_code: Scalars['String'];
+   createdAt?: Maybe<Scalars['DateTime']>;
+   fallback_image: UploadFileEntityResponse;
+   publishedAt?: Maybe<Scalars['DateTime']>;
+   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type ItemTypeEntity = {
+   __typename?: 'ItemTypeEntity';
+   attributes?: Maybe<ItemType>;
+   id?: Maybe<Scalars['ID']>;
+};
+
+export type ItemTypeEntityResponse = {
+   __typename?: 'ItemTypeEntityResponse';
+   data?: Maybe<ItemTypeEntity>;
+};
+
+export type ItemTypeEntityResponseCollection = {
+   __typename?: 'ItemTypeEntityResponseCollection';
+   data: Array<ItemTypeEntity>;
+   meta: ResponseCollectionMeta;
+};
+
+export type ItemTypeFiltersInput = {
+   akeneo_code?: InputMaybe<StringFilterInput>;
+   and?: InputMaybe<Array<InputMaybe<ItemTypeFiltersInput>>>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   not?: InputMaybe<ItemTypeFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ItemTypeFiltersInput>>>;
+   publishedAt?: InputMaybe<DateTimeFilterInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type ItemTypeInput = {
+   akeneo_code?: InputMaybe<Scalars['String']>;
+   fallback_image?: InputMaybe<Scalars['ID']>;
+   publishedAt?: InputMaybe<Scalars['DateTime']>;
+};
+
 export type JsonFilterInput = {
    and?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
    between?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
@@ -1124,6 +1185,7 @@ export type Mutation = {
    createCompany?: Maybe<CompanyEntityResponse>;
    createFaq?: Maybe<FaqEntityResponse>;
    createGlobalLocalization?: Maybe<GlobalEntityResponse>;
+   createItemType?: Maybe<ItemTypeEntityResponse>;
    createMenu?: Maybe<MenuEntityResponse>;
    createMenuLocalization?: Maybe<MenuEntityResponse>;
    createPage?: Maybe<PageEntityResponse>;
@@ -1133,6 +1195,8 @@ export type Mutation = {
    createProductListLocalization?: Maybe<ProductListEntityResponse>;
    createPublisherAction?: Maybe<PublisherActionEntityResponse>;
    createReusableSection?: Maybe<ReusableSectionEntityResponse>;
+   createScrewdriverBit?: Maybe<ScrewdriverBitEntityResponse>;
+   createScrewdriverBitType?: Maybe<ScrewdriverBitTypeEntityResponse>;
    createSocialPost?: Maybe<SocialPostEntityResponse>;
    createStore?: Maybe<StoreEntityResponse>;
    createUploadFile?: Maybe<UploadFileEntityResponse>;
@@ -1145,12 +1209,15 @@ export type Mutation = {
    deleteCompany?: Maybe<CompanyEntityResponse>;
    deleteFaq?: Maybe<FaqEntityResponse>;
    deleteGlobal?: Maybe<GlobalEntityResponse>;
+   deleteItemType?: Maybe<ItemTypeEntityResponse>;
    deleteMenu?: Maybe<MenuEntityResponse>;
    deletePage?: Maybe<PageEntityResponse>;
    deleteProduct?: Maybe<ProductEntityResponse>;
    deleteProductList?: Maybe<ProductListEntityResponse>;
    deletePublisherAction?: Maybe<PublisherActionEntityResponse>;
    deleteReusableSection?: Maybe<ReusableSectionEntityResponse>;
+   deleteScrewdriverBit?: Maybe<ScrewdriverBitEntityResponse>;
+   deleteScrewdriverBitType?: Maybe<ScrewdriverBitTypeEntityResponse>;
    deleteSocialPost?: Maybe<SocialPostEntityResponse>;
    deleteStore?: Maybe<StoreEntityResponse>;
    deleteUploadFile?: Maybe<UploadFileEntityResponse>;
@@ -1175,12 +1242,15 @@ export type Mutation = {
    updateFaq?: Maybe<FaqEntityResponse>;
    updateFileInfo: UploadFileEntityResponse;
    updateGlobal?: Maybe<GlobalEntityResponse>;
+   updateItemType?: Maybe<ItemTypeEntityResponse>;
    updateMenu?: Maybe<MenuEntityResponse>;
    updatePage?: Maybe<PageEntityResponse>;
    updateProduct?: Maybe<ProductEntityResponse>;
    updateProductList?: Maybe<ProductListEntityResponse>;
    updatePublisherAction?: Maybe<PublisherActionEntityResponse>;
    updateReusableSection?: Maybe<ReusableSectionEntityResponse>;
+   updateScrewdriverBit?: Maybe<ScrewdriverBitEntityResponse>;
+   updateScrewdriverBitType?: Maybe<ScrewdriverBitTypeEntityResponse>;
    updateSocialPost?: Maybe<SocialPostEntityResponse>;
    updateStore?: Maybe<StoreEntityResponse>;
    updateUploadFile?: Maybe<UploadFileEntityResponse>;
@@ -1221,6 +1291,10 @@ export type MutationCreateGlobalLocalizationArgs = {
    data?: InputMaybe<GlobalInput>;
    id?: InputMaybe<Scalars['ID']>;
    locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+export type MutationCreateItemTypeArgs = {
+   data: ItemTypeInput;
 };
 
 export type MutationCreateMenuArgs = {
@@ -1268,6 +1342,14 @@ export type MutationCreateReusableSectionArgs = {
    data: ReusableSectionInput;
 };
 
+export type MutationCreateScrewdriverBitArgs = {
+   data: ScrewdriverBitInput;
+};
+
+export type MutationCreateScrewdriverBitTypeArgs = {
+   data: ScrewdriverBitTypeInput;
+};
+
 export type MutationCreateSocialPostArgs = {
    data: SocialPostInput;
 };
@@ -1309,6 +1391,10 @@ export type MutationDeleteGlobalArgs = {
    locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
+export type MutationDeleteItemTypeArgs = {
+   id: Scalars['ID'];
+};
+
 export type MutationDeleteMenuArgs = {
    id: Scalars['ID'];
    locale?: InputMaybe<Scalars['I18NLocaleCode']>;
@@ -1333,6 +1419,14 @@ export type MutationDeletePublisherActionArgs = {
 };
 
 export type MutationDeleteReusableSectionArgs = {
+   id: Scalars['ID'];
+};
+
+export type MutationDeleteScrewdriverBitArgs = {
+   id: Scalars['ID'];
+};
+
+export type MutationDeleteScrewdriverBitTypeArgs = {
    id: Scalars['ID'];
 };
 
@@ -1419,6 +1513,11 @@ export type MutationUpdateGlobalArgs = {
    locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
+export type MutationUpdateItemTypeArgs = {
+   data: ItemTypeInput;
+   id: Scalars['ID'];
+};
+
 export type MutationUpdateMenuArgs = {
    data: MenuInput;
    id: Scalars['ID'];
@@ -1449,6 +1548,16 @@ export type MutationUpdatePublisherActionArgs = {
 
 export type MutationUpdateReusableSectionArgs = {
    data: ReusableSectionInput;
+   id: Scalars['ID'];
+};
+
+export type MutationUpdateScrewdriverBitArgs = {
+   data: ScrewdriverBitInput;
+   id: Scalars['ID'];
+};
+
+export type MutationUpdateScrewdriverBitTypeArgs = {
+   data: ScrewdriverBitTypeInput;
    id: Scalars['ID'];
 };
 
@@ -1495,6 +1604,8 @@ export type Page = {
    createdAt?: Maybe<Scalars['DateTime']>;
    locale?: Maybe<Scalars['String']>;
    localizations?: Maybe<PageRelationResponseCollection>;
+   metaDescription?: Maybe<Scalars['String']>;
+   metaTitle?: Maybe<Scalars['String']>;
    path: Scalars['String'];
    publishedAt?: Maybe<Scalars['DateTime']>;
    sections: Array<Maybe<PageSectionsDynamicZone>>;
@@ -1532,6 +1643,8 @@ export type PageFiltersInput = {
    id?: InputMaybe<IdFilterInput>;
    locale?: InputMaybe<StringFilterInput>;
    localizations?: InputMaybe<PageFiltersInput>;
+   metaDescription?: InputMaybe<StringFilterInput>;
+   metaTitle?: InputMaybe<StringFilterInput>;
    not?: InputMaybe<PageFiltersInput>;
    or?: InputMaybe<Array<InputMaybe<PageFiltersInput>>>;
    path?: InputMaybe<StringFilterInput>;
@@ -1541,6 +1654,8 @@ export type PageFiltersInput = {
 };
 
 export type PageInput = {
+   metaDescription?: InputMaybe<Scalars['String']>;
+   metaTitle?: InputMaybe<Scalars['String']>;
    path?: InputMaybe<Scalars['String']>;
    publishedAt?: InputMaybe<Scalars['DateTime']>;
    sections?: InputMaybe<Array<Scalars['PageSectionsDynamicZoneInput']>>;
@@ -1640,6 +1755,7 @@ export type ProductList = {
    heroImage?: Maybe<UploadFileEntityResponse>;
    hideFromParent?: Maybe<Scalars['Boolean']>;
    image?: Maybe<UploadFileEntityResponse>;
+   indexVariantsInsteadOfDevice?: Maybe<Scalars['Boolean']>;
    itemOverrides: Array<Maybe<ProductListItemOverridesDynamicZone>>;
    legacyDescription?: Maybe<Scalars['String']>;
    legacyPageId?: Maybe<Scalars['Int']>;
@@ -1711,6 +1827,7 @@ export type ProductListFiltersInput = {
    handle?: InputMaybe<StringFilterInput>;
    hideFromParent?: InputMaybe<BooleanFilterInput>;
    id?: InputMaybe<IdFilterInput>;
+   indexVariantsInsteadOfDevice?: InputMaybe<BooleanFilterInput>;
    legacyDescription?: InputMaybe<StringFilterInput>;
    legacyPageId?: InputMaybe<IntFilterInput>;
    locale?: InputMaybe<StringFilterInput>;
@@ -1744,6 +1861,7 @@ export type ProductListInput = {
    heroImage?: InputMaybe<Scalars['ID']>;
    hideFromParent?: InputMaybe<Scalars['Boolean']>;
    image?: InputMaybe<Scalars['ID']>;
+   indexVariantsInsteadOfDevice?: InputMaybe<Scalars['Boolean']>;
    itemOverrides?: InputMaybe<
       Array<Scalars['ProductListItemOverridesDynamicZoneInput']>
    >;
@@ -1778,6 +1896,7 @@ export type ProductListSectionsDynamicZone =
 
 export type ProductSectionsDynamicZone =
    | ComponentPageSplitWithImage
+   | ComponentProductBitTable
    | ComponentProductCrossSell
    | ComponentProductDeviceCompatibility
    | ComponentProductProduct
@@ -1855,6 +1974,8 @@ export type Query = {
    global?: Maybe<GlobalEntityResponse>;
    i18NLocale?: Maybe<I18NLocaleEntityResponse>;
    i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
+   itemType?: Maybe<ItemTypeEntityResponse>;
+   itemTypes?: Maybe<ItemTypeEntityResponseCollection>;
    me?: Maybe<UsersPermissionsMe>;
    menu?: Maybe<MenuEntityResponse>;
    menus?: Maybe<MenuEntityResponseCollection>;
@@ -1868,6 +1989,10 @@ export type Query = {
    publisherActions?: Maybe<PublisherActionEntityResponseCollection>;
    reusableSection?: Maybe<ReusableSectionEntityResponse>;
    reusableSections?: Maybe<ReusableSectionEntityResponseCollection>;
+   screwdriverBit?: Maybe<ScrewdriverBitEntityResponse>;
+   screwdriverBitType?: Maybe<ScrewdriverBitTypeEntityResponse>;
+   screwdriverBitTypes?: Maybe<ScrewdriverBitTypeEntityResponseCollection>;
+   screwdriverBits?: Maybe<ScrewdriverBitEntityResponseCollection>;
    socialPost?: Maybe<SocialPostEntityResponse>;
    socialPosts?: Maybe<SocialPostEntityResponseCollection>;
    store?: Maybe<StoreEntityResponse>;
@@ -1929,6 +2054,17 @@ export type QueryI18NLocaleArgs = {
 export type QueryI18NLocalesArgs = {
    filters?: InputMaybe<I18NLocaleFiltersInput>;
    pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type QueryItemTypeArgs = {
+   id?: InputMaybe<Scalars['ID']>;
+};
+
+export type QueryItemTypesArgs = {
+   filters?: InputMaybe<ItemTypeFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
    sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
@@ -2000,6 +2136,26 @@ export type QueryReusableSectionsArgs = {
    filters?: InputMaybe<ReusableSectionFiltersInput>;
    pagination?: InputMaybe<PaginationArg>;
    publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type QueryScrewdriverBitArgs = {
+   id?: InputMaybe<Scalars['ID']>;
+};
+
+export type QueryScrewdriverBitTypeArgs = {
+   id?: InputMaybe<Scalars['ID']>;
+};
+
+export type QueryScrewdriverBitTypesArgs = {
+   filters?: InputMaybe<ScrewdriverBitTypeFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type QueryScrewdriverBitsArgs = {
+   filters?: InputMaybe<ScrewdriverBitFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
    sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
@@ -2136,6 +2292,101 @@ export type ReusableSectionSectionDynamicZone =
    | ComponentSectionFaqs
    | ComponentSectionQuoteGallery
    | Error;
+
+export type ScrewdriverBit = {
+   __typename?: 'ScrewdriverBit';
+   createdAt?: Maybe<Scalars['DateTime']>;
+   size?: Maybe<Scalars['String']>;
+   slug?: Maybe<Scalars['String']>;
+   type?: Maybe<ScrewdriverBitTypeEntityResponse>;
+   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type ScrewdriverBitEntity = {
+   __typename?: 'ScrewdriverBitEntity';
+   attributes?: Maybe<ScrewdriverBit>;
+   id?: Maybe<Scalars['ID']>;
+};
+
+export type ScrewdriverBitEntityResponse = {
+   __typename?: 'ScrewdriverBitEntityResponse';
+   data?: Maybe<ScrewdriverBitEntity>;
+};
+
+export type ScrewdriverBitEntityResponseCollection = {
+   __typename?: 'ScrewdriverBitEntityResponseCollection';
+   data: Array<ScrewdriverBitEntity>;
+   meta: ResponseCollectionMeta;
+};
+
+export type ScrewdriverBitFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<ScrewdriverBitFiltersInput>>>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   not?: InputMaybe<ScrewdriverBitFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ScrewdriverBitFiltersInput>>>;
+   size?: InputMaybe<StringFilterInput>;
+   slug?: InputMaybe<StringFilterInput>;
+   type?: InputMaybe<ScrewdriverBitTypeFiltersInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type ScrewdriverBitInput = {
+   size?: InputMaybe<Scalars['String']>;
+   slug?: InputMaybe<Scalars['String']>;
+   type?: InputMaybe<Scalars['ID']>;
+};
+
+export type ScrewdriverBitRelationResponseCollection = {
+   __typename?: 'ScrewdriverBitRelationResponseCollection';
+   data: Array<ScrewdriverBitEntity>;
+};
+
+export type ScrewdriverBitType = {
+   __typename?: 'ScrewdriverBitType';
+   createdAt?: Maybe<Scalars['DateTime']>;
+   driverSize: Scalars['String'];
+   icon: UploadFileEntityResponse;
+   name: Scalars['String'];
+   slug?: Maybe<Scalars['String']>;
+   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type ScrewdriverBitTypeEntity = {
+   __typename?: 'ScrewdriverBitTypeEntity';
+   attributes?: Maybe<ScrewdriverBitType>;
+   id?: Maybe<Scalars['ID']>;
+};
+
+export type ScrewdriverBitTypeEntityResponse = {
+   __typename?: 'ScrewdriverBitTypeEntityResponse';
+   data?: Maybe<ScrewdriverBitTypeEntity>;
+};
+
+export type ScrewdriverBitTypeEntityResponseCollection = {
+   __typename?: 'ScrewdriverBitTypeEntityResponseCollection';
+   data: Array<ScrewdriverBitTypeEntity>;
+   meta: ResponseCollectionMeta;
+};
+
+export type ScrewdriverBitTypeFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<ScrewdriverBitTypeFiltersInput>>>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   driverSize?: InputMaybe<StringFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   name?: InputMaybe<StringFilterInput>;
+   not?: InputMaybe<ScrewdriverBitTypeFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ScrewdriverBitTypeFiltersInput>>>;
+   slug?: InputMaybe<StringFilterInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type ScrewdriverBitTypeInput = {
+   driverSize?: InputMaybe<Scalars['String']>;
+   icon?: InputMaybe<Scalars['ID']>;
+   name?: InputMaybe<Scalars['String']>;
+   slug?: InputMaybe<Scalars['String']>;
+};
 
 export type SocialPost = {
    __typename?: 'SocialPost';
@@ -2793,6 +3044,61 @@ export type QuoteCardFieldsFragment = {
    } | null;
 };
 
+export type ScrewdriverBitFieldsFragment = {
+   __typename?: 'ScrewdriverBitEntity';
+   id?: string | null;
+   attributes?: {
+      __typename?: 'ScrewdriverBit';
+      size?: string | null;
+      type?: {
+         __typename?: 'ScrewdriverBitTypeEntityResponse';
+         data?: {
+            __typename?: 'ScrewdriverBitTypeEntity';
+            id?: string | null;
+            attributes?: {
+               __typename?: 'ScrewdriverBitType';
+               name: string;
+               driverSize: string;
+               icon: {
+                  __typename?: 'UploadFileEntityResponse';
+                  data?: {
+                     __typename?: 'UploadFileEntity';
+                     attributes?: {
+                        __typename?: 'UploadFile';
+                        alternativeText?: string | null;
+                        url: string;
+                        formats?: any | null;
+                     } | null;
+                  } | null;
+               };
+            } | null;
+         } | null;
+      } | null;
+   } | null;
+};
+
+export type ScrewdriverBitTypeFieldsFragment = {
+   __typename?: 'ScrewdriverBitTypeEntity';
+   id?: string | null;
+   attributes?: {
+      __typename?: 'ScrewdriverBitType';
+      name: string;
+      driverSize: string;
+      icon: {
+         __typename?: 'UploadFileEntityResponse';
+         data?: {
+            __typename?: 'UploadFileEntity';
+            attributes?: {
+               __typename?: 'UploadFile';
+               alternativeText?: string | null;
+               url: string;
+               formats?: any | null;
+            } | null;
+         } | null;
+      };
+   } | null;
+};
+
 export type FindPageQueryVariables = Exact<{
    filters?: InputMaybe<PageFiltersInput>;
    publicationState?: InputMaybe<PublicationState>;
@@ -2809,6 +3115,8 @@ export type FindPageQuery = {
             __typename?: 'Page';
             path: string;
             title: string;
+            metaTitle?: string | null;
+            metaDescription?: string | null;
             sections: Array<
                | {
                     __typename: 'ComponentPageBrowse';
@@ -3125,6 +3433,47 @@ export type FindProductQuery = {
                     } | null;
                  }
                | {
+                    __typename: 'ComponentProductBitTable';
+                    id: string;
+                    title?: string | null;
+                    description?: string | null;
+                    bits?: {
+                       __typename?: 'ScrewdriverBitRelationResponseCollection';
+                       data: Array<{
+                          __typename?: 'ScrewdriverBitEntity';
+                          id?: string | null;
+                          attributes?: {
+                             __typename?: 'ScrewdriverBit';
+                             size?: string | null;
+                             type?: {
+                                __typename?: 'ScrewdriverBitTypeEntityResponse';
+                                data?: {
+                                   __typename?: 'ScrewdriverBitTypeEntity';
+                                   id?: string | null;
+                                   attributes?: {
+                                      __typename?: 'ScrewdriverBitType';
+                                      name: string;
+                                      driverSize: string;
+                                      icon: {
+                                         __typename?: 'UploadFileEntityResponse';
+                                         data?: {
+                                            __typename?: 'UploadFileEntity';
+                                            attributes?: {
+                                               __typename?: 'UploadFile';
+                                               alternativeText?: string | null;
+                                               url: string;
+                                               formats?: any | null;
+                                            } | null;
+                                         } | null;
+                                      };
+                                   } | null;
+                                } | null;
+                             } | null;
+                          } | null;
+                       }>;
+                    } | null;
+                 }
+               | {
                     __typename: 'ComponentProductCrossSell';
                     id: string;
                     title?: string | null;
@@ -3283,6 +3632,7 @@ export type FindProductListQuery = {
             filters?: string | null;
             forceNoindex?: boolean | null;
             brandLogoWidth?: number | null;
+            indexVariantsInsteadOfDevice?: boolean | null;
             optionalFilters?: string | null;
             heroImage?: {
                __typename?: 'UploadFileEntityResponse';
@@ -3627,6 +3977,7 @@ export type ProductListFieldsFragment = {
    filters?: string | null;
    forceNoindex?: boolean | null;
    brandLogoWidth?: number | null;
+   indexVariantsInsteadOfDevice?: boolean | null;
    optionalFilters?: string | null;
    heroImage?: {
       __typename?: 'UploadFileEntityResponse';
@@ -5308,6 +5659,48 @@ export type BannersSectionFieldsFragment = {
    } | null;
 };
 
+export type BitTableSectionFieldsFragment = {
+   __typename?: 'ComponentProductBitTable';
+   id: string;
+   title?: string | null;
+   description?: string | null;
+   bits?: {
+      __typename?: 'ScrewdriverBitRelationResponseCollection';
+      data: Array<{
+         __typename?: 'ScrewdriverBitEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'ScrewdriverBit';
+            size?: string | null;
+            type?: {
+               __typename?: 'ScrewdriverBitTypeEntityResponse';
+               data?: {
+                  __typename?: 'ScrewdriverBitTypeEntity';
+                  id?: string | null;
+                  attributes?: {
+                     __typename?: 'ScrewdriverBitType';
+                     name: string;
+                     driverSize: string;
+                     icon: {
+                        __typename?: 'UploadFileEntityResponse';
+                        data?: {
+                           __typename?: 'UploadFileEntity';
+                           attributes?: {
+                              __typename?: 'UploadFile';
+                              alternativeText?: string | null;
+                              url: string;
+                              formats?: any | null;
+                           } | null;
+                        } | null;
+                     };
+                  } | null;
+               } | null;
+            } | null;
+         } | null;
+      }>;
+   } | null;
+};
+
 export type BrowseSectionFieldsFragment = {
    __typename?: 'ComponentPageBrowse';
    id: string;
@@ -5770,6 +6163,18 @@ export const ImageFieldsFragmentDoc = `
   }
 }
     `;
+export const ScrewdriverBitTypeFieldsFragmentDoc = `
+    fragment ScrewdriverBitTypeFields on ScrewdriverBitTypeEntity {
+  id
+  attributes {
+    icon {
+      ...ImageFields
+    }
+    name
+    driverSize
+  }
+}
+    `;
 export const FaqFieldsFragmentDoc = `
     fragment FAQFields on FaqEntity {
   id
@@ -5858,6 +6263,7 @@ export const ProductListFieldsFragmentDoc = `
     ...ImageFields
   }
   brandLogoWidth
+  indexVariantsInsteadOfDevice
   parent {
     data {
       attributes {
@@ -6178,6 +6584,38 @@ export const MenuEntityResponsePropsFragmentDoc = `
   }
 }
     `;
+export const ScrewdriverBitFieldsFragmentDoc = `
+    fragment ScrewdriverBitFields on ScrewdriverBitEntity {
+  id
+  attributes {
+    type {
+      data {
+        id
+        attributes {
+          icon {
+            ...ImageFields
+          }
+          name
+          driverSize
+        }
+      }
+    }
+    size
+  }
+}
+    `;
+export const BitTableSectionFieldsFragmentDoc = `
+    fragment BitTableSectionFields on ComponentProductBitTable {
+  id
+  title
+  description
+  bits(pagination: {limit: 1000}) {
+    data {
+      ...ScrewdriverBitFields
+    }
+  }
+}
+    `;
 export const CategoryFieldsFragmentDoc = `
     fragment CategoryFields on ComponentPageCategory {
   id
@@ -6332,6 +6770,8 @@ export const FindPageDocument = `
       attributes {
         path
         title
+        metaTitle
+        metaDescription
         sections {
           __typename
           ...HeroSectionFields
@@ -6390,6 +6830,7 @@ export const FindProductDocument = `
           ...QuoteSectionFields
           ...FAQsSectionFields
           ...DeviceCompatibilitySectionFields
+          ...BitTableSectionFields
         }
       }
     }
@@ -6410,7 +6851,9 @@ ${BannerFieldsFragmentDoc}
 ${QuoteSectionFieldsFragmentDoc}
 ${FaQsSectionFieldsFragmentDoc}
 ${FaqFieldsFragmentDoc}
-${DeviceCompatibilitySectionFieldsFragmentDoc}`;
+${DeviceCompatibilitySectionFieldsFragmentDoc}
+${BitTableSectionFieldsFragmentDoc}
+${ScrewdriverBitFieldsFragmentDoc}`;
 export const FindProductListDocument = `
     query findProductList($filters: ProductListFiltersInput) {
   productLists(pagination: {limit: 1}, filters: $filters, publicationState: LIVE) {

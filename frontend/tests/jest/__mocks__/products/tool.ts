@@ -80,9 +80,11 @@ const toolProductVariants: ProductVariant[] = [
 ];
 
 export const mockedToolProduct: Product = {
+   __typename: 'Product',
    id: 'gid://shopify/Product/6556235071578',
    title: 'Hakko 5B SA Curved Tweezers',
    handle: 'hakko-5b-sa-curved-tweezers',
+   noindex: false,
    descriptionHtml:
       '<p>Very precise fine tipped tweezers for microsoldering and manipulating tiny parts.</p>',
    tags: ['Condition:New', 'Tool', 'Tool Category (Legacy):Soldering & Wiring'],
@@ -121,6 +123,7 @@ export const mockedToolProduct: Product = {
       },
    ],
    images: toolProductImages,
+   fallbackImages: [],
    options: [
       {
          id: 'gid://shopify/ProductOption/8433952227418',

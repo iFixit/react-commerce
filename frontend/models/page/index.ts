@@ -30,5 +30,7 @@ export type Page = z.infer<typeof PageSchema>;
 export const PageSchema = z.object({
    path: z.string(),
    title: z.string(),
+   metaTitle: z.string().nullable(),
+   metaDescription: z.string().nullable(),
    sections: z.array(PageSectionSchema),
 });

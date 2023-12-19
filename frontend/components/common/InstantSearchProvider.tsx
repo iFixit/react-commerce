@@ -3,9 +3,11 @@ import { ALGOLIA_APP_ID, IFIXIT_ORIGIN } from '@config/env';
 import { getClientOptions } from '@helpers/algolia-helpers';
 import {
    destylizeDeviceItemType,
+   destylizeDeviceTitleAndVariant,
    getFacetWidgetType,
    isValidRefinementListValue,
    stylizeDeviceItemType,
+   stylizeDeviceTitle,
 } from '@helpers/product-list-helpers';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { assertNever } from '@ifixit/helpers';
@@ -92,10 +94,15 @@ export function InstantSearchProvider({
          const firstPathSegment = pathParts.length >= 1 ? pathParts[0] : '';
          const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
          const isDevicePartsPage = firstPathSegment === 'Parts' && deviceHandle;
+         const devicePath = isDevicePartsPage
+            ? getDevicePath(deviceHandle, routeState)
+            : deviceHandle;
+         const devicePathHasVariant =
+            isDevicePartsPage && devicePath.includes(':');
 
          let path = `/${firstPathSegment}`;
-         if (deviceHandle) {
-            path += `/${deviceHandle}`;
+         if (devicePath) {
+            path += `/${devicePath}`;
             const raw: string | string[] | undefined =
                routeState.filter?.['facet_tags.Item Type'];
             const itemType = Array.isArray(raw) ? raw[0] : raw;
@@ -111,6 +118,9 @@ export function InstantSearchProvider({
          if (isDevicePartsPage) {
             // Item Type is the slug on device pages, not in the query.
             delete filterCopy['facet_tags.Item Type'];
+         }
+         if (devicePathHasVariant) {
+            delete filterCopy['worksin'];
          }
          const { q, p, filter, ...otherParams } = qsModule.parse(
             location.search,
@@ -146,6 +156,8 @@ export function InstantSearchProvider({
          const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
          const itemType = pathParts.length >= 3 ? pathParts[2] : '';
          const isDevicePartsPage = firstPathSegment === 'Parts' && deviceHandle;
+         const devicePathHasVariant =
+            isDevicePartsPage && deviceHandle.includes(':');
 
          const { q, p, filter } = qsModule.parse(location.search, {
             ignoreQueryPrefix: true,
@@ -185,6 +197,12 @@ export function InstantSearchProvider({
             filterObject['facet_tags.Item Type'] = destylizeDeviceItemType(
                decodeURIComponent(itemType)
             ).trim();
+         }
+
+         if (devicePathHasVariant) {
+            filterObject['worksin'] = destylizeDeviceTitleAndVariant(
+               decodeURIComponent(deviceHandle)
+            );
          }
 
          return {
@@ -314,4 +332,21 @@ function getBaseOrigin(location: Location): string {
       return publicOrigin.origin;
    }
    return location.origin;
+}
+
+function getDevicePath(handle: string, routeState: RouteState): string {
+   const [device, ...restParts] = handle.split(':');
+   const variant = restParts.join(':');
+
+   const variantFromRouteState = routeState.filter?.worksin;
+
+   if (variant && !variantFromRouteState) {
+      return device;
+   }
+
+   if (!variant && variantFromRouteState) {
+      return stylizeDeviceTitle(handle, variantFromRouteState);
+   }
+
+   return handle;
 }

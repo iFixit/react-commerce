@@ -686,6 +686,7 @@ export type CartBuyerIdentityInput = {
     * The rank of the preferences is determined by the order of the addresses in the array. Preferences
     * can be used to populate relevant fields in the checkout flow.
     *
+    * The input must not contain more than `250` values.
     */
    deliveryAddressPreferences?: InputMaybe<Array<DeliveryAddressInput>>;
    /** The email address of the buyer that is interacting with the cart. */
@@ -697,6 +698,7 @@ export type CartBuyerIdentityInput = {
     * Preferences can be used to populate relevant payment fields in the checkout flow.
     *   Accepted value: `["shop_pay"]`.
     *
+    * The input must not contain more than `250` values.
     */
    walletPreferences?: InputMaybe<Array<Scalars['String']>>;
 };
@@ -986,7 +988,11 @@ export type CartFreePaymentMethodInput = {
 
 /** The input fields to create a cart. */
 export type CartInput = {
-   /** An array of key-value pairs that contains additional information about the cart. */
+   /**
+    * An array of key-value pairs that contains additional information about the cart.
+    *
+    * The input must not contain more than `250` values.
+    */
    attributes?: InputMaybe<Array<AttributeInput>>;
    /**
     * The customer associated with the cart. Used to determine [international pricing]
@@ -998,11 +1004,20 @@ export type CartInput = {
    /**
     * The case-insensitive discount codes that the customer added at checkout.
     *
+    * The input must not contain more than `250` values.
     */
    discountCodes?: InputMaybe<Array<Scalars['String']>>;
-   /** A list of merchandise lines to add to the cart. */
+   /**
+    * A list of merchandise lines to add to the cart.
+    *
+    * The input must not contain more than `250` values.
+    */
    lines?: InputMaybe<Array<CartLineInput>>;
-   /** The metafields to associate with this cart. */
+   /**
+    * The metafields to associate with this cart.
+    *
+    * The input must not contain more than `250` values.
+    */
    metafields?: InputMaybe<Array<CartInputMetafieldInput>>;
    /**
     * A note that's associated with the cart. For example, the note can be a personalized message to the buyer.
@@ -1091,7 +1106,11 @@ export type CartLineEstimatedCost = {
 
 /** The input fields to create a merchandise line on a cart. */
 export type CartLineInput = {
-   /** An array of key-value pairs that contains additional information about the merchandise line. */
+   /**
+    * An array of key-value pairs that contains additional information about the merchandise line.
+    *
+    * The input must not contain more than `250` values.
+    */
    attributes?: InputMaybe<Array<AttributeInput>>;
    /** The ID of the merchandise that the buyer intends to purchase. */
    merchandiseId: Scalars['ID'];
@@ -1103,7 +1122,11 @@ export type CartLineInput = {
 
 /** The input fields to update a line item on a cart. */
 export type CartLineUpdateInput = {
-   /** An array of key-value pairs that contains additional information about the merchandise line. */
+   /**
+    * An array of key-value pairs that contains additional information about the merchandise line.
+    *
+    * The input must not contain more than `250` values.
+    */
    attributes?: InputMaybe<Array<AttributeInput>>;
    /** The ID of the merchandise line. */
    id: Scalars['ID'];
@@ -1334,7 +1357,7 @@ export type Checkout = Node & {
    note?: Maybe<Scalars['String']>;
    /** The resulting order from a paid checkout. */
    order?: Maybe<Order>;
-   /** The Order Status Page for this Checkout, null when checkout isn't completed. */
+   /** The <b>Order status</b> page for this Checkout, null when checkout isn't completed. */
    orderStatusUrl?: Maybe<Scalars['URL']>;
    /** The amount left to be paid. This is equal to the cost of the line items, taxes, and shipping, minus discounts and gift cards. */
    paymentDue: MoneyV2;
@@ -1423,7 +1446,11 @@ export type CheckoutAttributesUpdateV2Input = {
     *
     */
    allowPartialAddresses?: InputMaybe<Scalars['Boolean']>;
-   /** A list of extra information that's added to the checkout. */
+   /**
+    * A list of extra information that's added to the checkout.
+    *
+    * The input must not contain more than `250` values.
+    */
    customAttributes?: InputMaybe<Array<AttributeInput>>;
    /** The text of an optional note that a shop owner can attach to the checkout. */
    note?: InputMaybe<Scalars['String']>;
@@ -1518,11 +1545,19 @@ export type CheckoutCreateInput = {
    allowPartialAddresses?: InputMaybe<Scalars['Boolean']>;
    /** The identity of the customer associated with the checkout. */
    buyerIdentity?: InputMaybe<CheckoutBuyerIdentityInput>;
-   /** A list of extra information that's added to the checkout. */
+   /**
+    * A list of extra information that's added to the checkout.
+    *
+    * The input must not contain more than `250` values.
+    */
    customAttributes?: InputMaybe<Array<AttributeInput>>;
    /** The email with which the customer wants to checkout. */
    email?: InputMaybe<Scalars['String']>;
-   /** A list of line item objects, each one containing information about an item in the checkout. */
+   /**
+    * A list of line item objects, each one containing information about an item in the checkout.
+    *
+    * The input must not contain more than `250` values.
+    */
    lineItems?: InputMaybe<Array<CheckoutLineItemInput>>;
    /** The text of an optional note that a shop owner can attach to the checkout. */
    note?: InputMaybe<Scalars['String']>;
@@ -1789,7 +1824,11 @@ export type CheckoutLineItemEdge = {
 
 /** The input fields to create a line item on a checkout. */
 export type CheckoutLineItemInput = {
-   /** Extra information in the form of an array of Key-Value pairs about the line item. */
+   /**
+    * Extra information in the form of an array of Key-Value pairs about the line item.
+    *
+    * The input must not contain more than `250` values.
+    */
    customAttributes?: InputMaybe<Array<AttributeInput>>;
    /** The quantity of the line item. */
    quantity: Scalars['Int'];
@@ -1799,7 +1838,11 @@ export type CheckoutLineItemInput = {
 
 /** The input fields to update a line item on the checkout. */
 export type CheckoutLineItemUpdateInput = {
-   /** Extra information in the form of an array of Key-Value pairs about the line item. */
+   /**
+    * Extra information in the form of an array of Key-Value pairs about the line item.
+    *
+    * The input must not contain more than `250` values.
+    */
    customAttributes?: InputMaybe<Array<AttributeInput>>;
    /** The ID of the line item. */
    id?: InputMaybe<Scalars['ID']>;
@@ -6721,7 +6764,7 @@ export type QueryRoot = {
    productTags: StringConnection;
    /** List of product types for the shop's products that are published to your app. */
    productTypes: StringConnection;
-   /** List of the shop’s products. */
+   /** List of the shop’s products. For storefront search, use [`search` query](https://shopify.dev/docs/api/storefront/latest/queries/search). */
    products: ProductConnection;
    /** The list of public Storefront API versions, including supported, release candidate and unstable versions. */
    publicApiVersions: Array<ApiVersion>;
@@ -8009,6 +8052,7 @@ export type ProductVariantFieldsFragment = {
 
 export type FindProductQueryVariables = Exact<{
    handle?: InputMaybe<Scalars['String']>;
+   pathQuery?: InputMaybe<Scalars['String']>;
 }>;
 
 export type FindProductQuery = {
@@ -8021,6 +8065,7 @@ export type FindProductQuery = {
       descriptionHtml: string;
       tags: Array<string>;
       vendor: string;
+      noindex?: { __typename?: 'Metafield'; value: string } | null;
       rating?: { __typename?: 'Metafield'; value: string } | null;
       reviewsCount?: { __typename?: 'Metafield'; value: string } | null;
       breadcrumbs?: { __typename?: 'Metafield'; value: string } | null;
@@ -8252,6 +8297,13 @@ export type FindProductQuery = {
          }>;
       };
    } | null;
+   urlRedirects: {
+      __typename?: 'UrlRedirectConnection';
+      edges: Array<{
+         __typename?: 'UrlRedirectEdge';
+         node: { __typename?: 'UrlRedirect'; target: string };
+      }>;
+   };
 };
 
 export type ProductOptionFieldsFragment = {
@@ -8434,13 +8486,16 @@ export const ProductOptionFieldsFragmentDoc = `
 }
     `;
 export const FindProductDocument = `
-    query findProduct($handle: String) {
+    query findProduct($handle: String, $pathQuery: String) {
   product(handle: $handle) {
     id
     title
     handle
     descriptionHtml
     tags
+    noindex: metafield(namespace: "seo", key: "hidden") {
+      value
+    }
     rating: metafield(namespace: "reviews", key: "rating") {
       value
     }
@@ -8515,6 +8570,13 @@ export const FindProductDocument = `
       }
     }
     vendor
+  }
+  urlRedirects(first: 1, query: $pathQuery) {
+    edges {
+      node {
+        target
+      }
+    }
   }
 }
     ${ProductPreviewFieldsFragmentDoc}

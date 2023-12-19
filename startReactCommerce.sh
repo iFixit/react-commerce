@@ -27,24 +27,48 @@ while [[ ! "${userInput}" =~ ^(y|n)$ ]]; do
     userInput=$(echo "${userInput}" | tr '[:upper:]' '[:lower:]' | xargs)
 done
 
-# Continue based on the user's input
-if [[ "${userInput}" == "y" ]]; then
-    # Login to exisiting user:
-    pnpm login --registry=https://verdaccio.ubreakit.com    
-else
-    # Add new verdaccio user:
-    pnpm adduser --registry=https://verdaccio.ubreakit.com
-fi
+while true; do
+    if [[ "${userInput}" == "y" ]]; then
+        echo "Please log in to your Verdaccio account."
+        pnpm login --registry=https://verdaccio.ubreakit.com
+    else
+        echo "No Verdaccio account detected. Creating a new account for you..."
+        pnpm adduser --registry=https://verdaccio.ubreakit.com
+    fi
+
+    # Check for login or adduser success
+    if [ $? -eq 0 ]; then
+        echo "Successfully logged in to Verdaccio."
+        break
+    else
+        echo "Error with Verdaccio account credentials. Please check your input and try again."
+        read -p "Do you want to retry? (y/n): " retryInput
+        retryInput=$(echo "${retryInput}" | tr '[:upper:]' '[:lower:]' | xargs)
+
+        if [[ "${retryInput}" != "y" ]]; then
+            echo "Exiting script."
+            exit 1
+        fi
+    fi
+done
 
 npmrcPath=~/.npmrc
 envFilePath=.env.local
 
 # Extract token from ~/.npmrc
-token=$(cat ~/.npmrc |  grep -o '\/\/verdaccio\.ubreakit\.com\/:_authToken="[^"]*"' | sed 's/\/\/verdaccio\.ubreakit\.com\/:_authToken="//' | sed 's/"$//')
+token=$(cat $npmrcPath |  grep -o '\/\/verdaccio\.ubreakit\.com\/:_authToken="[^"]*"' | sed 's/\/\/verdaccio\.ubreakit\.com\/:_authToken="//' | sed 's/"$//')
 
 if [ -z "$token" ]; then
     echo "Token not found in ~/.npmrc"
     return 1
+else
+    if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
+        # For Windows
+        set VERDACCIO_AUTH_TOKEN=$token
+    else
+        # For Unix-like systems
+        export VERDACCIO_AUTH_TOKEN=$token
+    fi
 fi
 
 # Update .env.local with VERDACCIO_AUTH_TOKEN
@@ -63,21 +87,16 @@ if [ ! -f "$envFilePath" ]; then
     cp "$exampleEnvFilePath" "$envFilePath"
 fi
 
-# Read ALGOLIA_API_KEY value from .env.local file
-apiKey=$(grep -o '^ALGOLIA_API_KEY=.*' "$envFilePath" | cut -d '=' -f 2)
-
-# Check if ALGOLIA_API_KEY value is empty
-if [ -z "$apiKey" ]; then
-    echo "ALGOLIA_API_KEY is empty. Filling in the value..."
-    if [ -n "${algoliaApiKey+set}" ]; then
-        echo "Algolia api key successfully passed in."
-    else
-        echo "You must set the algoliaApiKey variable in your environment."
-        echo -e 'Try running with: \n\nexport algoliaApiKey=YOUR_API_KEY \nnvm use && ./startReactCommerce.sh\n'
-        echo -e 'Or you can run it in one line with: \n\nnvm use && algoliaApiKey=xyz123 ./startReactCommerce.sh'
-        return 1
-    fi
+# Check if the algoliaApiKey environment variable is set
+if [ -z "$algoliaApiKey" ]; then
+    echo "You must set the algoliaApiKey variable in your environment."
+    echo -e 'Try running with: \n\nexport algoliaApiKey=YOUR_API_KEY \nnvm use && ./startReactCommerce.sh\n'
+    echo -e 'Or you can run it in one line with: \n\nnvm use && algoliaApiKey=xyz123 ./startReactCommerce.sh'
+    exit 1
+else
+    # Update ALGOLIA_API_KEY in .env.local file
     awk -v placeholder="\"$algoliaApiKey\"" '/^ALGOLIA_API_KEY=/{gsub(/=.*/, "=" placeholder)} 1' "$envFilePath" > "$envFilePath.tmp" && mv "$envFilePath.tmp" "$envFilePath"
+    echo "ALGOLIA_API_KEY updated in $envFilePath"
 fi
 
 pnpm install:all

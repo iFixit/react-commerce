@@ -94,9 +94,11 @@ const partProductVariants: ProductVariant[] = [
 ];
 
 export const mockedPartProduct: Product = {
+   __typename: 'Product',
    id: 'gid://shopify/Product/6581511684186',
    title: 'Galaxy A51 Screen',
    handle: 'galaxy-a51-screen',
+   noindex: false,
    descriptionHtml:
       '<p>This Galaxy A51 replacement screen includes all of the small parts preinstalled in the assembly, saving time and increasing the quality of your repair.</p>\n\n<p>Replace a cracked or scratched front glass panel or malfunctioning AMOLED display on your phone. This screen and digitizer assembly will renew the appearance of your front panel, restore touch function, and eliminate the dead pixels or flickering on an aging display.</p>\n\n<p>This is an aftermarket part. It is not a genuine Samsung part.</p>',
    tags: [
@@ -183,6 +185,7 @@ export const mockedPartProduct: Product = {
       },
    ],
    images: partProductImages,
+   fallbackImages: [],
    options: [
       {
          id: 'gid://shopify/ProductOption/8466995773530',

@@ -29,36 +29,44 @@ export default function ProblemCard({ problem }: { problem: Problem }) {
                   "image title"
                   "image link"
                `,
-               md: `
+               lg: `
                   "image title"
                   "image title"
                   "link link"
                `,
             }}
-            gridTemplateColumns={{ base: 'auto auto 1fr', md: 'auto 1fr' }}
+            gridTemplateColumns="auto 1fr"
+            gridTemplateRows="auto 1fr"
          >
             <GridItem
                area="image"
                outline="1px solid"
                outlineColor="gray.300"
                borderRadius="md"
-               boxSize={{ base: '56px', md: '32px' }}
+               width={{ base: '75px', lg: '43px' }}
+               height={{ base: '56px', lg: '32px' }}
                mr={2}
+               aspectRatio="4 / 3"
+               overflow="hidden"
             >
                <Image
                   height="100%"
-                  htmlWidth={56}
+                  htmlWidth={75}
                   htmlHeight={56}
                   objectFit="cover"
                   src={imageUrl}
                   alt={deviceTitle}
                />
             </GridItem>
-            <GridItem area="title" display={{ base: 'initial', md: 'flex' }}>
-               <Text my="auto">{deviceTitle}</Text>
+            <GridItem area="title" display={{ base: 'initial', lg: 'flex' }}>
+               <Text>{deviceTitle}</Text>
             </GridItem>
-            <GridItem area="link" lineHeight="initial" mt={{ base: 0, md: 2 }}>
-               <LinkOverlay href={url} color="brand.500" my="auto">
+            <GridItem
+               area="link"
+               lineHeight="initial"
+               mt={{ base: 1.5, lg: 2 }}
+            >
+               <LinkOverlay href={url} color="brand.500">
                   {title}
                </LinkOverlay>
             </GridItem>

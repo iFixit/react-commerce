@@ -14,9 +14,14 @@ import {
    SectionGuide,
    SectionProduct,
    SolutionSection,
+   SectionPartCollection,
 } from './hooks/useTroubleshootingProps';
 import { PrerenderedHTML } from '@components/common';
-import { GuideResource, ProductResource } from './Resource';
+import {
+   GuideResource,
+   ProductResource,
+   PartCollectionResource,
+} from './Resource';
 import { HeadingSelfLink } from './components/HeadingSelfLink';
 import { LinkToTOC, useTOCBufferPxScrollOnClick } from './tocContext';
 
@@ -127,10 +132,13 @@ export default function SolutionCard({
                title={solution.heading}
             />
             <SolutionTexts body={solution.body} />
-            {(solution.guides.length > 0 || solution.products.length > 0) && (
+            {(solution.guides.length > 0 ||
+               solution.products.length > 0 ||
+               solution.partCollections.length > 0) && (
                <LinkCards
                   guides={solution.guides}
                   products={solution.products}
+                  partCollections={solution.partCollections}
                />
             )}
          </Stack>
@@ -141,8 +149,13 @@ export default function SolutionCard({
 function LinkCards({
    guides,
    products,
+   partCollections,
    ...props
-}: { guides: SectionGuide[]; products: SectionProduct[] } & BoxProps) {
+}: {
+   guides: SectionGuide[];
+   products: SectionProduct[];
+   partCollections: SectionPartCollection[];
+} & BoxProps) {
    const uniqueGuides = guides.filter(
       (guide, index) =>
          guides.findIndex((g) => g.guideid === guide.guideid) === index
@@ -152,9 +165,17 @@ function LinkCards({
          {uniqueGuides.map((guide: SectionGuide) => (
             <GuideResource key={guide.guideid} guide={guide} />
          ))}
-         {products.map((product: SectionProduct, index) => (
-            <ProductResource key={index} product={product} />
+         {products.map((product: SectionProduct, productsIndex) => (
+            <ProductResource key={productsIndex} product={product} />
          ))}
+         {partCollections.map(
+            (partCollection: SectionPartCollection, partCollectionsIndex) => (
+               <PartCollectionResource
+                  key={partCollectionsIndex}
+                  partCollection={partCollection}
+               />
+            )
+         )}
       </VStack>
    );
 }

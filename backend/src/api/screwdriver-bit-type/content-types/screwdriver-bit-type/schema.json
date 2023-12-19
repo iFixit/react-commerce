@@ -1,0 +1,33 @@
+{
+   "kind": "collectionType",
+   "collectionName": "screwdriver_bit_types",
+   "info": {
+      "singularName": "screwdriver-bit-type",
+      "pluralName": "screwdriver-bit-types",
+      "displayName": "ScrewdriverBitType",
+      "description": ""
+   },
+   "options": {
+      "draftAndPublish": false
+   },
+   "pluginOptions": {},
+   "attributes": {
+      "name": {
+         "type": "string",
+         "required": true
+      },
+      "driverSize": {
+         "type": "string",
+         "required": true
+      },
+      "icon": {
+         "type": "media",
+         "multiple": false,
+         "required": true,
+         "allowedTypes": ["images"]
+      },
+      "slug": {
+         "type": "uid"
+      }
+   }
+}

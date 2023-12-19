@@ -1,7 +1,9 @@
 import { REDIS_URL } from '@config/env';
-import Redis from 'ioredis';
+import Redis, { RedisOptions } from 'ioredis';
 
-function getClient() {
+export type ClientOptions = RedisOptions;
+
+export function getClient(redisOptions: RedisOptions = {}) {
    if (typeof REDIS_URL !== 'string') {
       return undefined;
    }
@@ -17,7 +19,7 @@ function getClient() {
       // queue
       enableOfflineQueue: false,
       commandTimeout: 500,
+      // Allow overriding options
+      ...redisOptions,
    });
 }
-
-export const client = getClient();

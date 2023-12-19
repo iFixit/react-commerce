@@ -17,7 +17,9 @@ export function useCreateItemTypeURL() {
          stylizeDeviceItemType(item.value)
       );
       const prefixSegments = segments.slice(0, 2);
-      const search = query ? `?${query}` : '';
+      const params = new URLSearchParams(query);
+      params.delete('p');
+      const search = params.toString() ? `?${params.toString()}` : '';
       return `/${prefixSegments.join('/')}/${itemTypeHandle}${search}`;
    };
 }

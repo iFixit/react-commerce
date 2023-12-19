@@ -46,6 +46,7 @@ import {
 } from './components/product-video';
 import { getProductSections, ProductSectionSchema } from './sections';
 import { ProductDataApiResponse } from '@lib/ifixit-api/productData';
+import { ImageAltFallback } from '@models/components/image';
 
 export type {
    ProductVariant,
@@ -55,15 +56,18 @@ export type {
 export type Product = z.infer<typeof ProductSchema>;
 
 export const ProductSchema = z.object({
+   __typename: z.literal('Product'),
    id: z.string(),
    handle: z.string(),
    title: z.string(),
+   noindex: z.boolean(),
    breadcrumbs: z.array(BreadcrumbSchema),
    descriptionHtml: z.string(),
    iFixitProductId: z.string(),
    productcode: z.string().optional(),
    tags: z.array(z.string()),
    images: z.array(ProductVariantImageSchema),
+   fallbackImages: z.array(ProductVariantImageSchema),
    options: z.array(ProductOptionSchema),
    variants: z.array(ProductVariantSchema),
    isEnabled: z.boolean(),
@@ -125,9 +129,13 @@ export async function getProduct({
       strapiProduct,
    });
 
+   const noindex = shopifyProduct.noindex?.value === '1';
+
    return {
+      __typename: 'Product',
       id: shopifyProduct.id,
       handle: shopifyProduct.handle,
+      noindex,
       title: shopifyProduct.title,
       breadcrumbs,
       descriptionHtml: shopifyProduct.descriptionHtml,
@@ -135,6 +143,9 @@ export async function getProduct({
       productcode: parseItemcode(aVariantSku).productcode,
       tags: shopifyProduct.tags,
       images: imagesFromQueryProduct(shopifyProduct, variants),
+      // Images that are relevant for variants that have no images at all
+      // Do not mix these in with variant images nor product group images.
+      fallbackImages: fallbackImagesFromQueryProduct(shopifyProduct),
       options: shopifyProduct.options.map((option) =>
          productOptionFromShopify(
             option,
@@ -178,9 +189,9 @@ function imagesFromQueryProduct(
    variants: ProductVariant[]
 ): ProductVariantImage[] {
    const allImages = filterFalsyItems(
-      queryProduct.images.nodes.map((image) =>
-         getProductVariantImage(queryProduct, image)
-      )
+      queryProduct.images.nodes
+         .filter((image) => image.altText !== ImageAltFallback)
+         .map((image) => getProductVariantImage(queryProduct, image))
    );
 
    const hasActiveVariants = variants.some(isActiveVariant);
@@ -196,13 +207,23 @@ function imagesFromQueryProduct(
    );
 }
 
+function fallbackImagesFromQueryProduct(
+   queryProduct: ShopifyProduct
+): ProductVariantImage[] {
+   return filterFalsyItems(
+      queryProduct.images.nodes
+         .filter((image) => image.altText === ImageAltFallback)
+         .map((image) => getProductVariantImage(queryProduct, image))
+   );
+}
+
 function isGenericOrActiveVariantImage(
    image: ProductVariantImage,
-   variant: ProductVariant[]
+   variants: ProductVariant[]
 ) {
    return (
       image.variantId == null ||
-      variant.some(
+      variants.some(
          (variant) => isActiveVariant(variant) && variant.id === image.variantId
       )
    );

@@ -2,9 +2,6 @@
 /** @type {import('next').NextConfig} */
 
 const {
-   getLegacyPartItemTypeRedirects,
-} = require('./next-config/redirects/part-collections');
-const {
    getLegacyToolRedirects,
 } = require('./next-config/redirects/tool-collections');
 
@@ -87,7 +84,6 @@ const moduleExports = {
    },
    async redirects() {
       return [
-         ...getLegacyPartItemTypeRedirects(),
          ...getLegacyToolRedirects(),
          {
             source: '/Store/Guide/:guideid',
@@ -97,6 +93,11 @@ const moduleExports = {
          {
             source: '/products/sitemap.xml',
             destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/sitemap/products.xml`,
+            permanent: true,
+         },
+         {
+            source: '/products/steam-deck-fan',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/products/steam-deck-original-model-fan`,
             permanent: true,
          },
          {
@@ -122,6 +123,26 @@ const moduleExports = {
          {
             source: '/Parts/Over-Ear_Headphone',
             destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Parts/Headphone`,
+            permanent: true,
+         },
+         {
+            source: '/Parts/Microsoft_Game_Console_Accessory',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Parts/Xbox_Controller`,
+            permanent: true,
+         },
+         {
+            source: '/Parts/Microsoft_Game_Console_Accessory/:slug',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Parts/Xbox_Controller/:slug`,
+            permanent: true,
+         },
+         {
+            source: '/Parts/Sony_Game_Console_Accessory',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Parts/PlayStation_Controller`,
+            permanent: true,
+         },
+         {
+            source: '/Parts/Sony_Game_Console_Accessory/:slug',
+            destination: `${process.env.NEXT_PUBLIC_IFIXIT_ORIGIN}/Parts/PlayStation_Controller/:slug`,
             permanent: true,
          },
          {

@@ -18,10 +18,20 @@ export function SingleBanner({ id, banner }: SingleBannerProps) {
             position="absolute"
             bgGradient="linear(to-r, blackAlpha.600 50%, blackAlpha.400)"
             zIndex={-1}
-            inset="0"
+            top="0"
+            right="0"
+            bottom="0"
+            left="0"
          />
          {banner.image && (
-            <Box position="absolute" zIndex={-2} inset="0">
+            <Box
+               position="absolute"
+               zIndex={-2}
+               top="0"
+               right="0"
+               bottom="0"
+               left="0"
+            >
                <ResponsiveImage
                   src={banner.image.url}
                   alt=""

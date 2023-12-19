@@ -44,6 +44,19 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
       });
    }, [product.images, selectedVariant.id]);
 
+   // Fallback images should only be used when there are no others to represent
+   // the variant.
+   const fallbackImages =
+      genericImages.length == 0 && selectedVariantImages.length == 0
+         ? product.fallbackImages
+         : [];
+
+   const allImages = [
+      ...genericImages,
+      ...selectedVariantImages,
+      ...fallbackImages,
+   ];
+
    const priceValidUntil = new Date();
    priceValidUntil.setFullYear(priceValidUntil.getFullYear() + 1);
 
@@ -65,7 +78,7 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
          ? 'https://schema.org/InStock'
          : 'https://schema.org/OutOfStock';
 
-   const shouldNoIndex = !product.isEnabled;
+   const shouldNoIndex = !product.isEnabled || product.noindex;
 
    return (
       <Head>
@@ -102,13 +115,8 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
             ));
          })}
 
-         {genericImages.length > 0 &&
-            genericImages.map((image) => (
-               <meta key={image.id} property="og:image" content={image.url} />
-            ))}
-
-         {selectedVariantImages.length > 0 &&
-            selectedVariantImages.map((image) => (
+         {allImages.length > 0 &&
+            allImages.map((image) => (
                <meta key={image.id} property="og:image" content={image.url} />
             ))}
 
@@ -147,9 +155,7 @@ export function MetaTags({ product, selectedVariant }: MetaTagsProps) {
                   name: product.vendor || 'iFixit',
                },
                description: shortDescription || '',
-               image: [...genericImages, ...selectedVariantImages].map(
-                  (image) => image.url
-               ),
+               image: allImages.map((image) => image.url),
                mpn: selectedVariant.sku || undefined,
                offers: {
                   '@type': 'Offer',

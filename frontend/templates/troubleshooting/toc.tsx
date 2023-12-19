@@ -3,15 +3,11 @@ import {
    Button,
    Flex,
    FlexProps,
-   List,
-   ListItem,
-   ListItemProps,
    ListProps,
    Menu,
    MenuButton,
    MenuItem,
    MenuList,
-   Text,
    useBreakpointValue,
    useDisclosure,
    useToken,
@@ -24,36 +20,30 @@ import { faAngleDown } from '@fortawesome/pro-solid-svg-icons';
 import { debounce } from 'lodash';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/router';
+import { Causes } from './components/Causes';
+import type { TOCData } from './hooks/useTroubleshootingProps';
 
 export function TOC({
-   listItemProps,
    contentRef,
    ...props
 }: FlexProps & {
-   listItemProps?: ListItemProps;
    contentRef: RefObject<HTMLElement>;
 }) {
-   const { getItems } = useTOCContext();
-   const items = getItems().filter((item) => item.title !== 'Related Problems');
-
    useScrollToOnloadEffect();
 
    return (
       <Box
-         height={{ lg: '100vh' }}
+         height={{ mdPlus: '100vh' }}
          position="sticky"
          top={0}
-         zIndex={{ base: 'docked', lg: 'initial' }}
+         zIndex={{ base: 'docked', mdPlus: 'initial' }}
+         paddingBlock={6}
+         paddingRight={3}
          {...props}
       >
-         <LargeTOC
-            items={items}
-            listItemProps={listItemProps}
-            display={{ base: 'none', lg: 'flex' }}
-         />
+         <LargeTOC />
          <MobileTOC
             contentRef={contentRef}
-            listItemProps={listItemProps}
             flexGrow={1}
             position="fixed"
             top={0}
@@ -64,42 +54,34 @@ export function TOC({
    );
 }
 
-function LargeTOC({
-   items,
-   listItemProps,
-   ...props
-}: FlexProps & { listItemProps?: ListItemProps; items: TOCRecord[] }) {
+function LargeTOC(props: FlexProps) {
    return (
       <FlexScrollGradient
          gradientPX={96}
+         display={{ base: 'none', mdPlus: 'block' }}
          nestedFlexProps={
             {
-               as: List,
                flexDirection: 'column',
                spacing: 1,
-               paddingBlock: 6,
-               paddingRight: 3,
                flex: 'auto',
             } as FlexProps & ListProps
          }
          {...props}
       >
-         <TOCItems tocItems={items} listItemProps={listItemProps} />
+         <Causes hasRelatedPages={false} />
       </FlexScrollGradient>
    );
 }
 
 export function MobileTOC({
-   listItemProps,
    contentRef,
    ...props
 }: FlexProps & {
-   listItemProps?: ListItemProps;
    contentRef: RefObject<HTMLElement>;
 }) {
-   const { getItems } = useTOCContext();
+   const { getItems } = useTOCContext<TOCData>();
    const items = getItems();
-   const wantsMobile = useBreakpointValue({ base: true, lg: false });
+   const wantsMobile = useBreakpointValue({ base: true, mdPlus: false });
    const activeItem = items.find((item) => item.active);
 
    const [showMobileTOC, setShowMobileTOC] = useState(false);
@@ -147,7 +129,7 @@ export function MobileTOC({
 }
 
 function useScrollToOnloadEffect() {
-   const { getItem } = useTOCContext();
+   const { getItem } = useTOCContext<TOCData>();
 
    const [ranEffect, setRanEffect] = useState(false);
 
@@ -288,21 +270,10 @@ function MobileTOCItem({
    );
 }
 
-function TOCItems({
-   tocItems,
-   listItemProps,
-}: {
-   tocItems: TOCRecord[];
-   listItemProps?: ListItemProps;
-}) {
-   const items = tocItems.map((props, index) => {
-      return <TOCItem key={index} {...props} {...listItemProps} />;
-   });
-
-   return <>{items}</>;
-}
-
-function useScrollToActiveEffect(ref: RefObject<HTMLElement>, active: boolean) {
+export function useScrollToActiveEffect(
+   ref: RefObject<HTMLElement>,
+   active: boolean
+) {
    useEffect(() => {
       const el = ref.current;
       if (!el) {
@@ -317,55 +288,6 @@ function useScrollToActiveEffect(ref: RefObject<HTMLElement>, active: boolean) {
          top: el.offsetTop - el.parentElement.clientHeight / 2,
       });
    }, [ref, active]);
-}
-
-function TOCItem({
-   title,
-   elementRef,
-   active,
-   uniqueId,
-   scrollToBufferPx: _scrollToBufferPx,
-   scrollTo,
-   ...props
-}: TOCRecord & ListItemProps) {
-   const ref = useRef<HTMLLIElement>(null);
-
-   const blue100 = useToken('colors', 'blue.100');
-
-   const onClick = () => {
-      const el = elementRef.current;
-      if (!el) {
-         return;
-      }
-
-      scrollTo();
-
-      debouncedHighlightEl(el, blue100);
-   };
-
-   useScrollToActiveEffect(ref, active);
-
-   return (
-      <ListItem
-         paddingY={1}
-         paddingLeft={4}
-         paddingRight={3}
-         color={active ? 'brand.600' : 'gray.500'}
-         background={active ? 'blue.100' : undefined}
-         borderTopRightRadius={active ? 'md' : undefined}
-         borderBottomRightRadius={active ? 'md' : undefined}
-         ref={ref}
-         _hover={{
-            color: active ? undefined : 'gray.800',
-         }}
-         cursor="pointer"
-         {...props}
-      >
-         <Text fontWeight={500} fontSize="sm" onClick={onClick}>
-            {title}
-         </Text>
-      </ListItem>
-   );
 }
 
 const debouncedHighlightEl = debounce(highlightEl, 1000, {

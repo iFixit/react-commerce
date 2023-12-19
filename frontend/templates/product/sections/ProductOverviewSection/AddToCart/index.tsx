@@ -2,6 +2,7 @@ import { Alert, Box, Button } from '@chakra-ui/react';
 import { faExclamationCircle } from '@fortawesome/pro-solid-svg-icons';
 import { useAddToCart, useCartLineItem } from '@ifixit/cart-sdk';
 import { FaIcon } from '@ifixit/icons';
+import { encodeVariantURI } from '@ifixit/helpers';
 import { useCartDrawer, useIsScrolledPast, useUserPrice } from '@ifixit/ui';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
 import * as React from 'react';
@@ -9,8 +10,6 @@ import { AddToCartBar } from './AddToCartBar';
 import { InventoryMessage } from './InventoryMessage';
 import { NotifyMeForm } from './NotifyMeForm';
 import { ShippingRestrictions } from './ShippingRestrictions';
-import { trackGA4AddToCart } from '@ifixit/analytics';
-import { getVariantIdFromVariantURI } from '@ifixit/helpers';
 
 type AddToCartProps = {
    product: Product;
@@ -151,7 +150,7 @@ function useOptimisticAddToCart(
             internalDisplayName:
                selectedVariant.internalDisplayName ?? undefined,
             itemcode: selectedVariant.sku,
-            shopifyVariantId: selectedVariant.id,
+            shopifyVariantId: encodeVariantURI(selectedVariant.id),
             quantity: 1,
             imageSrc: selectedVariant.image?.url || product.images[0]?.url,
             price: userPrice.price,
@@ -159,19 +158,6 @@ function useOptimisticAddToCart(
          },
       });
       onOpen(event, true);
-      trackGA4AddToCart({
-         currency: userPrice.price.currencyCode,
-         value: Number(userPrice.price.amount),
-         items: [
-            {
-               item_id: selectedVariant.sku,
-               item_name: selectedVariant.internalDisplayName,
-               item_variant: getVariantIdFromVariantURI(selectedVariant.id),
-               price: Number(userPrice.price.amount),
-               quantity: 1,
-            },
-         ],
-      });
    }, [
       selectedVariant.sku,
       selectedVariant.title,

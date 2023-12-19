@@ -2,6 +2,7 @@ import { IFixitAPIClient, useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useLocalPreference } from '@ifixit/ui';
 import { useQuery } from '@tanstack/react-query';
 import { z } from 'zod';
+import * as Sentry from '@sentry/nextjs';
 
 export type User = z.infer<typeof AuthenticatedUserSchema>;
 
@@ -23,6 +24,7 @@ const AuthenticatedUserSchema = z.object({
    teams: z.array(z.number()),
    links: z.record(z.any()),
    langid: z.string().optional().nullable(),
+   unread_notification_count: z.number().optional().nullable(),
 });
 
 export function useAuthenticatedUser() {
@@ -36,7 +38,9 @@ export function useAuthenticatedUser() {
       userKeys.user,
       () => {
          const responsePromise = fetchAuthenticatedUser(apiClient).catch(
-            () => null
+            (e) => {
+               return null;
+            }
          );
          responsePromise
             .then((response) => {
@@ -71,24 +75,40 @@ const UserApiResponseSchema = z.object({
    teams: z.array(z.number()),
    links: z.record(z.any()),
    langid: z.string().optional().nullable(),
+   unread_notification_count: z.number().optional().nullable(),
 });
 
 async function fetchAuthenticatedUser(
    apiClient: IFixitAPIClient
 ): Promise<User | null> {
    const payload = await apiClient.get('user', 'user');
-   const userSchema = UserApiResponseSchema.parse(payload);
+   if (payload == null) {
+      return null;
+   }
+   const userSchema = UserApiResponseSchema.safeParse(payload);
+   if (!userSchema.success) {
+      Sentry.captureMessage('User schema parsing failed', {
+         level: 'debug',
+         extra: {
+            schema: userSchema,
+            payload: payload,
+            error: userSchema.error,
+         },
+      });
+      return null;
+   }
    return {
-      id: userSchema.userid,
-      username: userSchema.username,
-      handle: userSchema.unique_username ?? null,
-      thumbnail: userSchema.image?.thumbnail ?? null,
-      is_pro: userSchema.discount_tier != null,
-      algoliaApiKeyProducts: userSchema.algoliaApiKeyProducts ?? null,
-      discountTier: userSchema.discount_tier ?? null,
-      isAdmin: userSchema.privileges.includes('Admin'),
-      teams: userSchema.teams,
-      links: userSchema.links,
-      langid: userSchema?.langid ?? null,
+      id: userSchema.data.userid,
+      username: userSchema.data.username,
+      handle: userSchema.data.unique_username ?? null,
+      thumbnail: userSchema.data.image?.thumbnail ?? null,
+      is_pro: userSchema.data.discount_tier != null,
+      algoliaApiKeyProducts: userSchema.data.algoliaApiKeyProducts ?? null,
+      discountTier: userSchema.data.discount_tier ?? null,
+      isAdmin: userSchema.data.privileges.includes('Admin'),
+      teams: userSchema.data.teams,
+      links: userSchema.data.links,
+      langid: userSchema.data.langid ?? null,
+      unread_notification_count: userSchema.data.unread_notification_count,
    };
 }

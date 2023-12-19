@@ -26,6 +26,14 @@ export type Problem = {
 export type ApiSolutionSection = Section & {
    guides: SectionGuide[];
    products: SectionProduct[];
+   partCollections: SectionPartCollection[];
+};
+
+export type SectionPartCollection = {
+   title: string;
+   url: string;
+   description: string;
+   imageUrl: string;
 };
 
 export type SectionProduct = {
@@ -80,6 +88,7 @@ export type TroubleshootingApiData = {
    answersUrl: string;
    viewStats?: ViewStatsProps;
    deviceGuideUrl?: string;
+   deviceTroubleshootingUrl?: string;
    devicePartsUrl?: string;
    canonicalUrl: string;
    lastUpdatedDate: number;
@@ -89,6 +98,7 @@ export type TroubleshootingApiData = {
    metaDescription: string;
    metaKeywords: string;
    linkedProblems: Problem[];
+   relatedProblems: Problem[];
    countOfAssociatedProblems: number;
    mainImageUrl: string;
    mainImageUrlLarge: string;
@@ -97,6 +107,14 @@ export type TroubleshootingApiData = {
 
 export type TroubleshootingData = Omit<TroubleshootingApiData, 'solutions'> & {
    solutions: SolutionSection[];
+};
+
+export type TOCData = {
+   introduction?: Section[];
+   solutions?: Section[];
+   conclusion?: Section[];
+   heading: string;
+   id: string;
 };
 
 export type BreadcrumbEntry = {

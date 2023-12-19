@@ -1,4 +1,8 @@
-type Log = (message: string) => void;
+type Log = {
+   (...data: any[]): void;
+   (message?: any, ...optionalParams: any[]): void;
+};
+
 type ExtendedLog = Log & {
    timing: (statName: string, ms: number) => void;
    event: (statName: string) => void;
@@ -13,9 +17,7 @@ export interface Logger {
 
 const colorless = Boolean(process.env.COLORLESS_LOGS);
 
-const colorlessLogger = withExtensions((message: string) =>
-   console.log(message)
-);
+const colorlessLogger = withExtensions(console.log);
 
 export const log: Logger = colorless
    ? {
