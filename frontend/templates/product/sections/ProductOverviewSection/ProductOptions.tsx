@@ -1,5 +1,6 @@
 import {
    Box,
+   BoxProps,
    Circle,
    Flex,
    HStack,
@@ -8,6 +9,7 @@ import {
    SimpleGrid,
    Text,
    useTheme,
+   VisuallyHidden,
    VStack,
 } from '@chakra-ui/react';
 import { faImageSlash } from '@fortawesome/pro-duotone-svg-icons';
@@ -206,7 +208,7 @@ type ProductOptionProps = {
    isActive?: boolean;
    exactMatch?: boolean;
    onClick?: () => void;
-};
+} & BoxProps;
 
 type Image = {
    id?: string | null;
@@ -241,7 +243,11 @@ function ProductOptionValue({
       >
          <ProductOptionImage image={image} exactMatch={exactMatch} />
          <Text fontSize="13px" color={exactMatch ? 'gray.800' : 'gray.400'}>
+            <VisuallyHidden>Option</VisuallyHidden>
             {label}
+            <VisuallyHidden>
+               {isActive ? 'selected' : 'not selected'}
+            </VisuallyHidden>
          </Text>
       </Box>
    );

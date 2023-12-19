@@ -27,10 +27,10 @@ function isConclusionData(data: TOCEntry): data is ConclusionData & TOCRecord {
    return data.type === 'Conclusion';
 }
 
-export function Causes(
-   props: React.ComponentProps<typeof Box>,
-   hasRelatedPages: boolean
-) {
+export function Causes({
+   hasRelatedPages,
+   ...props
+}: { hasRelatedPages: boolean } & React.ComponentProps<typeof Box>) {
    const items = useTOCContext<TOCEntry>().getItems();
 
    const intros: (IntroData & TOCRecord)[] = items.filter(isIntroData);
@@ -55,7 +55,9 @@ export function Causes(
             {solutions.map((cause, index) => (
                <Cause key={cause.uniqueId} causeNumber={index + 1} {...cause} />
             ))}
-            <TOCHeading>Conclusion</TOCHeading>
+            {(conclusions.length || hasRelatedPages) && (
+               <TOCHeading>Conclusion</TOCHeading>
+            )}
             {conclusions.map((conclusion) => (
                <Conclusion key={conclusion.uniqueId} {...conclusion} />
             ))}
@@ -254,11 +256,6 @@ function TOCHeading({
          sx={{
             '&:first-child': {
                mt: 1,
-            },
-            '&:not(:first-child)': {
-               [`@media (min-width: ${useToken('breakpoints', 'mdPlus')})`]: {
-                  display: 'none',
-               },
             },
          }}
       >

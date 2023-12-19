@@ -364,6 +364,7 @@ function Bullet({ isActive, onClick }: RenderBulletsProps) {
          transition="all 300ms"
          cursor="pointer"
          onClick={onClick}
+         aria-label="active image"
       />
    );
 }

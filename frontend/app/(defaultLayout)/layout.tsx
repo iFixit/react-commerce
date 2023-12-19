@@ -2,7 +2,7 @@ import { AppProviders } from '@components/common/AppProviders';
 import { DEFAULT_STORE_CODE } from '@config/env';
 import { getLayoutServerSideProps } from '@layouts/default/server';
 import { ReactNode } from 'react';
-import IFixitPageFrame from './components/IFixitPageFrame';
+import IFixitPageFrame from './components/ifixit-page-frame';
 
 export default async function DefaultLayout({
    children,
