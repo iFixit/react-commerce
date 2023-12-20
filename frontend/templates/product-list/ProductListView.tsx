@@ -9,7 +9,7 @@ import {
 } from '@helpers/product-list-helpers';
 import type { ProductList } from '@models/product-list';
 import { PressQuotesSection } from '@templates/page/sections/PressQuotesSection';
-import { Configure, useMenu } from 'react-instantsearch';
+import { Configure } from 'react-instantsearch';
 import { useAvailableItemTypes } from './hooks/useAvailableItemTypes';
 import { useCurrentProductList } from './hooks/useCurrentProductList';
 import { MetaTags } from './MetaTags';
@@ -21,6 +21,7 @@ import {
    ProductListChildrenSection,
    RelatedPostsSection,
 } from './sections';
+import { AlgoliaAttributeSSRHack } from '@helpers/algolia-helpers';
 
 const HITS_PER_PAGE = 24;
 
@@ -33,9 +34,8 @@ export function ProductListView({
    productList,
    algoliaSSR,
 }: ProductListViewProps) {
-   // This temporary hack allows to correctly populate the itemType facet during SSR
-   // see: https://github.com/algolia/instantsearch/issues/5571
-   const _ = useMenu({ attribute: 'facet_tags.Item Type' });
+   AlgoliaAttributeSSRHack('facet_tags.Item Type');
+
    const filters = computeProductListAlgoliaFilterPreset(productList);
    const optionalFilters =
       computeProductListAlgoliaOptionalFilters(productList);

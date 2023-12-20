@@ -3,6 +3,7 @@ import { useVariantProductList } from './useVariantProductList';
 import { useItemTypeProductList } from './useItemTypeProductList';
 import React, { PropsWithChildren } from 'react';
 import { SentryError } from '@ifixit/sentry';
+import { AlgoliaAttributeSSRHack } from '@helpers/algolia-helpers';
 
 /**
  * Used to modify product list data before rendering
@@ -27,6 +28,8 @@ export const CurrentProductListProvider = ({
    algoliaUrl,
    children,
 }: CurrentProductListProviderProps) => {
+   AlgoliaAttributeSSRHack('worksin');
+
    const variantUpdatedProductList = useVariantProductList(
       productList,
       algoliaUrl
