@@ -3,14 +3,15 @@ import {
    destylizeDeviceTitle,
    splitDeviceAndVariant,
 } from '@helpers/product-list-helpers';
-import { getRouteData } from '@helpers/path-helpers';
+import { getLocation, getRouteData } from '@helpers/path-helpers';
 
 export function useVariantProductList(
    productList: ProductList,
    algoliaUrl?: string
 ) {
    if (!algoliaUrl) return productList;
-   const algoliaPath = new URL(algoliaUrl).pathname;
+   const url = getLocation(algoliaUrl);
+   const algoliaPath = new URL(url.href).pathname;
    const { deviceHandle } = getRouteData(algoliaPath);
    if (!deviceHandle) return productList;
    const { variant } = splitDeviceAndVariant(deviceHandle);

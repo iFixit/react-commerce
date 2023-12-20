@@ -36,11 +36,11 @@ export const CurrentProductListProvider = ({
    );
    const alteredProductList =
       itemTypeUpdatedProductList ?? variantUpdatedProductList;
-   const [currentProductList, setCurrentProductList] =
-      React.useState(alteredProductList);
 
    return (
-      <CurrentProductListContext.Provider value={{ currentProductList }}>
+      <CurrentProductListContext.Provider
+         value={{ currentProductList: alteredProductList }}
+      >
          {children}
       </CurrentProductListContext.Provider>
    );

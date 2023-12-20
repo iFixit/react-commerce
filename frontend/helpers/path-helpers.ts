@@ -180,3 +180,15 @@ export function getRouteData(route: string) {
       itemType,
    };
 }
+
+export function getLocation(url: string) {
+   if (typeof window === 'undefined') {
+      try {
+         return new URL(url) as unknown as Location;
+      } catch (e) {
+         return new URL(IFIXIT_ORIGIN) as unknown as Location;
+      }
+   }
+
+   return window.location;
+}
