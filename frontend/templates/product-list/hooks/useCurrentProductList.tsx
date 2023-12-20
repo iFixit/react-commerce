@@ -9,19 +9,6 @@ import { SentryError } from '@ifixit/sentry';
  * The Order that the hooks are called is important as to what the data will look like
  * This lets us do things like Item Type Overrides for product lists
  */
-// export function useCurrentProductList(
-//    productList: ProductList,
-//    algoliaUrl?: string
-// ): ProductList {
-//    const variantUpdatedProductList = useVariantProductList(
-//       productList,
-//       algoliaUrl
-//    );
-//    const itemTypeUpdatedProductList = useItemTypeProductList(
-//       variantUpdatedProductList
-//    );
-//    return itemTypeUpdatedProductList ?? variantUpdatedProductList;
-// }
 
 type CurrentProductListContext = {
    currentProductList: ProductList;
