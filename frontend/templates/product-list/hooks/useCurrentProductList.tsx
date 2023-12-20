@@ -1,7 +1,7 @@
 import { ProductList } from '@models/product-list';
 import { useVariantProductList } from './useVariantProductList';
 import { useItemTypeProductList } from './useItemTypeProductList';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { SentryError } from '@ifixit/sentry';
 
 /**
@@ -12,14 +12,12 @@ import { SentryError } from '@ifixit/sentry';
 
 type CurrentProductListContext = {
    currentProductList: ProductList;
-   setCurrentProductList: (_: ProductList) => void;
 };
 
-type CurrentProductListProviderProps = {
-   productList: ProductList; // Assuming ProductList is a type you've defined elsewhere
+type CurrentProductListProviderProps = PropsWithChildren<{
+   productList: ProductList;
    algoliaUrl?: string;
-   children: React.ReactNode;
-};
+}>;
 
 export const CurrentProductListContext =
    React.createContext<CurrentProductListContext | null>(null);
@@ -33,7 +31,6 @@ export const CurrentProductListProvider = ({
       productList,
       algoliaUrl
    );
-   console.log(variantUpdatedProductList);
    const itemTypeUpdatedProductList = useItemTypeProductList(
       variantUpdatedProductList
    );
@@ -41,11 +38,9 @@ export const CurrentProductListProvider = ({
       itemTypeUpdatedProductList ?? variantUpdatedProductList;
    const [currentProductList, setCurrentProductList] =
       React.useState(alteredProductList);
-   //console.log(currentProductList);
+
    return (
-      <CurrentProductListContext.Provider
-         value={{ currentProductList, setCurrentProductList }}
-      >
+      <CurrentProductListContext.Provider value={{ currentProductList }}>
          {children}
       </CurrentProductListContext.Provider>
    );
