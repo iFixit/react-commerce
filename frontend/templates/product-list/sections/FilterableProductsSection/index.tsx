@@ -242,7 +242,7 @@ type EmptyStateProps = BoxProps & {
 
 const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
    ({ productList, ...otherProps }, ref) => {
-      let { currentProductList } = useCurrentProductList();
+      const { currentProductList } = useCurrentProductList();
       const { setSearchQuery } = useSearchQuery();
       const clearRefinements = useClearRefinements({ excludedAttributes: [] });
 
