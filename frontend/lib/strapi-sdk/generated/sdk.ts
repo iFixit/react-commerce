@@ -1766,6 +1766,8 @@ export type ProductList = {
    optionalFilters?: Maybe<Scalars['String']>;
    parent?: Maybe<ProductListEntityResponse>;
    publishedAt?: Maybe<Scalars['DateTime']>;
+   redirectFrom?: Maybe<ProductListRelationResponseCollection>;
+   redirectTo?: Maybe<ProductListEntityResponse>;
    sections: Array<Maybe<ProductListSectionsDynamicZone>>;
    sortPriority?: Maybe<Scalars['Int']>;
    tagline?: Maybe<Scalars['String']>;
@@ -1789,6 +1791,13 @@ export type ProductListFaqsArgs = {
 };
 
 export type ProductListLocalizationsArgs = {
+   filters?: InputMaybe<ProductListFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type ProductListRedirectFromArgs = {
    filters?: InputMaybe<ProductListFiltersInput>;
    pagination?: InputMaybe<PaginationArg>;
    publicationState?: InputMaybe<PublicationState>;
@@ -1839,6 +1848,8 @@ export type ProductListFiltersInput = {
    or?: InputMaybe<Array<InputMaybe<ProductListFiltersInput>>>;
    parent?: InputMaybe<ProductListFiltersInput>;
    publishedAt?: InputMaybe<DateTimeFilterInput>;
+   redirectFrom?: InputMaybe<ProductListFiltersInput>;
+   redirectTo?: InputMaybe<ProductListFiltersInput>;
    sortPriority?: InputMaybe<IntFilterInput>;
    tagline?: InputMaybe<StringFilterInput>;
    title?: InputMaybe<StringFilterInput>;
@@ -1872,6 +1883,8 @@ export type ProductListInput = {
    optionalFilters?: InputMaybe<Scalars['String']>;
    parent?: InputMaybe<Scalars['ID']>;
    publishedAt?: InputMaybe<Scalars['DateTime']>;
+   redirectFrom?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+   redirectTo?: InputMaybe<Scalars['ID']>;
    sections?: InputMaybe<Array<Scalars['ProductListSectionsDynamicZoneInput']>>;
    sortPriority?: InputMaybe<Scalars['Int']>;
    tagline?: InputMaybe<Scalars['String']>;
