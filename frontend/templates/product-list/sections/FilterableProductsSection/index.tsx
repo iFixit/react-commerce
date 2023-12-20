@@ -254,14 +254,6 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
 
       const isFiltered = hasRefinements || hasSearchQuery;
 
-      const itemType = useDevicePartsItemType(currentProductList);
-      const title = getProductListTitle(
-         {
-            title: currentProductList.title,
-            type: currentProductList.type,
-         },
-         itemType
-      );
       const encodedQuery = encodeURIComponent(searchBox.query);
 
       const ancestors = currentProductList.ancestors;
@@ -286,7 +278,7 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
                   opacity="0.8"
                />
                <Text fontSize="lg" fontWeight="bold" w="full">
-                  No matching products found in {title}
+                  No matching products found in {currentProductList.title}
                </Text>
                <Text maxW="500px" color="gray.500">
                   Try adjusting your search or filter to find what you&apos;re
