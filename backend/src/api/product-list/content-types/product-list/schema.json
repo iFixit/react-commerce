@@ -258,6 +258,18 @@
          },
          "type": "boolean",
          "default": false
+      },
+      "redirectTo": {
+         "type": "relation",
+         "relation": "manyToOne",
+         "target": "api::product-list.product-list",
+         "inversedBy": "redirectFrom"
+      },
+      "redirectFrom": {
+         "type": "relation",
+         "relation": "oneToMany",
+         "target": "api::product-list.product-list",
+         "mappedBy": "redirectTo"
       }
    }
 }
