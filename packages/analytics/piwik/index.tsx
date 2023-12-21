@@ -50,7 +50,7 @@ export function trackPiwikUserPrivilege(
 ): void {
    const customDimensions = getPiwikCustomDimensionsForEnv(piwikEnv);
    if (typeof window !== 'undefined' && customDimensions && userPrivilege) {
-      const privilege = userPrivilege.length > 0 ? userPrivilege[0] : 'user';
+      const privilege = userPrivilege.length > 0 ? userPrivilege[0] : 'User';
       piwikPush([
          'setCustomDimensionValue',
          customDimensions['userPrivilege'],
