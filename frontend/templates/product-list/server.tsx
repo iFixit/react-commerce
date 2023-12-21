@@ -209,14 +209,15 @@ export const getProductListServerSideProps = ({
       }
 
       if (productList.redirectTo) {
-         const destination = productListPath({
+         const path = productListPath({
             productList: productList.redirectTo,
             itemType: itemType ?? undefined,
          });
+         const params = new URL(urlFromContext(context)).searchParams;
          return {
             redirect: {
                permanent: true,
-               destination,
+               destination: `${path}?${params}`,
             },
          };
       }
