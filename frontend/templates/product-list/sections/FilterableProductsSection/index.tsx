@@ -21,7 +21,6 @@ import { ProductGridItem } from '@components/common/ProductGridItem';
 import { Card } from '@components/ui';
 import { filterFalsyItems } from '@helpers/application-helpers';
 import { productListPath } from '@helpers/path-helpers';
-import { getProductListTitle } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
 import { useLocalPreference, Wrapper } from '@ifixit/ui';
 import { productPreviewFromAlgoliaHit } from '@models/components/product-preview';
@@ -40,7 +39,6 @@ import {
    useHits,
    useSearchBox,
 } from 'react-instantsearch';
-import { useDevicePartsItemType } from '../../hooks/useDevicePartsItemType';
 import { CurrentRefinements } from './CurrentRefinements';
 import { FacetsAccordion } from './facets/accordion';
 import { Pagination } from './Pagination';
