@@ -38,7 +38,7 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
          { forceMiss }
       );
 
-      if (product?.__typename === 'ShopifyProductRedirect') {
+      if (product?.__typename === 'ProductRedirect') {
          return {
             redirect: {
                destination: product.target,
