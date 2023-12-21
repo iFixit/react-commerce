@@ -12,7 +12,10 @@ type FacetsAccordianProps = {
    productList: ProductList;
 };
 
-const initialExpandedFacets = ['facet_tags.Item Type'];
+const initialExpandedFacets = [
+   'facet_tags.Item Type',
+   'facet_tags.Tool Category',
+];
 
 export function FacetsAccordion({ productList }: FacetsAccordianProps) {
    const facets = useFilteredFacets(productList);
