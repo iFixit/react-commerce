@@ -7,7 +7,7 @@ import {
    withCache,
 } from '@helpers/cache-control-helpers';
 import { withLogging } from '@helpers/next-helpers';
-import { ifixitOriginFromHost } from '@helpers/path-helpers';
+import { ifixitOriginFromHost, productListPath } from '@helpers/path-helpers';
 import {
    destylizeDeviceItemType,
    destylizeDeviceTitle,
@@ -53,6 +53,7 @@ export const getProductListServerSideProps = ({
       let productList: ProductList | null;
       let shouldRedirectToCanonical = false;
       let canonicalPath: string | null = null;
+      let itemType: string | null = null;
       const ifixitOrigin = ifixitOriginFromHost(context);
       const cacheOptions = { forceMiss };
 
@@ -86,7 +87,7 @@ export const getProductListServerSideProps = ({
                };
             }
 
-            const itemType = itemTypeHandle
+            itemType = itemTypeHandle
                ? destylizeDeviceItemType(itemTypeHandle)
                : null;
 
@@ -204,6 +205,20 @@ export const getProductListServerSideProps = ({
             redirect: {
                permanent: true,
                destination: canonicalPath,
+            },
+         };
+      }
+
+      if (productList.redirectTo) {
+         const path = productListPath({
+            productList: productList.redirectTo,
+            itemType: itemType ?? undefined,
+         });
+         const params = new URL(urlFromContext(context)).searchParams;
+         return {
+            redirect: {
+               permanent: true,
+               destination: `${path}?${params}`,
             },
          };
       }

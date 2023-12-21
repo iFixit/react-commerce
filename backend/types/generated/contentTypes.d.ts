@@ -1336,6 +1336,16 @@ export interface ApiProductListProductList extends Schema.CollectionType {
             };
          }> &
          Attribute.DefaultTo<false>;
+      redirectTo: Attribute.Relation<
+         'api::product-list.product-list',
+         'manyToOne',
+         'api::product-list.product-list'
+      >;
+      redirectFrom: Attribute.Relation<
+         'api::product-list.product-list',
+         'oneToMany',
+         'api::product-list.product-list'
+      >;
       createdAt: Attribute.DateTime;
       updatedAt: Attribute.DateTime;
       publishedAt: Attribute.DateTime;
