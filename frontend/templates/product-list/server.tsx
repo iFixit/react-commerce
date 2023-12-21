@@ -27,6 +27,7 @@ import { renderToString } from 'react-dom/server';
 import { getServerState } from 'react-instantsearch';
 import { ProductListTemplateProps } from './hooks/useProductListTemplateProps';
 import { ProductListView } from './ProductListView';
+import { CurrentProductListProvider } from './hooks/useCurrentProductList';
 
 const withMiddleware = compose(
    withLogging<ProductListTemplateProps>,
@@ -273,7 +274,15 @@ async function getSafeServerState({
       const appMarkup = (
          <AppProviders {...appProps}>
             <InstantSearchProvider {...appProps.algolia!}>
-               <ProductListView productList={productList} algoliaSSR={true} />
+               <CurrentProductListProvider
+                  productList={productList}
+                  algoliaUrl={appProps.algolia?.url}
+               >
+                  <ProductListView
+                     productList={productList}
+                     algoliaSSR={true}
+                  />
+               </CurrentProductListProvider>
             </InstantSearchProvider>
          </AppProviders>
       );

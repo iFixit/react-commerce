@@ -2,6 +2,7 @@ import { InstantSearchProvider } from '@components/common/InstantSearchProvider'
 import { DefaultLayout } from '@layouts/default';
 import { ProductListTemplateProps } from './hooks/useProductListTemplateProps';
 import { ProductListView } from './ProductListView';
+import { CurrentProductListProvider } from './hooks/useCurrentProductList';
 
 const ProductListTemplate: NextPageWithLayout<ProductListTemplateProps> = ({
    appProps,
@@ -9,7 +10,12 @@ const ProductListTemplate: NextPageWithLayout<ProductListTemplateProps> = ({
 }) => {
    return (
       <InstantSearchProvider {...appProps.algolia!}>
-         <ProductListView productList={productList} />
+         <CurrentProductListProvider
+            productList={productList}
+            algoliaUrl={appProps.algolia?.url}
+         >
+            <ProductListView productList={productList} />
+         </CurrentProductListProvider>
       </InstantSearchProvider>
    );
 };

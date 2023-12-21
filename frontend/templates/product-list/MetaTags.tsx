@@ -100,7 +100,7 @@ function useFilters() {
    return filtersAndValues;
 }
 
-function useVariant(): string | undefined {
+export function useVariant(): string | undefined {
    const variantRefinements = useFilters()['worksin'];
    const variant = variantRefinements
       ? variantRefinements[0]?.toString()
