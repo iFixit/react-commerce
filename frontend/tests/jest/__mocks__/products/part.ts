@@ -205,6 +205,7 @@ export const mockedPartProduct: Product = {
    redirectUrl: null,
    vendor: '',
    crossSellVariants: [],
+   categories: [],
    sections: [
       {
          type: 'ProductOverview',

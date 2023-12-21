@@ -40,6 +40,7 @@ export function CrossSellItem({ item, ...otherProps }: CrossSellItemProps) {
             imageSrc: item.imageSrc,
             price: userPrice.price,
             compareAtPrice: userPrice.compareAtPrice,
+            categories: item.categories,
          },
       });
    }, [userPrice.price, userPrice.compareAtPrice, item]);

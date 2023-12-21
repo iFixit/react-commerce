@@ -195,6 +195,7 @@ export const mockedBatteryProduct: Product = {
    redirectUrl: null,
    vendor: '',
    crossSellVariants: [],
+   categories: [],
    sections: [
       {
          type: 'ProductOverview',

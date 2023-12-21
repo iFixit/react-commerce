@@ -59,6 +59,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                item_variant: getVariantIdFromVariantURI(selectedVariant.id),
                price: selectedVariant.price.amount,
                quantity: selectedVariant.quantityAvailable,
+               categories: product.categories,
             },
          ],
       });

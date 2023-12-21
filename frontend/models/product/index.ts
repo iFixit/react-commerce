@@ -85,6 +85,7 @@ export const ProductSchema = z.object({
    redirectUrl: z.string().nullable(),
    vendor: z.string().nullable(),
    crossSellVariants: z.array(ProductPreviewSchema),
+   categories: z.array(z.string()),
    sections: z.array(ProductSectionSchema),
 });
 
@@ -180,6 +181,7 @@ export async function getProduct({
       redirectUrl: shopifyProduct.redirectUrl?.value ?? null,
       vendor: shopifyProduct.vendor ?? null,
       crossSellVariants: getAllCrossSellProductVariant(shopifyProduct),
+      categories: iFixitProduct?.categories ?? [],
       sections,
    };
 }

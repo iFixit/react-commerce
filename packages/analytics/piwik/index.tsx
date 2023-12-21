@@ -115,5 +115,6 @@ function formatProduct(item: AnalyticsItem) {
       price: item.price.toString(),
       quantity: item.quantity,
       variant: item.item_variant,
+      category: item.categories,
    };
 }

@@ -82,6 +82,7 @@ export function ProductOverviewSection({
                      item_variant: getVariantIdFromVariantURI(newVariant.id),
                      price: newVariant.price.amount,
                      quantity: newVariant.quantityAvailable,
+                     categories: product.categories,
                   },
                ],
             });

@@ -67,6 +67,7 @@ function createCart(input: APICart): Cart {
          maxToAdd: product.maxToAdd,
          price,
          compareAtPrice,
+         categories: product.categories,
       };
       return item;
    });
@@ -119,6 +120,7 @@ function createCart(input: APICart): Cart {
                   ? parsePriceTiers(apiProduct.price_tiers)
                   : null,
                handle: apiProduct.handle,
+               categories: apiProduct.categories,
             };
          })
       ),

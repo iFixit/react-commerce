@@ -23,7 +23,9 @@ export type AnalyticsItem = {
    item_variant: string | null;
    quantity: number | null | undefined;
    price: number;
+   categories?: string[];
 };
+
 export type AnalyticsItemsEvent = {
    items: AnalyticsItem[];
    value: number;
@@ -76,6 +78,7 @@ export function convertCartLineItemsToAnalyticsItem(
          item_variant: getVariantIdFromEncodedVariantURI(item.shopifyVariantId),
          quantity: item.quantity,
          price: Number(item.price.amount),
+         categories: item.categories,
       };
    });
 }

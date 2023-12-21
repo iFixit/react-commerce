@@ -186,6 +186,7 @@ export const mockedToolProduct: Product = {
          shopifyVariantId: '39333789794394',
       },
    ],
+   categories: [],
    sections: [
       {
          type: 'ProductOverview',

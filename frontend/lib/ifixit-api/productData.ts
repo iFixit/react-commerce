@@ -6,6 +6,7 @@ export type ProductDataApiResponse = {
       [o_code: string]: string[];
    };
    compatibilityNotes: string[];
+   categories: string[];
 };
 
 export async function fetchProductData(

@@ -27,6 +27,7 @@ export interface CartLineItem {
    maxToAdd?: number;
    price: Money;
    compareAtPrice?: Money | null;
+   categories?: string[];
 }
 
 export interface APICart {
@@ -62,6 +63,7 @@ export interface CrossSellProduct {
    compareAtPrice?: Money | null;
    proPricesByTier?: Record<string, Money> | null;
    handle: string;
+   categories: string[];
 }
 
 interface APICrossSellProduct {
@@ -77,6 +79,7 @@ interface APICrossSellProduct {
    subPrice: string | null;
    url: string | null;
    variant_id: number;
+   categories: string[];
 }
 
 interface APIPriceItem {
@@ -98,6 +101,7 @@ export interface APICartProduct {
    subTotal: string;
    subTotalStr: string;
    variant: string;
+   categories: string[];
 }
 
 export interface MiniCartProduct {
