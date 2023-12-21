@@ -5,6 +5,7 @@ import { z } from 'zod';
 const iFixitFindProductQuerySchema = z.object({
    variantOptions: z.record(z.array(z.string())),
    compatibilityNotes: z.array(z.string()),
+   redirectSkuUrl: z.string().nullable(),
 });
 export type iFixitFindProductQuery = z.infer<
    typeof iFixitFindProductQuerySchema
@@ -22,8 +23,12 @@ export async function fetchProductData(
    );
    const parsed = iFixitFindProductQuerySchema.safeParse(response);
    if (!parsed.success) {
-      console.error('Invalid product data response', response, parsed.error);
-      captureException('Invalid product data response', {
+      console.error(
+         'Invalid product data from iFixit API',
+         response,
+         parsed.error
+      );
+      captureException('Invalid product data from iFixit API', {
          extra: {
             response,
             parsing_error: parsed.error,

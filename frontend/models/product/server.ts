@@ -53,6 +53,13 @@ export async function findProduct({
          ),
       ]);
 
+   if (iFixitQueryResponse?.redirectSkuUrl) {
+      return {
+         __typename: 'ProductRedirect',
+         target: iFixitQueryResponse.redirectSkuUrl,
+      };
+   }
+
    const urlRedirect = shopifyQueryResponse.urlRedirects.edges[0]?.node?.target;
    const product = await getProduct({
       shopifyProduct: shopifyQueryResponse.product,

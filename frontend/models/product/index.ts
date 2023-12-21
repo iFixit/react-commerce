@@ -82,7 +82,6 @@ export const ProductSchema = z.object({
    reviews: ProductReviewsSchema.nullable(),
    oemPartnership: ProductOemPartnershipSchema.nullable(),
    enabledDomains: z.array(ProductEnabledDomainSchema).nullable(),
-   redirectUrl: z.string().nullable(),
    vendor: z.string().nullable(),
    crossSellVariants: z.array(ProductPreviewSchema),
    sections: z.array(ProductSectionSchema),
@@ -177,7 +176,6 @@ export async function getProduct({
       enabledDomains: productEnabledDomainsFromMetafield(
          shopifyProduct.enabledDomains?.value
       ),
-      redirectUrl: shopifyProduct.redirectUrl?.value ?? null,
       vendor: shopifyProduct.vendor ?? null,
       crossSellVariants: getAllCrossSellProductVariant(shopifyProduct),
       sections,
