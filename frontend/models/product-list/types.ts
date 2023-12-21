@@ -100,6 +100,13 @@ const BaseProductListSchema = z.object({
    isOnStrapi: z.boolean(),
    itemOverrides: ProductListItemTypeOverrideIndexedSchema,
    indexVariantsInsteadOfDevice: z.boolean().nullable(),
+   redirectTo: z
+      .object({
+         deviceTitle: z.string().nullable(),
+         handle: z.string(),
+         type: z.nativeEnum(ProductListType),
+      })
+      .nullable(),
 });
 export type BaseProductList = z.infer<typeof BaseProductListSchema>;
 

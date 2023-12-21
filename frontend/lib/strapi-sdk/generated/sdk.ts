@@ -3970,6 +3970,18 @@ export type FindProductListQuery = {
                   } | null;
                }>;
             } | null;
+            redirectTo?: {
+               __typename?: 'ProductListEntityResponse';
+               data?: {
+                  __typename?: 'ProductListEntity';
+                  attributes?: {
+                     __typename?: 'ProductList';
+                     deviceTitle?: string | null;
+                     handle: string;
+                     type?: Enum_Productlist_Type | null;
+                  } | null;
+               } | null;
+            } | null;
          } | null;
       }>;
    } | null;
@@ -4304,6 +4316,18 @@ export type ProductListFieldsFragment = {
             priority?: number | null;
          } | null;
       }>;
+   } | null;
+   redirectTo?: {
+      __typename?: 'ProductListEntityResponse';
+      data?: {
+         __typename?: 'ProductListEntity';
+         attributes?: {
+            __typename?: 'ProductList';
+            deviceTitle?: string | null;
+            handle: string;
+            type?: Enum_Productlist_Type | null;
+         } | null;
+      } | null;
    } | null;
 };
 
@@ -6361,6 +6385,15 @@ export const ProductListFieldsFragmentDoc = `
     }
   }
   optionalFilters
+  redirectTo {
+    data {
+      attributes {
+        deviceTitle
+        handle
+        type
+      }
+    }
+  }
 }
     `;
 export const CallToActionFieldsFragmentDoc = `

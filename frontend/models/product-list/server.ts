@@ -85,6 +85,16 @@ export async function findProductList(
    const isPartsList =
       productListType === ProductListType.AllParts ||
       productListType === ProductListType.DeviceParts;
+   const redirectTo = productList?.redirectTo?.data?.attributes
+      ? {
+           deviceTitle:
+              productList.redirectTo.data.attributes.deviceTitle ?? null,
+           handle: productList.redirectTo.data.attributes.handle,
+           type: productListTypeFromStrapi(
+              productList.redirectTo.data.attributes.type
+           ),
+        }
+      : null;
 
    const [reusableSections, children] = await Promise.all([
       findProductListReusableSections({
@@ -133,6 +143,7 @@ export async function findProductList(
       wikiInfo: deviceWiki?.info || [],
       isOnStrapi: !!productList,
       itemOverrides: formatItemTypeOverrides(productList?.itemOverrides),
+      redirectTo,
    };
 
    return {
