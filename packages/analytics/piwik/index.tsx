@@ -44,6 +44,21 @@ export function trackPiwikPreferredLanguage(
    }
 }
 
+export function trackPiwikUserPrivilege(
+   piwikEnv: string | undefined,
+   userPrivilege: string[] | null
+): void {
+   const customDimensions = getPiwikCustomDimensionsForEnv(piwikEnv);
+   if (typeof window !== 'undefined' && customDimensions && userPrivilege) {
+      const privilege = userPrivilege.length > 0 ? userPrivilege[0] : 'User';
+      piwikPush([
+         'setCustomDimensionValue',
+         customDimensions['userPrivilege'],
+         privilege,
+      ]);
+   }
+}
+
 export function trackPiwikV2ProductDetailView(items: AnalyticsItem[]) {
    piwikPush(['ecommerceProductDetailView', items.map(formatProduct)]);
 }
@@ -87,6 +102,7 @@ export function trackPiwikCustomAddToCart(
 type PiwikCustomDimensions = {
    preferredStore: number;
    preferredLanguage: number;
+   userPrivilege: number;
 };
 
 function getPiwikCustomDimensionsForEnv(
@@ -97,11 +113,13 @@ function getPiwikCustomDimensionsForEnv(
          return {
             preferredStore: 1,
             preferredLanguage: 2,
+            userPrivilege: 3,
          };
       case 'dev':
          return {
             preferredStore: 1,
             preferredLanguage: 2,
+            userPrivilege: 3,
          };
       default:
          return null;
