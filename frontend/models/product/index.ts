@@ -45,7 +45,7 @@ import {
    ProductVideosSchema,
 } from './components/product-video';
 import { getProductSections, ProductSectionSchema } from './sections';
-import { ProductDataApiResponse } from '@lib/ifixit-api/productData';
+import type { iFixitFindProductQuery } from '@lib/ifixit-api/productData';
 import { ImageAltFallback } from '@models/components/image';
 
 export type {
@@ -90,7 +90,7 @@ export const ProductSchema = z.object({
 
 type ShopifyProduct = NonNullable<ShopifyFindProductQuery['product']>;
 type StrapiProduct = NonNullable<StrapiFindProductQuery['products']>['data'][0];
-type iFixitProduct = NonNullable<ProductDataApiResponse>;
+type iFixitProduct = NonNullable<iFixitFindProductQuery>;
 
 interface GetProductArgs {
    shopifyProduct: ShopifyProduct | null | undefined;
