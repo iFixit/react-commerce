@@ -1,0 +1,28 @@
+import { chakra } from '@chakra-ui/react';
+import Svg64BitDriver from './64-bit-driver.svg';
+import SvgAnglesTweezers from './angles-tweezers.svg';
+import SvgAntistaticWristStrap from './anti-static-wrist-strap.svg';
+import SvgBluntTweezers from './blunt-tweezers.svg';
+import SvgFlexExtension from './flex-extension.svg';
+import SvgHallberdSpudger from './hallberd-spudger.svg';
+import SvgJimmy from './jimmy.svg';
+import SvgMetalSpudger from './metal-spudger.svg';
+import SvgOpeningPick from './opening-pick.svg';
+import SvgOpeningTool from './opening-tool.svg';
+import SvgReverseTweezers from './reverse-tweezers.svg';
+import SvgSpudger from './spudger.svg';
+import SvgSuctionHandle from './suction-handle.svg';
+
+export const _64BitDriver = chakra(Svg64BitDriver);
+export const AnglesTweezers = chakra(SvgAnglesTweezers);
+export const AntistaticWristStrap = chakra(SvgAntistaticWristStrap);
+export const BluntTweezers = chakra(SvgBluntTweezers);
+export const FlexExtension = chakra(SvgFlexExtension);
+export const HallberdSpudger = chakra(SvgHallberdSpudger);
+export const Jimmy = chakra(SvgJimmy);
+export const MetalSpudger = chakra(SvgMetalSpudger);
+export const OpeningPick = chakra(SvgOpeningPick);
+export const OpeningTool = chakra(SvgOpeningTool);
+export const ReverseTweezers = chakra(SvgReverseTweezers);
+export const Spudger = chakra(SvgSpudger);
+export const SuctionHandle = chakra(SvgSuctionHandle);
