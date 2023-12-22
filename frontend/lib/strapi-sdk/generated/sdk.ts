@@ -576,6 +576,11 @@ export type ComponentSectionStories = {
    title?: Maybe<Scalars['String']>;
 };
 
+export type ComponentSectionTools = {
+   __typename?: 'ComponentSectionTools';
+   id: Scalars['ID'];
+};
+
 export type ComponentStoreFooter = {
    __typename?: 'ComponentStoreFooter';
    bottomMenu?: Maybe<MenuEntityResponse>;
@@ -897,6 +902,7 @@ export type GenericMorph =
    | ComponentSectionServiceValuePropositions
    | ComponentSectionSocialGallery
    | ComponentSectionStories
+   | ComponentSectionTools
    | ComponentStoreFooter
    | ComponentStoreHeader
    | ComponentStoreShopifySettings
@@ -1922,6 +1928,7 @@ export type ProductSectionsDynamicZone =
    | ComponentSectionQuote
    | ComponentSectionServiceValuePropositions
    | ComponentSectionStories
+   | ComponentSectionTools
    | Error;
 
 export enum PublicationState {
@@ -3611,6 +3618,7 @@ export type FindProductQuery = {
                     id: string;
                  }
                | { __typename: 'ComponentSectionStories' }
+               | { __typename: 'ComponentSectionTools' }
                | { __typename: 'Error' }
                | null
             >;

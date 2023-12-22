@@ -1110,7 +1110,8 @@ export interface ApiProductProduct extends Schema.CollectionType {
             'section.banner',
             'section.quote',
             'section.faqs',
-            'product.bit-table'
+            'product.bit-table',
+            'section.tools'
          ]
       > &
          Attribute.Required;

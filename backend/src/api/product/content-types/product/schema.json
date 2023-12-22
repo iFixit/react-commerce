@@ -33,7 +33,8 @@
             "section.banner",
             "section.quote",
             "section.faqs",
-            "product.bit-table"
+            "product.bit-table",
+            "section.tools"
          ],
          "required": true
       }
