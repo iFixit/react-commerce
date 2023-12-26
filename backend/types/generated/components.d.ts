@@ -488,6 +488,15 @@ export interface SectionStories extends Schema.Component {
    };
 }
 
+export interface SectionTools extends Schema.Component {
+   collectionName: 'components_section_tools';
+   info: {
+      displayName: 'Tools';
+      description: '';
+   };
+   attributes: {};
+}
+
 export interface StoreFooter extends Schema.Component {
    collectionName: 'components_store_footers';
    info: {
@@ -592,6 +601,7 @@ declare module '@strapi/types' {
          'section.service-value-propositions': SectionServiceValuePropositions;
          'section.social-gallery': SectionSocialGallery;
          'section.stories': SectionStories;
+         'section.tools': SectionTools;
          'store.footer': StoreFooter;
          'store.header': StoreHeader;
          'store.shopify-settings': StoreShopifySettings;
