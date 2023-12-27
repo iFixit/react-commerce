@@ -7,6 +7,9 @@ import React from 'react';
 import { toolsData } from './toolsData';
 import { ResponsiveImage } from '@ifixit/ui/misc';
 
+const FIST_ITEM_WIDTH = 112;
+const LAST_ITEM_WIDTH = 134;
+
 export interface ToolsSectionProps {
    id: string;
 }
@@ -31,7 +34,10 @@ export function ToolsSection({ id }: ToolsSectionProps) {
             const imageRect = item.getBoundingClientRect();
             const trackRect = track.getBoundingClientRect();
             const scrollLeftOffset =
-               imageRect.left - trackRect.left + imageRect.width / 2;
+               imageRect.left -
+               trackRect.left +
+               imageRect.width / 2 -
+               FIST_ITEM_WIDTH / 2;
             containerRef.current?.scroll({
                left: scrollLeftOffset,
                behavior: 'smooth',
@@ -108,7 +114,7 @@ export function ToolsSection({ id }: ToolsSectionProps) {
                scrollbarWidth: 'none',
             }}
          >
-            <Box w="calc(100%/2)" flex="none" />
+            <Box w={`calc(100%/2 - ${FIST_ITEM_WIDTH / 2}px)`} flex="none" />
             <Flex
                ref={trackRef}
                alignItems="flex-end"
@@ -155,7 +161,7 @@ export function ToolsSection({ id }: ToolsSectionProps) {
                   );
                })}
             </Flex>
-            <Box w="calc(100%/2)" flex="none" />
+            <Box w={`calc(100%/2 - ${LAST_ITEM_WIDTH / 2}px)`} flex="none" />
          </Flex>
          <SectionHeaderWrapper
             textAlign="center"
