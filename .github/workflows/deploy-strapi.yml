@@ -16,22 +16,5 @@ jobs:
          - name: Checkout
            uses: actions/checkout@v3
 
-         - name: Configure AWS credentials
-           uses: aws-actions/configure-aws-credentials@v4
-           with:
-              role-to-assume: 'arn:aws:iam::884681002735:role/github_actions/github-actions-role'
-              aws-region: us-east-1
-
-         - name: Login to Amazon ECR
-           id: login-ecr
-           uses: aws-actions/amazon-ecr-login@v2
-
-         - name: Build, Tag, and Push Base Image to Amazon ECR Private
-           env:
-              REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-              DOCKER_TAG: strapi:${{ github.sha }}
-           run: |
-              cd backend
-              docker build -t "$DOCKER_TAG" .
-              docker tag "$DOCKER_TAG" "$REGISTRY/$DOCKER_TAG"
-              docker push "$REGISTRY/$DOCKER_TAG"
+         - name: Deploy Strapi
+           run: backend/strapi-deploy-actions
