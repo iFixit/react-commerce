@@ -8,11 +8,6 @@ on:
       paths:
          - 'backend/**'
 
-# @see https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services#adding-permissions-settings
-permissions:
-   id-token: write # Required to allow the JWT to be requested from GitHub's OIDC provider
-   contents: read # Required for actions/checkout
-
 jobs:
    build-strapi:
       runs-on: ubuntu-latest
