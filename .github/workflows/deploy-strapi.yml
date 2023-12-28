@@ -5,7 +5,6 @@ on:
    push:
       branches:
          - main
-         - deploy-strapi-test*
       paths:
          - 'backend/**'
 
