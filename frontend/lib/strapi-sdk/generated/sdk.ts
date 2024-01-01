@@ -3618,7 +3618,7 @@ export type FindProductQuery = {
                     id: string;
                  }
                | { __typename: 'ComponentSectionStories' }
-               | { __typename: 'ComponentSectionTools' }
+               | { __typename: 'ComponentSectionTools'; id: string }
                | { __typename: 'Error' }
                | null
             >;
@@ -6197,6 +6197,11 @@ export type StatsSectionFieldsFragment = {
    } | null>;
 };
 
+export type ToolsSectionFieldsFragment = {
+   __typename?: 'ComponentSectionTools';
+   id: string;
+};
+
 export const ImageFieldsFragmentDoc = `
     fragment ImageFields on UploadFileEntityResponse {
   data {
@@ -6812,6 +6817,11 @@ export const StatsSectionFieldsFragmentDoc = `
   }
 }
     `;
+export const ToolsSectionFieldsFragmentDoc = `
+    fragment ToolsSectionFields on ComponentSectionTools {
+  id
+}
+    `;
 export const FindPageDocument = `
     query findPage($filters: PageFiltersInput, $publicationState: PublicationState) {
   pages(
@@ -6885,6 +6895,7 @@ export const FindProductDocument = `
           ...FAQsSectionFields
           ...DeviceCompatibilitySectionFields
           ...BitTableSectionFields
+          ...ToolsSectionFields
         }
       }
     }
@@ -6907,7 +6918,8 @@ ${FaQsSectionFieldsFragmentDoc}
 ${FaqFieldsFragmentDoc}
 ${DeviceCompatibilitySectionFieldsFragmentDoc}
 ${BitTableSectionFieldsFragmentDoc}
-${ScrewdriverBitFieldsFragmentDoc}`;
+${ScrewdriverBitFieldsFragmentDoc}
+${ToolsSectionFieldsFragmentDoc}`;
 export const FindProductListDocument = `
     query findProductList($filters: ProductListFiltersInput) {
   productLists(pagination: {limit: 1}, filters: $filters, publicationState: LIVE) {
