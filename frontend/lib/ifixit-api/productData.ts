@@ -1,25 +1,40 @@
 import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
-import { invariant } from '@ifixit/helpers';
+import { captureException } from '@ifixit/sentry';
+import { z } from 'zod';
 
-export type ProductDataApiResponse = {
-   variantOptions: {
-      [o_code: string]: string[];
-   };
-   compatibilityNotes: string[];
-};
+const iFixitFindProductQuerySchema = z.object({
+   variantOptions: z.record(z.array(z.string())),
+   compatibilityNotes: z.array(z.string()),
+   redirectSkuUrl: z.string().nullable(),
+});
+export type iFixitFindProductQuery = z.infer<
+   typeof iFixitFindProductQuerySchema
+>;
 
 export async function fetchProductData(
    client: IFixitAPIClient,
    handle: string
-): Promise<ProductDataApiResponse | null> {
+): Promise<iFixitFindProductQuery | null> {
    const productHandle = encodeURIComponent(handle);
-   try {
-      invariant(
-         productHandle.length > 0,
-         'productHandle cannot be a blank string'
+   if (!productHandle) return null;
+   const response = await client.get(
+      `store/product/${productHandle}`,
+      'product-data'
+   );
+   const parsed = iFixitFindProductQuerySchema.safeParse(response);
+   if (!parsed.success) {
+      console.error(
+         'Invalid product data from iFixit API',
+         response,
+         parsed.error
       );
-      return await client.get(`store/product/${productHandle}`, 'product-data');
-   } catch (error: any) {
+      captureException('Invalid product data from iFixit API', {
+         extra: {
+            response,
+            parsing_error: parsed.error,
+         },
+      });
       return null;
    }
+   return parsed.data;
 }

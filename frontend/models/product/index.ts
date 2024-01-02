@@ -45,7 +45,7 @@ import {
    ProductVideosSchema,
 } from './components/product-video';
 import { getProductSections, ProductSectionSchema } from './sections';
-import { ProductDataApiResponse } from '@lib/ifixit-api/productData';
+import type { iFixitFindProductQuery } from '@lib/ifixit-api/productData';
 import { ImageAltFallback } from '@models/components/image';
 
 export type {
@@ -82,7 +82,6 @@ export const ProductSchema = z.object({
    reviews: ProductReviewsSchema.nullable(),
    oemPartnership: ProductOemPartnershipSchema.nullable(),
    enabledDomains: z.array(ProductEnabledDomainSchema).nullable(),
-   redirectUrl: z.string().nullable(),
    vendor: z.string().nullable(),
    crossSellVariants: z.array(ProductPreviewSchema),
    sections: z.array(ProductSectionSchema),
@@ -90,7 +89,7 @@ export const ProductSchema = z.object({
 
 type ShopifyProduct = NonNullable<ShopifyFindProductQuery['product']>;
 type StrapiProduct = NonNullable<StrapiFindProductQuery['products']>['data'][0];
-type iFixitProduct = NonNullable<ProductDataApiResponse>;
+type iFixitProduct = NonNullable<iFixitFindProductQuery>;
 
 interface GetProductArgs {
    shopifyProduct: ShopifyProduct | null | undefined;
@@ -177,7 +176,6 @@ export async function getProduct({
       enabledDomains: productEnabledDomainsFromMetafield(
          shopifyProduct.enabledDomains?.value
       ),
-      redirectUrl: shopifyProduct.redirectUrl?.value ?? null,
       vendor: shopifyProduct.vendor ?? null,
       crossSellVariants: getAllCrossSellProductVariant(shopifyProduct),
       sections,
