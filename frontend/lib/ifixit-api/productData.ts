@@ -1,4 +1,4 @@
-import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
+import { FetchError, IFixitAPIClient } from '@ifixit/ifixit-api-client';
 import { captureException } from '@ifixit/sentry';
 import { z } from 'zod';
 
@@ -17,10 +17,16 @@ export async function fetchProductData(
 ): Promise<iFixitFindProductQuery | null> {
    const productHandle = encodeURIComponent(handle);
    if (!productHandle) return null;
-   const response = await client.get(
-      `store/product/${productHandle}`,
-      'product-data'
-   );
+   let response;
+   try {
+      response = await client.get(
+         `store/product/${productHandle}`,
+         'product-data'
+      );
+   } catch (e) {
+      if (!(e instanceof FetchError) || e.response.status !== 404) throw e;
+      return null;
+   }
    const parsed = iFixitFindProductQuerySchema.safeParse(response);
    if (!parsed.success) {
       console.error(
