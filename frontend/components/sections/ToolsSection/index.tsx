@@ -7,7 +7,7 @@ import React from 'react';
 import { toolsData } from './toolsData';
 import { ResponsiveImage } from '@ifixit/ui/misc';
 
-const FIST_ITEM_WIDTH = 112;
+const FIRST_ITEM_WIDTH = 112;
 const LAST_ITEM_WIDTH = 134;
 
 export interface ToolsSectionProps {
@@ -17,7 +17,6 @@ export interface ToolsSectionProps {
 export function ToolsSection({ id }: ToolsSectionProps) {
    const selectedToolIndexRef = React.useRef(6);
    const containerRef = React.useRef<HTMLDivElement>(null);
-   const trackRef = React.useRef<HTMLDivElement>(null);
    const toolRefs = React.useRef<(HTMLDivElement | null)[]>([]);
 
    const [selectedTool, setSelectedTool] = React.useState(
@@ -29,15 +28,15 @@ export function ToolsSection({ id }: ToolsSectionProps) {
 
    const centerTool = React.useCallback(
       (item: HTMLDivElement | null) => {
-         const track = trackRef.current;
-         if (item && track) {
-            const imageRect = item.getBoundingClientRect();
-            const trackRect = track.getBoundingClientRect();
+         const firstItem = toolRefs.current[0];
+         if (item && firstItem) {
+            const itemRect = item.getBoundingClientRect();
+            const firstItemRect = firstItem.getBoundingClientRect();
             const scrollLeftOffset =
-               imageRect.left -
-               trackRect.left +
-               imageRect.width / 2 -
-               FIST_ITEM_WIDTH / 2;
+               itemRect.left -
+               firstItemRect.left +
+               itemRect.width / 2 -
+               FIRST_ITEM_WIDTH / 2;
             containerRef.current?.scroll({
                left: scrollLeftOffset,
                behavior: 'smooth',
@@ -102,8 +101,10 @@ export function ToolsSection({ id }: ToolsSectionProps) {
       <Box id={id} as="section" py="16" fontSize="sm" bg="blueGray.50">
          <Flex
             w="full"
+            alignItems="center"
             overflow="hidden"
             overflowX="scroll"
+            scrollSnapType="x mandatory"
             ref={containerRef}
             onScroll={handleScroll}
             sx={{
@@ -114,53 +115,47 @@ export function ToolsSection({ id }: ToolsSectionProps) {
                scrollbarWidth: 'none',
             }}
          >
-            <Box w={`calc(100%/2 - ${FIST_ITEM_WIDTH / 2}px)`} flex="none" />
-            <Flex
-               ref={trackRef}
-               alignItems="flex-end"
-               overflow="visible"
-               gap="16"
-               pt="2"
-            >
-               {toolsData.map(({ type, ...tool }, index) => {
-                  const { width, height } = tool.imageSize;
-                  return (
-                     <Flex
-                        key={type}
-                        ref={(el) => (toolRefs.current[index] = el)}
-                        position="relative"
-                        alignItems="flex-end"
-                     >
-                        <tool.shape
-                           onClick={() => handleClick(index)}
-                           sx={{
-                              strokeDasharray: 1000,
-                              animation:
-                                 selectedToolIndexRef.current === index
-                                    ? `${dashDissolve} .7s linear forwards`
-                                    : 'none',
-                           }}
-                        />
-                        <ResponsiveImage
-                           alt={tool.title}
-                           src={tool.imageUrl}
-                           width={width}
-                           height={height}
-                           style={{
-                              opacity:
-                                 selectedToolIndexRef.current === index ? 1 : 0,
-                              position: 'absolute',
-                              maxWidth: 'unset',
-                              transition: 'opacity 300ms ease-in',
-                              transitionDelay: '500ms',
-                              pointerEvents: 'none',
-                              ...tool.imageStyle,
-                           }}
-                        />
-                     </Flex>
-                  );
-               })}
-            </Flex>
+            <Box w={`calc(100%/2 - ${FIRST_ITEM_WIDTH / 2}px)`} flex="none" />
+            {toolsData.map(({ type, ...tool }, index) => {
+               const { width, height } = tool.imageSize;
+               return (
+                  <Flex
+                     key={type}
+                     scrollSnapAlign="center"
+                     ref={(el) => (toolRefs.current[index] = el)}
+                     position="relative"
+                     alignItems="flex-end"
+                     mx={index === toolsData.length - 1 || index === 0 ? 0 : 8}
+                  >
+                     <tool.shape
+                        onClick={() => handleClick(index)}
+                        sx={{
+                           strokeDasharray: 1000,
+                           animation:
+                              selectedToolIndexRef.current === index
+                                 ? `${dashDissolve} .7s linear forwards`
+                                 : 'none',
+                        }}
+                     />
+                     <ResponsiveImage
+                        alt={tool.title}
+                        src={tool.imageUrl}
+                        width={width}
+                        height={height}
+                        style={{
+                           opacity:
+                              selectedToolIndexRef.current === index ? 1 : 0,
+                           position: 'absolute',
+                           maxWidth: 'unset',
+                           transition: 'opacity 300ms ease-in',
+                           transitionDelay: '500ms',
+                           pointerEvents: 'none',
+                           ...tool.imageStyle,
+                        }}
+                     />
+                  </Flex>
+               );
+            })}
             <Box w={`calc(100%/2 - ${LAST_ITEM_WIDTH / 2}px)`} flex="none" />
          </Flex>
          <SectionHeaderWrapper
