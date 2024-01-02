@@ -115,7 +115,11 @@ export function ToolsSection({ id }: ToolsSectionProps) {
                scrollbarWidth: 'none',
             }}
          >
-            <Box w={`calc(100%/2 - ${FIRST_ITEM_WIDTH / 2}px)`} flex="none" />
+            <Box
+               w={`calc(100%/2 - ${FIRST_ITEM_WIDTH / 2}px)`}
+               alignSelf="stretch"
+               flex="none"
+            />
             {toolsData.map(({ type, ...tool }, index) => {
                const { width, height } = tool.imageSize;
                return (
@@ -156,7 +160,11 @@ export function ToolsSection({ id }: ToolsSectionProps) {
                   </Flex>
                );
             })}
-            <Box w={`calc(100%/2 - ${LAST_ITEM_WIDTH / 2}px)`} flex="none" />
+            <Box
+               w={`calc(100%/2 - ${LAST_ITEM_WIDTH / 2}px)`}
+               alignSelf="stretch"
+               flex="none"
+            />
          </Flex>
          <SectionHeaderWrapper
             textAlign="center"
