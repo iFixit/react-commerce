@@ -80,6 +80,12 @@ export function akeneoUrl() {
    return ifixitOriginWithSubdomain('akeneo');
 }
 
+export function netsuiteProductUrl(sku: string) {
+   return `${IFIXIT_ORIGIN}/api/2.0/cart/netsuite_redirect/${encodeURIComponent(
+      sku
+   )}`;
+}
+
 export interface IFixitAdminProductInvetoryUrlProps {
    product: Pick<Product, 'productcode'>;
 }

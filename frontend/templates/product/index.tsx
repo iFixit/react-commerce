@@ -79,6 +79,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
 
    const adminLinks = useProductPageAdminLinks({
       product,
+      selectedVariant,
       storeCode: DEFAULT_STORE_CODE,
    });
 

@@ -1,7 +1,8 @@
 import type { PageEditMenuLink } from '@components/admin';
 import {
-   faArrowUpRightFromSquare,
+   faA,
    faImage,
+   faN,
    faShop,
    faWarehouse,
 } from '@fortawesome/pro-solid-svg-icons';
@@ -9,26 +10,34 @@ import {
    akeneoProductUrl,
    iFixitAdminProductImagesUrl,
    iFixitAdminProductInventoryUrl,
+   netsuiteProductUrl,
    shopifyStoreAdminProductUrl,
 } from '@helpers/path-helpers';
-import type { Product } from '@models/product';
+import type { Product, ProductVariant } from '@models/product';
 import { useMemo } from 'react';
 
 interface UseProductPageAdminLinksOptions {
    product: Product;
+   selectedVariant: ProductVariant;
    storeCode: string;
 }
 
 export function useProductPageAdminLinks({
    product,
+   selectedVariant,
    storeCode,
 }: UseProductPageAdminLinksOptions): PageEditMenuLink[] {
    return useMemo(
       () => [
          {
-            icon: faArrowUpRightFromSquare,
+            icon: faA,
             label: 'Akeneo',
             url: akeneoProductUrl({ product }),
+         },
+         {
+            icon: faN,
+            label: 'NetSuite',
+            url: netsuiteProductUrl(selectedVariant.sku ?? ''),
          },
          {
             icon: faShop,
@@ -46,6 +55,6 @@ export function useProductPageAdminLinks({
             url: iFixitAdminProductImagesUrl({ product }),
          },
       ],
-      [product, storeCode]
+      [product, selectedVariant, storeCode]
    );
 }
