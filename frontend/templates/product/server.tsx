@@ -39,7 +39,7 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
       );
 
       if (product?.__typename === 'ProductRedirect') {
-         const destination = new URL(product.target);
+         const destination = new URL(product.target, ifixitOrigin);
          const requestParams = new URL(urlFromContext(context)).searchParams;
          requestParams.forEach((value, key) => {
             if (!destination.searchParams.has(key)) {
