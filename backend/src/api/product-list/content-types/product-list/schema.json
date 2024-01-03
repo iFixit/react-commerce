@@ -260,6 +260,11 @@
          "default": false
       },
       "redirectTo": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": false
+            }
+         },
          "type": "relation",
          "relation": "manyToOne",
          "target": "api::product-list.product-list",
@@ -276,6 +281,11 @@
          "default": "permanent"
       },
       "redirectFrom": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": false
+            }
+         },
          "type": "relation",
          "relation": "oneToMany",
          "target": "api::product-list.product-list",
