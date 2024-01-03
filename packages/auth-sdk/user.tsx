@@ -26,6 +26,7 @@ const AuthenticatedUserSchema = z.object({
    langid: z.string().optional().nullable(),
    unread_notification_count: z.number().optional().nullable(),
    privileges: z.array(z.string()),
+   greatest_privilege: z.string().optional(),
 });
 
 export function useAuthenticatedUser(): UseQueryResult<User | null> {
