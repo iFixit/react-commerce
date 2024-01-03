@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -o pipefail -e nounset
+
+export STRAPI_COMMIT=$(git rev-parse HEAD)
+DEPLOY_TAG=last-strapi-deploy
+SLACK="/home/ifixit/Code/Exec/slackAnnounce.php"
+
+git fetch --tags --quiet
+
+SUBJECT=$(git rev-list --format="%s" --max-count=1 "$STRAPI_COMMIT" | tail -1)
+COMMIT_LINK="<https://$BUILD_REPO/commit/$STRAPI_COMMIT|${SUBJECT}>"
+DEPLOY_LOG_TS=$($SLACK --message="Strapi Deploy: Deploying ${COMMIT_LINK} - 📃 <$BUILD_LOG_URL|build log>")
+$SLACK --thread_ts="$DEPLOY_LOG_TS" --message="Building Docker image"
+
+strapi_dir="$(git rev-parse --show-toplevel)/backend"
+cd "$strapi_dir"
+./build-docker-and-push
+
+$SLACK --thread_ts="$DEPLOY_LOG_TS" --message="Deploying"
+# Yes, capistrano is only available in our main repo...
+# This wont be a problem when these repos are joined though :-)
+cd /home/ifixit/Code
+cap prod strapi:deploy
+
+## Deploy Tag
+cd "$strapi_dir"
+git tag -f "$DEPLOY_TAG" "$STRAPI_COMMIT"
+git push -f origin "$DEPLOY_TAG"
+
+$SLACK --thread_ts="$DEPLOY_LOG_TS" --message="Deploy complete!"
