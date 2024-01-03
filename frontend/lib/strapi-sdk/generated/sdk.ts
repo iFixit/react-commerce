@@ -736,6 +736,11 @@ export enum Enum_Componentsectionfeaturedproducts_Background {
    White = 'white',
 }
 
+export enum Enum_Productlist_Redirecttotype {
+   Permanent = 'permanent',
+   Temporary = 'temporary',
+}
+
 export enum Enum_Productlist_Type {
    AllParts = 'all_parts',
    AllTools = 'all_tools',
@@ -1774,6 +1779,7 @@ export type ProductList = {
    publishedAt?: Maybe<Scalars['DateTime']>;
    redirectFrom?: Maybe<ProductListRelationResponseCollection>;
    redirectTo?: Maybe<ProductListEntityResponse>;
+   redirectToType?: Maybe<Enum_Productlist_Redirecttotype>;
    sections: Array<Maybe<ProductListSectionsDynamicZone>>;
    sortPriority?: Maybe<Scalars['Int']>;
    tagline?: Maybe<Scalars['String']>;
@@ -1856,6 +1862,7 @@ export type ProductListFiltersInput = {
    publishedAt?: InputMaybe<DateTimeFilterInput>;
    redirectFrom?: InputMaybe<ProductListFiltersInput>;
    redirectTo?: InputMaybe<ProductListFiltersInput>;
+   redirectToType?: InputMaybe<StringFilterInput>;
    sortPriority?: InputMaybe<IntFilterInput>;
    tagline?: InputMaybe<StringFilterInput>;
    title?: InputMaybe<StringFilterInput>;
@@ -1891,6 +1898,7 @@ export type ProductListInput = {
    publishedAt?: InputMaybe<Scalars['DateTime']>;
    redirectFrom?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
    redirectTo?: InputMaybe<Scalars['ID']>;
+   redirectToType?: InputMaybe<Enum_Productlist_Redirecttotype>;
    sections?: InputMaybe<Array<Scalars['ProductListSectionsDynamicZoneInput']>>;
    sortPriority?: InputMaybe<Scalars['Int']>;
    tagline?: InputMaybe<Scalars['String']>;
