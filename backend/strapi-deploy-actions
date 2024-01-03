@@ -10,7 +10,8 @@ git fetch --tags --quiet
 
 SUBJECT=$(git rev-list --format="%s" --max-count=1 "$STRAPI_COMMIT" | tail -1)
 COMMIT_LINK="<https://github.com/iFixit/react-commerce/commit/$STRAPI_COMMIT|${SUBJECT}>"
-DEPLOY_LOG_TS=$($SLACK --message="Strapi Deploy: Deploying ${COMMIT_LINK} - 📃 <$BUILD_LOG_URL|build log>")
+BUILD_LOG_LINK="<https://github.com/iFixit/react-commerce/actions/runs/$GITHUB_RUN_ID|Build Log>"
+DEPLOY_LOG_TS=$($SLACK --message="Strapi Deploy: Deploying ${COMMIT_LINK} - 📃 ${BUILD_LOG_LINK}")
 $SLACK --thread_ts="$DEPLOY_LOG_TS" --message="Building Docker image"
 
 strapi_dir="$(git rev-parse --show-toplevel)/backend"
