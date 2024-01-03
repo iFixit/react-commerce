@@ -27,6 +27,7 @@ import {
    Enum_Componentmiscplacement_Showinproductlistpages,
    Enum_Componentpagesplitwithimage_Imageposition,
    Enum_Componentsectionfeaturedproducts_Background,
+   Enum_Productlist_Redirecttotype,
    Enum_Productlist_Type,
    Enum_Reusablesection_Positioninproductlist,
    Enum_Store_Currency,
@@ -554,6 +555,10 @@ export const Enum_Componentpagesplitwithimage_ImagepositionSchema =
 export const Enum_Componentsectionfeaturedproducts_BackgroundSchema =
    z.nativeEnum(Enum_Componentsectionfeaturedproducts_Background);
 
+export const Enum_Productlist_RedirecttotypeSchema = z.nativeEnum(
+   Enum_Productlist_Redirecttotype
+);
+
 export const Enum_Productlist_TypeSchema = z.nativeEnum(Enum_Productlist_Type);
 
 export const Enum_Reusablesection_PositioninproductlistSchema = z.nativeEnum(
@@ -903,6 +908,7 @@ export function ProductListFiltersInputSchema(): z.ZodObject<
       publishedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
       redirectFrom: z.lazy(() => ProductListFiltersInputSchema().nullish()),
       redirectTo: z.lazy(() => ProductListFiltersInputSchema().nullish()),
+      redirectToType: z.lazy(() => StringFilterInputSchema().nullish()),
       sortPriority: z.lazy(() => IntFilterInputSchema().nullish()),
       tagline: z.lazy(() => StringFilterInputSchema().nullish()),
       title: z.lazy(() => StringFilterInputSchema().nullish()),
@@ -940,6 +946,7 @@ export function ProductListInputSchema(): z.ZodObject<
       publishedAt: z.unknown().nullish(),
       redirectFrom: z.array(z.string().nullable()).nullish(),
       redirectTo: z.string().nullish(),
+      redirectToType: Enum_Productlist_RedirecttotypeSchema.nullish(),
       sections: z.array(z.lazy(() => z.unknown())).nullish(),
       sortPriority: z.number().nullish(),
       tagline: z.string().nullish(),

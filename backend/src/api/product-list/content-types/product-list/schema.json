@@ -265,6 +265,16 @@
          "target": "api::product-list.product-list",
          "inversedBy": "redirectFrom"
       },
+      "redirectToType": {
+         "pluginOptions": {
+            "i18n": {
+               "localized": false
+            }
+         },
+         "type": "enumeration",
+         "enum": ["permanent", "temporary"],
+         "default": "permanent"
+      },
       "redirectFrom": {
          "type": "relation",
          "relation": "oneToMany",

@@ -1342,6 +1342,13 @@ export interface ApiProductListProductList extends Schema.CollectionType {
          'manyToOne',
          'api::product-list.product-list'
       >;
+      redirectToType: Attribute.Enumeration<['permanent', 'temporary']> &
+         Attribute.SetPluginOptions<{
+            i18n: {
+               localized: false;
+            };
+         }> &
+         Attribute.DefaultTo<'permanent'>;
       redirectFrom: Attribute.Relation<
          'api::product-list.product-list',
          'oneToMany',
