@@ -1,5 +1,9 @@
 name: Build Strapi on Deploy
 
+concurrency:
+   group: strapi-deploy
+   cancel-in-progress: false
+
 on:
    workflow_dispatch:
    push:
