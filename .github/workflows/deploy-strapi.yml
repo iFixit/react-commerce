@@ -1,4 +1,8 @@
-name: Build Strapi on Deploy
+name: Deploy Strapi
+
+concurrency:
+   group: strapi-deploy
+   cancel-in-progress: false
 
 on:
    workflow_dispatch:
