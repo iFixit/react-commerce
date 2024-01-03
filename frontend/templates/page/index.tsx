@@ -111,6 +111,7 @@ const PageTemplate: NextPageWithLayout<PageTemplateProps> = () => {
                         />
                      );
                   }
+
                   default:
                      return assertNever(section);
                }

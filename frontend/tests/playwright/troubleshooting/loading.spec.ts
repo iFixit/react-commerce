@@ -8,22 +8,8 @@ test.describe('Troubleshooting Page Content and SEO', () => {
       ).toBeVisible();
    });
 
-   test('Related Problems hidden by feature flag', async ({ page }) => {
+   test('New Related Problems visible', async ({ page }) => {
       await page.goto('/Troubleshooting/Dryer/Not+Spinning/478872');
-      // Select the element with the ID 'related-problems'
-      const element = await page.locator('#related-problems');
-
-      // Assert that the element's 'data-test' attribute is not 'related-problems-v2'
-      await expect(element).not.toHaveAttribute(
-         'data-test',
-         'related-problems-v2'
-      );
-   });
-
-   test('Related Problems visible behind feature flag', async ({ page }) => {
-      await page.goto(
-         '/Troubleshooting/Dryer/Not+Spinning/478872#enable-extended-related-problems'
-      );
       // Select the element with the ID 'related-problems'
       const element = await page.locator('#related-problems');
 

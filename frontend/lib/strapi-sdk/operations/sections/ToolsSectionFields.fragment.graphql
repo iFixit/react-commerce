@@ -1,0 +1,3 @@
+fragment ToolsSectionFields on ComponentSectionTools {
+   id
+}
