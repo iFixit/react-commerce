@@ -127,6 +127,7 @@ fragment ProductListFields on ProductList {
          }
       }
    }
+   redirectToType
 }
 
 fragment AncestorProductListFields on ProductList {

@@ -3663,6 +3663,7 @@ export type FindProductListQuery = {
             brandLogoWidth?: number | null;
             indexVariantsInsteadOfDevice?: boolean | null;
             optionalFilters?: string | null;
+            redirectToType?: Enum_Productlist_Redirecttotype | null;
             heroImage?: {
                __typename?: 'UploadFileEntityResponse';
                data?: {
@@ -4020,6 +4021,7 @@ export type ProductListFieldsFragment = {
    brandLogoWidth?: number | null;
    indexVariantsInsteadOfDevice?: boolean | null;
    optionalFilters?: string | null;
+   redirectToType?: Enum_Productlist_Redirecttotype | null;
    heroImage?: {
       __typename?: 'UploadFileEntityResponse';
       data?: {
@@ -6415,6 +6417,7 @@ export const ProductListFieldsFragmentDoc = `
       }
     }
   }
+  redirectToType
 }
     `;
 export const CallToActionFieldsFragmentDoc = `

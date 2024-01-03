@@ -18,7 +18,11 @@ import { assertNever, invariant, timeAsync } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
 import type { DefaultLayoutProps } from '@layouts/default/server';
 import { getLayoutServerSideProps } from '@layouts/default/server';
-import { ProductList, ProductListType } from '@models/product-list';
+import {
+   ProductList,
+   ProductListRedirectToType,
+   ProductListType,
+} from '@models/product-list';
 import ProductListCache from '@pages/api/nextjs/cache/product-list';
 import compose from 'lodash/flowRight';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
@@ -215,9 +219,12 @@ export const getProductListServerSideProps = ({
             itemType: itemType ?? undefined,
          });
          const params = new URL(urlFromContext(context)).searchParams;
+         const permanent =
+            productList.redirectToType ===
+            ProductListRedirectToType.enum.Permanent;
          return {
             redirect: {
-               permanent: true,
+               permanent,
                destination: `${path}?${params}`,
             },
          };

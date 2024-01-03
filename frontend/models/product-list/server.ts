@@ -26,6 +26,7 @@ import algoliasearch from 'algoliasearch';
 import { createProductListAncestorsFromStrapiOrDeviceWiki } from './component/product-list-ancestor';
 import type { ProductListChild } from './component/product-list-child';
 import { ProductListType } from './component/product-list-type';
+import { productListRedirectToTypeFromStrapi } from './component/product-list-redirect-to-type.server';
 import { productListTypeFromStrapi } from './component/product-list-type.server';
 import { productListSections } from './sections';
 import { findProductListReusableSections } from './sections/reusable-sections';
@@ -95,6 +96,9 @@ export async function findProductList(
            ),
         }
       : null;
+   const redirectToType = productListRedirectToTypeFromStrapi(
+      productList?.redirectToType
+   );
 
    const [reusableSections, children] = await Promise.all([
       findProductListReusableSections({
@@ -144,6 +148,7 @@ export async function findProductList(
       isOnStrapi: !!productList,
       itemOverrides: formatItemTypeOverrides(productList?.itemOverrides),
       redirectTo,
+      redirectToType,
    };
 
    return {
