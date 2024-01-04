@@ -20,7 +20,7 @@ import type { DefaultLayoutProps } from '@layouts/default/server';
 import { getLayoutServerSideProps } from '@layouts/default/server';
 import {
    ProductList,
-   ProductListRedirectToType,
+   ProductListRedirectToTypeSchema,
    ProductListType,
 } from '@models/product-list';
 import ProductListCache from '@pages/api/nextjs/cache/product-list';
@@ -221,7 +221,7 @@ export const getProductListServerSideProps = ({
          const params = new URL(urlFromContext(context)).searchParams;
          const permanent =
             productList.redirectToType ===
-            ProductListRedirectToType.enum.Permanent;
+            ProductListRedirectToTypeSchema.enum.Permanent;
          return {
             redirect: {
                permanent,

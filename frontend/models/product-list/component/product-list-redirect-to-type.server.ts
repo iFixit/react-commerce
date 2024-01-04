@@ -1,16 +1,16 @@
 import { Enum_Productlist_Redirecttotype } from '@lib/strapi-sdk';
-import { ProductListRedirectToType } from './product-list-redirect-to-type';
-import type { TProductListRedirectToType } from './product-list-redirect-to-type';
+import { ProductListRedirectToTypeSchema } from './product-list-redirect-to-type';
+import type { ProductListRedirectToType } from './product-list-redirect-to-type';
 
 export function productListRedirectToTypeFromStrapi(
    type?: Enum_Productlist_Redirecttotype | null
-): TProductListRedirectToType {
+): ProductListRedirectToType {
    switch (type) {
       case Enum_Productlist_Redirecttotype.Permanent:
-         return ProductListRedirectToType.enum.Permanent;
+         return ProductListRedirectToTypeSchema.enum.Permanent;
       case Enum_Productlist_Redirecttotype.Temporary:
-         return ProductListRedirectToType.enum.Temporary;
+         return ProductListRedirectToTypeSchema.enum.Temporary;
       default:
-         return ProductListRedirectToType.enum.Permanent;
+         return ProductListRedirectToTypeSchema.enum.Permanent;
    }
 }

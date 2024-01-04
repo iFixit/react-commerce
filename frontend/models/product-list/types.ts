@@ -2,7 +2,7 @@ import { ImageSchema } from '@models/components/image';
 import { z } from 'zod';
 import { ProductListAncestorSchema } from './component/product-list-ancestor';
 import { ProductListChildSchema } from './component/product-list-child';
-import { ProductListRedirectToType } from './component/product-list-redirect-to-type';
+import { ProductListRedirectToTypeSchema } from './component/product-list-redirect-to-type';
 import { ProductListType } from './component/product-list-type';
 import { ProductListSectionSchema } from './sections';
 
@@ -108,7 +108,7 @@ const BaseProductListSchema = z.object({
          type: z.nativeEnum(ProductListType),
       })
       .nullable(),
-   redirectToType: ProductListRedirectToType,
+   redirectToType: ProductListRedirectToTypeSchema,
 });
 export type BaseProductList = z.infer<typeof BaseProductListSchema>;
 
