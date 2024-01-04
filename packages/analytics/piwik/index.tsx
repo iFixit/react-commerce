@@ -46,15 +46,14 @@ export function trackPiwikPreferredLanguage(
 
 export function trackPiwikUserPrivilege(
    piwikEnv: string | undefined,
-   userPrivilege: string[] | null
+   userPrivilege: string | null
 ): void {
    const customDimensions = getPiwikCustomDimensionsForEnv(piwikEnv);
    if (typeof window !== 'undefined' && customDimensions && userPrivilege) {
-      const privilege = userPrivilege.length > 0 ? userPrivilege[0] : 'User';
       piwikPush([
          'setCustomDimensionValue',
          customDimensions['userPrivilege'],
-         privilege,
+         userPrivilege,
       ]);
    }
 }
