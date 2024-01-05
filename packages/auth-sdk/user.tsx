@@ -1,6 +1,6 @@
 import { IFixitAPIClient, useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useLocalPreference } from '@ifixit/ui';
-import { useQuery } from '@tanstack/react-query';
+import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import { z } from 'zod';
 import * as Sentry from '@sentry/nextjs';
 
@@ -25,9 +25,11 @@ const AuthenticatedUserSchema = z.object({
    links: z.record(z.any()),
    langid: z.string().optional().nullable(),
    unread_notification_count: z.number().optional().nullable(),
+   privileges: z.array(z.string()),
+   greatest_privilege: z.string().optional(),
 });
 
-export function useAuthenticatedUser() {
+export function useAuthenticatedUser(): UseQueryResult<User | null> {
    const apiClient = useIFixitApiClient();
    const [cachedUserData, setCachedUserData] = useLocalPreference<User | null>(
       userDataLocalKey,
@@ -110,5 +112,6 @@ async function fetchAuthenticatedUser(
       links: userSchema.data.links,
       langid: userSchema.data.langid ?? null,
       unread_notification_count: userSchema.data.unread_notification_count,
+      privileges: userSchema.data.privileges,
    };
 }

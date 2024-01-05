@@ -80,6 +80,12 @@ export function akeneoUrl() {
    return ifixitOriginWithSubdomain('akeneo');
 }
 
+export function netsuiteProductUrl(sku: string) {
+   return `${IFIXIT_ORIGIN}/api/2.0/cart/netsuite_redirect/${encodeURIComponent(
+      sku
+   )}`;
+}
+
 export interface IFixitAdminProductInvetoryUrlProps {
    product: Pick<Product, 'productcode'>;
 }
@@ -166,4 +172,29 @@ export function ifixitOriginWithSubdomain(subdomain: string) {
 
 export function joinPaths(...paths: string[]) {
    return paths.map((path) => path.replace(/^\/|\/$/g, '')).join('/');
+}
+
+export function getRouteData(route: string) {
+   const [baseRoute, ..._rest] = route.split('?');
+   const pathParts = baseRoute.split('/').filter((part) => part !== '');
+   const firstPathSegment = pathParts.length >= 1 ? pathParts[0] : '';
+   const deviceHandle = pathParts.length >= 2 ? pathParts[1] : '';
+   const itemType = pathParts.length >= 3 ? pathParts[2] : '';
+   return {
+      firstPathSegment,
+      deviceHandle,
+      itemType,
+   };
+}
+
+export function getLocation(url: string) {
+   if (typeof window === 'undefined') {
+      try {
+         return new URL(url) as unknown as Location;
+      } catch (e) {
+         return new URL(IFIXIT_ORIGIN) as unknown as Location;
+      }
+   }
+
+   return window.location;
 }

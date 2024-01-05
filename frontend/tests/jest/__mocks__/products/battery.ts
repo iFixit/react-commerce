@@ -192,7 +192,6 @@ export const mockedBatteryProduct: Product = {
    isEnabled: true,
    iFixitProductId: 'IF390-042',
    productcode: '390042',
-   redirectUrl: null,
    vendor: '',
    crossSellVariants: [],
    categories: [],

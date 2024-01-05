@@ -118,6 +118,16 @@ fragment ProductListFields on ProductList {
       }
    }
    optionalFilters
+   redirectTo {
+      data {
+         attributes {
+            deviceTitle
+            handle
+            type
+         }
+      }
+   }
+   redirectToType
 }
 
 fragment AncestorProductListFields on ProductList {

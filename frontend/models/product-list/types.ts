@@ -2,6 +2,7 @@ import { ImageSchema } from '@models/components/image';
 import { z } from 'zod';
 import { ProductListAncestorSchema } from './component/product-list-ancestor';
 import { ProductListChildSchema } from './component/product-list-child';
+import { ProductListRedirectToTypeSchema } from './component/product-list-redirect-to-type';
 import { ProductListType } from './component/product-list-type';
 import { ProductListSectionSchema } from './sections';
 
@@ -100,6 +101,14 @@ const BaseProductListSchema = z.object({
    isOnStrapi: z.boolean(),
    itemOverrides: ProductListItemTypeOverrideIndexedSchema,
    indexVariantsInsteadOfDevice: z.boolean().nullable(),
+   redirectTo: z
+      .object({
+         deviceTitle: z.string().nullable(),
+         handle: z.string(),
+         type: z.nativeEnum(ProductListType),
+      })
+      .nullable(),
+   redirectToType: ProductListRedirectToTypeSchema,
 });
 export type BaseProductList = z.infer<typeof BaseProductListSchema>;
 

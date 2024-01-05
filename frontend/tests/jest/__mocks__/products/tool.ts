@@ -135,7 +135,6 @@ export const mockedToolProduct: Product = {
    isEnabled: true,
    iFixitProductId: 'IF317-048',
    productcode: '317048',
-   redirectUrl: null,
    vendor: '',
    crossSellVariants: [
       {

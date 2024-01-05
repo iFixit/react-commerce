@@ -15,7 +15,7 @@ export type FindProductArgs = {
 
 type ShopifyProductRedirect = z.infer<typeof ShopifyProductRedirectSchema>;
 export const ShopifyProductRedirectSchema = z.object({
-   __typename: z.literal('ShopifyProductRedirect'),
+   __typename: z.literal('ProductRedirect'),
    target: z.string(),
 });
 
@@ -53,6 +53,13 @@ export async function findProduct({
          ),
       ]);
 
+   if (iFixitQueryResponse?.redirectSkuUrl) {
+      return {
+         __typename: 'ProductRedirect',
+         target: iFixitQueryResponse.redirectSkuUrl,
+      };
+   }
+
    const urlRedirect = shopifyQueryResponse.urlRedirects.edges[0]?.node?.target;
    const product = await getProduct({
       shopifyProduct: shopifyQueryResponse.product,
@@ -61,7 +68,7 @@ export async function findProduct({
    });
    if (product == null) {
       return urlRedirect
-         ? { __typename: 'ShopifyProductRedirect', target: urlRedirect }
+         ? { __typename: 'ProductRedirect', target: urlRedirect }
          : null;
    }
 

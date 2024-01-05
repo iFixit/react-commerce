@@ -21,7 +21,6 @@ import { ProductGridItem } from '@components/common/ProductGridItem';
 import { Card } from '@components/ui';
 import { filterFalsyItems } from '@helpers/application-helpers';
 import { productListPath } from '@helpers/path-helpers';
-import { getProductListTitle } from '@helpers/product-list-helpers';
 import { useAppContext } from '@ifixit/app';
 import { useLocalPreference, Wrapper } from '@ifixit/ui';
 import { productPreviewFromAlgoliaHit } from '@models/components/product-preview';
@@ -40,7 +39,6 @@ import {
    useHits,
    useSearchBox,
 } from 'react-instantsearch';
-import { useDevicePartsItemType } from '../../hooks/useDevicePartsItemType';
 import { CurrentRefinements } from './CurrentRefinements';
 import { FacetsAccordion } from './facets/accordion';
 import { Pagination } from './Pagination';
@@ -48,6 +46,7 @@ import { ProductList, ProductListItem } from './ProductList';
 import { ProductViewType, Toolbar } from './Toolbar';
 import { useHasAnyVisibleFacet } from './useHasAnyVisibleFacet';
 import { debouncedTrackGA4ViewItemList } from '@ifixit/analytics/google';
+import { useCurrentProductList } from '@templates/product-list/hooks/useCurrentProductList';
 
 const PRODUCT_VIEW_TYPE_STORAGE_KEY = 'productViewType';
 
@@ -241,6 +240,7 @@ type EmptyStateProps = BoxProps & {
 
 const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
    ({ productList, ...otherProps }, ref) => {
+      const { currentProductList } = useCurrentProductList();
       const { setSearchQuery } = useSearchQuery();
       const clearRefinements = useClearRefinements({ excludedAttributes: [] });
 
@@ -252,17 +252,9 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
 
       const isFiltered = hasRefinements || hasSearchQuery;
 
-      const itemType = useDevicePartsItemType(productList);
-      const title = getProductListTitle(
-         {
-            title: productList.title,
-            type: productList.type,
-         },
-         itemType
-      );
       const encodedQuery = encodeURIComponent(searchBox.query);
 
-      const ancestors = productList.ancestors;
+      const ancestors = currentProductList.ancestors;
       const parentCategory = ancestors[ancestors.length - 1];
 
       const appContext = useAppContext();
@@ -284,7 +276,7 @@ const ProductListEmptyState = forwardRef<EmptyStateProps, 'div'>(
                   opacity="0.8"
                />
                <Text fontSize="lg" fontWeight="bold" w="full">
-                  No matching products found in {title}
+                  No matching products found in {currentProductList.title}
                </Text>
                <Text maxW="500px" color="gray.500">
                   Try adjusting your search or filter to find what you&apos;re

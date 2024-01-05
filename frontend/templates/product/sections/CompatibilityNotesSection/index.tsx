@@ -27,7 +27,7 @@ export function CompatibilityNotesSection({
             </Heading>
             <Box p={2}>
                {`Compatible with: ${visibleDevices.join(', ')}`}
-               {hiddenDevices && (
+               {hiddenDevices.length && (
                   <Box p={2}>
                      <details>
                         <summary>{`Show ${hiddenDevices.length} more`}</summary>

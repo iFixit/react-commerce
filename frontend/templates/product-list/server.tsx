@@ -7,7 +7,7 @@ import {
    withCache,
 } from '@helpers/cache-control-helpers';
 import { withLogging } from '@helpers/next-helpers';
-import { ifixitOriginFromHost } from '@helpers/path-helpers';
+import { ifixitOriginFromHost, productListPath } from '@helpers/path-helpers';
 import {
    destylizeDeviceItemType,
    destylizeDeviceTitle,
@@ -18,7 +18,11 @@ import { assertNever, invariant, timeAsync } from '@ifixit/helpers';
 import { urlFromContext } from '@ifixit/helpers/nextjs';
 import type { DefaultLayoutProps } from '@layouts/default/server';
 import { getLayoutServerSideProps } from '@layouts/default/server';
-import { ProductList, ProductListType } from '@models/product-list';
+import {
+   ProductList,
+   ProductListRedirectToTypeSchema,
+   ProductListType,
+} from '@models/product-list';
 import ProductListCache from '@pages/api/nextjs/cache/product-list';
 import compose from 'lodash/flowRight';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
@@ -27,6 +31,7 @@ import { renderToString } from 'react-dom/server';
 import { getServerState } from 'react-instantsearch';
 import { ProductListTemplateProps } from './hooks/useProductListTemplateProps';
 import { ProductListView } from './ProductListView';
+import { CurrentProductListProvider } from './hooks/useCurrentProductList';
 
 const withMiddleware = compose(
    withLogging<ProductListTemplateProps>,
@@ -52,6 +57,7 @@ export const getProductListServerSideProps = ({
       let productList: ProductList | null;
       let shouldRedirectToCanonical = false;
       let canonicalPath: string | null = null;
+      let itemType: string | null = null;
       const ifixitOrigin = ifixitOriginFromHost(context);
       const cacheOptions = { forceMiss };
 
@@ -85,7 +91,7 @@ export const getProductListServerSideProps = ({
                };
             }
 
-            const itemType = itemTypeHandle
+            itemType = itemTypeHandle
                ? destylizeDeviceItemType(itemTypeHandle)
                : null;
 
@@ -207,6 +213,23 @@ export const getProductListServerSideProps = ({
          };
       }
 
+      if (productList.redirectTo) {
+         const path = productListPath({
+            productList: productList.redirectTo,
+            itemType: itemType ?? undefined,
+         });
+         const params = new URL(urlFromContext(context)).searchParams;
+         const permanent =
+            productList.redirectToType ===
+            ProductListRedirectToTypeSchema.enum.Permanent;
+         return {
+            redirect: {
+               permanent,
+               destination: `${path}?${params}`,
+            },
+         };
+      }
+
       const appProps: AppProvidersProps = {
          algolia: {
             indexName,
@@ -258,7 +281,15 @@ async function getSafeServerState({
       const appMarkup = (
          <AppProviders {...appProps}>
             <InstantSearchProvider {...appProps.algolia!}>
-               <ProductListView productList={productList} algoliaSSR={true} />
+               <CurrentProductListProvider
+                  productList={productList}
+                  algoliaUrl={appProps.algolia?.url}
+               >
+                  <ProductListView
+                     productList={productList}
+                     algoliaSSR={true}
+                  />
+               </CurrentProductListProvider>
             </InstantSearchProvider>
          </AppProviders>
       );

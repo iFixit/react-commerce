@@ -285,7 +285,6 @@ export const mockedProduct: Product = {
    productcode: '315007',
    productVideosJson: null,
    enabledDomains: null,
-   redirectUrl: null,
    vendor: '',
    crossSellVariants: [
       {

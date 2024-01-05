@@ -576,6 +576,11 @@ export type ComponentSectionStories = {
    title?: Maybe<Scalars['String']>;
 };
 
+export type ComponentSectionTools = {
+   __typename?: 'ComponentSectionTools';
+   id: Scalars['ID'];
+};
+
 export type ComponentStoreFooter = {
    __typename?: 'ComponentStoreFooter';
    bottomMenu?: Maybe<MenuEntityResponse>;
@@ -729,6 +734,11 @@ export enum Enum_Componentpagesplitwithimage_Imageposition {
 export enum Enum_Componentsectionfeaturedproducts_Background {
    Transparent = 'transparent',
    White = 'white',
+}
+
+export enum Enum_Productlist_Redirecttotype {
+   Permanent = 'permanent',
+   Temporary = 'temporary',
 }
 
 export enum Enum_Productlist_Type {
@@ -897,6 +907,7 @@ export type GenericMorph =
    | ComponentSectionServiceValuePropositions
    | ComponentSectionSocialGallery
    | ComponentSectionStories
+   | ComponentSectionTools
    | ComponentStoreFooter
    | ComponentStoreHeader
    | ComponentStoreShopifySettings
@@ -1768,6 +1779,7 @@ export type ProductList = {
    publishedAt?: Maybe<Scalars['DateTime']>;
    redirectFrom?: Maybe<ProductListRelationResponseCollection>;
    redirectTo?: Maybe<ProductListEntityResponse>;
+   redirectToType?: Maybe<Enum_Productlist_Redirecttotype>;
    sections: Array<Maybe<ProductListSectionsDynamicZone>>;
    sortPriority?: Maybe<Scalars['Int']>;
    tagline?: Maybe<Scalars['String']>;
@@ -1850,6 +1862,7 @@ export type ProductListFiltersInput = {
    publishedAt?: InputMaybe<DateTimeFilterInput>;
    redirectFrom?: InputMaybe<ProductListFiltersInput>;
    redirectTo?: InputMaybe<ProductListFiltersInput>;
+   redirectToType?: InputMaybe<StringFilterInput>;
    sortPriority?: InputMaybe<IntFilterInput>;
    tagline?: InputMaybe<StringFilterInput>;
    title?: InputMaybe<StringFilterInput>;
@@ -1885,6 +1898,7 @@ export type ProductListInput = {
    publishedAt?: InputMaybe<Scalars['DateTime']>;
    redirectFrom?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
    redirectTo?: InputMaybe<Scalars['ID']>;
+   redirectToType?: InputMaybe<Enum_Productlist_Redirecttotype>;
    sections?: InputMaybe<Array<Scalars['ProductListSectionsDynamicZoneInput']>>;
    sortPriority?: InputMaybe<Scalars['Int']>;
    tagline?: InputMaybe<Scalars['String']>;
@@ -1922,6 +1936,7 @@ export type ProductSectionsDynamicZone =
    | ComponentSectionQuote
    | ComponentSectionServiceValuePropositions
    | ComponentSectionStories
+   | ComponentSectionTools
    | Error;
 
 export enum PublicationState {
@@ -3611,6 +3626,7 @@ export type FindProductQuery = {
                     id: string;
                  }
                | { __typename: 'ComponentSectionStories' }
+               | { __typename: 'ComponentSectionTools'; id: string }
                | { __typename: 'Error' }
                | null
             >;
@@ -3647,6 +3663,7 @@ export type FindProductListQuery = {
             brandLogoWidth?: number | null;
             indexVariantsInsteadOfDevice?: boolean | null;
             optionalFilters?: string | null;
+            redirectToType?: Enum_Productlist_Redirecttotype | null;
             heroImage?: {
                __typename?: 'UploadFileEntityResponse';
                data?: {
@@ -3970,6 +3987,18 @@ export type FindProductListQuery = {
                   } | null;
                }>;
             } | null;
+            redirectTo?: {
+               __typename?: 'ProductListEntityResponse';
+               data?: {
+                  __typename?: 'ProductListEntity';
+                  attributes?: {
+                     __typename?: 'ProductList';
+                     deviceTitle?: string | null;
+                     handle: string;
+                     type?: Enum_Productlist_Type | null;
+                  } | null;
+               } | null;
+            } | null;
          } | null;
       }>;
    } | null;
@@ -3992,6 +4021,7 @@ export type ProductListFieldsFragment = {
    brandLogoWidth?: number | null;
    indexVariantsInsteadOfDevice?: boolean | null;
    optionalFilters?: string | null;
+   redirectToType?: Enum_Productlist_Redirecttotype | null;
    heroImage?: {
       __typename?: 'UploadFileEntityResponse';
       data?: {
@@ -4304,6 +4334,18 @@ export type ProductListFieldsFragment = {
             priority?: number | null;
          } | null;
       }>;
+   } | null;
+   redirectTo?: {
+      __typename?: 'ProductListEntityResponse';
+      data?: {
+         __typename?: 'ProductListEntity';
+         attributes?: {
+            __typename?: 'ProductList';
+            deviceTitle?: string | null;
+            handle: string;
+            type?: Enum_Productlist_Type | null;
+         } | null;
+      } | null;
    } | null;
 };
 
@@ -6165,6 +6207,11 @@ export type StatsSectionFieldsFragment = {
    } | null>;
 };
 
+export type ToolsSectionFieldsFragment = {
+   __typename?: 'ComponentSectionTools';
+   id: string;
+};
+
 export const ImageFieldsFragmentDoc = `
     fragment ImageFields on UploadFileEntityResponse {
   data {
@@ -6361,6 +6408,16 @@ export const ProductListFieldsFragmentDoc = `
     }
   }
   optionalFilters
+  redirectTo {
+    data {
+      attributes {
+        deviceTitle
+        handle
+        type
+      }
+    }
+  }
+  redirectToType
 }
     `;
 export const CallToActionFieldsFragmentDoc = `
@@ -6771,6 +6828,11 @@ export const StatsSectionFieldsFragmentDoc = `
   }
 }
     `;
+export const ToolsSectionFieldsFragmentDoc = `
+    fragment ToolsSectionFields on ComponentSectionTools {
+  id
+}
+    `;
 export const FindPageDocument = `
     query findPage($filters: PageFiltersInput, $publicationState: PublicationState) {
   pages(
@@ -6844,6 +6906,7 @@ export const FindProductDocument = `
           ...FAQsSectionFields
           ...DeviceCompatibilitySectionFields
           ...BitTableSectionFields
+          ...ToolsSectionFields
         }
       }
     }
@@ -6866,7 +6929,8 @@ ${FaQsSectionFieldsFragmentDoc}
 ${FaqFieldsFragmentDoc}
 ${DeviceCompatibilitySectionFieldsFragmentDoc}
 ${BitTableSectionFieldsFragmentDoc}
-${ScrewdriverBitFieldsFragmentDoc}`;
+${ScrewdriverBitFieldsFragmentDoc}
+${ToolsSectionFieldsFragmentDoc}`;
 export const FindProductListDocument = `
     query findProductList($filters: ProductListFiltersInput) {
   productLists(pagination: {limit: 1}, filters: $filters, publicationState: LIVE) {

@@ -28,6 +28,7 @@ import {
 import {
    trackPiwikPreferredLanguage,
    trackPiwikPreferredStore,
+   trackPiwikUserPrivilege,
 } from '@ifixit/analytics';
 import { useAppContext } from '@ifixit/app';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
@@ -95,6 +96,7 @@ const DefaultLayoutComponent = function ({
 
    trackPiwikPreferredStore(PIWIK_ENV);
    trackPiwikPreferredLanguage(PIWIK_ENV, userData?.langid ?? null);
+   trackPiwikUserPrivilege(PIWIK_ENV, userData?.greatest_privilege ?? null);
    return (
       <LayoutErrorBoundary>
          <ShopifyStorefrontProvider

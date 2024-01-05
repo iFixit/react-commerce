@@ -35,6 +35,10 @@ import { LifetimeWarrantySectionSchema } from '../../sections/lifetime-warranty-
 import { DeviceCompatibilitySectionSchema } from './compatibility-section';
 import { ProductOverviewSectionSchema } from './product-overview-section';
 import { ProductReviewsSectionSchema } from './product-reviews-section';
+import {
+   toolsSectionFromStrapi,
+   ToolsSectionSchema,
+} from '@models/sections/tools-section';
 
 export type ProductSection = z.infer<typeof ProductSectionSchema>;
 
@@ -51,6 +55,7 @@ export const ProductSectionSchema = z.union([
    QuoteSectionSchema,
    FAQsSectionSchema,
    BitTableSectionSchema,
+   ToolsSectionSchema,
 ]);
 
 interface GetProductSectionsArgs {
@@ -139,6 +144,10 @@ export async function getProductSections({
 
             case 'ComponentProductBitTable':
                return bitTableSectionFromStrapi(section, sectionId);
+
+            case 'ComponentSectionTools': {
+               return toolsSectionFromStrapi(section, sectionId);
+            }
 
             default:
                return null;

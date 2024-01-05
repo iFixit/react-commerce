@@ -38,7 +38,14 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
          { forceMiss }
       );
 
-      if (product?.__typename === 'ShopifyProductRedirect') {
+      if (product?.__typename === 'ProductRedirect') {
+         const destination = new URL(product.target, ifixitOrigin);
+         const requestParams = new URL(urlFromContext(context)).searchParams;
+         requestParams.forEach((value, key) => {
+            if (!destination.searchParams.has(key)) {
+               destination.searchParams.append(key, value);
+            }
+         });
          return {
             redirect: {
                destination: product.target,
@@ -50,22 +57,6 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
       if (product == null) {
          return {
             notFound: true,
-         };
-      }
-
-      if (product.redirectUrl) {
-         const destination = new URL(product.redirectUrl);
-         const requestParams = new URL(urlFromContext(context)).searchParams;
-         requestParams.forEach((value, key) => {
-            if (!destination.searchParams.has(key)) {
-               destination.searchParams.append(key, value);
-            }
-         });
-         return {
-            redirect: {
-               destination: destination.href,
-               permanent: true,
-            },
          };
       }
 

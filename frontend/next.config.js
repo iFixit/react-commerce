@@ -169,6 +169,7 @@ const moduleExports = {
          'assets.cdn.ifixit.com',
          'www.cominor.com',
          'guide-images.cdn.ifixit.com',
+         'main.govinor.com',
          process.env.STRAPI_IMAGE_DOMAIN,
       ].filter((domain) => domain),
       minimumCacheTTL: 3600,

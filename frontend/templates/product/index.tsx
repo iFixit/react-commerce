@@ -37,6 +37,7 @@ import { ProductOverviewSection } from './sections/ProductOverviewSection';
 import { ProductReviewsSection } from './sections/ProductReviewsSection';
 import { trackInPiwik } from '@ifixit/analytics/piwik/track-event';
 import { BitTableSection } from '@components/sections/BitTableSection';
+import { ToolsSection } from '@components/sections/ToolsSection';
 
 const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
    const { product } = useProductTemplateProps();
@@ -79,6 +80,7 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
 
    const adminLinks = useProductPageAdminLinks({
       product,
+      selectedVariant,
       storeCode: DEFAULT_STORE_CODE,
    });
 
@@ -248,6 +250,9 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                            bits={section.bits}
                         />
                      );
+                  }
+                  case 'Tools': {
+                     return <ToolsSection key={section.id} id={section.id} />;
                   }
 
                   default:
