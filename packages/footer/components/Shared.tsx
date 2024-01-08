@@ -72,9 +72,9 @@ export const FooterLink = forwardRef<FooterLinkProps, 'a'>(
             onClick={trackedOnClick}
             {...otherProps}
          >
-            <Text fontSize={fontSize} lineHeight="1em" color={customColor}>
+            <Box fontSize={fontSize} lineHeight="1em" color={customColor}>
                {children}
-            </Text>
+            </Box>
             {icon && <Icon as={icon} boxSize="6" />}
          </HStack>
       );
