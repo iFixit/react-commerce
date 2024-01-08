@@ -1,23 +1,22 @@
-import { AppProviders } from '@components/common/AppProviders';
 import { DEFAULT_STORE_CODE } from '@config/env';
 import { getLayoutServerSideProps } from '@layouts/default/server';
 import { ReactNode } from 'react';
-import IFixitPageFrame from './components/ifixit-page-frame';
+import { PageFrame } from './components/page-frame';
 
 export default async function DefaultLayout({
    children,
+   regionMenu,
 }: {
    children: ReactNode;
+   regionMenu: React.ReactNode;
 }) {
-   const layoutPropsPromise = getLayoutServerSideProps({
+   const layoutData = await getLayoutServerSideProps({
       storeCode: DEFAULT_STORE_CODE,
    });
 
-   const layoutProps = await layoutPropsPromise;
-
    return (
-      <AppProviders>
-         <IFixitPageFrame {...layoutProps}>{children}</IFixitPageFrame>
-      </AppProviders>
+      <PageFrame regionMenu={regionMenu} layoutData={layoutData}>
+         {children}
+      </PageFrame>
    );
 }

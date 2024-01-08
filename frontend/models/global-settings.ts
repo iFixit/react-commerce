@@ -12,6 +12,13 @@ export interface GlobalSettings {
    };
 }
 
+export interface NewsletterFormConfig {
+   title: string;
+   subtitle: string;
+   inputPlaceholder: string;
+   callToActionButtonTitle: string;
+}
+
 type GetGlobalSettingsOptions = {
    forceMiss?: boolean;
 };

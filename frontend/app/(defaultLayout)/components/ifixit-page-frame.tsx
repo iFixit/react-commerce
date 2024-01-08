@@ -14,7 +14,7 @@ import {
    MenuList,
    Portal,
 } from '@chakra-ui/react';
-import { GoogleAnalytics } from './google-analytics';
+import { GoogleTagManager } from './analytics/google-tag-manager';
 import { SmartLink } from '@components/ui/SmartLink';
 import {
    faArrowRight,
@@ -253,7 +253,7 @@ export default function IFixitPageFrame({
                </Flex>
             </Box>
             <Suspense>
-               <GoogleAnalytics />
+               <GoogleTagManager />
                <PiwikPro />
             </Suspense>
          </ShopifyStorefrontProvider>
