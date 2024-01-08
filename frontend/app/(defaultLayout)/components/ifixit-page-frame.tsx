@@ -8,7 +8,6 @@ import {
    Box,
    DrawerCloseButton,
    Flex,
-   Icon,
    MenuDivider,
    MenuGroup,
    MenuList,
@@ -23,7 +22,6 @@ import {
 import { useAppContext } from '@ifixit/app';
 import { useAuthenticatedUser } from '@ifixit/auth-sdk';
 import { FaIcon } from '@ifixit/icons';
-import { Wordmark20th } from '@assets/svg/files';
 import type { Menu } from '@ifixit/menu';
 import { ShopifyStorefrontProvider } from '@ifixit/shopify-storefront-client';
 import {
@@ -60,6 +58,7 @@ import {
    UserMenuButton,
    UserMenuHeading,
    UserMenuLink,
+   Wordmark,
    WordmarkLink,
 } from '@ifixit/ui';
 import * as React from 'react';
@@ -119,11 +118,7 @@ export default function IFixitPageFrame({
                               title="iFixit turns 20"
                               padding={0}
                            >
-                              <Icon
-                                 as={Wordmark20th}
-                                 width="auto"
-                                 height="100%"
-                              />
+                              <Wordmark />
                            </WordmarkLink>
                            {menu && (
                               <NavigationMenu>
@@ -278,14 +273,8 @@ function LayoutNavigationDrawer({ menu }: LayoutNavigationDrawerProps) {
    return (
       <NavigationDrawer>
          <DrawerCloseButton />
-         <WordmarkLink
-            href="/"
-            aria-label="Go to homepage"
-            mb="8"
-            title="iFixit turns 20"
-            padding={0}
-         >
-            <Icon as={Wordmark20th} width="auto" height="100%" />
+         <WordmarkLink href="/" aria-label="Go to homepage" mb="8">
+            <Wordmark />
          </WordmarkLink>
          <NavigationAccordion>
             {menu.items.map((item, index) => {
