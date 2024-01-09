@@ -1,6 +1,7 @@
 import { IFIXIT_ORIGIN, POLYFILL_DOMAIN } from '@config/env';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Metadata } from 'next';
 import Script from 'next/script';
 import React from 'react';
@@ -105,7 +106,10 @@ export default function RootLayout({
                strategy="beforeInteractive"
             />
          </head>
-         <body>{children}</body>
+         <body>
+            {children}
+            <SpeedInsights sampleRate={0.2} />
+         </body>
       </html>
    );
 }
