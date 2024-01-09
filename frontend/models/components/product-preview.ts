@@ -47,6 +47,7 @@ export const ProductPreviewSchema = z.object({
    quantityAvailable: z.number().nullable(),
    enabled: z.boolean().nullable().optional(),
    shopifyVariantId: z.string().nullable(),
+   categories: z.array(z.string()).nullable(),
 });
 
 export function productPreviewFromAlgoliaHit(hit: any): ProductPreview | null {
@@ -76,6 +77,7 @@ export function productPreviewFromAlgoliaHit(hit: any): ProductPreview | null {
       hasLifetimeWarranty: product.lifetime_warranty ?? false,
       quantityAvailable: product.quantity_available ?? null,
       shopifyVariantId: null,
+      categories: null,
    };
 }
 
@@ -115,8 +117,30 @@ export function productPreviewFromShopify(
       quantityAvailable: fields.quantityAvailable ?? null,
       enabled: fields.enabled?.value === 'true',
       shopifyVariantId: fields.id,
+      categories: getCategoriesFromTags(fields.product.tags) || null,
    };
 }
+
+const getCategoriesFromTags = (tags: string[]): string[] => {
+   const tagsObj: Record<string, string> = {};
+   tags.forEach((tag) => {
+      const [name, val] = tag.split('=');
+      tagsObj[name] = val;
+   });
+   console.log('Tags: ', tagsObj);
+   let firstCategory = tagsObj['Part Category'];
+   let secondCategory = '';
+   if (tagsObj['Is Tool'] === 'true') {
+      secondCategory = tagsObj['Tool Category'];
+   } else {
+      secondCategory = tagsObj['Part SubCategory'];
+   }
+
+   if (secondCategory && !firstCategory) {
+      firstCategory = 'N/A';
+   }
+   return [firstCategory, secondCategory].filter(Boolean);
+};
 
 interface GetProductPreviewsFromAlgoliaProps {
    query?: string;

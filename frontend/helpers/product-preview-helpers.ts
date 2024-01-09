@@ -19,6 +19,7 @@ export function createCartLineItem(
       imageSrc: productPreview.image?.url ?? '',
       price: productPreview.price,
       compareAtPrice: productPreview.compareAtPrice,
+      categories: productPreview.categories,
    };
 }
 

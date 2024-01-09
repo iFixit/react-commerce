@@ -27,7 +27,7 @@ export interface CartLineItem {
    maxToAdd?: number;
    price: Money;
    compareAtPrice?: Money | null;
-   categories?: string[];
+   categories?: string[] | null;
 }
 
 export interface APICart {
