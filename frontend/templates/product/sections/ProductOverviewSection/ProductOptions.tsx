@@ -58,6 +58,7 @@ export function ProductOptions({
                   {selectorType === SelectorType.SELECT && (
                      <Select
                         bg="white"
+                        overflowX="hidden"
                         value={selected}
                         onChange={(event) => {
                            onChange(event.target.value);
