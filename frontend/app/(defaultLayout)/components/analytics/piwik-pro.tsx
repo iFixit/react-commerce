@@ -1,14 +1,13 @@
-import { PIWIK_ID } from '@config/env';
 import * as React from 'react';
 import Script from 'next/script';
 
 const PiwikDataLayer = 'pproDataLayer';
 
-export function PiwikPro() {
-   return PIWIK_ID ? <PPRO /> : null;
+interface PiwikProProps {
+   piwikId: string;
 }
 
-function PPRO() {
+export function PiwikPro({ piwikId }: PiwikProProps) {
    return (
       <Script id="piwik-pro" strategy="afterInteractive">
          {`
@@ -60,7 +59,7 @@ function PPRO() {
                         };
                      }(i[c]);
             }(window, "ppms", ["tm", "cm"]);
-         })(window, document, '${PiwikDataLayer}', '${PIWIK_ID}');
+         })(window, document, '${PiwikDataLayer}', '${piwikId}');
       `}
       </Script>
    );
