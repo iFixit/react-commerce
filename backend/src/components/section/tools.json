@@ -5,5 +5,14 @@
       "description": ""
    },
    "options": {},
-   "attributes": {}
+   "attributes": {
+      "title": {
+         "type": "string"
+      },
+      "tools": {
+         "type": "relation",
+         "relation": "oneToMany",
+         "target": "api::tool.tool"
+      }
+   }
 }

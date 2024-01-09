@@ -65,6 +65,8 @@ import {
    StoreFiltersInput,
    StoreInput,
    StringFilterInput,
+   ToolFiltersInput,
+   ToolInput,
    UploadFileFiltersInput,
    UploadFileInput,
    UploadFolderFiltersInput,
@@ -1195,6 +1197,30 @@ export function StringFilterInputSchema(): z.ZodObject<
       null: z.boolean().nullish(),
       or: z.array(z.string().nullable()).nullish(),
       startsWith: z.string().nullish(),
+   });
+}
+
+export function ToolFiltersInputSchema(): z.ZodObject<
+   Properties<ToolFiltersInput>
+> {
+   return z.object<Properties<ToolFiltersInput>>({
+      and: z.array(z.lazy(() => ToolFiltersInputSchema().nullable())).nullish(),
+      createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      description: z.lazy(() => StringFilterInputSchema().nullish()),
+      id: z.lazy(() => IdFilterInputSchema().nullish()),
+      not: z.lazy(() => ToolFiltersInputSchema().nullish()),
+      or: z.array(z.lazy(() => ToolFiltersInputSchema().nullable())).nullish(),
+      title: z.lazy(() => StringFilterInputSchema().nullish()),
+      updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+   });
+}
+
+export function ToolInputSchema(): z.ZodObject<Properties<ToolInput>> {
+   return z.object<Properties<ToolInput>>({
+      description: z.string().nullish(),
+      image: z.string().nullish(),
+      title: z.string().nullish(),
+      trace: z.string().nullish(),
    });
 }
 

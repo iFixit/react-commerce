@@ -1586,6 +1586,38 @@ export interface ApiStoreStore extends Schema.CollectionType {
    };
 }
 
+export interface ApiToolTool extends Schema.CollectionType {
+   collectionName: 'tools';
+   info: {
+      singularName: 'tool';
+      pluralName: 'tools';
+      displayName: 'Tool';
+   };
+   options: {
+      draftAndPublish: false;
+   };
+   attributes: {
+      title: Attribute.String & Attribute.Required;
+      description: Attribute.RichText & Attribute.Required;
+      image: Attribute.Media & Attribute.Required;
+      trace: Attribute.Media & Attribute.Required;
+      createdAt: Attribute.DateTime;
+      updatedAt: Attribute.DateTime;
+      createdBy: Attribute.Relation<
+         'api::tool.tool',
+         'oneToOne',
+         'admin::user'
+      > &
+         Attribute.Private;
+      updatedBy: Attribute.Relation<
+         'api::tool.tool',
+         'oneToOne',
+         'admin::user'
+      > &
+         Attribute.Private;
+   };
+}
+
 declare module '@strapi/types' {
    export module Shared {
       export interface ContentTypes {
@@ -1617,6 +1649,7 @@ declare module '@strapi/types' {
          'api::screwdriver-bit-type.screwdriver-bit-type': ApiScrewdriverBitTypeScrewdriverBitType;
          'api::social-post.social-post': ApiSocialPostSocialPost;
          'api::store.store': ApiStoreStore;
+         'api::tool.tool': ApiToolTool;
       }
    }
 }

@@ -494,7 +494,10 @@ export interface SectionTools extends Schema.Component {
       displayName: 'Tools';
       description: '';
    };
-   attributes: {};
+   attributes: {
+      title: Attribute.String;
+      tools: Attribute.Relation<'section.tools', 'oneToMany', 'api::tool.tool'>;
+   };
 }
 
 export interface StoreFooter extends Schema.Component {

@@ -579,6 +579,14 @@ export type ComponentSectionStories = {
 export type ComponentSectionTools = {
    __typename?: 'ComponentSectionTools';
    id: Scalars['ID'];
+   title?: Maybe<Scalars['String']>;
+   tools?: Maybe<ToolRelationResponseCollection>;
+};
+
+export type ComponentSectionToolsToolsArgs = {
+   filters?: InputMaybe<ToolFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type ComponentStoreFooter = {
@@ -926,6 +934,7 @@ export type GenericMorph =
    | ScrewdriverBitType
    | SocialPost
    | Store
+   | Tool
    | UploadFile
    | UploadFolder
    | UsersPermissionsPermission
@@ -1210,6 +1219,7 @@ export type Mutation = {
    createScrewdriverBitType?: Maybe<ScrewdriverBitTypeEntityResponse>;
    createSocialPost?: Maybe<SocialPostEntityResponse>;
    createStore?: Maybe<StoreEntityResponse>;
+   createTool?: Maybe<ToolEntityResponse>;
    createUploadFile?: Maybe<UploadFileEntityResponse>;
    createUploadFolder?: Maybe<UploadFolderEntityResponse>;
    /** Create a new role */
@@ -1231,6 +1241,7 @@ export type Mutation = {
    deleteScrewdriverBitType?: Maybe<ScrewdriverBitTypeEntityResponse>;
    deleteSocialPost?: Maybe<SocialPostEntityResponse>;
    deleteStore?: Maybe<StoreEntityResponse>;
+   deleteTool?: Maybe<ToolEntityResponse>;
    deleteUploadFile?: Maybe<UploadFileEntityResponse>;
    deleteUploadFolder?: Maybe<UploadFolderEntityResponse>;
    /** Delete an existing role */
@@ -1264,6 +1275,7 @@ export type Mutation = {
    updateScrewdriverBitType?: Maybe<ScrewdriverBitTypeEntityResponse>;
    updateSocialPost?: Maybe<SocialPostEntityResponse>;
    updateStore?: Maybe<StoreEntityResponse>;
+   updateTool?: Maybe<ToolEntityResponse>;
    updateUploadFile?: Maybe<UploadFileEntityResponse>;
    updateUploadFolder?: Maybe<UploadFolderEntityResponse>;
    /** Update an existing role */
@@ -1369,6 +1381,10 @@ export type MutationCreateStoreArgs = {
    data: StoreInput;
 };
 
+export type MutationCreateToolArgs = {
+   data: ToolInput;
+};
+
 export type MutationCreateUploadFileArgs = {
    data: UploadFileInput;
 };
@@ -1446,6 +1462,10 @@ export type MutationDeleteSocialPostArgs = {
 };
 
 export type MutationDeleteStoreArgs = {
+   id: Scalars['ID'];
+};
+
+export type MutationDeleteToolArgs = {
    id: Scalars['ID'];
 };
 
@@ -1579,6 +1599,11 @@ export type MutationUpdateSocialPostArgs = {
 
 export type MutationUpdateStoreArgs = {
    data: StoreInput;
+   id: Scalars['ID'];
+};
+
+export type MutationUpdateToolArgs = {
+   data: ToolInput;
    id: Scalars['ID'];
 };
 
@@ -2025,6 +2050,8 @@ export type Query = {
    socialPosts?: Maybe<SocialPostEntityResponseCollection>;
    store?: Maybe<StoreEntityResponse>;
    stores?: Maybe<StoreEntityResponseCollection>;
+   tool?: Maybe<ToolEntityResponse>;
+   tools?: Maybe<ToolEntityResponseCollection>;
    uploadFile?: Maybe<UploadFileEntityResponse>;
    uploadFiles?: Maybe<UploadFileEntityResponseCollection>;
    uploadFolder?: Maybe<UploadFolderEntityResponse>;
@@ -2206,6 +2233,16 @@ export type QueryStoresArgs = {
    filters?: InputMaybe<StoreFiltersInput>;
    pagination?: InputMaybe<PaginationArg>;
    publicationState?: InputMaybe<PublicationState>;
+   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type QueryToolArgs = {
+   id?: InputMaybe<Scalars['ID']>;
+};
+
+export type QueryToolsArgs = {
+   filters?: InputMaybe<ToolFiltersInput>;
+   pagination?: InputMaybe<PaginationArg>;
    sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
@@ -2554,6 +2591,56 @@ export type StringFilterInput = {
    null?: InputMaybe<Scalars['Boolean']>;
    or?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
    startsWith?: InputMaybe<Scalars['String']>;
+};
+
+export type Tool = {
+   __typename?: 'Tool';
+   createdAt?: Maybe<Scalars['DateTime']>;
+   description: Scalars['String'];
+   image: UploadFileEntityResponse;
+   title: Scalars['String'];
+   trace: UploadFileEntityResponse;
+   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type ToolEntity = {
+   __typename?: 'ToolEntity';
+   attributes?: Maybe<Tool>;
+   id?: Maybe<Scalars['ID']>;
+};
+
+export type ToolEntityResponse = {
+   __typename?: 'ToolEntityResponse';
+   data?: Maybe<ToolEntity>;
+};
+
+export type ToolEntityResponseCollection = {
+   __typename?: 'ToolEntityResponseCollection';
+   data: Array<ToolEntity>;
+   meta: ResponseCollectionMeta;
+};
+
+export type ToolFiltersInput = {
+   and?: InputMaybe<Array<InputMaybe<ToolFiltersInput>>>;
+   createdAt?: InputMaybe<DateTimeFilterInput>;
+   description?: InputMaybe<StringFilterInput>;
+   id?: InputMaybe<IdFilterInput>;
+   not?: InputMaybe<ToolFiltersInput>;
+   or?: InputMaybe<Array<InputMaybe<ToolFiltersInput>>>;
+   title?: InputMaybe<StringFilterInput>;
+   updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type ToolInput = {
+   description?: InputMaybe<Scalars['String']>;
+   image?: InputMaybe<Scalars['ID']>;
+   title?: InputMaybe<Scalars['String']>;
+   trace?: InputMaybe<Scalars['ID']>;
+};
+
+export type ToolRelationResponseCollection = {
+   __typename?: 'ToolRelationResponseCollection';
+   data: Array<ToolEntity>;
 };
 
 export type UploadFile = {
