@@ -1,4 +1,3 @@
-import { Wordmark20th } from '@assets/svg/files';
 import {
    Alert,
    AlertIcon,
@@ -6,7 +5,6 @@ import {
    Box,
    DrawerCloseButton,
    Flex,
-   Icon,
    MenuDivider,
    MenuGroup,
    MenuList,
@@ -69,6 +67,7 @@ import {
    UserMenuHeading,
    MenuItemIcon,
    UserMenuLink,
+   Wordmark,
    WordmarkLink,
    useHeaderContext,
 } from '@ifixit/ui';
@@ -205,14 +204,8 @@ const DefaultLayoutComponent = function ({
                               href="/"
                               aria-label="Go to homepage"
                               pr="4"
-                              title="iFixit turns 20"
-                              padding={0}
                            >
-                              <Icon
-                                 as={Wordmark20th}
-                                 width="auto"
-                                 height="100%"
-                              />
+                              <Wordmark />
                            </WordmarkLink>
                            {menu && (
                               <NavigationMenu>
@@ -364,14 +357,8 @@ function LayoutNavigationDrawer({ menu }: LayoutNavigationDrawerProps) {
    return (
       <NavigationDrawer>
          <DrawerCloseButton />
-         <WordmarkLink
-            href="/"
-            aria-label="Go to homepage"
-            mb="8"
-            title="iFixit turns 20"
-            padding={0}
-         >
-            <Icon as={Wordmark20th} width="auto" height="100%" />
+         <WordmarkLink href="/" aria-label="Go to homepage" mb="8">
+            <Wordmark />
          </WordmarkLink>
          <NavigationAccordion>
             {menu.items.map((item, index) => {
