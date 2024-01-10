@@ -40,13 +40,20 @@ const withSentry: FetchMiddleware = (fetcher) => async (input, init) => {
       });
    }
 
+   let body;
+   try {
+      body = init?.body ? JSON.parse(String(init?.body)) : undefined;
+   } catch (e) {
+      body = init?.body ?? undefined;
+   }
+
    const context = {
       // Underscore sorts the resource first in Sentry's UI
       _resource: input,
       headers: init?.headers,
       method: init?.method,
       // Parse to pretty print GraphQL queries
-      body: init?.body ? JSON.parse(String(init?.body)) : undefined,
+      body,
    };
    try {
       const response = await fetcher(input, init);
