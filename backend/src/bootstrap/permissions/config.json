@@ -26,6 +26,8 @@
       "api::screwdriver-bit-type.screwdriver-bit-type.find",
       "api::screwdriver-bit-type.screwdriver-bit-type.findOne",
       "api::screwdriver-bit.screwdriver-bit.find",
-      "api::screwdriver-bit.screwdriver-bit.findOne"
+      "api::screwdriver-bit.screwdriver-bit.findOne",
+      "api::tool.tool.find",
+      "api::tool.tool.findOne"
    ]
 }

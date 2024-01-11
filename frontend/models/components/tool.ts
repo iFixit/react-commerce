@@ -8,8 +8,12 @@ export const ToolSchema = z.object({
    id: z.string(),
    title: z.string(),
    description: z.string(),
-   image: ImageSchema.nullable(),
-   trace: ImageSchema.nullable(),
+   image: ImageSchema,
+   trace: ImageSchema,
+   top: z.number(),
+   left: z.number(),
+   width: z.number(),
+   height: z.number(),
 });
 
 export function toolsFromStrapiFragment(
@@ -20,16 +24,30 @@ export function toolsFromStrapiFragment(
 
    if (id == null || attributes == null) return null;
 
-   const { title, description, image, trace } = attributes;
+   const { title, description, image, trace, top, left, width, height } =
+      attributes;
+   const parsedImage = imageFromStrapi(image);
+   const parsedTrace = imageFromStrapi(trace);
 
-   if (title == null || description == null || image == null || trace == null)
+   if (
+      title == null ||
+      description == null ||
+      image == null ||
+      trace == null ||
+      parsedImage == null ||
+      parsedTrace == null
+   )
       return null;
 
    return {
       id,
       title,
       description,
-      image: imageFromStrapi(image),
-      trace: imageFromStrapi(trace),
+      image: parsedImage,
+      trace: parsedTrace,
+      top: top ?? 0,
+      left: left ?? 0,
+      width: width ?? 0,
+      height: height ?? 0,
    };
 }

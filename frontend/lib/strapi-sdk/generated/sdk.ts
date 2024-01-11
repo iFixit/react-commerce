@@ -3233,6 +3233,10 @@ export type ToolFieldsFragment = {
       __typename?: 'Tool';
       title: string;
       description: string;
+      top?: number | null;
+      left?: number | null;
+      width?: number | null;
+      height?: number | null;
       image: {
          __typename?: 'UploadFileEntityResponse';
          data?: {
@@ -3772,6 +3776,10 @@ export type FindProductQuery = {
                              __typename?: 'Tool';
                              title: string;
                              description: string;
+                             top?: number | null;
+                             left?: number | null;
+                             width?: number | null;
+                             height?: number | null;
                              image: {
                                 __typename?: 'UploadFileEntityResponse';
                                 data?: {
@@ -6393,6 +6401,10 @@ export type ToolsSectionFieldsFragment = {
             __typename?: 'Tool';
             title: string;
             description: string;
+            top?: number | null;
+            left?: number | null;
+            width?: number | null;
+            height?: number | null;
             image: {
                __typename?: 'UploadFileEntityResponse';
                data?: {
@@ -7050,6 +7062,10 @@ export const ToolFieldsFragmentDoc = `
     trace {
       ...ImageFields
     }
+    top
+    left
+    width
+    height
   }
 }
     `;

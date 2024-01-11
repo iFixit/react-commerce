@@ -9,5 +9,9 @@ fragment ToolFields on ToolEntity {
       trace {
          ...ImageFields
       }
+      top
+      left
+      width
+      height
    }
 }

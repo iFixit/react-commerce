@@ -4,19 +4,29 @@ import { SectionHeaderWrapper } from '../SectionHeaderWrapper';
 import { SectionHeading } from '../SectionHeading';
 
 import React from 'react';
-// import { toolsData } from './toolsData';
 import { ResponsiveImage } from '@ifixit/ui/misc';
+import { Image } from '@models/components/image';
+import { ReactSVG } from 'react-svg';
 
-const FIRST_ITEM_WIDTH = 112;
-const LAST_ITEM_WIDTH = 134;
+const FIRST_ITEM_WIDTH = 81;
+const LAST_ITEM_WIDTH = 81;
 
 export interface ToolsSectionProps {
    id: string;
-   tools: { title: string; description: string; image: any; trace: any }[];
+   toolsData: {
+      title: string;
+      description: string;
+      image: Image;
+      trace: Image;
+      top: number;
+      left: number;
+      width: number;
+      height: number;
+   }[];
 }
 
 export function ToolsSection({ id, toolsData }: ToolsSectionProps) {
-   const selectedToolIndexRef = React.useRef(6);
+   const selectedToolIndexRef = React.useRef(Math.floor(toolsData.length / 2));
    const containerRef = React.useRef<HTMLDivElement>(null);
    const toolRefs = React.useRef<(HTMLDivElement | null)[]>([]);
 
@@ -89,7 +99,7 @@ export function ToolsSection({ id, toolsData }: ToolsSectionProps) {
             setSelectedTool(toolsData[selectedToolIndexRef.current]);
          }
       }
-   }, [containerRef, isScrolling]);
+   }, [containerRef, isScrolling, toolsData]);
 
    const handleClick = (index: number) => {
       selectedToolIndexRef.current = index;
@@ -121,20 +131,20 @@ export function ToolsSection({ id, toolsData }: ToolsSectionProps) {
                alignSelf="stretch"
                flex="none"
             />
-            {toolsData.map(({ type, ...tool }, index) => {
-               const { width, height } = tool.imageSize;
+            {toolsData.map((tool, index) => {
                return (
                   <Flex
-                     key={type}
+                     key={tool.title}
                      scrollSnapAlign="center"
                      ref={(el) => (toolRefs.current[index] = el)}
                      position="relative"
                      alignItems="flex-end"
                      mx={index === toolsData.length - 1 || index === 0 ? 0 : 8}
                   >
-                     <tool.shape
+                     <ReactSVG
+                        src={tool.trace.url}
                         onClick={() => handleClick(index)}
-                        sx={{
+                        style={{
                            strokeDasharray: 1000,
                            animation:
                               selectedToolIndexRef.current === index
@@ -144,9 +154,9 @@ export function ToolsSection({ id, toolsData }: ToolsSectionProps) {
                      />
                      <ResponsiveImage
                         alt={tool.title}
-                        src={tool.imageUrl}
-                        width={width}
-                        height={height}
+                        src={tool.image.url}
+                        width={tool.width}
+                        height={tool.height}
                         style={{
                            opacity:
                               selectedToolIndexRef.current === index ? 1 : 0,
@@ -155,7 +165,10 @@ export function ToolsSection({ id, toolsData }: ToolsSectionProps) {
                            transition: 'opacity 300ms ease-in',
                            transitionDelay: '500ms',
                            pointerEvents: 'none',
-                           ...tool.imageStyle,
+                           ...{ left: tool.left ? `${tool.left}px` : '' },
+                           ...{ top: tool.top ? `${tool.top}px` : '' },
+                           ...{ width: tool.width ? `${tool.width}px` : '' },
+                           ...{ height: tool.height ? `${tool.height}px` : '' },
                         }}
                      />
                   </Flex>

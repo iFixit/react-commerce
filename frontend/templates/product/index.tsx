@@ -251,7 +251,6 @@ const ProductTemplate: NextPageWithLayout<ProductTemplateProps> = () => {
                      );
                   }
                   case 'Tools': {
-                     console.log(section.tools);
                      return (
                         <ToolsSection
                            key={section.id}
