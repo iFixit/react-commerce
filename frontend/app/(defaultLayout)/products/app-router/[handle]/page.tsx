@@ -1,5 +1,8 @@
+import { DEFAULT_STORE_CODE, IFIXIT_ORIGIN } from '@config/env';
 import { flags } from '@config/flags';
-import { notFound } from 'next/navigation';
+import Product from '@pages/api/nextjs/cache/product';
+import { devSandboxOrigin, shouldSkipCache } from 'app/_helpers/app-helpers';
+import { notFound, redirect } from 'next/navigation';
 
 interface ProductPageProps {
    params: {
@@ -11,8 +14,24 @@ interface ProductPageProps {
    };
 }
 
-export default function ProductPage({ params }: ProductPageProps) {
+export default async function ProductPage({
+   params,
+   searchParams,
+}: ProductPageProps) {
    if (!flags.APP_ROUTER_PRODUCT_PAGE_ENABLED) notFound();
 
-   return <div>Product: {params.handle}</div>;
+   const data = await Product.get(
+      {
+         handle: params.handle,
+         storeCode: DEFAULT_STORE_CODE,
+         ifixitOrigin: devSandboxOrigin() ?? IFIXIT_ORIGIN,
+      },
+      { forceMiss: shouldSkipCache(searchParams) }
+   );
+
+   if (data == null) notFound();
+
+   if (data.__typename === 'ProductRedirect') redirect(data.target);
+
+   return <div>Product: {data.title}</div>;
 }
