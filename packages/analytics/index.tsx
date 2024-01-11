@@ -78,7 +78,7 @@ export function convertCartLineItemsToAnalyticsItem(
          item_variant: getVariantIdFromEncodedVariantURI(item.shopifyVariantId),
          quantity: item.quantity,
          price: Number(item.price.amount),
-         categories: item.categories,
+         categories: item.categories ?? [],
       };
    });
 }

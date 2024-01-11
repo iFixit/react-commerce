@@ -5,7 +5,11 @@ import {
 } from '@config/env';
 import { filterFalsyItems } from '@helpers/application-helpers';
 import { printZodError } from '@helpers/zod-helpers';
-import { getItemCodeFromSku, isLifetimeWarranty } from '@ifixit/helpers';
+import {
+   getItemCodeFromSku,
+   isLifetimeWarranty,
+   getCategoriesFromTags,
+} from '@ifixit/helpers';
 import type { ProductPreviewFieldsFragment } from '@lib/shopify-storefront-sdk';
 import algoliasearch from 'algoliasearch/lite';
 import { z } from 'zod';
@@ -120,27 +124,6 @@ export function productPreviewFromShopify(
       categories: getCategoriesFromTags(fields.product.tags) || null,
    };
 }
-
-const getCategoriesFromTags = (tags: string[]): string[] => {
-   const tagsObj: Record<string, string> = {};
-   tags.forEach((tag) => {
-      const [name, val] = tag.split('=');
-      tagsObj[name] = val;
-   });
-   console.log('Tags: ', tagsObj);
-   let firstCategory = tagsObj['Part Category'];
-   let secondCategory = '';
-   if (tagsObj['Is Tool'] === 'true') {
-      secondCategory = tagsObj['Tool Category'];
-   } else {
-      secondCategory = tagsObj['Part SubCategory'];
-   }
-
-   if (secondCategory && !firstCategory) {
-      firstCategory = 'N/A';
-   }
-   return [firstCategory, secondCategory].filter(Boolean);
-};
 
 interface GetProductPreviewsFromAlgoliaProps {
    query?: string;

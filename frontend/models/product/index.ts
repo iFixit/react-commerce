@@ -1,5 +1,5 @@
 import { filterFalsyItems } from '@helpers/application-helpers';
-import { parseItemcode } from '@ifixit/helpers';
+import { parseItemcode, getCategoriesFromTags } from '@ifixit/helpers';
 import type { FindProductQuery as ShopifyFindProductQuery } from '@lib/shopify-storefront-sdk';
 import type { FindProductQuery as StrapiFindProductQuery } from '@lib/strapi-sdk';
 import {
@@ -179,7 +179,7 @@ export async function getProduct({
       ),
       vendor: shopifyProduct.vendor ?? null,
       crossSellVariants: getAllCrossSellProductVariant(shopifyProduct),
-      categories: iFixitProduct?.categories ?? [],
+      categories: getCategoriesFromTags(shopifyProduct.tags),
       sections,
    };
 }
