@@ -4,7 +4,8 @@
    "info": {
       "singularName": "tool",
       "pluralName": "tools",
-      "displayName": "Tool"
+      "displayName": "Tool",
+      "description": ""
    },
    "options": {
       "draftAndPublish": false
@@ -20,16 +21,28 @@
          "required": true
       },
       "image": {
-         "allowedTypes": ["images"],
          "type": "media",
          "multiple": false,
-         "required": true
+         "required": true,
+         "allowedTypes": ["images"]
       },
       "trace": {
-         "allowedTypes": ["images"],
          "type": "media",
          "multiple": false,
-         "required": true
+         "required": true,
+         "allowedTypes": ["images"]
+      },
+      "top": {
+         "type": "integer"
+      },
+      "left": {
+         "type": "integer"
+      },
+      "width": {
+         "type": "integer"
+      },
+      "height": {
+         "type": "integer"
       }
    }
 }

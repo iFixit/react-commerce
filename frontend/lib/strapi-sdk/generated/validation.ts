@@ -1207,20 +1207,28 @@ export function ToolFiltersInputSchema(): z.ZodObject<
       and: z.array(z.lazy(() => ToolFiltersInputSchema().nullable())).nullish(),
       createdAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
       description: z.lazy(() => StringFilterInputSchema().nullish()),
+      height: z.lazy(() => IntFilterInputSchema().nullish()),
       id: z.lazy(() => IdFilterInputSchema().nullish()),
+      left: z.lazy(() => IntFilterInputSchema().nullish()),
       not: z.lazy(() => ToolFiltersInputSchema().nullish()),
       or: z.array(z.lazy(() => ToolFiltersInputSchema().nullable())).nullish(),
       title: z.lazy(() => StringFilterInputSchema().nullish()),
+      top: z.lazy(() => IntFilterInputSchema().nullish()),
       updatedAt: z.lazy(() => DateTimeFilterInputSchema().nullish()),
+      width: z.lazy(() => IntFilterInputSchema().nullish()),
    });
 }
 
 export function ToolInputSchema(): z.ZodObject<Properties<ToolInput>> {
    return z.object<Properties<ToolInput>>({
       description: z.string().nullish(),
+      height: z.number().nullish(),
       image: z.string().nullish(),
+      left: z.number().nullish(),
       title: z.string().nullish(),
+      top: z.number().nullish(),
       trace: z.string().nullish(),
+      width: z.number().nullish(),
    });
 }
 

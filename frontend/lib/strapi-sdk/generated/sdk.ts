@@ -2597,10 +2597,14 @@ export type Tool = {
    __typename?: 'Tool';
    createdAt?: Maybe<Scalars['DateTime']>;
    description: Scalars['String'];
+   height?: Maybe<Scalars['Int']>;
    image: UploadFileEntityResponse;
+   left?: Maybe<Scalars['Int']>;
    title: Scalars['String'];
+   top?: Maybe<Scalars['Int']>;
    trace: UploadFileEntityResponse;
    updatedAt?: Maybe<Scalars['DateTime']>;
+   width?: Maybe<Scalars['Int']>;
 };
 
 export type ToolEntity = {
@@ -2624,18 +2628,26 @@ export type ToolFiltersInput = {
    and?: InputMaybe<Array<InputMaybe<ToolFiltersInput>>>;
    createdAt?: InputMaybe<DateTimeFilterInput>;
    description?: InputMaybe<StringFilterInput>;
+   height?: InputMaybe<IntFilterInput>;
    id?: InputMaybe<IdFilterInput>;
+   left?: InputMaybe<IntFilterInput>;
    not?: InputMaybe<ToolFiltersInput>;
    or?: InputMaybe<Array<InputMaybe<ToolFiltersInput>>>;
    title?: InputMaybe<StringFilterInput>;
+   top?: InputMaybe<IntFilterInput>;
    updatedAt?: InputMaybe<DateTimeFilterInput>;
+   width?: InputMaybe<IntFilterInput>;
 };
 
 export type ToolInput = {
    description?: InputMaybe<Scalars['String']>;
+   height?: InputMaybe<Scalars['Int']>;
    image?: InputMaybe<Scalars['ID']>;
+   left?: InputMaybe<Scalars['Int']>;
    title?: InputMaybe<Scalars['String']>;
+   top?: InputMaybe<Scalars['Int']>;
    trace?: InputMaybe<Scalars['ID']>;
+   width?: InputMaybe<Scalars['Int']>;
 };
 
 export type ToolRelationResponseCollection = {

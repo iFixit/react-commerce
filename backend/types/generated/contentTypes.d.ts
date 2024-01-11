@@ -1592,6 +1592,7 @@ export interface ApiToolTool extends Schema.CollectionType {
       singularName: 'tool';
       pluralName: 'tools';
       displayName: 'Tool';
+      description: '';
    };
    options: {
       draftAndPublish: false;
@@ -1601,6 +1602,10 @@ export interface ApiToolTool extends Schema.CollectionType {
       description: Attribute.RichText & Attribute.Required;
       image: Attribute.Media & Attribute.Required;
       trace: Attribute.Media & Attribute.Required;
+      top: Attribute.Integer;
+      left: Attribute.Integer;
+      width: Attribute.Integer;
+      height: Attribute.Integer;
       createdAt: Attribute.DateTime;
       updatedAt: Attribute.DateTime;
       createdBy: Attribute.Relation<
