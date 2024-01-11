@@ -1,11 +1,10 @@
 import { invariant, timeAsync } from '@ifixit/helpers';
+import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
+import { fetchProductData } from '@lib/ifixit-api/productData';
 import { getServerShopifyStorefrontSdk } from '@lib/shopify-storefront-sdk';
 import { strapi } from '@lib/strapi-sdk';
-import { Product, getProduct } from '.';
+import { Product, ProductRedirect, getProduct } from '.';
 import { findStoreByCode } from '../store';
-import { fetchProductData } from '@lib/ifixit-api/productData';
-import { IFixitAPIClient } from '@ifixit/ifixit-api-client';
-import { z } from 'zod';
 
 export type FindProductArgs = {
    handle: string;
@@ -13,17 +12,11 @@ export type FindProductArgs = {
    ifixitOrigin: string;
 };
 
-type ShopifyProductRedirect = z.infer<typeof ShopifyProductRedirectSchema>;
-export const ShopifyProductRedirectSchema = z.object({
-   __typename: z.literal('ProductRedirect'),
-   target: z.string(),
-});
-
 export async function findProduct({
    handle,
    storeCode,
    ifixitOrigin,
-}: FindProductArgs): Promise<Product | ShopifyProductRedirect | null> {
+}: FindProductArgs): Promise<Product | ProductRedirect | null> {
    const store = await findStoreByCode(storeCode);
    const { storefrontDomain, storefrontDelegateAccessToken } = store.shopify;
    invariant(
@@ -53,24 +46,31 @@ export async function findProduct({
          ),
       ]);
 
-   if (iFixitQueryResponse?.redirectSkuUrl) {
+   return (
+      getIFixitRedirect() ??
+      getProduct({
+         shopifyProduct: shopifyQueryResponse.product,
+         strapiProduct: strapiQueryResponse.products?.data[0],
+         iFixitProduct: iFixitQueryResponse,
+      }) ??
+      getShopifyRedirect()
+   );
+
+   function getIFixitRedirect(): ProductRedirect | null {
+      if (iFixitQueryResponse?.redirectSkuUrl == null) return null;
+
       return {
          __typename: 'ProductRedirect',
          target: iFixitQueryResponse.redirectSkuUrl,
       };
    }
 
-   const urlRedirect = shopifyQueryResponse.urlRedirects.edges[0]?.node?.target;
-   const product = await getProduct({
-      shopifyProduct: shopifyQueryResponse.product,
-      strapiProduct: strapiQueryResponse.products?.data[0],
-      iFixitProduct: iFixitQueryResponse,
-   });
-   if (product == null) {
-      return urlRedirect
-         ? { __typename: 'ProductRedirect', target: urlRedirect }
-         : null;
-   }
+   function getShopifyRedirect(): ProductRedirect | null {
+      const urlRedirect =
+         shopifyQueryResponse.urlRedirects.edges[0]?.node?.target;
 
-   return product;
+      if (urlRedirect == null) return null;
+
+      return { __typename: 'ProductRedirect', target: urlRedirect };
+   }
 }
