@@ -1,3 +1,9 @@
 fragment ToolsSectionFields on ComponentSectionTools {
    id
+   title
+   tools(pagination: { limit: 1000 }) {
+      data {
+         ...ToolFields
+      }
+   }
 }

@@ -3226,6 +3226,40 @@ export type ScrewdriverBitTypeFieldsFragment = {
    } | null;
 };
 
+export type ToolFieldsFragment = {
+   __typename?: 'ToolEntity';
+   id?: string | null;
+   attributes?: {
+      __typename?: 'Tool';
+      title: string;
+      description: string;
+      image: {
+         __typename?: 'UploadFileEntityResponse';
+         data?: {
+            __typename?: 'UploadFileEntity';
+            attributes?: {
+               __typename?: 'UploadFile';
+               alternativeText?: string | null;
+               url: string;
+               formats?: any | null;
+            } | null;
+         } | null;
+      };
+      trace: {
+         __typename?: 'UploadFileEntityResponse';
+         data?: {
+            __typename?: 'UploadFileEntity';
+            attributes?: {
+               __typename?: 'UploadFile';
+               alternativeText?: string | null;
+               url: string;
+               formats?: any | null;
+            } | null;
+         } | null;
+      };
+   } | null;
+};
+
 export type FindPageQueryVariables = Exact<{
    filters?: InputMaybe<PageFiltersInput>;
    publicationState?: InputMaybe<PublicationState>;
@@ -3725,7 +3759,47 @@ export type FindProductQuery = {
                     id: string;
                  }
                | { __typename: 'ComponentSectionStories' }
-               | { __typename: 'ComponentSectionTools'; id: string }
+               | {
+                    __typename: 'ComponentSectionTools';
+                    id: string;
+                    title?: string | null;
+                    tools?: {
+                       __typename?: 'ToolRelationResponseCollection';
+                       data: Array<{
+                          __typename?: 'ToolEntity';
+                          id?: string | null;
+                          attributes?: {
+                             __typename?: 'Tool';
+                             title: string;
+                             description: string;
+                             image: {
+                                __typename?: 'UploadFileEntityResponse';
+                                data?: {
+                                   __typename?: 'UploadFileEntity';
+                                   attributes?: {
+                                      __typename?: 'UploadFile';
+                                      alternativeText?: string | null;
+                                      url: string;
+                                      formats?: any | null;
+                                   } | null;
+                                } | null;
+                             };
+                             trace: {
+                                __typename?: 'UploadFileEntityResponse';
+                                data?: {
+                                   __typename?: 'UploadFileEntity';
+                                   attributes?: {
+                                      __typename?: 'UploadFile';
+                                      alternativeText?: string | null;
+                                      url: string;
+                                      formats?: any | null;
+                                   } | null;
+                                } | null;
+                             };
+                          } | null;
+                       }>;
+                    } | null;
+                 }
                | { __typename: 'Error' }
                | null
             >;
@@ -6309,6 +6383,43 @@ export type StatsSectionFieldsFragment = {
 export type ToolsSectionFieldsFragment = {
    __typename?: 'ComponentSectionTools';
    id: string;
+   title?: string | null;
+   tools?: {
+      __typename?: 'ToolRelationResponseCollection';
+      data: Array<{
+         __typename?: 'ToolEntity';
+         id?: string | null;
+         attributes?: {
+            __typename?: 'Tool';
+            title: string;
+            description: string;
+            image: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            };
+            trace: {
+               __typename?: 'UploadFileEntityResponse';
+               data?: {
+                  __typename?: 'UploadFileEntity';
+                  attributes?: {
+                     __typename?: 'UploadFile';
+                     alternativeText?: string | null;
+                     url: string;
+                     formats?: any | null;
+                  } | null;
+               } | null;
+            };
+         } | null;
+      }>;
+   } | null;
 };
 
 export const ImageFieldsFragmentDoc = `
@@ -6927,9 +7038,30 @@ export const StatsSectionFieldsFragmentDoc = `
   }
 }
     `;
+export const ToolFieldsFragmentDoc = `
+    fragment ToolFields on ToolEntity {
+  id
+  attributes {
+    title
+    description
+    image {
+      ...ImageFields
+    }
+    trace {
+      ...ImageFields
+    }
+  }
+}
+    `;
 export const ToolsSectionFieldsFragmentDoc = `
     fragment ToolsSectionFields on ComponentSectionTools {
   id
+  title
+  tools(pagination: {limit: 1000}) {
+    data {
+      ...ToolFields
+    }
+  }
 }
     `;
 export const FindPageDocument = `
@@ -7029,7 +7161,8 @@ ${FaqFieldsFragmentDoc}
 ${DeviceCompatibilitySectionFieldsFragmentDoc}
 ${BitTableSectionFieldsFragmentDoc}
 ${ScrewdriverBitFieldsFragmentDoc}
-${ToolsSectionFieldsFragmentDoc}`;
+${ToolsSectionFieldsFragmentDoc}
+${ToolFieldsFragmentDoc}`;
 export const FindProductListDocument = `
     query findProductList($filters: ProductListFiltersInput) {
   productLists(pagination: {limit: 1}, filters: $filters, publicationState: LIVE) {

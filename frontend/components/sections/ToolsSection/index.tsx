@@ -4,7 +4,7 @@ import { SectionHeaderWrapper } from '../SectionHeaderWrapper';
 import { SectionHeading } from '../SectionHeading';
 
 import React from 'react';
-import { toolsData } from './toolsData';
+// import { toolsData } from './toolsData';
 import { ResponsiveImage } from '@ifixit/ui/misc';
 
 const FIRST_ITEM_WIDTH = 112;
@@ -12,9 +12,10 @@ const LAST_ITEM_WIDTH = 134;
 
 export interface ToolsSectionProps {
    id: string;
+   tools: { title: string; description: string; image: any; trace: any }[];
 }
 
-export function ToolsSection({ id }: ToolsSectionProps) {
+export function ToolsSection({ id, toolsData }: ToolsSectionProps) {
    const selectedToolIndexRef = React.useRef(6);
    const containerRef = React.useRef<HTMLDivElement>(null);
    const toolRefs = React.useRef<(HTMLDivElement | null)[]>([]);

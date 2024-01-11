@@ -1,0 +1,13 @@
+fragment ToolFields on ToolEntity {
+   id
+   attributes {
+      title
+      description
+      image {
+         ...ImageFields
+      }
+      trace {
+         ...ImageFields
+      }
+   }
+}
