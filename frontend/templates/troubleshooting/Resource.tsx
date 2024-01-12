@@ -37,6 +37,7 @@ export function GuideResource({ guide }: { guide: SectionGuide }) {
          timeRequired={guide.time_required}
          difficulty={guide.difficulty}
          spacing={1.5}
+         showBuyButton={'View Guide'}
       >
          {guide.introduction_rendered && (
             <PrerenderedHTML
