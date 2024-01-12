@@ -7,7 +7,11 @@ import {
 } from '@ifixit/analytics';
 import { assertNever, getProductVariantSku } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+   QueryClient,
+   useMutation,
+   useQueryClient,
+} from '@tanstack/react-query';
 import { Cart, CartLineItem } from '../types';
 import { cartKeys } from '../utils';
 
@@ -164,4 +168,13 @@ function addLineItem(cart: Cart, inputLineItem: CartLineItem): Cart {
          itemsCount: cart.totals.itemsCount + inputLineItem.quantity,
       },
    };
+}
+
+export function clearAddToCartErrors(client: QueryClient) {
+   const currentCart = client.getQueryData<Cart | undefined>(cartKeys.cart);
+   if (currentCart == null) {
+      return;
+   }
+   currentCart.error = false;
+   client.setQueryData<Cart | undefined>(cartKeys.cart, currentCart);
 }

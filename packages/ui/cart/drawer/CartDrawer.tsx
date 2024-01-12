@@ -25,7 +25,13 @@ import {
 } from '@chakra-ui/react';
 import { faCircleExclamation } from '@fortawesome/pro-solid-svg-icons';
 import { useAppContext } from '@ifixit/app';
-import { CartError, useCart, useCheckout } from '@ifixit/cart-sdk';
+import {
+   CartError,
+   clearAddToCartErrors,
+   useCart,
+   useCheckout,
+   Cart,
+} from '@ifixit/cart-sdk';
 import { formatMoney } from '@ifixit/helpers';
 import { FaIcon } from '@ifixit/icons';
 import * as React from 'react';
@@ -36,6 +42,8 @@ import { CartEmptyState } from './CartEmptyState';
 import { CartLineItem } from './CartLineItem';
 import { CrossSell } from './CrossSell';
 import { useCartDrawer } from './hooks/useCartDrawer';
+import { useQueryClient, QueryObserver } from '@tanstack/react-query';
+import { cartKeys } from '@ifixit/cart-sdk/utils';
 
 export function CartDrawer() {
    const appContext = useAppContext();
@@ -44,6 +52,24 @@ export function CartDrawer() {
    const cart = useCart();
    const checkout = useCheckout();
    const isCartEmpty = cart.isFetched && !cart.data?.hasItemsInCart;
+   const client = useQueryClient();
+   const [addToCartErrors, setErrors] = React.useState(cart.data?.error);
+   const clearOutAddToCartErrors = () => clearAddToCartErrors(client);
+   React.useEffect(() => {
+      const cartUpdateErrorObserver = new QueryObserver(client, {
+         queryKey: cartKeys.cart,
+         enabled: true,
+      });
+
+      const unsubscribe = cartUpdateErrorObserver.subscribe((newCart) => {
+         const cartData = newCart?.data as Cart;
+         setErrors(cartData?.error);
+      });
+
+      return () => {
+         unsubscribe();
+      };
+   }, [client]);
 
    return (
       <>
@@ -130,6 +156,12 @@ export function CartDrawer() {
                               persists, please contact us.
                            </AlertDescription>
                         </Alert>
+                     )}
+                     {addToCartErrors && (
+                        <CartUpdateError
+                           errors={addToCartErrors}
+                           onDismiss={clearOutAddToCartErrors}
+                        />
                      )}
                      {cart.data?.hasItemsInCart && (
                         <>
