@@ -5,17 +5,17 @@ import { PageFrame } from './components/page-frame';
 
 export default async function DefaultLayout({
    children,
-   regionMenu,
+   storeSelect,
 }: {
    children: ReactNode;
-   regionMenu: React.ReactNode;
+   storeSelect: React.ReactNode;
 }) {
    const layoutData = await getLayoutServerSideProps({
       storeCode: DEFAULT_STORE_CODE,
    });
 
    return (
-      <PageFrame regionMenu={regionMenu} layoutData={layoutData}>
+      <PageFrame storeSelect={storeSelect} layoutData={layoutData}>
          {children}
       </PageFrame>
    );

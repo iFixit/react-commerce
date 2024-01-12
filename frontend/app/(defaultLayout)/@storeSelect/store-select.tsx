@@ -5,11 +5,13 @@ import { StoreMenuButton, StoreMenuItem } from '@ifixit/footer';
 import { Flag, FlagCountryCode } from '@ifixit/icons';
 import { StoreListItem } from '@models/store';
 
-interface RegionMenuProps {
-   regions: StoreListItem[];
+interface StoreSelectProps {
+   stores: StoreListItem[];
 }
 
-export function RegionMenu({ regions }: RegionMenuProps) {
+export function StoreSelect({ stores }: StoreSelectProps) {
+   if (stores.length === 0) return null;
+
    return (
       <Menu isLazy lazyBehavior="keepMounted">
          <StoreMenuButton
@@ -19,15 +21,15 @@ export function RegionMenu({ regions }: RegionMenuProps) {
             Region
          </StoreMenuButton>
          <MenuList>
-            {regions.map((region) => {
+            {stores.map((store) => {
                return (
                   <StoreMenuItem
-                     key={region.code}
+                     key={store.code}
                      as="a"
-                     href={region.url}
-                     icon={<Flag code={region.code.toUpperCase() as any} />}
-                     name={region.name}
-                     currency={region.currency}
+                     href={store.url}
+                     icon={<Flag code={store.code.toUpperCase() as any} />}
+                     name={store.name}
+                     currency={store.currency}
                   />
                );
             })}

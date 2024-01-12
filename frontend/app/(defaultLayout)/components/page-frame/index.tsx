@@ -12,13 +12,13 @@ import { Header } from './header';
 
 interface PageFrameProps {
    children: ReactNode;
-   regionMenu: React.ReactNode;
+   storeSelect: React.ReactNode;
    layoutData: DefaultLayoutProps;
 }
 
 export function PageFrame({
    children,
-   regionMenu,
+   storeSelect,
    layoutData,
 }: PageFrameProps) {
    const {
@@ -46,7 +46,7 @@ export function PageFrame({
                      menu2={footer.menu2}
                      menu3={footer.menu3}
                      newsletterFormConfig={globalSettings.newsletterForm}
-                     regionMenu={regionMenu}
+                     storeSelect={storeSelect}
                   />
                </Flex>
             </Box>

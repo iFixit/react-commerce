@@ -1,27 +1,17 @@
 import { DEFAULT_STORE_CODE, IFIXIT_ORIGIN } from '@config/env';
 import { getStoreList } from '@models/store';
 import Product from '@pages/api/nextjs/cache/product';
+import { ProductPageProps } from 'app/(defaultLayout)/products/app-router/[handle]/page';
 import { devSandboxOrigin, shouldSkipCache } from 'app/_helpers/app-helpers';
-import { RegionMenu } from '../../../components/region-menu';
+import { StoreSelect } from '../../../store-select';
 
-interface RegionMenuSlotProps {
-   params: {
-      handle: string;
-   };
-   searchParams: {
-      disableCacheGets?: string | string[] | undefined;
-   };
-}
-
-export default async function RegionMenuSlot({
+export default async function ProductPageStoreSelect({
    params,
    searchParams,
-}: RegionMenuSlotProps) {
+}: ProductPageProps) {
    const [stores, product] = await Promise.all([getStoreList(), getProduct()]);
 
-   if (stores.length === 0) return null;
-
-   return <RegionMenu regions={product ? storesWithProductUrls() : stores} />;
+   return <StoreSelect stores={product ? storesWithProductUrls() : stores} />;
 
    async function getProduct() {
       const result = await Product.get(
