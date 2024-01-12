@@ -23,7 +23,7 @@ import type { NewsletterFormConfig } from '@models/global-settings';
 import type { Store } from '@models/store';
 
 interface FooterProps {
-   regionMenu: React.ReactNode;
+   storeSelect: React.ReactNode;
    partners: Store['footer']['partners'];
    bottomMenu: Store['footer']['bottomMenu'];
    socialMediaAccounts: Store['socialMediaAccounts'];
@@ -34,7 +34,7 @@ interface FooterProps {
 }
 
 export function Footer({
-   regionMenu,
+   storeSelect,
    partners,
    bottomMenu,
    socialMediaAccounts,
@@ -57,7 +57,7 @@ export function Footer({
 
             <FooterSettingsSection>
                <FooterSettings>
-                  {regionMenu}
+                  {storeSelect}
                   <FooterLink
                      href="https://www.ifixit.com/Translate"
                      icon={Language}

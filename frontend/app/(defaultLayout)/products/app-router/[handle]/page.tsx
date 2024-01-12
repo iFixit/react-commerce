@@ -4,7 +4,7 @@ import Product from '@pages/api/nextjs/cache/product';
 import { devSandboxOrigin, shouldSkipCache } from 'app/_helpers/app-helpers';
 import { notFound, redirect } from 'next/navigation';
 
-interface ProductPageProps {
+export interface ProductPageProps {
    params: {
       handle: string;
    };
