@@ -254,15 +254,41 @@ function CheckoutError({ error, onDismiss }: CheckoutErrorProps) {
          );
    }
 
+   return <DrawerError errorMsg={checkoutError} onDismiss={onDismiss} />;
+}
+
+interface CartUpdateErrorProps {
+   errors: any;
+   onDismiss: () => void;
+}
+
+function CartUpdateError({ errors, onDismiss }: CartUpdateErrorProps) {
+   let cartError = (
+      <>
+         Oops! Something went wrong when updating your cart. If the problem
+         persists please contact{' '}
+         <a href="mailto:support@ifixit.com">support@ifixit.com</a>
+      </>
+   );
+
+   return <DrawerError errorMsg={cartError} onDismiss={onDismiss} />;
+}
+
+interface DrawerErrorProps {
+   errorMsg: React.ReactElement | null;
+   onDismiss: () => void;
+}
+
+function DrawerError({ errorMsg, onDismiss }: DrawerErrorProps) {
    React.useEffect(() => {
-      if (checkoutError) {
+      if (errorMsg) {
          const id = setTimeout(onDismiss, 5000);
          return () => clearTimeout(id);
       }
-   }, [checkoutError, onDismiss]);
+   }, [errorMsg, onDismiss]);
 
    return (
-      <Collapse show={checkoutError != null}>
+      <Collapse show={errorMsg != null}>
          <Box p="3">
             <Alert status="error">
                <FaIcon
@@ -273,7 +299,7 @@ function CheckoutError({ error, onDismiss }: CheckoutErrorProps) {
                   color="red.500"
                />
                <Box flexGrow={1}>
-                  <AlertDescription>{checkoutError}</AlertDescription>
+                  <AlertDescription>{errorMsg}</AlertDescription>
                </Box>
                <CloseButton
                   alignSelf="flex-start"
