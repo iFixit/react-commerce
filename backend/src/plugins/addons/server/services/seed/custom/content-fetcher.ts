@@ -90,11 +90,11 @@ export class ContentFetcher<Content = any> {
       const query = this.computeQuery(params);
       const endpoint = `${this.endpoint}?${query}`;
       const response = await fetch(endpoint);
-      if (!response.ok) {
-         throw new Error(`Failed to fetch from ${endpoint}`);
-      }
       if (response.status === 404) {
          throw new ContentTypeNotFoundError(this.apiId);
+      }
+      if (!response.ok) {
+         throw new Error(`Failed to fetch from ${endpoint}`);
       }
       return response.json();
    }

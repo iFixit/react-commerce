@@ -1,9 +1,7 @@
 'use client';
 
-import { Wordmark20th } from '@assets/svg/files';
 import {
    DrawerCloseButton,
-   Icon,
    MenuDivider,
    MenuGroup,
    MenuList,
@@ -51,6 +49,7 @@ import {
    UserMenuButton,
    UserMenuHeading,
    UserMenuLink,
+   Wordmark,
    WordmarkLink,
    useHeaderContext,
 } from '@ifixit/ui';
@@ -75,14 +74,8 @@ export function Header({ menu }: React.PropsWithChildren<HeaderProps>) {
          <HeaderBar>
             <HeaderPrimaryNavigation>
                <HeaderNavigationToggleButton aria-label="Open navigation menu" />
-               <WordmarkLink
-                  href="/"
-                  aria-label="Go to homepage"
-                  pr="4"
-                  title="iFixit turns 20"
-                  padding={0}
-               >
-                  <Icon as={Wordmark20th} width="auto" height="100%" />
+               <WordmarkLink href="/" aria-label="Go to homepage" pr="4">
+                  <Wordmark />
                </WordmarkLink>
                {menu && (
                   <NavigationMenu>
@@ -197,14 +190,8 @@ function LayoutNavigationDrawer({ menu }: LayoutNavigationDrawerProps) {
    return (
       <NavigationDrawer>
          <DrawerCloseButton />
-         <WordmarkLink
-            href="/"
-            aria-label="Go to homepage"
-            mb="8"
-            title="iFixit turns 20"
-            padding={0}
-         >
-            <Icon as={Wordmark20th} width="auto" height="100%" />
+         <WordmarkLink href="/" aria-label="Go to homepage" mb="8">
+            <Wordmark />
          </WordmarkLink>
          <NavigationAccordion>
             {menu.items.map((item, index) => {
