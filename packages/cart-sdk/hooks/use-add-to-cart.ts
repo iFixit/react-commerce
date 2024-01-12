@@ -102,10 +102,11 @@ export function useAddToCart(analyticsMessage?: string) {
             return { previousCart };
          },
          onError: (error, variables, context) => {
-            client.setQueryData<Cart | undefined>(
-               cartKeys.cart,
-               context?.previousCart
-            );
+            const currentCart = context?.previousCart;
+            if (currentCart) {
+               currentCart.error = true;
+            }
+            client.setQueryData<Cart | undefined>(cartKeys.cart, currentCart);
          },
          onSuccess: (data, variables) => {
             trackPiwikCustomAddToCart(variables, analyticsMessage);

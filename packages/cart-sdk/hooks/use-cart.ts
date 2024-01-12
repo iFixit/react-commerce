@@ -6,7 +6,7 @@ import {
    parseMoney,
 } from '@ifixit/helpers';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
-import { useIsMutating, useQuery } from '@tanstack/react-query';
+import { useIsMutating, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
    APICart,
    Cart,
@@ -22,14 +22,20 @@ import { cartKeys } from '../utils';
 export function useCart() {
    const client = useIFixitApiClient();
    const isMutating = useIsMutating();
+   const queryClient = useQueryClient();
+
    const query = useQuery({
       queryKey: cartKeys.cart,
       queryFn: async (): Promise<Cart | null> => {
+         const previousData = queryClient.getQueryData<Cart | null>(
+            cartKeys.cart
+         );
+
          const result = await client.get('store/user/cart', 'cart');
          if (!isValidCartPayload(result)) {
             return null;
          }
-         return createCart(result.cart);
+         return createCart(result.cart, previousData?.error);
       },
       enabled: !isMutating,
    });
@@ -40,7 +46,7 @@ function isValidCartPayload(data: any): data is CartAPIResponse {
    return data?.cart != null;
 }
 
-function createCart(input: APICart): Cart {
+function createCart(input: APICart, error?: boolean): Cart {
    const lineItems = input.products.map<CartLineItem>((product) => {
       const priceAmount = parseFloat(product.subPrice);
       const singleItemDiscount = product.retailDiscount
@@ -122,6 +128,7 @@ function createCart(input: APICart): Cart {
             };
          })
       ),
+      error: error,
    };
 }
 

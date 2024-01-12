@@ -14,6 +14,7 @@ export interface Cart {
       compareAtPrice?: Money | null | undefined;
    };
    crossSellProducts: CrossSellProduct[];
+   error?: boolean;
 }
 
 export interface CartLineItem {
