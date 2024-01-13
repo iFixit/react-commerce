@@ -100,12 +100,12 @@ export function getProductVariantURI(variantId: string | number): string {
 export function getCategoriesFromTags(tags: string[]): string[] {
    const tagsObj: Record<string, string> = {};
    tags.forEach((tag) => {
-      const [name, val] = tag.split('=');
+      const [name, val] = tag.split(/=|:/);
       tagsObj[name] = val;
    });
    const categories = [
-      tagsObj['Is Tool'],
-      tagsObj['Part Category'],
+      'Tool' in tagsObj ? 'Tool' : 'Part' in tagsObj ? 'Part' : 'N/A',
+      tagsObj['Item Category'],
       tagsObj['Part SubCategory'],
    ];
    return categories.map((category) => category ?? 'N/A');
