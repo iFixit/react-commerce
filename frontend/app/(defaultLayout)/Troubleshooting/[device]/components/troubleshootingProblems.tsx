@@ -12,83 +12,16 @@ import {
    Text,
 } from '@chakra-ui/react';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { faVolumeXmark } from '@fortawesome/pro-duotone-svg-icons';
-import { FaIcon, FaIconProps } from '@ifixit/icons';
+import { FaIcon } from '@ifixit/icons';
 
-const mockProblems = [
-   {
-      imageSrcLg:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.large',
-      imageSrcThumb:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.thumbnail',
-      problemTitle: 'GE Refrigerator Temperature Inconsistencies',
-      deviceTitle: 'GE Refrigerator',
-      description:
-         'Fluctuating temperatures in the refrigerator or freezer compartments, often due to a faulty thermostat or temperature sensor.',
-      altText: 'GE Refrigerator image',
-   },
-   {
-      imageSrcLg:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.large',
-      imageSrcThumb:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.thumbnail',
-      problemTitle: 'GE Refrigerator Water Dispenser Malfunctions',
-      deviceTitle: 'GE Refrigerator',
-      description:
-         'Water dispenser not functioning or dripping water, resulting from a faulty water valve or blocked filter.',
-      altText: 'GE Refrigerator image',
-   },
-   {
-      imageSrcLg:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.large',
-      imageSrcThumb:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.thumbnail',
-      problemTitle: 'GE Refrigerator Ice Maker Issues',
-      deviceTitle: 'GE Refrigerator',
-      description:
-         'The ice maker is not producing ice or is dispensing ice irregularly, due to clogged water lines or malfunctioning components.',
-      altText: 'GE Refrigerator image',
-   },
-   {
-      imageSrcLg: undefined,
-      imageSrcThumb:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.thumbnail',
-      problemTypeIcon: faVolumeXmark,
-      problemTitle:
-         'GE Refrigerator Model Number GSS25WSTASS (2008) Temperature Inconsistencies Involving the Fresh Food Compartment',
-      deviceTitle:
-         'GE Refrigerator Model Number GSS25WSTASS (2008) Sub-Model Number GSS25W',
-      description:
-         'Fluctuating temperatures in the refrigerator or freezer compartments, often due to a faulty thermostat or temperature sensor. The following text is for testing purposes only. Lets see how well this long text wraps with a cap on 4 lines.',
-      altText: 'GE Refrigerator image',
-   },
-   {
-      imageSrcLg:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.large',
-      imageSrcThumb:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.thumbnail',
-      problemTitle: 'GE Refrigerator Door Seal Problems',
-      deviceTitle: 'GE Refrigerator',
-      description:
-         'The refrigerator doors are not closing correctly or are allowing warm air inside, typically related to worn or damaged door seals.',
-      altText: 'GE Refrigerator image',
-   },
-   {
-      imageSrcLg:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.large',
-      imageSrcThumb:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.thumbnail',
-      problemTitle: 'GE Refrigerator Not Cooling Properly',
-      deviceTitle: 'GE Refrigerator',
-      description:
-         'The refrigerator is not maintaining the correct temperature, which could be the result of a damaged condenser, evaporator, or compressor.',
-      altText: 'GE Refrigerator image',
-   },
-];
+import type { TroubleshootingProblemsApiData } from '../hooks/useTroubleshootingProblemsProps';
 
-export default function TroubleshootingProblems({
-   title,
-}: TroubleshootingProblemsProps) {
+export default function TroubleshootingProblems(
+   ProblemsListData: TroubleshootingProblemsApiData
+) {
+   const { title } = ProblemsListData;
+   console.log(ProblemsListData);
+
    return (
       <Box className="wrapper" maxWidth="1280px" mt={8} mx="auto" px={8}>
          <Stack as="main" spacing={3}>
@@ -100,7 +33,7 @@ export default function TroubleshootingProblems({
                   When your {title} runs into issues, it can be a source of
                   frustration and inconvenience. Never fear &mdash; we&apos;ve
                   compiled a comprehensive guide to diagnose and fix the most
-                  common problems that can plague your refrigerator.
+                  common problems that can plague your {title}.
                </Text>
             </Box>
             <SimpleGrid
@@ -109,11 +42,11 @@ export default function TroubleshootingProblems({
                spacing={6}
                py={3}
             >
-               {mockProblems.map((problem: ProblemProps, index: number) => (
+               {ProblemsListData.problems.map((problem: any, index: number) => (
                   <Problem
                      key={index}
-                     imageSrcLg={problem.imageSrcLg}
-                     imageSrcThumb={problem.imageSrcThumb}
+                     imageSrcStandard={problem.imageSrcStandard}
+                     imageSrcThumbnail={problem.imageSrcThumbnail}
                      problemTypeIcon={problem.problemTypeIcon}
                      problemTitle={problem.problemTitle}
                      deviceTitle={problem.deviceTitle}
@@ -131,12 +64,12 @@ function Problem({
    problemTitle,
    deviceTitle,
    description,
-   imageSrcLg,
-   imageSrcThumb,
+   imageSrcStandard,
+   imageSrcThumbnail,
    problemTypeIcon,
    altText,
    badges,
-}: ProblemProps) {
+}: any) {
    return (
       <Flex
          flexDirection="column"
@@ -147,8 +80,8 @@ function Problem({
          borderRadius="md"
          overflow="hidden"
       >
-         {imageSrcLg ? (
-            <Image src={imageSrcLg} alt={altText} {...lgImageStyles} />
+         {imageSrcStandard ? (
+            <Image src={imageSrcStandard} alt={altText} {...lgImageStyles} />
          ) : (
             <Flex {...imagePlaceholderStyles}>
                <FaIcon
@@ -170,7 +103,11 @@ function Problem({
             </Stack>
             {badges && <HStack className="badges" spacing={1.5}></HStack>}
             <HStack className="device" spacing={1.5} alignItems="center">
-               <Image src={imageSrcThumb} alt={altText} {...thumbImageStyles} />
+               <Image
+                  src={imageSrcThumbnail}
+                  alt={altText}
+                  {...thumbImageStyles}
+               />
                <Box fontSize="sm" fontWeight="semibold" noOfLines={2}>
                   {deviceTitle}
                </Box>
@@ -179,21 +116,6 @@ function Problem({
       </Flex>
    );
 }
-
-export type TroubleshootingProblemsProps = {
-   title: string;
-};
-
-export type ProblemProps = {
-   problemTitle: string;
-   deviceTitle: string;
-   description: string;
-   altText: string;
-   imageSrcLg?: string;
-   imageSrcThumb?: string;
-   problemTypeIcon?: FaIconProps;
-   badges?: string[];
-};
 
 const lgImageStyles = {
    borderBottom: '1px solid',
