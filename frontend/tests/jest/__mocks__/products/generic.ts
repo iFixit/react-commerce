@@ -333,6 +333,7 @@ export const mockedProduct: Product = {
          hasLifetimeWarranty: true,
          enabled: true,
          shopifyVariantId: '32965720473690',
+         categories: [],
       },
       {
          id: 'gid://shopify/ProductVariant/32965720178778',
@@ -380,6 +381,7 @@ export const mockedProduct: Product = {
          isPro: false,
          enabled: true,
          shopifyVariantId: '32965720178778',
+         categories: [],
       },
       {
          id: 'gid://shopify/ProductVariant/39333786746970',
@@ -427,6 +429,7 @@ export const mockedProduct: Product = {
          isPro: false,
          enabled: true,
          shopifyVariantId: '39333786746970',
+         categories: [],
       },
       {
          id: 'gid://shopify/ProductVariant/39333786583130',
@@ -474,6 +477,7 @@ export const mockedProduct: Product = {
          isPro: false,
          enabled: true,
          shopifyVariantId: '39333786583130',
+         categories: [],
       },
    ],
    categories: [],
