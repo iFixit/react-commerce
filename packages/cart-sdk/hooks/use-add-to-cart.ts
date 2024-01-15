@@ -10,6 +10,7 @@ import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Cart, CartLineItem } from '../types';
 import { cartKeys } from '../utils';
+import { useCartDrawer } from '@ifixit/ui';
 
 export type AddToCartInput = AddProductToCartInput | AddBundleToCartInput;
 
@@ -32,6 +33,7 @@ type AddBundleToCartInput = {
 export function useAddToCart(analyticsMessage?: string) {
    const client = useQueryClient();
    const iFixitApiClient = useIFixitApiClient();
+   const { addErrorMessage } = useCartDrawer();
    const mutation = useMutation(
       async (input) => {
          switch (input.type) {
@@ -105,6 +107,9 @@ export function useAddToCart(analyticsMessage?: string) {
             client.setQueryData<Cart | undefined>(
                cartKeys.cart,
                context?.previousCart
+            );
+            addErrorMessage(
+               (error as string) || 'An error occurred updating the cart.'
             );
          },
          onSuccess: (data, variables) => {

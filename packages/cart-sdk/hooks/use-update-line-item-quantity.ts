@@ -8,6 +8,7 @@ import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Cart, CartLineItem } from '../types';
 import { cartKeys } from '../utils';
+import { useCartDrawer } from '@ifixit/ui';
 
 interface UpdateLineItemQuantityInput {
    item: CartLineItem;
@@ -20,6 +21,7 @@ interface UpdateLineItemQuantityInput {
 export function useUpdateLineItemQuantity() {
    const client = useQueryClient();
    const iFixitApiClient = useIFixitApiClient();
+   const { addErrorMessage } = useCartDrawer();
    const mutation = useMutation(
       async (input) => {
          return iFixitApiClient.post(
@@ -90,6 +92,9 @@ export function useUpdateLineItemQuantity() {
             client.setQueryData<Cart | undefined>(
                cartKeys.cart,
                context?.previousCart
+            );
+            addErrorMessage(
+               (error as string) || 'An error occurred updating the cart.'
             );
          },
          onSuccess: (data, variables) => {
