@@ -3,7 +3,12 @@ import type { WithLayoutProps } from '@layouts/default/server';
 import { FaIconProps } from '@ifixit/icons';
 
 export type TroubleshootingProblemsApiData = {
-   breadcrumbs?: string;
+   editUrl: string;
+   historyUrl: string;
+   answersUrl: string;
+   deviceGuideUrl?: string;
+   devicePartsUrl?: string;
+   breadcrumbs: BreadcrumbEntry[];
    id: number;
    problems: Problems[];
    title: string;
@@ -18,6 +23,11 @@ export type Problems = {
    imageSrcThumb?: string;
    problemTypeIcon?: FaIconProps;
    badges?: string[];
+};
+
+export type BreadcrumbEntry = {
+   title: string;
+   url: string;
 };
 
 export type TroubleshootingProblemsData = Omit<

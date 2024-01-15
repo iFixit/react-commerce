@@ -13,50 +13,68 @@ import {
 } from '@chakra-ui/react';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FaIcon } from '@ifixit/icons';
+import { NavBar } from './NavBar';
 
 import type { TroubleshootingProblemsApiData } from '../hooks/useTroubleshootingProblemsProps';
 
 export default function TroubleshootingProblems(
-   ProblemsListData: TroubleshootingProblemsApiData
+   TroubleshootingProblems: TroubleshootingProblemsApiData
 ) {
-   const { title } = ProblemsListData;
-   console.log(ProblemsListData);
+   const {
+      title,
+      editUrl,
+      historyUrl,
+      deviceGuideUrl,
+      devicePartsUrl,
+      breadcrumbs,
+   } = TroubleshootingProblems;
 
    return (
-      <Box className="wrapper" maxWidth="1280px" mt={8} mx="auto" px={8}>
-         <Stack as="main" spacing={3}>
-            <Box className="header">
-               <Heading color="gray.800" fontSize="30px" fontWeight="medium">
-                  Most Common {title} Troubleshooting Problems
-               </Heading>
-               <Text mt={2}>
-                  When your {title} runs into issues, it can be a source of
-                  frustration and inconvenience. Never fear &mdash; we&apos;ve
-                  compiled a comprehensive guide to diagnose and fix the most
-                  common problems that can plague your {title}.
-               </Text>
-            </Box>
-            <SimpleGrid
-               className="list"
-               columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
-               spacing={6}
-               py={3}
-            >
-               {ProblemsListData.problems.map((problem: any, index: number) => (
-                  <Problem
-                     key={index}
-                     imageSrcStandard={problem.imageSrcStandard}
-                     imageSrcThumbnail={problem.imageSrcThumbnail}
-                     problemTypeIcon={problem.problemTypeIcon}
-                     problemTitle={problem.problemTitle}
-                     deviceTitle={problem.deviceTitle}
-                     description={problem.description}
-                     altText={problem.altText}
-                  />
-               ))}
-            </SimpleGrid>
-         </Stack>
-      </Box>
+      <>
+         <NavBar
+            editUrl={editUrl}
+            historyUrl={historyUrl}
+            deviceGuideUrl={deviceGuideUrl}
+            devicePartsUrl={devicePartsUrl}
+            breadcrumbs={breadcrumbs}
+         />
+         <Box className="wrapper" maxWidth="1280px" mt={8} mx="auto" px={8}>
+            <Stack as="main" spacing={3}>
+               <Box className="header">
+                  <Heading color="gray.800" fontSize="30px" fontWeight="medium">
+                     Most Common {title} Troubleshooting Problems
+                  </Heading>
+                  <Text mt={2}>
+                     When your {title} runs into issues, it can be a source of
+                     frustration and inconvenience. Never fear &mdash;
+                     we&apos;ve compiled a comprehensive guide to diagnose and
+                     fix the most common problems that can plague your {title}.
+                  </Text>
+               </Box>
+               <SimpleGrid
+                  className="list"
+                  columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
+                  spacing={6}
+                  py={3}
+               >
+                  {TroubleshootingProblems.problems.map(
+                     (problem: any, index: number) => (
+                        <Problem
+                           key={index}
+                           imageSrcStandard={problem.imageSrcStandard}
+                           imageSrcThumbnail={problem.imageSrcThumbnail}
+                           problemTypeIcon={problem.problemTypeIcon}
+                           problemTitle={problem.problemTitle}
+                           deviceTitle={problem.deviceTitle}
+                           description={problem.description}
+                           altText={problem.altText}
+                        />
+                     )
+                  )}
+               </SimpleGrid>
+            </Stack>
+         </Box>
+      </>
    );
 }
 
