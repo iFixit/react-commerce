@@ -1,36 +1,32 @@
-import { DEFAULT_STORE_CODE, IFIXIT_ORIGIN } from '@config/env';
+import { DEFAULT_STORE_CODE } from '@config/env';
 import { getStoreList } from '@models/store';
-import Product from '@pages/api/nextjs/cache/product';
 import { ProductPageProps } from 'app/(defaultLayout)/products/app-router/[handle]/page';
-import { devSandboxOrigin, shouldSkipCache } from 'app/_helpers/app-helpers';
+import { findProduct } from 'app/_data/product';
+import { shouldSkipCache } from 'app/_helpers/app-helpers';
 import { StoreSelect } from '../../../store-select';
+import { invariant } from '@ifixit/helpers';
 
 export default async function ProductPageStoreSelect({
    params,
    searchParams,
 }: ProductPageProps) {
-   const [stores, product] = await Promise.all([getStoreList(), getProduct()]);
+   const [stores, product] = await Promise.all([
+      getStoreList(),
+      findProduct({
+         handle: params.handle,
+         noCache: shouldSkipCache(searchParams),
+      }),
+   ]);
 
    return <StoreSelect stores={product ? storesWithProductUrls() : stores} />;
 
-   async function getProduct() {
-      const result = await Product.get(
-         {
-            handle: params.handle,
-            storeCode: DEFAULT_STORE_CODE,
-            ifixitOrigin: devSandboxOrigin() ?? IFIXIT_ORIGIN,
-         },
-         { forceMiss: shouldSkipCache(searchParams) }
-      );
-      return result?.__typename === 'Product' ? result : null;
-   }
-
    function storesWithProductUrls() {
+      invariant(product);
       return stores.map((store) => {
          if (productEnabledFor(store.code)) {
             return {
                ...store,
-               url: new URL(`/products/${product!.handle}`, store.url).href,
+               url: new URL(`/products/${product.handle}`, store.url).href,
             };
          }
 
