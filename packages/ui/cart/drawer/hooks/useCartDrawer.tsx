@@ -6,17 +6,36 @@ import { useCart } from '@ifixit/cart-sdk';
 import * as React from 'react';
 import { trackInPiwik } from '@ifixit/analytics/piwik/track-event';
 
-export type CartDrawerContext = ReturnType<typeof useDisclosure> & {};
-
+export type CartDrawerContext = ReturnType<typeof useDisclosure> & {
+   errorMessages: string[];
+   addErrorMessage: (message: string) => void;
+   clearErrorMessages: () => void;
+};
 const CartDrawerContext = React.createContext<CartDrawerContext | null>(null);
 
 type CartDrawerProviderProps = React.PropsWithChildren<{}>;
 
 export function CartDrawerProvider({ children }: CartDrawerProviderProps) {
    const disclosure = useDisclosure();
-   const value = React.useMemo((): CartDrawerContext => {
-      return disclosure;
-   }, [disclosure]);
+   const [errorMessages, setErrorMessages] = React.useState<string[]>([]);
+
+   const addErrorMessage = (errorMessage: string) => {
+      setErrorMessages((prevMessages) => [...prevMessages, errorMessage]);
+   };
+
+   const clearErrorMessages = () => {
+      setErrorMessages([]);
+   };
+
+   const value = React.useMemo(
+      (): CartDrawerContext => ({
+         ...disclosure,
+         errorMessages,
+         addErrorMessage,
+         clearErrorMessages,
+      }),
+      [disclosure, errorMessages]
+   );
 
    return (
       <CartDrawerContext.Provider value={value}>
