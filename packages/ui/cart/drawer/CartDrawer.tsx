@@ -292,7 +292,7 @@ interface DrawerErrorProps {
 function DrawerError({ errorMsg, onDismiss }: DrawerErrorProps) {
    React.useEffect(() => {
       if (errorMsg) {
-         const id = setTimeout(onDismiss, 5000);
+         const id = setTimeout(onDismiss, 10000);
          return () => clearTimeout(id);
       }
    }, [errorMsg, onDismiss]);
