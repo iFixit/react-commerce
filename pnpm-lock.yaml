@@ -525,6 +525,9 @@ importers:
       '@ifixit/shopify-storefront-client':
         specifier: workspace:*
         version: link:../shopify-storefront-client
+      '@ifixit/ui':
+        specifier: workspace:*
+        version: link:../ui
       '@tanstack/react-query':
         specifier: 4.x
         version: 4.14.5(react-dom@18.2.0)(react@18.2.0)

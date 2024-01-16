@@ -10,6 +10,7 @@ import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Cart, CartLineItem } from '../types';
 import { cartKeys } from '../utils';
+import { useCartDrawer } from '@ifixit/ui';
 
 export type AddToCartInput = AddProductToCartInput | AddBundleToCartInput;
 
@@ -32,6 +33,7 @@ type AddBundleToCartInput = {
 export function useAddToCart(analyticsMessage?: string) {
    const client = useQueryClient();
    const iFixitApiClient = useIFixitApiClient();
+   const { addError } = useCartDrawer();
    const mutation = useMutation(
       async (input) => {
          switch (input.type) {
@@ -106,6 +108,7 @@ export function useAddToCart(analyticsMessage?: string) {
                cartKeys.cart,
                context?.previousCart
             );
+            addError(error);
          },
          onSuccess: (data, variables) => {
             trackPiwikCustomAddToCart(variables, analyticsMessage);
