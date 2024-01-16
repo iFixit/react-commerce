@@ -19,7 +19,7 @@ interface DeleteLineItemInput {
 export function useRemoveLineItem() {
    const client = useQueryClient();
    const iFixitApiClient = useIFixitApiClient();
-   const { addErrorMessage } = useCartDrawer();
+   const { addError } = useCartDrawer();
    const mutation = useMutation(
       async (input) => {
          await iFixitApiClient.delete(
@@ -77,7 +77,7 @@ export function useRemoveLineItem() {
                cartKeys.cart,
                context?.previousCart
             );
-            addErrorMessage(error);
+            addError(error);
          },
          onSuccess: (data, variables) => {
             const cart = client.getQueryData<Cart>(cartKeys.cart);

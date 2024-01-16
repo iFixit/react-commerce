@@ -33,7 +33,7 @@ type AddBundleToCartInput = {
 export function useAddToCart(analyticsMessage?: string) {
    const client = useQueryClient();
    const iFixitApiClient = useIFixitApiClient();
-   const { addErrorMessage } = useCartDrawer();
+   const { addError } = useCartDrawer();
    const mutation = useMutation(
       async (input) => {
          switch (input.type) {
@@ -108,7 +108,7 @@ export function useAddToCart(analyticsMessage?: string) {
                cartKeys.cart,
                context?.previousCart
             );
-            addErrorMessage(error);
+            addError(error);
          },
          onSuccess: (data, variables) => {
             trackPiwikCustomAddToCart(variables, analyticsMessage);

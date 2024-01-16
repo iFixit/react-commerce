@@ -39,23 +39,14 @@ import { useCartDrawer } from './hooks/useCartDrawer';
 
 export function CartDrawer() {
    const appContext = useAppContext();
-   const {
-      isOpen,
-      onOpen,
-      onClose,
-      onViewCart,
-      errorMessages,
-      clearErrorMessages,
-   } = useCartDrawer();
+   const { isOpen, onOpen, onClose, onViewCart, errors, clearErrors } =
+      useCartDrawer();
    const isMounted = useIsMountedState();
    const cart = useCart();
    const checkout = useCheckout();
    const isCartEmpty = cart.isFetched && !cart.data?.hasItemsInCart;
-   const clearAddToCartErrors = () => clearErrorMessages();
-   const [hasErrors, setHasErrors] = React.useState(errorMessages.length > 0);
-   React.useEffect(() => {
-      setHasErrors(errorMessages.length > 0);
-   }, [errorMessages]);
+   const clearAddToCartErrors = () => clearErrors();
+   const hasErrors = errors.length > 0;
    return (
       <>
          <CartDrawerTrigger
@@ -144,7 +135,7 @@ export function CartDrawer() {
                      )}
                      {hasErrors && (
                         <CartUpdateError
-                           errors={errorMessages}
+                           errors={errors}
                            onDismiss={clearAddToCartErrors}
                         />
                      )}

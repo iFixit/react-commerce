@@ -21,7 +21,7 @@ interface UpdateLineItemQuantityInput {
 export function useUpdateLineItemQuantity() {
    const client = useQueryClient();
    const iFixitApiClient = useIFixitApiClient();
-   const { addErrorMessage } = useCartDrawer();
+   const { addError } = useCartDrawer();
    const mutation = useMutation(
       async (input) => {
          return iFixitApiClient.post(
@@ -93,7 +93,7 @@ export function useUpdateLineItemQuantity() {
                cartKeys.cart,
                context?.previousCart
             );
-            addErrorMessage(error);
+            addError(error);
          },
          onSuccess: (data, variables) => {
             const analyticsItems = convertCartLineItemsToAnalyticsItem([
