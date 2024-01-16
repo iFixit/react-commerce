@@ -169,14 +169,7 @@ export function CartDrawer() {
                            <CrossSell />
                         </>
                      )}
-                     <Fade
-                        show={isCartEmpty}
-                        disableExitAnimation
-                        position="absolute"
-                        w="full"
-                        top="0"
-                        left="0"
-                     >
+                     <Fade show={isCartEmpty} disableExitAnimation w="full">
                         <CartEmptyState onClose={onClose} />
                      </Fade>
                   </DrawerBody>
