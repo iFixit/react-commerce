@@ -45,7 +45,6 @@ export function CartDrawer() {
    const cart = useCart();
    const checkout = useCheckout();
    const isCartEmpty = cart.isFetched && !cart.data?.hasItemsInCart;
-   const clearAddToCartErrors = () => clearErrors();
    const hasErrors = errors.length > 0;
    return (
       <>
@@ -136,7 +135,7 @@ export function CartDrawer() {
                      {hasErrors && (
                         <CartUpdateError
                            errors={errors}
-                           onDismiss={clearAddToCartErrors}
+                           onDismiss={clearErrors}
                         />
                      )}
                      {cart.data?.hasItemsInCart && (
