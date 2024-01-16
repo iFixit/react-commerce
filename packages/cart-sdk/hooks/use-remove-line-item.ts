@@ -77,9 +77,7 @@ export function useRemoveLineItem() {
                cartKeys.cart,
                context?.previousCart
             );
-            addErrorMessage(
-               (error as string) || 'An error occurred updating the cart.'
-            );
+            addErrorMessage(error);
          },
          onSuccess: (data, variables) => {
             const cart = client.getQueryData<Cart>(cartKeys.cart);

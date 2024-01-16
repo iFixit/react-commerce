@@ -93,9 +93,7 @@ export function useUpdateLineItemQuantity() {
                cartKeys.cart,
                context?.previousCart
             );
-            addErrorMessage(
-               (error as string) || 'An error occurred updating the cart.'
-            );
+            addErrorMessage(error);
          },
          onSuccess: (data, variables) => {
             const analyticsItems = convertCartLineItemsToAnalyticsItem([

@@ -7,8 +7,8 @@ import * as React from 'react';
 import { trackInPiwik } from '@ifixit/analytics/piwik/track-event';
 
 export type CartDrawerContext = ReturnType<typeof useDisclosure> & {
-   errorMessages: string[];
-   addErrorMessage: (message: string) => void;
+   errorMessages: Error[];
+   addErrorMessage: (newError: unknown) => void;
    clearErrorMessages: () => void;
 };
 const CartDrawerContext = React.createContext<CartDrawerContext | null>(null);
@@ -17,13 +17,21 @@ type CartDrawerProviderProps = React.PropsWithChildren<{}>;
 
 export function CartDrawerProvider({ children }: CartDrawerProviderProps) {
    const disclosure = useDisclosure();
-   const [errorMessages, setErrorMessages] = React.useState<string[]>([]);
+   const [errorMessages, setErrorMessages] = React.useState<Error[]>([]);
 
-   const addErrorMessage = (errorMessage: string) => {
-      setErrorMessages((prevMessages) => [...prevMessages, errorMessage]);
+   const addError = (newError: unknown) => {
+      let error: Error;
+      if (newError instanceof Error) {
+         error = newError;
+      } else if (typeof newError === 'string') {
+         error = new Error(newError);
+      } else {
+         error = new Error('Unknown error');
+      }
+      setErrorMessages((prevErrors) => [...prevErrors, error]);
    };
 
-   const clearErrorMessages = () => {
+   const clearErrors = () => {
       setErrorMessages([]);
    };
 
@@ -31,8 +39,8 @@ export function CartDrawerProvider({ children }: CartDrawerProviderProps) {
       (): CartDrawerContext => ({
          ...disclosure,
          errorMessages,
-         addErrorMessage,
-         clearErrorMessages,
+         addErrorMessage: addError,
+         clearErrorMessages: clearErrors,
       }),
       [disclosure, errorMessages]
    );
