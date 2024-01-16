@@ -1,29 +1,15 @@
 import {
    Box,
    BoxProps,
-   Button,
    Flex,
    FlexProps,
-   IconButton,
    Link,
    LinkProps,
-   Menu,
-   MenuButton,
-   MenuItem,
-   MenuList,
 } from '@chakra-ui/react';
 import { BreadCrumbs } from '@ifixit/breadcrumbs';
 import type { BreadcrumbEntry } from '../hooks/useTroubleshootingProblemsProps';
-import {
-   faPenToSquare,
-   faAngleDown,
-   faClockRotateLeft,
-} from '@fortawesome/pro-solid-svg-icons';
-import { FaIcon } from '@ifixit/icons';
 
 export function NavBar({
-   editUrl,
-   historyUrl,
    deviceGuideUrl,
    devicePartsUrl,
    breadcrumbs,
@@ -36,7 +22,7 @@ export function NavBar({
       label: breadcrumb.title,
       url: breadcrumb.url,
    }));
-   const padding = { base: '16px', sm: '32px' };
+   const padding = { base: 4, sm: 8 };
    const breadcrumbMinHeight = '48px';
    return (
       <Flex
@@ -49,14 +35,17 @@ export function NavBar({
       >
          <Flex
             className="NavBar"
-            maxW="1280px"
+            maxWidth="1280px"
+            mx="auto"
+            px={{ md: 8 }}
             width="100%"
             flexDirection={{ base: 'column-reverse', sm: 'row' }}
             justify="stretch"
          >
             <BreadCrumbs
                breadCrumbs={bc.slice(0, -1)}
-               paddingInline={padding}
+               paddingInlineStart={{ base: 4, sm: 0 }}
+               paddingInlineEnd={padding}
                minHeight={breadcrumbMinHeight}
                borderTop={{ base: '1px', sm: '0' }}
                borderTopColor="gray.200"
@@ -99,77 +88,9 @@ export function NavBar({
                      devicePartsUrl={devicePartsUrl}
                   />
                </Box>
-               <EditButton editUrl={editUrl} />
-               <ActionsMenu historyUrl={historyUrl} />
             </Flex>
          </Flex>
       </Flex>
-   );
-}
-
-function EditButton({ editUrl }: { editUrl: string }) {
-   return (
-      <Button
-         leftIcon={<FaIcon icon={faPenToSquare} />}
-         variant="link"
-         as={Link}
-         bgColor="transparent"
-         textColor="brand"
-         borderLeftColor="gray.200"
-         borderLeftWidth="1px"
-         borderRightColor="gray.200"
-         borderRightWidth="1px"
-         borderRadius="0px"
-         py="9px"
-         px={4}
-         fontFamily="heading"
-         lineHeight="1.29"
-         fontWeight="semibold"
-         fontSize="sm"
-         color="brand.500"
-         textAlign="center"
-         href={editUrl}
-         minW="fit-content"
-      >
-         Edit
-      </Button>
-   );
-}
-
-function ActionsMenu({ historyUrl }: { historyUrl: string }) {
-   return (
-      <Menu>
-         {({ isOpen }: { isOpen: boolean }) => {
-            return (
-               <>
-                  <MenuButton
-                     as={IconButton}
-                     aria-label="Options"
-                     icon={
-                        <FaIcon
-                           color={isOpen ? 'brand.500' : 'gray.500'}
-                           icon={faAngleDown}
-                        />
-                     }
-                     variant="link"
-                     borderRightColor="gray.200"
-                     borderRightWidth={1}
-                     borderRightRadius={0}
-                  />
-                  <MenuList>
-                     <MenuItem
-                        as={Link}
-                        _hover={{ textDecoration: 'none' }}
-                        href={historyUrl}
-                        icon={<FaIcon icon={faClockRotateLeft} />}
-                     >
-                        History
-                     </MenuItem>
-                  </MenuList>
-               </>
-            );
-         }}
-      </Menu>
    );
 }
 
@@ -191,10 +112,8 @@ function NavTabs({
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      paddingTop: 2,
-      paddingBottom: 2,
-      paddingInlineStart: 4,
-      paddingInlineEnd: 4,
+      paddingBlock: 2,
+      paddingInline: 4,
       position: 'relative',
    };
 
@@ -248,8 +167,7 @@ function NavTabs({
          '&.isDisabled': {
             opacity: 0.4,
             cursor: 'not-allowed',
-            color: 'gray.700',
-            background: 'gray.100',
+            color: 'gray.500',
          },
       },
    };
