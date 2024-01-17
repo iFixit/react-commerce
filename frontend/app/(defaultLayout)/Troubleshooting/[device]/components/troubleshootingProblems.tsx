@@ -38,7 +38,13 @@ export default function TroubleshootingProblems(
             devicePartsUrl={devicePartsUrl}
             breadcrumbs={breadcrumbs}
          />
-         <Box className="wrapper" maxWidth="1280px" mt={8} mx="auto" px={8}>
+         <Box
+            className="wrapper"
+            maxWidth="1280px"
+            mt={8}
+            mx="auto"
+            px={{ base: 4, md: 8 }}
+         >
             <Stack as="main" spacing={3}>
                <Box className="header">
                   <Heading color="gray.800" fontSize="30px" fontWeight="medium">
