@@ -1,11 +1,10 @@
-import { DEFAULT_STORE_CODE, IFIXIT_ORIGIN } from '@config/env';
+import { IFIXIT_ORIGIN } from '@config/env';
 import { flags } from '@config/flags';
 import { invariant } from '@ifixit/helpers';
-import Product, {
-   type Product as ProductType,
-} from '@pages/api/nextjs/cache/product';
-import { devSandboxOrigin, shouldSkipCache } from 'app/_helpers/app-helpers';
-import { defaultVariantId, imagesFor } from 'app/_helpers/product-helpers';
+import { type Product } from '@pages/api/nextjs/cache/product';
+import { findProduct, findProductRedirect } from 'app/_data/product';
+import { shouldSkipCache } from 'app/_helpers/app-helpers';
+import { defaultVariantIdFor, imagesFor } from 'app/_helpers/product-helpers';
 import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import {
@@ -29,27 +28,28 @@ export default async function ProductPage({
 }: ProductPageProps) {
    if (!flags.APP_ROUTER_PRODUCT_PAGE_ENABLED) notFound();
 
-   const data = await Product.get(
-      {
-         handle: params.handle,
-         storeCode: DEFAULT_STORE_CODE,
-         ifixitOrigin: devSandboxOrigin() ?? IFIXIT_ORIGIN,
-      },
-      { forceMiss: shouldSkipCache(searchParams) }
-   );
+   const productRedirect = await findProductRedirect({
+      handle: params.handle,
+      noCache: shouldSkipCache(searchParams),
+   });
 
-   if (data == null) notFound();
+   if (productRedirect != null) redirect(productRedirect.target);
 
-   if (data.__typename === 'ProductRedirect') redirect(data.target);
+   const product = await findProduct({
+      handle: params.handle,
+      noCache: shouldSkipCache(searchParams),
+   });
+
+   if (product == null) notFound();
 
    return (
       <>
-         <ProductBreadcrumbsJsonLDScript product={data} />
+         <ProductBreadcrumbsJsonLDScript product={product} />
          <ProductJsonLDScript
-            product={data}
-            selectedVariantId={selectedVariantId(data, searchParams)}
+            product={product}
+            selectedVariantId={selectedVariantId(product, searchParams)}
          />
-         <div>Product: {data.title}</div>
+         <div>Product: {product.title}</div>
       </>
    );
 }
@@ -58,16 +58,12 @@ export async function generateMetadata({
    params,
    searchParams,
 }: ProductPageProps): Promise<Metadata> {
-   const product = await Product.get(
-      {
-         handle: params.handle,
-         storeCode: DEFAULT_STORE_CODE,
-         ifixitOrigin: devSandboxOrigin() ?? IFIXIT_ORIGIN,
-      },
-      { forceMiss: shouldSkipCache(searchParams) }
-   );
+   const product = await findProduct({
+      handle: params.handle,
+      noCache: shouldSkipCache(searchParams),
+   });
 
-   if (product == null || product.__typename !== 'Product') return {};
+   if (product == null) return {};
 
    return {
       title: product.metaTitle,
@@ -123,8 +119,8 @@ export async function generateMetadata({
 }
 
 function selectedVariantId(
-   product: ProductType,
+   product: Product,
    searchParams: ProductPageProps['searchParams']
 ) {
-   return searchParams.variant ?? defaultVariantId(product);
+   return searchParams.variant ?? defaultVariantIdFor(product);
 }

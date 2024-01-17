@@ -18,7 +18,7 @@ export function imagesFor(
    return relevantImages.length > 0 ? relevantImages : product.fallbackImages;
 }
 
-export function defaultVariantId(product: Product): string {
+export function defaultVariantIdFor(product: Product): string {
    const variant =
       product.variants.find(
          (variant) => variant.quantityAvailable && variant.quantityAvailable > 0

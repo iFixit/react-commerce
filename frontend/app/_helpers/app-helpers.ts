@@ -1,4 +1,4 @@
-import { CACHE_DISABLED } from '@config/env';
+import { CACHE_DISABLED, IFIXIT_ORIGIN } from '@config/env';
 import { headers } from 'next/headers';
 
 export function shouldSkipCache(
@@ -7,7 +7,11 @@ export function shouldSkipCache(
    return searchParams.disableCacheGets != null || CACHE_DISABLED;
 }
 
-export function devSandboxOrigin(): string | null {
+export function ifixitOrigin(): string {
+   return devSandboxOrigin() ?? IFIXIT_ORIGIN;
+}
+
+function devSandboxOrigin(): string | null {
    const host =
       headers().get('x-ifixit-forwarded-host') ||
       headers().get('x-forwarded-host');
