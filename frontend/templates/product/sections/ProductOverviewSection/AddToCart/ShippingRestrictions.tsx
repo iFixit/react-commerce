@@ -1,4 +1,4 @@
-import { Box, Flex, StackProps, VStack } from '@chakra-ui/react';
+import { Box, Flex, IconButton, StackProps, VStack } from '@chakra-ui/react';
 import { Tooltip } from '@components/ui/Tooltip';
 import { faCircleInfo } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
@@ -73,12 +73,18 @@ export function ShippingRestrictions({
                      {shippingRestriction.notice}
                      <Tooltip
                         trigger={
-                           <FaIcon
-                              icon={faCircleInfo}
-                              h="4"
-                              mt="1px"
-                              ml="1.5"
-                              color="gray.400"
+                           <IconButton
+                              aria-label="Learn more about this shipping restriction"
+                              ml="1"
+                              size="sm"
+                              variant="ghost"
+                              icon={
+                                 <FaIcon
+                                    icon={faCircleInfo}
+                                    h="4"
+                                    color="gray.400"
+                                 />
+                              }
                            />
                         }
                         content={
