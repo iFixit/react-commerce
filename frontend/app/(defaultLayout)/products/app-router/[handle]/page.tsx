@@ -11,6 +11,7 @@ import {
    ProductBreadcrumbsJsonLDScript,
    ProductJsonLDScript,
 } from './json-ld-scripts';
+import ProductTemplate from '@templates/product';
 
 export interface ProductPageProps {
    params: {
@@ -49,7 +50,7 @@ export default async function ProductPage({
             product={product}
             selectedVariantId={selectedVariantId(product, searchParams)}
          />
-         <div>Product: {product.title}</div>
+         <ProductTemplate product={product} />
       </>
    );
 }
