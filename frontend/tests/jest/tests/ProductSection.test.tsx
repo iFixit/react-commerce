@@ -1,28 +1,23 @@
+import { ProductOverviewSection } from '@templates/product/sections/ProductOverviewSection/index';
 import { act, screen, waitFor, within } from '@testing-library/react';
 import {
-   mockMatchMedia,
-   renderWithAppContext,
-   mockResizeObserver,
-   mockIntersectionObserver,
-} from '../utils';
-import { ProductOverviewSection } from '@templates/product/sections/ProductOverviewSection/index';
-import {
+   getDiscountedProduct,
    getMockProduct,
    getMockProductVariant,
-   getDiscountedProduct,
    getNonDiscountedProduct,
    getProductOfType,
    getProductWithWarranty,
 } from '../__mocks__/products';
-import { mockedLayoutProps } from '../__mocks__/useProductTemplateProps';
+import {
+   mockIntersectionObserver,
+   mockMatchMedia,
+   mockResizeObserver,
+   renderWithAppContext,
+} from '../utils';
 
 jest.mock('@templates/product/hooks/useIsProductForSale', () => ({
    ...jest.requireActual('@templates/product/hooks/useIsProductForSale'),
    useIsProductForSale: jest.fn(() => true),
-}));
-
-jest.mock('@templates/product/hooks/useProductTemplateProps', () => ({
-   useProductTemplateProps: jest.fn(() => ({ ...mockedLayoutProps })),
 }));
 
 describe('ProductSection Tests', () => {
