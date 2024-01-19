@@ -18,7 +18,7 @@ export default function GlobalError({ error }: GlobalErrorProps) {
       });
    }, [error]);
    return (
-      <html>
+      <html lang="en">
          <body>
             <Center p="4">
                <Alert

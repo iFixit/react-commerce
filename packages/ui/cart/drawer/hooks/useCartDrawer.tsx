@@ -6,17 +6,44 @@ import { useCart } from '@ifixit/cart-sdk';
 import * as React from 'react';
 import { trackInPiwik } from '@ifixit/analytics/piwik/track-event';
 
-export type CartDrawerContext = ReturnType<typeof useDisclosure> & {};
-
+export type CartDrawerContext = ReturnType<typeof useDisclosure> & {
+   errors: Error[];
+   addError: (newError: unknown) => void;
+   clearErrors: () => void;
+};
 const CartDrawerContext = React.createContext<CartDrawerContext | null>(null);
 
 type CartDrawerProviderProps = React.PropsWithChildren<{}>;
 
 export function CartDrawerProvider({ children }: CartDrawerProviderProps) {
    const disclosure = useDisclosure();
-   const value = React.useMemo((): CartDrawerContext => {
-      return disclosure;
-   }, [disclosure]);
+   const [errors, setErrors] = React.useState<Error[]>([]);
+
+   const addError = (newError: unknown) => {
+      let error: Error;
+      if (newError instanceof Error) {
+         error = newError;
+      } else if (typeof newError === 'string') {
+         error = new Error(newError);
+      } else {
+         error = new Error('Unknown error');
+      }
+      setErrors((prevErrors) => [...prevErrors, error]);
+   };
+
+   const clearErrors = () => {
+      setErrors([]);
+   };
+
+   const value = React.useMemo(
+      (): CartDrawerContext => ({
+         ...disclosure,
+         errors,
+         addError,
+         clearErrors,
+      }),
+      [disclosure, errors]
+   );
 
    return (
       <CartDrawerContext.Provider value={value}>

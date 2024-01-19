@@ -7,6 +7,7 @@ import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Cart, CartLineItem } from '../types';
 import { cartKeys } from '../utils';
+import { useCartDrawer } from '@ifixit/ui';
 
 interface DeleteLineItemInput {
    item: CartLineItem;
@@ -18,6 +19,7 @@ interface DeleteLineItemInput {
 export function useRemoveLineItem() {
    const client = useQueryClient();
    const iFixitApiClient = useIFixitApiClient();
+   const { addError } = useCartDrawer();
    const mutation = useMutation(
       async (input) => {
          await iFixitApiClient.delete(
@@ -75,6 +77,7 @@ export function useRemoveLineItem() {
                cartKeys.cart,
                context?.previousCart
             );
+            addError(error);
          },
          onSuccess: (data, variables) => {
             const cart = client.getQueryData<Cart>(cartKeys.cart);
