@@ -11,8 +11,14 @@ import {
    VarnishBypassHeader,
 } from '@ifixit/ifixit-api-client';
 
+export type AnswersProps = {
+   allAnswersUrl: string;
+   allAnswersCount: number;
+};
+
 export type PageParams = {
    device: string;
+   answersProps: AnswersProps;
 };
 
 export type PageProps = {
@@ -23,7 +29,11 @@ export type PageProps = {
 export default async function Page({ params, searchParams }: PageProps) {
    ensureFlag();
 
-   const pageProps = await getPageProps({ params, searchParams });
+   const pageProps = await getPageProps({
+      params,
+      searchParams,
+   });
+
    return <TroubleshootingProblems {...pageProps} />;
 }
 

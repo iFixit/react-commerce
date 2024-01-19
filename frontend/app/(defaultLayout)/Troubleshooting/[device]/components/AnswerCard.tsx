@@ -45,7 +45,7 @@ export function AnswerCard({
                outline="1px solid"
                outlineColor="gray.300"
                borderRadius="md"
-               width={{ base: '128px', lg: '64px' }}
+               width={{ lg: '64px' }}
                mr={2}
                aspectRatio="4 / 3"
                overflow="hidden"

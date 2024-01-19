@@ -1,16 +1,14 @@
 import { Box, Heading, Link, SimpleGrid, Stack, Text } from '@chakra-ui/react';
-import { TroubleshootingProblemsApiData } from '../hooks/useTroubleshootingProblemsProps';
+import { TroubleshootingAnswersData } from '../hooks/useTroubleshootingProblemsProps';
 import { AnswerCard } from './AnswerCard';
 
 export function Answers({
-   title,
    answers,
    allAnswersUrl,
-}: {
-   title: TroubleshootingProblemsApiData['title'];
-   answers: TroubleshootingProblemsApiData['answers'];
-   allAnswersUrl: TroubleshootingProblemsApiData['allAnswersUrl'];
-}) {
+   allAnswersCount,
+}: TroubleshootingAnswersData) {
+   const answersData = answers.slice(0, 8); // design calls for 8
+
    return (
       <>
          <Stack spacing={2} py={3}>
@@ -28,9 +26,13 @@ export function Answers({
                a resolution to your problem, you can always ask.
             </Text>
          </Stack>
-         <Stack spacing={3}>
-            <SimpleGrid className="list" columns={2} spacing={3}>
-               {answers.map((answer: any) => (
+         <Stack className="answers" spacing={3}>
+            <SimpleGrid
+               className="list"
+               columns={{ base: 1, md: 2 }}
+               spacing={3}
+            >
+               {answersData.map((answer: any) => (
                   <AnswerCard answer={answer} key={answer.title} />
                ))}
             </SimpleGrid>
@@ -44,7 +46,7 @@ export function Answers({
          >
             See all{' '}
             <Box as="span" fontWeight="semibold">
-               {title}
+               {allAnswersCount}
             </Box>{' '}
             questions
          </Link>

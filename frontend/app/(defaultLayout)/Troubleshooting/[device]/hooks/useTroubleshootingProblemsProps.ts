@@ -13,6 +13,7 @@ export type TroubleshootingProblemsApiData = {
    problems: Problems[];
    answers: Answers[];
    allAnswersUrl: string;
+   allAnswersCount: number;
    title: string;
 };
 
@@ -34,14 +35,20 @@ export type Answers = {
    deviceTitle: string;
 };
 
+export type TroubleshootingAnswersData = {
+   answers: Answers[];
+   allAnswersUrl: string;
+   allAnswersCount: number;
+};
+
 export type BreadcrumbEntry = {
    title: string;
    url: string;
 };
 
 export type TroubleshootingProblemsData = {
-   problems: TroubleshootingProblemsApiData['problems'];
-   answers: TroubleshootingProblemsApiData['answers'];
+   problems: Problems[];
+   answers: Answers[];
 };
 
 type TroubleshootingProblemsPageProps = {
