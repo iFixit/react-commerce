@@ -14,11 +14,13 @@ import {
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FaIcon } from '@ifixit/icons';
 import { NavBar } from './NavBar';
+import { Answers } from './Answers';
 
 import type { TroubleshootingProblemsApiData } from '../hooks/useTroubleshootingProblemsProps';
 
 export default function TroubleshootingProblems(
-   TroubleshootingProblems: TroubleshootingProblemsApiData
+   TroubleshootingProblems: TroubleshootingProblemsApiData,
+   allAnswersUrl: string
 ) {
    const {
       title,
@@ -27,6 +29,7 @@ export default function TroubleshootingProblems(
       deviceGuideUrl,
       devicePartsUrl,
       breadcrumbs,
+      answers,
    } = TroubleshootingProblems;
 
    return (
@@ -41,9 +44,9 @@ export default function TroubleshootingProblems(
          <Box
             className="wrapper"
             maxWidth="1280px"
-            mt={8}
             mx="auto"
             px={{ base: 4, md: 8 }}
+            py={{ md: 8 }}
          >
             <Stack as="main" spacing={3}>
                <Box className="header">
@@ -78,6 +81,11 @@ export default function TroubleshootingProblems(
                      )
                   )}
                </SimpleGrid>
+               <Answers
+                  title={title}
+                  answers={answers}
+                  allAnswersUrl={allAnswersUrl}
+               />
             </Stack>
          </Box>
       </>

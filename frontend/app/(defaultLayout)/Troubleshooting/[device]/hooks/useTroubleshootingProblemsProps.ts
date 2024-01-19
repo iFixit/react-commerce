@@ -11,6 +11,8 @@ export type TroubleshootingProblemsApiData = {
    breadcrumbs: BreadcrumbEntry[];
    id: number;
    problems: Problems[];
+   answers: Answers[];
+   allAnswersUrl: string;
    title: string;
 };
 
@@ -25,16 +27,21 @@ export type Problems = {
    badges?: string[];
 };
 
+export type Answers = {
+   url: string;
+   imageUrl: string;
+   title: string;
+   deviceTitle: string;
+};
+
 export type BreadcrumbEntry = {
    title: string;
    url: string;
 };
 
-export type TroubleshootingProblemsData = Omit<
-   TroubleshootingProblemsApiData,
-   'problems'
-> & {
-   problems: TroubleshootingProblemsApiData[];
+export type TroubleshootingProblemsData = {
+   problems: TroubleshootingProblemsApiData['problems'];
+   answers: TroubleshootingProblemsApiData['answers'];
 };
 
 type TroubleshootingProblemsPageProps = {
