@@ -140,7 +140,7 @@ function Problem({
             className="device"
             spacing={1.5}
             alignItems="center"
-            bgColor="blueGray.50"
+            bgColor="blueGray.100"
             borderTop="1px solid"
             borderColor="gray.200"
             py={1.5}
