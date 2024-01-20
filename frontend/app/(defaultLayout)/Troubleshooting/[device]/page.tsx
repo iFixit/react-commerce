@@ -1,4 +1,3 @@
-import { flags } from '@config/flags';
 import { RestrictRobots } from '@helpers/next-helpers';
 import { getiFixitOrigin } from '@helpers/path-helpers';
 import { Metadata } from 'next';
