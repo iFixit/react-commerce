@@ -27,20 +27,12 @@ export type PageProps = {
 };
 
 export default async function Page({ params, searchParams }: PageProps) {
-   ensureFlag();
-
    const pageProps = await getPageProps({
       params,
       searchParams,
    });
 
    return <TroubleshootingProblems {...pageProps} />;
-}
-
-function ensureFlag() {
-   if (!flags.TROUBLESHOOTING_COLLECTIONS_ENABLED) {
-      notFound();
-   }
 }
 
 async function getPageProps({
@@ -93,9 +85,7 @@ export async function generateMetadata({
       alternates: {
          canonical: canonicalUrl,
       },
-      robots: flags.TROUBLESHOOTING_COLLECTIONS_ENABLED
-         ? RestrictRobots.ALLOW_ALL
-         : RestrictRobots.RESTRICT_ALL,
+      robots: RestrictRobots.RESTRICT_ALL,
       title: metaTitle,
       description: metaDescription,
       openGraph: {
