@@ -276,7 +276,7 @@ function NavTabs({
             </Box>
          )}
 
-         <Box {...selectedStyleProps}>Answers</Box>
+         <Box {...selectedStyleProps}>Troubleshooting</Box>
       </Flex>
    );
 }
