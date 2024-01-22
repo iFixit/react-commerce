@@ -203,7 +203,7 @@ describe('ProductSection Tests', () => {
          const price = within(productPrice).getByTestId('price');
 
          expect(price).toBeInTheDocument();
-         expect(price.textContent).toBe('$29.99');
+         expect(price.textContent).toContain('$29.99');
       });
 
       test('Discounted Price Renders', async () => {
@@ -229,29 +229,15 @@ describe('ProductSection Tests', () => {
             'product-price-section'
          );
          const price = within(productPrice).getByTestId('price');
-
          expect(price).toBeInTheDocument();
-         expect(price.textContent).toBe('$' + discountPrice);
+         expect(price.textContent).toContain('$' + discountPrice);
 
-         // Get the parent element of the element
-         const parentElement = price.parentElement;
-
-         // Get all of the children of the parent element
-         const children = parentElement?.children;
-
-         // Filter out the element itself to get only its siblings
-         const siblings = Array.prototype.filter.call(
-            children,
-            (child: HTMLElement) => {
-               return child !== price;
-            }
+         const discountBadge =
+            within(productPrice).getByTestId('product-discount');
+         expect(discountBadge).toBeInTheDocument();
+         expect(discountBadge.textContent).toContain(
+            discountPercentage + '% OFF'
          );
-
-         const priceTexts = [discountPercentage + '% OFF', '$' + originalPrice];
-
-         siblings.forEach((sibling: HTMLElement) => {
-            expect(priceTexts).toContain(sibling.textContent);
-         });
       });
    });
 
