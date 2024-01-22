@@ -551,14 +551,15 @@ function IntroductionSection({
 
 function CausesListHeader() {
    return (
-      <HeadingSelfLink
-         fontWeight="semibold"
+      <Heading
+         as="h2"
          aria-label="Causes"
-         id={'causes'}
-         selfLinked
+         fontSize={{ base: '20px', mdPlus: '24px' }}
+         fontWeight="semibold"
+         lineHeight="normal"
       >
          Causes
-      </HeadingSelfLink>
+      </Heading>
    );
 }
 
