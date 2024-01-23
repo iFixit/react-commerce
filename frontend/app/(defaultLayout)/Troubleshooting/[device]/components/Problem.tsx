@@ -32,6 +32,10 @@ export function Problem({
          borderColor="gray.300"
          borderRadius="md"
          overflow="hidden"
+         transition="border-color 0.2s"
+         _hover={{
+            borderColor: 'brand.500',
+         }}
       >
          <Stack direction="row" spacing={3} alignSelf="stretch" p={4} flex="1">
             {imageSrcStandard ? (
