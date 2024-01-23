@@ -8,6 +8,7 @@ import {
    Microsoft,
    Motorola,
    Nokia,
+   Polaroid,
    Samsung,
    Steam,
    TeenageEngineering,
@@ -36,6 +37,7 @@ const partnerCodeToComponentMap: { [key: string]: React.FC } = {
    microsoft_surface_tool: Microsoft,
    motorola: Motorola,
    nokia: Nokia,
+   polaroid: () => <Polaroid px="2" />,
    samsung_galaxy: Samsung,
    steam_deck: Steam,
    teenage_engineering: TeenageEngineering,
@@ -51,8 +53,8 @@ export function GenuinePartBanner({ oemPartnership }: GenuinePartBannerProps) {
    );
    const theme = useTheme();
 
-   const hasPartnerLogo = partnerCodeToComponentMap[code] !== undefined;
    const PartnerLogo = partnerCodeToComponentMap[code];
+   const hasPartnerLogo = PartnerLogo !== undefined;
 
    return (
       <Flex
