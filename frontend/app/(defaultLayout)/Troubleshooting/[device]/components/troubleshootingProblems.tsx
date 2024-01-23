@@ -12,118 +12,83 @@ import {
    Text,
 } from '@chakra-ui/react';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { faVolumeXmark } from '@fortawesome/pro-duotone-svg-icons';
-import { FaIcon, FaIconProps } from '@ifixit/icons';
+import { FaIcon } from '@ifixit/icons';
+import { NavBar } from './NavBar';
+import { Answers } from './Answers';
 
-const mockProblems = [
-   {
-      imageSrcLg:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.large',
-      imageSrcThumb:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.thumbnail',
-      problemTitle: 'GE Refrigerator Temperature Inconsistencies',
-      deviceTitle: 'GE Refrigerator',
-      description:
-         'Fluctuating temperatures in the refrigerator or freezer compartments, often due to a faulty thermostat or temperature sensor.',
-      altText: 'GE Refrigerator image',
-   },
-   {
-      imageSrcLg:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.large',
-      imageSrcThumb:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.thumbnail',
-      problemTitle: 'GE Refrigerator Water Dispenser Malfunctions',
-      deviceTitle: 'GE Refrigerator',
-      description:
-         'Water dispenser not functioning or dripping water, resulting from a faulty water valve or blocked filter.',
-      altText: 'GE Refrigerator image',
-   },
-   {
-      imageSrcLg:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.large',
-      imageSrcThumb:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.thumbnail',
-      problemTitle: 'GE Refrigerator Ice Maker Issues',
-      deviceTitle: 'GE Refrigerator',
-      description:
-         'The ice maker is not producing ice or is dispensing ice irregularly, due to clogged water lines or malfunctioning components.',
-      altText: 'GE Refrigerator image',
-   },
-   {
-      imageSrcLg: undefined,
-      imageSrcThumb:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.thumbnail',
-      problemTypeIcon: faVolumeXmark,
-      problemTitle:
-         'GE Refrigerator Model Number GSS25WSTASS (2008) Temperature Inconsistencies Involving the Fresh Food Compartment',
-      deviceTitle:
-         'GE Refrigerator Model Number GSS25WSTASS (2008) Sub-Model Number GSS25W',
-      description:
-         'Fluctuating temperatures in the refrigerator or freezer compartments, often due to a faulty thermostat or temperature sensor. The following text is for testing purposes only. Lets see how well this long text wraps with a cap on 4 lines.',
-      altText: 'GE Refrigerator image',
-   },
-   {
-      imageSrcLg:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.large',
-      imageSrcThumb:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.thumbnail',
-      problemTitle: 'GE Refrigerator Door Seal Problems',
-      deviceTitle: 'GE Refrigerator',
-      description:
-         'The refrigerator doors are not closing correctly or are allowing warm air inside, typically related to worn or damaged door seals.',
-      altText: 'GE Refrigerator image',
-   },
-   {
-      imageSrcLg:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.large',
-      imageSrcThumb:
-         'https://guide-images.cdn.ifixit.com/igi/GEQaIapMrXAqEjAS.thumbnail',
-      problemTitle: 'GE Refrigerator Not Cooling Properly',
-      deviceTitle: 'GE Refrigerator',
-      description:
-         'The refrigerator is not maintaining the correct temperature, which could be the result of a damaged condenser, evaporator, or compressor.',
-      altText: 'GE Refrigerator image',
-   },
-];
+import type { TroubleshootingProblemsApiData } from '../hooks/useTroubleshootingProblemsProps';
 
-export default function TroubleshootingProblems({
-   title,
-}: TroubleshootingProblemsProps) {
+export default function TroubleshootingProblems(
+   TroubleshootingProblems: TroubleshootingProblemsApiData
+) {
+   const {
+      title,
+      editUrl,
+      historyUrl,
+      deviceGuideUrl,
+      devicePartsUrl,
+      breadcrumbs,
+      answers,
+      allAnswersUrl,
+      allAnswersCount,
+   } = TroubleshootingProblems;
+   const ProblemsData = TroubleshootingProblems.problems.slice(0, 10); // Design calls for 10
+
    return (
-      <Box className="wrapper" maxWidth="1280px" mt={8} mx="auto" px={8}>
-         <Stack as="main" spacing={3}>
-            <Box className="header">
-               <Heading color="gray.800" fontSize="30px" fontWeight="medium">
-                  Most Common {title} Troubleshooting Problems
-               </Heading>
-               <Text mt={2}>
-                  When your {title} runs into issues, it can be a source of
-                  frustration and inconvenience. Never fear &mdash; we&apos;ve
-                  compiled a comprehensive guide to diagnose and fix the most
-                  common problems that can plague your refrigerator.
-               </Text>
-            </Box>
-            <SimpleGrid
-               className="list"
-               columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
-               spacing={6}
-               py={3}
-            >
-               {mockProblems.map((problem: ProblemProps, index: number) => (
-                  <Problem
-                     key={index}
-                     imageSrcLg={problem.imageSrcLg}
-                     imageSrcThumb={problem.imageSrcThumb}
-                     problemTypeIcon={problem.problemTypeIcon}
-                     problemTitle={problem.problemTitle}
-                     deviceTitle={problem.deviceTitle}
-                     description={problem.description}
-                     altText={problem.altText}
-                  />
-               ))}
-            </SimpleGrid>
-         </Stack>
-      </Box>
+      <>
+         <NavBar
+            editUrl={editUrl}
+            historyUrl={historyUrl}
+            deviceGuideUrl={deviceGuideUrl}
+            devicePartsUrl={devicePartsUrl}
+            breadcrumbs={breadcrumbs}
+         />
+         <Box
+            className="wrapper"
+            maxWidth="1280px"
+            mx="auto"
+            px={{ base: 4, md: 8 }}
+            py={{ md: 8 }}
+         >
+            <Stack as="main" spacing={3}>
+               <Box className="header">
+                  <Heading color="gray.800" fontSize="30px" fontWeight="medium">
+                     Most Common {title} Troubleshooting Problems
+                  </Heading>
+                  <Text mt={2}>
+                     When your {title} runs into issues, it can be a source of
+                     frustration and inconvenience. Never fear &mdash;
+                     we&apos;ve compiled a comprehensive guide to diagnose and
+                     fix the most common problems that can plague your {title}.
+                  </Text>
+               </Box>
+               <SimpleGrid
+                  className="list"
+                  columns={{ base: 1, sm: 2 }}
+                  spacing={{ base: 4, md: 6 }}
+                  py={3}
+               >
+                  {ProblemsData.map((problem: any, index: number) => (
+                     <Problem
+                        key={index}
+                        imageSrcStandard={problem.imageSrcStandard}
+                        imageSrcThumbnail={problem.imageSrcThumbnail}
+                        problemTypeIcon={problem.problemTypeIcon}
+                        problemTitle={problem.problemTitle}
+                        deviceTitle={problem.deviceTitle}
+                        description={problem.description}
+                        altText={problem.altText}
+                     />
+                  ))}
+               </SimpleGrid>
+               <Answers
+                  answers={answers}
+                  allAnswersUrl={allAnswersUrl}
+                  allAnswersCount={allAnswersCount}
+               />
+            </Stack>
+         </Box>
+      </>
    );
 }
 
@@ -131,86 +96,90 @@ function Problem({
    problemTitle,
    deviceTitle,
    description,
-   imageSrcLg,
-   imageSrcThumb,
+   imageSrcStandard,
+   imageSrcThumbnail,
    problemTypeIcon,
    altText,
    badges,
-}: ProblemProps) {
+}: any) {
    return (
       <Flex
          flexDirection="column"
-         alignSelf="stretch"
          bgColor="white"
          border="1px solid"
          borderColor="gray.300"
          borderRadius="md"
          overflow="hidden"
       >
-         {imageSrcLg ? (
-            <Image src={imageSrcLg} alt={altText} {...lgImageStyles} />
-         ) : (
-            <Flex {...imagePlaceholderStyles}>
-               <FaIcon
-                  icon={problemTypeIcon as IconProp}
-                  size="3x"
-                  color="brand.400"
-                  m="auto"
-               />
-            </Flex>
-         )}
-         <Stack className="content" spacing={3} p={4} flex="auto">
-            <Stack className="title" spacing={1} flex="1">
-               <Text color="brand.500" fontWeight="semibold" noOfLines={4}>
-                  {problemTitle}
-               </Text>
-               <Text fontSize="sm" noOfLines={4}>
-                  {description}
-               </Text>
+         <Stack direction="row" spacing={3} alignSelf="stretch" p={4} flex="1">
+            {imageSrcStandard ? (
+               <Image src={imageSrcStandard} alt={altText} {...lgImageStyles} />
+            ) : (
+               <Flex {...imagePlaceholderStyles}>
+                  <FaIcon
+                     icon={problemTypeIcon as IconProp}
+                     size="3x"
+                     color="brand.400"
+                     m="auto"
+                  />
+               </Flex>
+            )}
+            <Stack className="content" spacing={3} flex="auto">
+               <Stack className="title" spacing={1} flex="1">
+                  <Text fontWeight="semibold" noOfLines={3}>
+                     {problemTitle}
+                  </Text>
+                  <Text color="gray.500" fontSize="sm" noOfLines={3}>
+                     {description}
+                  </Text>
+               </Stack>
+               {badges && <HStack className="badges" spacing={1.5}></HStack>}
             </Stack>
-            {badges && <HStack className="badges" spacing={1.5}></HStack>}
-            <HStack className="device" spacing={1.5} alignItems="center">
-               <Image src={imageSrcThumb} alt={altText} {...thumbImageStyles} />
-               <Box fontSize="sm" fontWeight="semibold" noOfLines={2}>
-                  {deviceTitle}
-               </Box>
-            </HStack>
          </Stack>
+         <HStack
+            className="device"
+            spacing={1.5}
+            alignItems="center"
+            bgColor="blueGray.100"
+            borderTop="1px solid"
+            borderColor="gray.200"
+            py={1.5}
+            px={4}
+         >
+            <Image
+               src={imageSrcThumbnail}
+               alt={altText}
+               {...thumbImageStyles}
+            />
+            <Box fontSize="sm" fontWeight="semibold" noOfLines={2}>
+               {deviceTitle}
+            </Box>
+         </HStack>
       </Flex>
    );
 }
 
-export type TroubleshootingProblemsProps = {
-   title: string;
+const imageStyles = {
+   border: '1px solid',
+   borderColor: 'gray.300',
+   borderRadius: 'md',
+   aspectRatio: '4 / 3',
 };
 
-export type ProblemProps = {
-   problemTitle: string;
-   deviceTitle: string;
-   description: string;
-   altText: string;
-   imageSrcLg?: string;
-   imageSrcThumb?: string;
-   problemTypeIcon?: FaIconProps;
-   badges?: string[];
+const thumbImageStyles = {
+   ...imageStyles,
+   width: '32px',
+   height: '32px',
 };
 
 const lgImageStyles = {
-   borderBottom: '1px solid',
-   borderColor: 'gray.300',
-   aspectRatio: '4 / 3',
+   ...imageStyles,
+   width: '96px',
+   height: '72px',
 };
 
 const imagePlaceholderStyles = {
    ...lgImageStyles,
    width: '100%',
    bgColor: 'brand.100',
-};
-
-const thumbImageStyles = {
-   border: '1px solid',
-   borderColor: 'gray.300',
-   borderRadius: 'md',
-   width: '32px',
-   height: '32px',
 };

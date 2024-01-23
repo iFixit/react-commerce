@@ -1,19 +1,23 @@
-import { flags } from '@config/flags';
 import { RestrictRobots } from '@helpers/next-helpers';
 import { getiFixitOrigin } from '@helpers/path-helpers';
 import { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
-import TroubleshootingProblems, {
-   TroubleshootingProblemsProps,
-} from './components/troubleshootingProblems';
+import TroubleshootingProblems from './components/troubleshootingProblems';
+import {
+   TroubleshootingProblemsApiData,
+   TroubleshootingAnswersData,
+} from './hooks/useTroubleshootingProblemsProps';
 import {
    IFixitAPIClient,
    VarnishBypassHeader,
 } from '@ifixit/ifixit-api-client';
 
+export type AnswersProps = Omit<TroubleshootingAnswersData, 'answers'>;
+
 export type PageParams = {
    device: string;
+   answersProps: AnswersProps;
 };
 
 export type PageProps = {
@@ -22,22 +26,18 @@ export type PageProps = {
 };
 
 export default async function Page({ params, searchParams }: PageProps) {
-   ensureFlag();
+   const pageProps = await getPageProps({
+      params,
+      searchParams,
+   });
 
-   const pageProps = await getPageProps({ params, searchParams });
    return <TroubleshootingProblems {...pageProps} />;
-}
-
-function ensureFlag() {
-   if (!flags.TROUBLESHOOTING_COLLECTIONS_ENABLED) {
-      notFound();
-   }
 }
 
 async function getPageProps({
    params,
    searchParams: _searchParams,
-}: PageProps): Promise<TroubleshootingProblemsProps> {
+}: PageProps): Promise<TroubleshootingProblemsApiData> {
    const { device } = params;
    const data = await getTroubleshootingProblemsData(device);
    return data;
@@ -45,7 +45,7 @@ async function getPageProps({
 
 async function getTroubleshootingProblemsData(
    device: string
-): Promise<TroubleshootingProblemsProps> {
+): Promise<TroubleshootingProblemsApiData> {
    const nextHeaders = headers();
    const ifixitOrigin = getiFixitOrigin(nextHeaders);
 
@@ -57,7 +57,7 @@ async function getTroubleshootingProblemsData(
    const url = `Troubleshooting/Collection/${encodedDevice}`;
 
    try {
-      return await client.get<TroubleshootingProblemsProps>(
+      return await client.get<TroubleshootingProblemsApiData>(
          url,
          'troubleshootingProblems'
       );
@@ -84,9 +84,7 @@ export async function generateMetadata({
       alternates: {
          canonical: canonicalUrl,
       },
-      robots: flags.TROUBLESHOOTING_COLLECTIONS_ENABLED
-         ? RestrictRobots.ALLOW_ALL
-         : RestrictRobots.RESTRICT_ALL,
+      robots: RestrictRobots.RESTRICT_ALL,
       title: metaTitle,
       description: metaDescription,
       openGraph: {
