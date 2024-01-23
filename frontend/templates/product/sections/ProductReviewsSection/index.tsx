@@ -282,7 +282,7 @@ function ProductReviewLineItem({ review }: ProductReviewLineItemProps) {
          <HStack my="4">
             <Rating value={review.rating} />
             {review.created_date && (
-               <Text mt="4" color="gray.500">
+               <Text color="gray.500">
                   {formatReviewDate(review.created_date)}
                </Text>
             )}
