@@ -24,6 +24,7 @@ export function NavBar({
    }));
    const padding = { base: 4, sm: 8 };
    const breadcrumbMinHeight = '48px';
+
    return (
       <Flex
          w="100%"
@@ -43,7 +44,7 @@ export function NavBar({
             justify="stretch"
          >
             <BreadCrumbs
-               breadCrumbs={bc.slice(0, -1)}
+               breadCrumbs={bc}
                paddingInlineStart={{ base: 4, sm: 0 }}
                paddingInlineEnd={padding}
                minHeight={breadcrumbMinHeight}
