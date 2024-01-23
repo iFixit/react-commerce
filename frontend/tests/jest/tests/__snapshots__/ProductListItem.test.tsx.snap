@@ -181,6 +181,11 @@ exports[`ProductListItem renders and matches the snapshot 1`] = `
               class="chakra-text css-mafz32"
               data-testid="price"
             >
+              <span
+                class="css-idkz9h"
+              >
+                Sale price 
+              </span>
               $5.00
             </p>
           </div>
