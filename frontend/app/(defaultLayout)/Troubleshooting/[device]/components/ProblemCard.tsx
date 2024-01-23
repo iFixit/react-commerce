@@ -35,9 +35,17 @@ export function ProblemCard({
          transition="border-color 0.2s"
          _hover={{
             borderColor: 'brand.500',
+            cursor: 'pointer',
          }}
       >
-         <Stack direction="row" spacing={3} alignSelf="stretch" p={4} flex="1">
+         <Stack
+            direction="row"
+            spacing={4}
+            alignSelf="stretch"
+            p={5}
+            flex="1"
+            color="gray.900"
+         >
             {imageSrcStandard ? (
                <Image src={imageSrcStandard} alt={altText} {...lgImageStyles} />
             ) : (
@@ -50,14 +58,14 @@ export function ProblemCard({
                   />
                </Flex>
             )}
-            <Stack className="content" spacing={3} flex="auto">
-               <Stack className="title" spacing={1} flex="1">
+            <Stack className="content" spacing={4} flex="auto">
+               <Stack className="title" spacing={1.5} flex="1">
                   <LinkOverlay href={problemUrl}>
                      <Text fontWeight="semibold" noOfLines={3}>
                         {problemTitle}
                      </Text>
                   </LinkOverlay>
-                  <Text color="gray.500" fontSize="sm" noOfLines={3}>
+                  <Text color="gray.600" fontSize="sm" noOfLines={3}>
                      {description}
                   </Text>
                </Stack>
@@ -71,15 +79,15 @@ export function ProblemCard({
             bgColor="blueGray.100"
             borderTop="1px solid"
             borderColor="gray.200"
-            py={1.5}
-            px={4}
+            py={2}
+            px={5}
          >
             <Image
                src={imageSrcThumbnail}
                alt={altText}
                {...thumbImageStyles}
             />
-            <Box fontSize="sm" fontWeight="semibold" noOfLines={2}>
+            <Box fontSize="sm" fontWeight="semibold" noOfLines={1}>
                {deviceTitle}
             </Box>
          </HStack>
@@ -96,14 +104,14 @@ const imageStyles = {
 
 const thumbImageStyles = {
    ...imageStyles,
-   width: '32px',
-   height: '32px',
+   width: '48px',
+   height: '36px',
 };
 
 const lgImageStyles = {
    ...imageStyles,
-   width: '96px',
-   height: '72px',
+   width: { base: '72px', sm: '96px' },
+   height: { base: '54px', sm: '72px' },
 };
 
 const imagePlaceholderStyles = {

@@ -40,9 +40,14 @@ export default function TroubleshootingProblems(
             px={{ base: 4, md: 8 }}
             py={{ md: 8 }}
          >
-            <Stack as="main" spacing={3}>
+            <Stack as="main" spacing={6}>
                <Box className="header">
-                  <Heading color="gray.800" fontSize="30px" fontWeight="medium">
+                  <Heading
+                     color="gray.800"
+                     fontSize={{ base: '24px', sm: '30px' }}
+                     fontWeight="medium"
+                     lineHeight="115%"
+                  >
                      Most Common {title} Troubleshooting Problems
                   </Heading>
                   <Text mt={2}>
@@ -56,7 +61,6 @@ export default function TroubleshootingProblems(
                   className="list"
                   columns={{ base: 1, sm: 2 }}
                   spacing={{ base: 4, md: 6 }}
-                  py={3}
                >
                   {ProblemsData.map((problem: any, index: number) => (
                      <ProblemCard
