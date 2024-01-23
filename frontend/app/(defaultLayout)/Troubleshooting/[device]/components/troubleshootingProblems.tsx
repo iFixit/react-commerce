@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Box, Heading, SimpleGrid, Stack, Text } from '@chakra-ui/react';
 import { NavBar } from './NavBar';
 import { Answers } from './Answers';
-import { Problem } from './Problem';
+import { ProblemCard } from './ProblemCard';
 
 import type { TroubleshootingProblemsApiData } from '../hooks/useTroubleshootingProblemsProps';
 
@@ -59,7 +59,7 @@ export default function TroubleshootingProblems(
                   py={3}
                >
                   {ProblemsData.map((problem: any, index: number) => (
-                     <Problem
+                     <ProblemCard
                         key={index}
                         imageSrcStandard={problem.imageSrcStandard}
                         imageSrcThumbnail={problem.imageSrcThumbnail}

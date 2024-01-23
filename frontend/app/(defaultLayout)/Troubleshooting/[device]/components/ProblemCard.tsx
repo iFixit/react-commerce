@@ -12,7 +12,7 @@ import {
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FaIcon } from '@ifixit/icons';
 
-export function Problem({
+export function ProblemCard({
    problemTitle,
    problemUrl,
    deviceTitle,
