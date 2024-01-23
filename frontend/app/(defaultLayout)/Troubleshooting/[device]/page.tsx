@@ -13,10 +13,7 @@ import {
    VarnishBypassHeader,
 } from '@ifixit/ifixit-api-client';
 
-export type AnswersProps = Omit<TroubleshootingAnswersData, 'answers'> & {
-   allAnswersUrl: string;
-   allAnswersCount: number;
-};
+export type AnswersProps = Omit<TroubleshootingAnswersData, 'answers'>;
 
 export type PageParams = {
    device: string;
