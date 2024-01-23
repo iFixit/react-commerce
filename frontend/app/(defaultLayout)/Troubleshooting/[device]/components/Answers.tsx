@@ -11,22 +11,23 @@ export function Answers({
 
    return (
       <>
-         <Stack spacing={2} py={3}>
-            <Heading
-               as="h3"
-               fontSize={{ base: '20px', mdPlus: '24px' }}
-               fontWeight="medium"
-               lineHeight="normal"
-            >
-               Didn&apos;t find your problem?
-            </Heading>
-            <Text>
-               Browse the most common questions asked by users and try to see if
-               someone has already answered your problem. If you can&apos;t find
-               a resolution to your problem, you can always ask.
-            </Text>
-         </Stack>
-         <Stack className="answers" spacing={3}>
+         <Stack className="answers" spacing={4}>
+            <Stack spacing={2} pt={6}>
+               <Heading
+                  as="h3"
+                  fontSize={{ base: '20px', mdPlus: '24px' }}
+                  fontWeight="medium"
+                  lineHeight="normal"
+               >
+                  Didn&apos;t find your problem?
+               </Heading>
+               <Text>
+                  Browse the most common questions asked by users and try to see
+                  if someone has already answered your problem. If you
+                  can&apos;t find a resolution to your problem, you can always
+                  ask.
+               </Text>
+            </Stack>
             <SimpleGrid
                className="list"
                columns={{ base: 1, md: 2 }}
@@ -42,7 +43,6 @@ export function Answers({
             color="brand.500"
             fontSize="sm"
             width="fit-content"
-            py={3}
          >
             See all{' '}
             <Box as="span" fontWeight="semibold">
