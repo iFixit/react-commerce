@@ -4,13 +4,16 @@ import { Metadata } from 'next';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 import TroubleshootingProblems from './components/troubleshootingProblems';
-import { TroubleshootingProblemsApiData } from './hooks/useTroubleshootingProblemsProps';
+import {
+   TroubleshootingProblemsApiData,
+   TroubleshootingAnswersData,
+} from './hooks/useTroubleshootingProblemsProps';
 import {
    IFixitAPIClient,
    VarnishBypassHeader,
 } from '@ifixit/ifixit-api-client';
 
-export type AnswersProps = {
+export type AnswersProps = Omit<TroubleshootingAnswersData, 'answers'> & {
    allAnswersUrl: string;
    allAnswersCount: number;
 };
