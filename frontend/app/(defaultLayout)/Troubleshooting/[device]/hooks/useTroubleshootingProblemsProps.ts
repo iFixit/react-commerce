@@ -11,11 +11,8 @@ export type TroubleshootingProblemsApiData = {
    breadcrumbs: BreadcrumbEntry[];
    id: number;
    problems: Problems[];
-   answers: Answers[];
-   allAnswersUrl: string;
-   allAnswersCount: number;
    title: string;
-};
+} & TroubleshootingAnswersData;
 
 export type Problems = {
    problemTitle: string;
