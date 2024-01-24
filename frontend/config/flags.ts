@@ -8,4 +8,6 @@ export const flags = {
       'true',
    APP_ROUTER_PRODUCT_PAGE_ENABLED:
       process.env.NEXT_PUBLIC_FLAG__APP_ROUTER_PRODUCT_PAGE_ENABLED === 'true',
+   APP_ROUTER_PARTS_PAGE_ENABLED:
+      process.env.NEXT_PUBLIC_FLAG__APP_ROUTER_PARTS_PAGE_ENABLED === 'true',
 };
