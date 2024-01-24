@@ -4,6 +4,7 @@ import {
    Image,
    LinkBox,
    LinkOverlay,
+   Stack,
    Text,
 } from '@chakra-ui/react';
 import {
@@ -20,7 +21,6 @@ export function AnswerCard({
 
    return (
       <LinkBox
-         flex="1"
          overflow="hidden"
          borderColor="gray.300"
          borderWidth="1px"
@@ -28,25 +28,21 @@ export function AnswerCard({
          backgroundColor="white"
          transition={`border-color var(--chakra-transition-duration-normal)`}
          _hover={{ borderColor: 'brand.500' }}
-         padding={3}
+         padding={{ base: 2, sm: 3 }}
          fontWeight="semibold"
       >
          <Grid
             templateAreas={`
-                  "image link"
-                  "image title"
+                  "image text"
                `}
-            gridTemplateColumns="auto 1fr"
-            gridTemplateRows="auto 1fr"
-            gap={1.5}
+            gridTemplateColumns="75px 1fr"
+            gap={2}
          >
             <GridItem
                area="image"
                outline="1px solid"
                outlineColor="gray.300"
                borderRadius="md"
-               width={{ lg: '64px' }}
-               mr={2}
                aspectRatio="4 / 3"
                overflow="hidden"
             >
@@ -59,13 +55,13 @@ export function AnswerCard({
                   alt={deviceTitle}
                />
             </GridItem>
-            <GridItem area="title" display={{ base: 'initial', lg: 'flex' }}>
-               <Text>{deviceTitle}</Text>
-            </GridItem>
-            <GridItem area="link" lineHeight="initial">
-               <LinkOverlay href={url} color="brand.500">
-                  {title}
-               </LinkOverlay>
+            <GridItem area="text" display="flex">
+               <Stack spacing={1.5} justifyContent="center" lineHeight="normal">
+                  <Text>{deviceTitle}</Text>
+                  <LinkOverlay href={url} color="brand.500">
+                     <Text noOfLines={5}>{title}</Text>
+                  </LinkOverlay>
+               </Stack>
             </GridItem>
          </Grid>
       </LinkBox>

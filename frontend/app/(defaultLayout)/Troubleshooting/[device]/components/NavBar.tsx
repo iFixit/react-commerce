@@ -38,7 +38,7 @@ export function NavBar({
             className="NavBar"
             maxWidth="1280px"
             mx="auto"
-            px={{ md: 8 }}
+            px={{ sm: 4, md: 8 }}
             width="100%"
             flexDirection={{ base: 'column-reverse', sm: 'row' }}
             justify="stretch"
