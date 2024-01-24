@@ -982,15 +982,15 @@ packages:
       '@algolia/requester-common': 4.13.1
     dev: false
 
-  /@algolia/ui-components-highlight-vdom@1.2.1:
-    resolution: {integrity: sha512-IlYgIaCUEkz9ezNbwugwKv991oOHhveyq6nzL0F1jDzg1p3q5Yj/vO4KpNG910r2dwGCG3nEm5GtChcLnarhFA==}
+  /@algolia/ui-components-highlight-vdom@1.2.2:
+    resolution: {integrity: sha512-/+7jh7cd5rR2yQC7ME4SDcnAMiD1Ofn5Qq+E7afTJx9XSMOHkLR77/o6YcuJ60TfD1S+9lr7yjBLACon8gOuzQ==}
     dependencies:
-      '@algolia/ui-components-shared': 1.2.1
+      '@algolia/ui-components-shared': 1.2.2
       '@babel/runtime': 7.22.3
     dev: false
 
-  /@algolia/ui-components-shared@1.2.1:
-    resolution: {integrity: sha512-a7mYHf/GVQfhAx/HRiMveKkFvHspQv/REdG+C/FIOosiSmNZxX7QebDwJkrGSmDWdXO12D0Qv1xn3AytFcEDlQ==}
+  /@algolia/ui-components-shared@1.2.2:
+    resolution: {integrity: sha512-FYwEG5sbr8p4V8mqP0iUaKgmWfcrMXRXwp7e6iBuB65P/7QyL8pT4I6/iGb85Q5mNH+UtYYSmLZhKjEblllKEQ==}
     dev: false
 
   /@ampproject/remapping@2.2.1:
@@ -7273,87 +7273,18 @@ packages:
       '@sentry/utils': 7.93.0
     dev: false
 
-  /@sentry/cli-darwin@1.77.2:
-    resolution: {integrity: sha512-dgHxrX2OxPKvftiwymknE8fyZrsl7F6O/hGOYWofBJwoIyIQg2vmAq7o8apIfrd1xPdY1/SI8rP7t9tb1Ir1tA==}
-    engines: {node: '>=10'}
-    os: [darwin]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@sentry/cli-linux-arm64@1.77.2:
-    resolution: {integrity: sha512-pJYdogcAfJPUYzk5rbqjoo5tPAzHxIEpdns3UBs4T6SQUxDhJrQNHNokpOKxONqRL0eVC1CEyqtnKW1lx3OCHg==}
-    engines: {node: '>=10'}
-    cpu: [arm64]
-    os: [linux, freebsd]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@sentry/cli-linux-arm@1.77.2:
-    resolution: {integrity: sha512-0b3XAy5zrkeFkqaRfD1gPvMdUqXZ2DNXLcIHCnhUTdydu554exaxNDEs/HD5kZFw0Yz/JDXZUmwqoiCziwGXWA==}
-    engines: {node: '>=10'}
-    cpu: [arm]
-    os: [linux, freebsd]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@sentry/cli-linux-i686@1.77.2:
-    resolution: {integrity: sha512-UjCFgE2CeuKhJJII9SLdAzqDVJucYYrwXnxuMoUZ078om+VqAT6kAJ2jTdTQBMuJKsWYSdS1/T9TCcs7gJx5Zw==}
-    engines: {node: '>=10'}
-    cpu: [x86, ia32]
-    os: [linux, freebsd]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@sentry/cli-linux-x64@1.77.2:
-    resolution: {integrity: sha512-ZgJb+gab9XphXy0kPrzNUaDxTCfP2rDGzIhXI/7yD8zgrqmUkxZ/ykTNONuceKMcKluTTVGaNWol848lD9F7/Q==}
-    engines: {node: '>=10'}
-    cpu: [x64]
-    os: [linux, freebsd]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@sentry/cli-win32-i686@1.77.2:
-    resolution: {integrity: sha512-rKToJupNWoQC1+KGWzTkdJUunswkdcYGIXfDPXmltH3EpOUJXaBciuSM13XJefsrqCnJqeaCz/8spvHQx9V0Mw==}
-    engines: {node: '>=10'}
-    cpu: [x86, ia32]
-    os: [win32]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@sentry/cli-win32-x64@1.77.2:
-    resolution: {integrity: sha512-Evc5dK05Y9HfHiShs2r8+A+nBc4HApquXXh8w8AVzl1X+q3vHc0rbwz072KE2VeNzY9jeeDl0q9WTstp+fZkAQ==}
-    engines: {node: '>=10'}
-    cpu: [x64]
-    os: [win32]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /@sentry/cli@1.77.2:
-    resolution: {integrity: sha512-8oJrA8WNLWuGQgkLRsR4rEZNc5+g7TFVZzPxxFe0ohgVlhiSh4U+aYGJF6Sb04SyjQL7id289DFZ9Zm2jMxtSQ==}
-    engines: {node: '>= 10'}
+  /@sentry/cli@1.77.3:
+    resolution: {integrity: sha512-c3eDqcDRmy4TFz2bFU5Y6QatlpoBPPa8cxBooaS4aMQpnIdLYPF1xhyyiW0LQlDUNc3rRjNF7oN5qKoaRoMTQQ==}
+    engines: {node: '>= 8'}
     hasBin: true
     requiresBuild: true
     dependencies:
       https-proxy-agent: 5.0.1
+      mkdirp: 0.5.6
       node-fetch: 2.7.0
       progress: 2.0.3
       proxy-from-env: 1.1.0
       which: 2.0.2
-    optionalDependencies:
-      '@sentry/cli-darwin': 1.77.2
-      '@sentry/cli-linux-arm': 1.77.2
-      '@sentry/cli-linux-arm64': 1.77.2
-      '@sentry/cli-linux-i686': 1.77.2
-      '@sentry/cli-linux-x64': 1.77.2
-      '@sentry/cli-win32-i686': 1.77.2
-      '@sentry/cli-win32-x64': 1.77.2
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -7472,7 +7403,7 @@ packages:
     resolution: {integrity: sha512-x0PYIMWcsTauqxgl7vWUY6sANl+XGKtx7DCVnnY7aOIIlIna0jChTAPANTfA2QrK+VK+4I/4JxatCEZBnXh3Og==}
     engines: {node: '>= 8'}
     dependencies:
-      '@sentry/cli': 1.77.2
+      '@sentry/cli': 1.77.3
       webpack-sources: 3.2.3
     transitivePeerDependencies:
       - encoding
@@ -12054,8 +11985,8 @@ packages:
       algoliasearch: '>= 3.1 < 6'
     dependencies:
       '@algolia/events': 4.0.1
-      '@algolia/ui-components-highlight-vdom': 1.2.1
-      '@algolia/ui-components-shared': 1.2.1
+      '@algolia/ui-components-highlight-vdom': 1.2.2
+      '@algolia/ui-components-shared': 1.2.2
       '@types/dom-speech-recognition': 0.0.1
       '@types/google.maps': 3.53.2
       '@types/hogan.js': 3.0.1
@@ -12066,7 +11997,7 @@ packages:
       htm: 3.1.1
       preact: 10.15.1
       qs: 6.9.7
-      search-insights: 2.6.0
+      search-insights: 2.13.0
     dev: false
 
   /internal-slot@1.0.5:
@@ -13763,6 +13694,13 @@ packages:
   /mkdirp@0.3.0:
     resolution: {integrity: sha512-OHsdUcVAQ6pOtg5JYWpCBo9W/GySVuwvP9hueRMW7UqshC0tbfzLv8wjySTPm3tfUZ/21CE9E1pJagOA91Pxew==}
     deprecated: Legacy versions of mkdirp are no longer supported. Please update to mkdirp 1.x. (Note that the API surface has changed to use Promises in 1.x.)
+    dev: false
+
+  /mkdirp@0.5.6:
+    resolution: {integrity: sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==}
+    hasBin: true
+    dependencies:
+      minimist: 1.2.8
     dev: false
 
   /mkdirp@1.0.4:
@@ -15518,9 +15456,8 @@ packages:
     resolution: {integrity: sha512-MuCAyrGZcTLfQoH2XoBlQ8C6bzwN88XT/0slOGz0pn8+gIP85BOAfYa44ZXQUTOwRwPU0QvgU+V+OSajl/59Xg==}
     dev: true
 
-  /search-insights@2.6.0:
-    resolution: {integrity: sha512-vU2/fJ+h/Mkm/DJOe+EaM5cafJv/1rRTZpGJTuFPf/Q5LjzgMDsqPdSaZsAe+GAWHHsfsu+rQSAn6c8IGtBEVw==}
-    engines: {node: '>=8.16.0'}
+  /search-insights@2.13.0:
+    resolution: {integrity: sha512-Orrsjf9trHHxFRuo9/rzm0KIWmgzE8RMlZMzuhZOJ01Rnz3D0YBAe+V6473t6/H6c7irs6Lt48brULAiRWb3Vw==}
     dev: false
 
   /semver@5.7.1:
