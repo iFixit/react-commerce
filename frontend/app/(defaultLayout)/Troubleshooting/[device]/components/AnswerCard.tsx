@@ -55,7 +55,7 @@ export function AnswerCard({
                   alt={deviceTitle}
                />
             </GridItem>
-            <GridItem area="text" display="flex">
+            <GridItem area="text" display="flex" fontSize="sm">
                <Stack spacing={1.5} justifyContent="center" lineHeight="normal">
                   <LinkOverlay href={url} color="brand.500">
                      <Text noOfLines={5}>{title}</Text>
