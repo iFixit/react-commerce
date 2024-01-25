@@ -31,6 +31,7 @@ export function Answers({
                className="answers-list"
                columns={{ base: 1, md: 2 }}
                spacing={3}
+               autoRows="min-content"
             >
                {answersData.map((answer: any) => (
                   <AnswerCard answer={answer} key={answer.title} />
