@@ -57,10 +57,10 @@ export function AnswerCard({
             </GridItem>
             <GridItem area="text" display="flex">
                <Stack spacing={1.5} justifyContent="center" lineHeight="normal">
-                  <Text>{deviceTitle}</Text>
                   <LinkOverlay href={url} color="brand.500">
                      <Text noOfLines={5}>{title}</Text>
                   </LinkOverlay>
+                  <Text>{deviceTitle}</Text>
                </Stack>
             </GridItem>
          </Grid>
