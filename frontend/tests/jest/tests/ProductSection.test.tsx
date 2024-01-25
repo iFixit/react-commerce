@@ -20,6 +20,12 @@ jest.mock('@templates/product/hooks/useIsProductForSale', () => ({
    useIsProductForSale: jest.fn(() => true),
 }));
 
+jest.mock('@ifixit/shopify-storefront-client', () => ({
+   useShopifyStorefrontClient: jest.fn(() => ({
+      shopDomain: 'example.com',
+   })),
+}));
+
 describe('ProductSection Tests', () => {
    beforeAll(() => {
       mockMatchMedia();
