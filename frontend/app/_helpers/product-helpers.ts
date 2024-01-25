@@ -18,10 +18,10 @@ export function imagesFor(
    return relevantImages.length > 0 ? relevantImages : product.fallbackImages;
 }
 
-export function defaultVariantIdFor(product: Product): string {
-   const variant =
+export function defaultVariantFor(product: Product) {
+   return (
       product.variants.find(
          (variant) => variant.quantityAvailable && variant.quantityAvailable > 0
-      ) ?? product.variants[0];
-   return variant.id;
+      ) ?? product.variants[0]
+   );
 }

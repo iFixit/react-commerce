@@ -4,7 +4,7 @@ import { type Product } from '@pages/api/nextjs/cache/product';
 import ProductTemplate from '@templates/product';
 import { findProduct, findProductRedirect } from 'app/_data/product';
 import { shouldSkipCache } from 'app/_helpers/app-helpers';
-import { defaultVariantIdFor, imagesFor } from 'app/_helpers/product-helpers';
+import { defaultVariantFor, imagesFor } from 'app/_helpers/product-helpers';
 import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import {
@@ -120,5 +120,5 @@ function selectedVariantId(
    product: Product,
    searchParams: ProductPageProps['searchParams']
 ) {
-   return searchParams.variant ?? defaultVariantIdFor(product);
+   return searchParams.variant ?? defaultVariantFor(product).id;
 }

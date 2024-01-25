@@ -3,6 +3,7 @@ import {
    getVariantIdFromVariantURI,
 } from '@ifixit/helpers';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
+import { defaultVariantFor } from 'app/_helpers/product-helpers';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 type SelectVariantFn = (variantId: string) => void;
@@ -29,12 +30,7 @@ export function useSelectedVariant(
    }
 
    function defaultVariant() {
-      return (
-         product.variants.find(
-            (variant) =>
-               variant.quantityAvailable && variant.quantityAvailable > 0
-         ) ?? product.variants[0]
-      );
+      return defaultVariantFor(product);
    }
 
    function variantUrlFor(variantId: string) {
