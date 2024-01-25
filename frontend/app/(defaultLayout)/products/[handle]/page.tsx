@@ -1,7 +1,7 @@
 import { IFIXIT_ORIGIN } from '@config/env';
-import { flags } from '@config/flags';
 import { invariant } from '@ifixit/helpers';
 import { type Product } from '@pages/api/nextjs/cache/product';
+import ProductTemplate from '@templates/product';
 import { findProduct, findProductRedirect } from 'app/_data/product';
 import { shouldSkipCache } from 'app/_helpers/app-helpers';
 import { defaultVariantIdFor, imagesFor } from 'app/_helpers/product-helpers';
@@ -11,7 +11,6 @@ import {
    ProductBreadcrumbsJsonLDScript,
    ProductJsonLDScript,
 } from './json-ld-scripts';
-import ProductTemplate from '@templates/product';
 
 export interface ProductPageProps {
    params: {
@@ -27,8 +26,6 @@ export default async function ProductPage({
    params,
    searchParams,
 }: ProductPageProps) {
-   if (!flags.APP_ROUTER_PRODUCT_PAGE_ENABLED) notFound();
-
    const productRedirect = await findProductRedirect({
       handle: params.handle,
       noCache: shouldSkipCache(searchParams),
