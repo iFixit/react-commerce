@@ -19,37 +19,37 @@ export function Answers({
                   fontWeight="medium"
                   lineHeight="normal"
                >
-                  Didn&apos;t find your problem?
+                  Didn&apos;t see your problem? Try one of these answers.
                </Heading>
                <Text>
-                  Browse the most common questions asked by users and try to see
-                  if someone has already answered your problem. If you
-                  can&apos;t find a resolution to your problem, you can always
-                  ask.
+                  Browse the most common questions asked by users to see if
+                  someone already has an answer. If you can&apos;t find a
+                  solution to your problem, you can always ask.
                </Text>
             </Stack>
             <SimpleGrid
-               className="list"
+               className="answers-list"
                columns={{ base: 1, md: 2 }}
                spacing={3}
+               autoRows="min-content"
             >
                {answersData.map((answer: any) => (
                   <AnswerCard answer={answer} key={answer.title} />
                ))}
             </SimpleGrid>
+            <Link
+               href={allAnswersUrl}
+               color="brand.500"
+               fontSize="sm"
+               width="fit-content"
+            >
+               See all{' '}
+               <Box as="span" fontWeight="semibold">
+                  {allAnswersCount}
+               </Box>{' '}
+               questions
+            </Link>
          </Stack>
-         <Link
-            href={allAnswersUrl}
-            color="brand.500"
-            fontSize="sm"
-            width="fit-content"
-         >
-            See all{' '}
-            <Box as="span" fontWeight="semibold">
-               {allAnswersCount}
-            </Box>{' '}
-            questions
-         </Link>
       </>
    );
 }

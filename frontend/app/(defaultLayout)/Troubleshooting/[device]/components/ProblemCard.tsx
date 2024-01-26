@@ -40,9 +40,9 @@ export function ProblemCard({
       >
          <Stack
             direction="row"
-            spacing={4}
+            spacing={{ base: 3, sm: 4 }}
             alignSelf="stretch"
-            p={5}
+            p={{ base: 4, sm: 5 }}
             flex="1"
             color="gray.900"
          >
@@ -80,7 +80,7 @@ export function ProblemCard({
             borderTop="1px solid"
             borderColor="gray.200"
             py={2}
-            px={5}
+            px={{ base: 4, sm: 5 }}
          >
             <Image
                src={imageSrcThumbnail}

@@ -38,7 +38,8 @@ export default function TroubleshootingProblems(
             maxWidth="1280px"
             mx="auto"
             px={{ base: 4, md: 8 }}
-            py={{ md: 8 }}
+            pt={{ md: 8 }}
+            pb={8}
          >
             <Stack as="main" spacing={6}>
                <Box className="header">
@@ -58,8 +59,8 @@ export default function TroubleshootingProblems(
                   </Text>
                </Box>
                <SimpleGrid
-                  className="list"
-                  columns={{ base: 1, sm: 2 }}
+                  className="problem-list"
+                  columns={{ base: 1, md: 2 }}
                   spacing={{ base: 4, md: 6 }}
                >
                   {ProblemsData.map((problem: any, index: number) => (
