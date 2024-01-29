@@ -101,10 +101,10 @@ export default function RootLayout({
                as="fetch"
             />
             {/* eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}
-            <Script
+            {/* <Script
                src={`${polyfillDomain}/v3/polyfill.min.js?features=default,Intl.RelativeTimeFormat,Intl.RelativeTimeFormat.~locale.en,Object.fromEntries,ResizeObserver`}
                strategy="beforeInteractive"
-            />
+            /> */}
          </head>
          <body>
             {children}

@@ -13,10 +13,10 @@ class MyDocument extends Document {
                   href={`${IFIXIT_ORIGIN}/api/2.0/user`}
                   as="fetch"
                />
-               <Script
+               {/* <Script
                   src={`${polyfillDomain}/v3/polyfill.min.js?features=default,Intl.RelativeTimeFormat,Intl.RelativeTimeFormat.~locale.en,Object.fromEntries,ResizeObserver`}
                   strategy="beforeInteractive"
-               />
+               /> */}
             </Head>
             <body>
                <Main />
