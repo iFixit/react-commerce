@@ -79,7 +79,11 @@ interface APICrossSellProduct {
    subPrice: string | null;
    url: string | null;
    variant_id: number;
-   categories: string[];
+   categoryAttributes: {
+      is_tool: boolean;
+      item_category: string;
+      part_subcategory: string;
+   };
 }
 
 interface APIPriceItem {
@@ -101,7 +105,11 @@ export interface APICartProduct {
    subTotal: string;
    subTotalStr: string;
    variant: string;
-   categories: string[];
+   categoryAttributes: {
+      is_tool: boolean;
+      item_category: string;
+      part_subcategory: string;
+   };
 }
 
 export interface MiniCartProduct {

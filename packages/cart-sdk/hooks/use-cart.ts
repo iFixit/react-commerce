@@ -67,7 +67,7 @@ function createCart(input: APICart): Cart {
          maxToAdd: product.maxToAdd,
          price,
          compareAtPrice,
-         categories: product.categories,
+         categories: getCategoriesFromAPICategories(product.categoryAttributes),
       };
       return item;
    });
@@ -120,7 +120,9 @@ function createCart(input: APICart): Cart {
                   ? parsePriceTiers(apiProduct.price_tiers)
                   : null,
                handle: apiProduct.handle,
-               categories: apiProduct.categories,
+               categories: getCategoriesFromAPICategories(
+                  apiProduct.categoryAttributes
+               ),
             };
          })
       ),
@@ -137,4 +139,17 @@ const parsePriceTiers = (
       };
       return acc;
    }, {} as Record<string, Money>);
+};
+
+const getCategoriesFromAPICategories = (apiCategories: {
+   is_tool: boolean;
+   item_category: string;
+   part_subcategory: string;
+}): string[] => {
+   const firstCategory = apiCategories.is_tool ? 'Tool' : 'Part';
+   return [
+      firstCategory,
+      apiCategories.item_category,
+      apiCategories.part_subcategory,
+   ];
 };
