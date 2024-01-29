@@ -1,8 +1,6 @@
-import { IFIXIT_ORIGIN, POLYFILL_DOMAIN } from '@config/env';
-import Document, { Html, Head, Main, NextScript } from 'next/document';
-import Script from 'next/script';
+import { IFIXIT_ORIGIN } from '@config/env';
+import Document, { Head, Html, Main, NextScript } from 'next/document';
 
-const polyfillDomain = POLYFILL_DOMAIN ?? 'https://polyfill.io';
 class MyDocument extends Document {
    render() {
       return (
@@ -13,10 +11,6 @@ class MyDocument extends Document {
                   href={`${IFIXIT_ORIGIN}/api/2.0/user`}
                   as="fetch"
                />
-               {/* <Script
-                  src={`${polyfillDomain}/v3/polyfill.min.js?features=default,Intl.RelativeTimeFormat,Intl.RelativeTimeFormat.~locale.en,Object.fromEntries,ResizeObserver`}
-                  strategy="beforeInteractive"
-               /> */}
             </Head>
             <body>
                <Main />

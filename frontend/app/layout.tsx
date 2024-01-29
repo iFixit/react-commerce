@@ -1,13 +1,10 @@
-import { IFIXIT_ORIGIN, POLYFILL_DOMAIN } from '@config/env';
+import { IFIXIT_ORIGIN } from '@config/env';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Metadata } from 'next';
-import Script from 'next/script';
 import React from 'react';
 config.autoAddCss = false;
-
-const polyfillDomain = POLYFILL_DOMAIN ?? 'https://polyfill.io';
 
 export default function RootLayout({
    children,
@@ -100,11 +97,6 @@ export default function RootLayout({
                href={`${IFIXIT_ORIGIN}/api/2.0/user`}
                as="fetch"
             />
-            {/* eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}
-            {/* <Script
-               src={`${polyfillDomain}/v3/polyfill.min.js?features=default,Intl.RelativeTimeFormat,Intl.RelativeTimeFormat.~locale.en,Object.fromEntries,ResizeObserver`}
-               strategy="beforeInteractive"
-            /> */}
          </head>
          <body>
             {children}
