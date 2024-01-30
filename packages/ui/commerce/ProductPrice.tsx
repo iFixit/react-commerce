@@ -15,6 +15,7 @@ import {
    Text,
    ThemeTypings,
    useMultiStyleConfig,
+   VisuallyHidden,
 } from '@chakra-ui/react';
 import { faRectanglePro } from '@fortawesome/pro-solid-svg-icons';
 import { computeDiscountPercentage, formatMoney, Money } from '@ifixit/helpers';
@@ -155,6 +156,7 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
                      color={`${colorScheme}.500`}
                   />
                )}
+               <VisuallyHidden>Sale price </VisuallyHidden>
                {formattedPrice}
             </Text>
             {isDiscounted && (
@@ -165,6 +167,7 @@ const ProductPrice = forwardRef<BoxProps & ProductPriceProps, 'div'>(
                      mr={direction === 'row-reverse' ? 1 : 0}
                      data-testid="compare-at-price"
                   >
+                     <VisuallyHidden>Regular price </VisuallyHidden>
                      {formattedCompareAtPrice}
                   </Text>
                   {isDiscounted && showDiscountLabel && isHorizontal && (

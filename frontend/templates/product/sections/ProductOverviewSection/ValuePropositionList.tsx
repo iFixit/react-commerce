@@ -1,4 +1,4 @@
-import { Box, List, ListIcon, ListItem } from '@chakra-ui/react';
+import { Box, IconButton, List, ListIcon, ListItem } from '@chakra-ui/react';
 import { Tooltip } from '@components/ui/Tooltip';
 import {
    faBadgeDollar,
@@ -62,12 +62,14 @@ export function ValuePropositionList() {
                <div>30-day returns</div>
                <Tooltip
                   trigger={
-                     <FaIcon
-                        icon={faCircleInfo}
-                        h="4"
-                        mt="1px"
-                        ml="1.5"
-                        color="gray.400"
+                     <IconButton
+                        aria-label="Learn more about our return policy"
+                        ml="1"
+                        size="sm"
+                        variant="ghost"
+                        icon={
+                           <FaIcon icon={faCircleInfo} h="4" color="gray.400" />
+                        }
                      />
                   }
                   content={

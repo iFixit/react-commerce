@@ -247,6 +247,7 @@ const Wiki: NextPageWithLayout<{
                         </Stack>
                         {wikiData.solutions.length > 0 && (
                            <Stack spacing={6}>
+                              <CausesListHeader />
                               {wikiData.solutions.map((solution, index) => (
                                  <SolutionCard
                                     key={solution.heading}
@@ -545,6 +546,20 @@ function IntroductionSection({
          )}
          <PrerenderedHTML html={intro.body} template="troubleshooting" />
       </Stack>
+   );
+}
+
+function CausesListHeader() {
+   return (
+      <Heading
+         as="h2"
+         aria-label="Causes"
+         fontSize={{ base: '20px', mdPlus: '24px' }}
+         fontWeight="semibold"
+         lineHeight="normal"
+      >
+         Causes
+      </Heading>
    );
 }
 

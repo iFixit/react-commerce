@@ -49,27 +49,14 @@ export class ProductPage {
     * with the format $###.## or $###
     */
    async getCurrentPrice(): Promise<number> {
+      const priceRe = /\$[0-9]+(\.[0-9]{1,2})?$/;
       const price = await this.page
          .getByTestId('product-price-section')
          .getByTestId('price')
          .textContent();
       expect(price).not.toEqual('');
-      expect(price).toMatch(/\$[0-9]+(\.[0-9]{1,2})?$/);
-      return parseFloat(price!.slice(1));
-   }
-
-   /**
-    * @description Locates and returns the original product price as a string
-    * with the format $###.## or $###
-    */
-   async getDiscountedPrice(): Promise<number> {
-      const price = await this.page
-         .getByTestId('product-price-section')
-         .getByTestId('compare-at-price')
-         .textContent();
-      expect(price).not.toEqual('');
-      expect(price).toMatch(/\$[0-9]+(\.[0-9]{1,2})?$/);
-      return parseFloat(price!.slice(1));
+      expect(price).toMatch(priceRe);
+      return parseFloat(price!.match(priceRe)![0].slice(1));
    }
 
    /**

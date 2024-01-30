@@ -1,13 +1,20 @@
 import { DEFAULT_STORE_CODE } from '@config/env';
 import { getLayoutServerSideProps } from '@layouts/default/server';
+import { StoreSelect } from './@storeSelect/store-select';
 import { NotFoundPage } from './components/not-found-page';
+import { PageFrame } from './components/page-frame';
 
 export default async function NotFound() {
-   const layoutPropsPromise = getLayoutServerSideProps({
+   const layoutData = await getLayoutServerSideProps({
       storeCode: DEFAULT_STORE_CODE,
    });
 
-   const layoutProps = await layoutPropsPromise;
-
-   return <NotFoundPage {...layoutProps} />;
+   return (
+      <PageFrame
+         layoutData={layoutData}
+         storeSelect={<StoreSelect stores={layoutData.stores} />}
+      >
+         <NotFoundPage />
+      </PageFrame>
+   );
 }

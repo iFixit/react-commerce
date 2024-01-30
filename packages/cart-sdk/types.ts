@@ -31,8 +31,6 @@ export interface CartLineItem {
 }
 
 export interface APICart {
-   couponName: string;
-   hasCoupon: boolean;
    hasCustomer: boolean;
    totalNumItems: number;
    totals: {

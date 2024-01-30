@@ -72,6 +72,21 @@ const moduleExports = {
                },
             ],
          },
+         {
+            source: '/products/app-router/:handle',
+            missing: [
+               {
+                  type: 'query',
+                  key: 'disableCacheGets',
+               },
+            ],
+            headers: [
+               {
+                  key: 'CDN-Cache-Control',
+                  value: 'public, s-maxage=300, max-age=300, stale-while-revalidate=3600', // 5 minutes fresh, 1 hour stale
+               },
+            ],
+         },
       ];
    },
    async rewrites() {

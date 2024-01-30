@@ -39,12 +39,13 @@ import { useCartDrawer } from './hooks/useCartDrawer';
 
 export function CartDrawer() {
    const appContext = useAppContext();
-   const { isOpen, onOpen, onClose, onViewCart } = useCartDrawer();
+   const { isOpen, onOpen, onClose, onViewCart, errors, clearErrors } =
+      useCartDrawer();
    const isMounted = useIsMountedState();
    const cart = useCart();
    const checkout = useCheckout();
    const isCartEmpty = cart.isFetched && !cart.data?.hasItemsInCart;
-
+   const hasErrors = errors.length > 0;
    return (
       <>
          <CartDrawerTrigger
@@ -131,6 +132,12 @@ export function CartDrawer() {
                            </AlertDescription>
                         </Alert>
                      )}
+                     {hasErrors && (
+                        <CartUpdateError
+                           errors={errors}
+                           onDismiss={clearErrors}
+                        />
+                     )}
                      {cart.data?.hasItemsInCart && (
                         <>
                            <Box data-testid="cart-drawer-line-items">
@@ -152,14 +159,7 @@ export function CartDrawer() {
                            <CrossSell />
                         </>
                      )}
-                     <Fade
-                        show={isCartEmpty}
-                        disableExitAnimation
-                        position="absolute"
-                        w="full"
-                        top="0"
-                        left="0"
-                     >
+                     <Fade show={isCartEmpty} disableExitAnimation w="full">
                         <CartEmptyState onClose={onClose} />
                      </Fade>
                   </DrawerBody>
@@ -254,15 +254,41 @@ function CheckoutError({ error, onDismiss }: CheckoutErrorProps) {
          );
    }
 
+   return <DrawerError errorMsg={checkoutError} onDismiss={onDismiss} />;
+}
+
+interface CartUpdateErrorProps {
+   errors: any;
+   onDismiss: () => void;
+}
+
+function CartUpdateError({ errors, onDismiss }: CartUpdateErrorProps) {
+   let cartError = (
+      <>
+         Oops! Something went wrong when updating your cart. If the problem
+         persists please contact{' '}
+         <a href="mailto:support@ifixit.com">support@ifixit.com</a>
+      </>
+   );
+
+   return <DrawerError errorMsg={cartError} onDismiss={onDismiss} />;
+}
+
+interface DrawerErrorProps {
+   errorMsg: React.ReactElement | null;
+   onDismiss: () => void;
+}
+
+function DrawerError({ errorMsg, onDismiss }: DrawerErrorProps) {
    React.useEffect(() => {
-      if (checkoutError) {
-         const id = setTimeout(onDismiss, 5000);
+      if (errorMsg) {
+         const id = setTimeout(onDismiss, 10000);
          return () => clearTimeout(id);
       }
-   }, [checkoutError, onDismiss]);
+   }, [errorMsg, onDismiss]);
 
    return (
-      <Collapse show={checkoutError != null}>
+      <Collapse show={errorMsg != null}>
          <Box p="3">
             <Alert status="error">
                <FaIcon
@@ -273,7 +299,7 @@ function CheckoutError({ error, onDismiss }: CheckoutErrorProps) {
                   color="red.500"
                />
                <Box flexGrow={1}>
-                  <AlertDescription>{checkoutError}</AlertDescription>
+                  <AlertDescription>{errorMsg}</AlertDescription>
                </Box>
                <CloseButton
                   alignSelf="flex-start"

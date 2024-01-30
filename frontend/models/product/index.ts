@@ -45,7 +45,7 @@ import {
    ProductVideosSchema,
 } from './components/product-video';
 import { getProductSections, ProductSectionSchema } from './sections';
-import type { iFixitFindProductQuery } from '@lib/ifixit-api/productData';
+import type { IFixitFindProductQuery } from '@lib/ifixit-api/productData';
 import { ImageAltFallback } from '@models/components/image';
 
 export type {
@@ -88,9 +88,16 @@ export const ProductSchema = z.object({
    sections: z.array(ProductSectionSchema),
 });
 
+export type ProductRedirect = z.infer<typeof ProductRedirectSchema>;
+
+export const ProductRedirectSchema = z.object({
+   __typename: z.literal('ProductRedirect'),
+   target: z.string(),
+});
+
 type ShopifyProduct = NonNullable<ShopifyFindProductQuery['product']>;
 type StrapiProduct = NonNullable<StrapiFindProductQuery['products']>['data'][0];
-type iFixitProduct = NonNullable<iFixitFindProductQuery>;
+type iFixitProduct = NonNullable<IFixitFindProductQuery>;
 
 interface GetProductArgs {
    shopifyProduct: ShopifyProduct | null | undefined;

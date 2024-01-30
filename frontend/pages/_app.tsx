@@ -3,11 +3,13 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { applySentryFetchMiddleware } from '@ifixit/sentry';
 import { ServerSidePropsProvider } from '@lib/server-side-props';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { AppProps } from 'next/app';
 import NextNProgress from 'nextjs-progressbar';
 import { useState } from 'react';
 // Improve FontAwesome integration with Next.js https://fontawesome.com/v5/docs/web/use-with/react#next-js
 config.autoAddCss = false;
+
 applySentryFetchMiddleware();
 
 type AppPropsWithLayout<P> = AppProps<P> & {
@@ -40,6 +42,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout<any>) {
             <NextNProgress showOnShallow={false} />
             {getLayout(<Component {...pageProps} />, pageProps)}
          </AppProviders>
+         <SpeedInsights sampleRate={0.2} />
       </ServerSidePropsProvider>
    );
 }

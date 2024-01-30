@@ -40,7 +40,6 @@ export function Causes({
 
    return (
       <>
-         <TOCHeading>Troubleshooting</TOCHeading>
          <Box
             as="nav"
             color="brand.500"

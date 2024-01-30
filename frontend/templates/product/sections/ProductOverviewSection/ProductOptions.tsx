@@ -3,7 +3,6 @@ import {
    BoxProps,
    Circle,
    Flex,
-   HStack,
    Image,
    Select,
    SimpleGrid,
@@ -48,16 +47,15 @@ export function ProductOptions({
             const selectorType = getSelectorType(option);
             return (
                <VStack align="stretch" key={option.id}>
-                  <HStack>
-                     <Text fontWeight="medium" color="gray.800">
-                        {option.name}
-                        {selectorType === SelectorType.SINGLE &&
-                           `: ${option.values[0]}`}
-                     </Text>
-                  </HStack>
+                  <Text fontWeight="medium" color="gray.800">
+                     {option.name}
+                     {selectorType === SelectorType.SINGLE &&
+                        `: ${option.values[0]}`}
+                  </Text>
                   {selectorType === SelectorType.SELECT && (
                      <Select
                         bg="white"
+                        overflowX="hidden"
                         value={selected}
                         onChange={(event) => {
                            onChange(event.target.value);

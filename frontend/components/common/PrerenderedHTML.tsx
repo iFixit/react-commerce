@@ -70,6 +70,7 @@ const sharedStyles: SystemStyleObject = {
       paddingInline: 1,
       maxWidth: '100%',
       overflow: 'auto',
+      whiteSpace: 'break-spaces',
    },
 
    th: {

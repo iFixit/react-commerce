@@ -7,7 +7,6 @@ import {
 import { withLogging } from '@helpers/next-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
 import { invariant } from '@ifixit/helpers';
-import { urlFromContext } from '@ifixit/helpers/nextjs';
 import { getLayoutServerSideProps } from '@layouts/default/server';
 import Product from '@pages/api/nextjs/cache/product';
 import compose from 'lodash/flowRight';
@@ -39,13 +38,6 @@ export const getServerSideProps: GetServerSideProps<ProductTemplateProps> =
       );
 
       if (product?.__typename === 'ProductRedirect') {
-         const destination = new URL(product.target, ifixitOrigin);
-         const requestParams = new URL(urlFromContext(context)).searchParams;
-         requestParams.forEach((value, key) => {
-            if (!destination.searchParams.has(key)) {
-               destination.searchParams.append(key, value);
-            }
-         });
          return {
             redirect: {
                destination: product.target,
