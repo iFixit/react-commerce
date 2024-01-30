@@ -15,8 +15,7 @@ export default function TroubleshootingProblems(
       title,
       editUrl,
       historyUrl,
-      deviceGuideUrl,
-      devicePartsUrl,
+      deviceUrls,
       breadcrumbs,
       answers,
       allAnswersUrl,
@@ -29,8 +28,7 @@ export default function TroubleshootingProblems(
          <NavBar
             editUrl={editUrl}
             historyUrl={historyUrl}
-            deviceGuideUrl={deviceGuideUrl}
-            devicePartsUrl={devicePartsUrl}
+            deviceUrls={deviceUrls}
             breadcrumbs={breadcrumbs}
          />
          <Box
