@@ -12,6 +12,10 @@ import {
    ProductJsonLDScript,
 } from './json-ld-scripts';
 
+if (typeof window === 'undefined') {
+   import('@ifixit/helpers/buffered-log');
+}
+
 export interface ProductPageProps {
    params: {
       handle: string;

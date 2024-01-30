@@ -7,7 +7,8 @@
    "exports": {
       ".": "./index.ts",
       "./logger": "./logger.ts",
-      "./nextjs": "./nextjs.tsx"
+      "./nextjs": "./nextjs.tsx",
+      "./buffered-log": "./buffered-log.ts"
    },
    "devDependencies": {
       "@ifixit/tsconfig": "workspace:*",
