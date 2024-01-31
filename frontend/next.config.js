@@ -73,7 +73,7 @@ const moduleExports = {
             ],
          },
          {
-            source: '/products/app-router/:handle',
+            source: '/products/:path*',
             missing: [
                {
                   type: 'query',

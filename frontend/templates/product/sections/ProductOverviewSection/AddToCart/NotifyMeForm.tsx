@@ -12,7 +12,7 @@ import {
 import { faCheckCircle } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
 import { useIFixitApiClient } from '@ifixit/ifixit-api-client';
-import { useProductTemplateProps } from '@templates/product/hooks/useProductTemplateProps';
+import { useShopifyStorefrontClient } from '@ifixit/shopify-storefront-client';
 import * as React from 'react';
 
 enum NotifyMeStatus {
@@ -27,7 +27,7 @@ export type NotifyMeFormProps = {
 };
 
 export function NotifyMeForm({ sku }: NotifyMeFormProps) {
-   const { layoutProps } = useProductTemplateProps();
+   const shopifyClient = useShopifyStorefrontClient();
    const [status, setStatus] = React.useState<NotifyMeStatus>(
       NotifyMeStatus.Idle
    );
@@ -55,7 +55,7 @@ export function NotifyMeForm({ sku }: NotifyMeFormProps) {
             },
             body: JSON.stringify({
                sku,
-               shop_domain: layoutProps.shopifyCredentials.storefrontDomain,
+               shop_domain: shopifyClient.shopDomain,
                email,
             }),
          }

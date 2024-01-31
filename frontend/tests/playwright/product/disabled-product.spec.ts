@@ -39,6 +39,6 @@ test.describe('Disabled Product Behavior', () => {
 
       // Assert that we noindex disabled product pages
       const metaRobots = productPage.page.locator('meta[name="robots"]');
-      await expect(metaRobots).toHaveAttribute('content', 'noindex,nofollow');
+      await expect(metaRobots).toHaveAttribute('content', 'noindex, nofollow');
    });
 });

@@ -1,70 +1,64 @@
 import {
-   invariant,
-   getVariantIdFromVariantURI,
    getProductVariantURI,
+   getVariantIdFromVariantURI,
 } from '@ifixit/helpers';
 import type { Product, ProductVariant } from '@pages/api/nextjs/cache/product';
-import { useRouter } from 'next/router';
-import { useCallback } from 'react';
+import { defaultVariantFor } from 'app/_helpers/product-helpers';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-type SetVariantIdFn = (variantId: string) => void;
+type SelectVariantFn = (variantId: string) => void;
 
 export function useSelectedVariant(
    product: Product
-): [ProductVariant, SetVariantIdFn] {
+): [ProductVariant, SelectVariantFn] {
    const router = useRouter();
+   const searchParams = useSearchParams();
 
-   const defaultVariantId = useDefaultVariantId(product);
-   const searchParamVariantId = useSearchParamVariantId();
+   const selectVariant = (variantId: string) => {
+      router.replace(variantUrlFor(variantId), { scroll: false });
+   };
 
-   const currentVariantId = searchParamVariantId ?? defaultVariantId;
+   return [selectedVariant(), selectVariant];
 
-   let variant = product.variants.find((v) => v.id === currentVariantId);
-   if (variant == null) {
-      variant = product.variants.find((v) => v.id === defaultVariantId);
+   function selectedVariant() {
+      return searchParamVariant() ?? defaultVariant();
    }
 
-   invariant(
-      variant,
-      `Something went wrong, variant with id "${currentVariantId}" not found`
-   );
-
-   const setVariantId = useCallback<SetVariantIdFn>(
-      (variantId) => {
-         const { variant, ...newQuery } = router.query;
-         if (variantId !== defaultVariantId) {
-            newQuery.variant = getVariantIdFromVariantURI(variantId);
-         }
-         router.replace(
-            {
-               query: newQuery,
-            },
-            undefined,
-            { shallow: true }
-         );
-      },
-      [defaultVariantId, router]
-   );
-
-   return [variant, setVariantId];
-}
-
-export function useDefaultVariantId(product: Product): string {
-   const variant =
-      product.variants.find(
-         (variant) => variant.quantityAvailable && variant.quantityAvailable > 0
-      ) ?? product.variants[0];
-   return variant.id;
-}
-
-function useSearchParamVariantId(): string | null {
-   const router = useRouter();
-
-   const searchParamVariantId = router.query?.variant;
-
-   if (typeof searchParamVariantId !== 'string') {
-      return null;
+   function searchParamVariant() {
+      if (variantGIDParam() == null) return null;
+      return product.variants.find((v) => v.id === variantGIDParam()) ?? null;
    }
-   const decodedVariantId = getProductVariantURI(searchParamVariantId);
-   return decodedVariantId;
+
+   function defaultVariant() {
+      return defaultVariantFor(product);
+   }
+
+   function variantUrlFor(variantId: string) {
+      const newSearchParams = searchParamsCopy();
+      if (variantId !== defaultVariant().id) {
+         newSearchParams.set('variant', getVariantIdFromVariantURI(variantId));
+      } else {
+         newSearchParams.delete('variant');
+      }
+      return `?${newSearchParams.toString()}`;
+   }
+
+   function searchParamsCopy() {
+      const newSearchParams = new URLSearchParams();
+
+      if (searchParams == null) return newSearchParams;
+
+      searchParams.forEach((value, key) => {
+         newSearchParams.append(key, value);
+      });
+      return newSearchParams;
+   }
+
+   function variantGIDParam() {
+      const searchParamVariantId = searchParams?.get('variant');
+
+      if (searchParamVariantId == null) return null;
+
+      return getProductVariantURI(searchParamVariantId);
+   }
 }
