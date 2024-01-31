@@ -1,5 +1,4 @@
 import { DEFAULT_STORE_CODE } from '@config/env';
-import { flags } from '@config/flags';
 import { invariant } from '@helpers/application-helpers';
 import { hasDisableCacheGets } from '@helpers/cache-control-helpers';
 import { ifixitOriginFromHost } from '@helpers/path-helpers';
@@ -11,12 +10,6 @@ import { PageTemplateProps } from './hooks/usePageTemplateProps';
 export const getServerSideProps: GetServerSideProps<PageTemplateProps> = async (
    context
 ) => {
-   if (!flags.STORE_HOME_PAGE_ENABLED) {
-      return {
-         notFound: true,
-      };
-   }
-
    const slug = context.params?.slug || [];
    invariant(Array.isArray(slug), 'page slug param is missing');
    slug.unshift('Store');
