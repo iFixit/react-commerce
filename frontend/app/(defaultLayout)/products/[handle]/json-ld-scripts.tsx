@@ -5,7 +5,7 @@ import {
    shouldShowProductRating,
 } from '@ifixit/helpers';
 import type { Product } from '@models/product';
-import { defaultVariantIdFor, imagesFor } from 'app/_helpers/product-helpers';
+import { defaultVariantFor, imagesFor } from 'app/_helpers/product-helpers';
 import { jsonLdScriptProps } from 'react-schemaorg';
 import type {
    BreadcrumbList as BreadcrumbListLDSchema,
@@ -99,7 +99,7 @@ export function ProductJsonLDScript({
 
    function variantUrl() {
       let result = `${IFIXIT_ORIGIN}/products/${product.handle}`;
-      if (selectedVariantId !== defaultVariantIdFor(product)) {
+      if (selectedVariantId !== defaultVariantFor(product).id) {
          result += `?variant=${selectedVariantId}`;
       }
       return result;

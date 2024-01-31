@@ -1,10 +1,10 @@
 import { IFIXIT_ORIGIN } from '@config/env';
-import { flags } from '@config/flags';
 import { invariant } from '@ifixit/helpers';
 import { type Product } from '@pages/api/nextjs/cache/product';
+import ProductTemplate from '@templates/product';
 import { findProduct, findProductRedirect } from 'app/_data/product';
 import { shouldSkipCache } from 'app/_helpers/app-helpers';
-import { defaultVariantIdFor, imagesFor } from 'app/_helpers/product-helpers';
+import { defaultVariantFor, imagesFor } from 'app/_helpers/product-helpers';
 import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import {
@@ -26,8 +26,6 @@ export default async function ProductPage({
    params,
    searchParams,
 }: ProductPageProps) {
-   if (!flags.APP_ROUTER_PRODUCT_PAGE_ENABLED) notFound();
-
    const productRedirect = await findProductRedirect({
       handle: params.handle,
       noCache: shouldSkipCache(searchParams),
@@ -49,7 +47,7 @@ export default async function ProductPage({
             product={product}
             selectedVariantId={selectedVariantId(product, searchParams)}
          />
-         <div>Product: {product.title}</div>
+         <ProductTemplate product={product} />
       </>
    );
 }
@@ -122,5 +120,5 @@ function selectedVariantId(
    product: Product,
    searchParams: ProductPageProps['searchParams']
 ) {
-   return searchParams.variant ?? defaultVariantIdFor(product);
+   return searchParams.variant ?? defaultVariantFor(product).id;
 }
