@@ -6,7 +6,7 @@ export type TroubleshootingProblemsApiData = {
    editUrl: string;
    historyUrl: string;
    answersUrl: string;
-   deviceUrls: DeviceUrls[];
+   deviceUrls: DeviceUrls;
    breadcrumbs: BreadcrumbEntry[];
    id: number;
    problems: Problems[];

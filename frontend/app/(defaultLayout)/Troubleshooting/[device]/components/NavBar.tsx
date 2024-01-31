@@ -11,7 +11,7 @@ export function NavBar({
 }: {
    editUrl: string;
    historyUrl: string;
-   deviceUrls: DeviceUrls[];
+   deviceUrls: DeviceUrls;
    breadcrumbs: BreadcrumbEntry[];
 }) {
    const bc = breadcrumbs.map((breadcrumb) => ({
@@ -85,7 +85,7 @@ export function NavBar({
    );
 }
 
-function NavTabs({ deviceUrls }: any) {
+function NavTabs({ deviceUrls }: { deviceUrls: DeviceUrls }) {
    // The type here works because all the styles we want to use are available on
    // both Box and Link
    const baseStyleProps: BoxProps & LinkProps = {
