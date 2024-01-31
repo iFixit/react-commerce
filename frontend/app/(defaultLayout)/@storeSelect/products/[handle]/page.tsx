@@ -1,9 +1,9 @@
 import { DEFAULT_STORE_CODE } from '@config/env';
 import { getStoreList } from '@models/store';
-import { ProductPageProps } from 'app/(defaultLayout)/products/app-router/[handle]/page';
+import { ProductPageProps } from 'app/(defaultLayout)/products/[handle]/page';
 import { findProduct } from 'app/_data/product';
 import { shouldSkipCache } from 'app/_helpers/app-helpers';
-import { StoreSelect } from '../../../store-select';
+import { StoreSelect } from '../../store-select';
 import { invariant } from '@ifixit/helpers';
 
 export default async function ProductPageStoreSelect({
