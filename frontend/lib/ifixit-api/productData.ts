@@ -6,7 +6,6 @@ const IFixitFindProductQuerySchema = z.object({
    variantOptions: z.record(z.array(z.string())),
    compatibilityNotes: z.array(z.string()),
    redirectSkuUrl: z.string().nullable(),
-   categories: z.array(z.string()),
 });
 export type IFixitFindProductQuery = z.infer<
    typeof IFixitFindProductQuerySchema
