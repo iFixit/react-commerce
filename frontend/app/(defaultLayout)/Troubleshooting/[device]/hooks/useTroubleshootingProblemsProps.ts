@@ -6,8 +6,7 @@ export type TroubleshootingProblemsApiData = {
    editUrl: string;
    historyUrl: string;
    answersUrl: string;
-   deviceGuideUrl?: string;
-   devicePartsUrl?: string;
+   deviceUrls: DeviceUrls;
    breadcrumbs: BreadcrumbEntry[];
    id: number;
    problems: Problems[];
@@ -30,6 +29,12 @@ export type Answers = {
    imageUrl: string;
    title: string;
    deviceTitle: string;
+};
+
+export type DeviceUrls = {
+   deviceGuideUrl: string;
+   deviceTroubleshootingUrl?: string;
+   devicePartsUrl?: string;
 };
 
 export type TroubleshootingAnswersData = {

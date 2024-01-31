@@ -1,23 +1,19 @@
-import {
-   Box,
-   BoxProps,
-   Flex,
-   FlexProps,
-   Link,
-   LinkProps,
-} from '@chakra-ui/react';
+import { Box, BoxProps, Flex, Link, LinkProps } from '@chakra-ui/react';
 import { BreadCrumbs } from '@ifixit/breadcrumbs';
-import type { BreadcrumbEntry } from '../hooks/useTroubleshootingProblemsProps';
+import type {
+   BreadcrumbEntry,
+   DeviceUrls,
+} from '../hooks/useTroubleshootingProblemsProps';
 
 export function NavBar({
-   deviceGuideUrl,
-   devicePartsUrl,
+   deviceUrls,
    breadcrumbs,
 }: {
    editUrl: string;
    historyUrl: string;
+   deviceUrls: DeviceUrls;
    breadcrumbs: BreadcrumbEntry[];
-} & NavTabsProps) {
+}) {
    const bc = breadcrumbs.map((breadcrumb) => ({
       label: breadcrumb.title,
       url: breadcrumb.url,
@@ -81,13 +77,7 @@ export function NavBar({
                   flex="1 2"
                   overflowX="auto"
                >
-                  <NavTabs
-                     overflowX="auto"
-                     flexGrow="1"
-                     paddingInline={{ base: 0, sm: 2 }}
-                     deviceGuideUrl={deviceGuideUrl}
-                     devicePartsUrl={devicePartsUrl}
-                  />
+                  <NavTabs deviceUrls={deviceUrls} />
                </Box>
             </Flex>
          </Flex>
@@ -95,16 +85,7 @@ export function NavBar({
    );
 }
 
-type NavTabsProps = {
-   deviceGuideUrl?: string;
-   devicePartsUrl?: string;
-};
-
-function NavTabs({
-   devicePartsUrl,
-   deviceGuideUrl,
-   ...props
-}: NavTabsProps & FlexProps) {
+function NavTabs({ deviceUrls }: { deviceUrls: DeviceUrls }) {
    // The type here works because all the styles we want to use are available on
    // both Box and Link
    const baseStyleProps: BoxProps & LinkProps = {
@@ -173,8 +154,16 @@ function NavTabs({
       },
    };
 
+   const { devicePartsUrl, deviceGuideUrl } = deviceUrls;
+
    return (
-      <Flex {...props} gap={1.5} height="100%">
+      <Flex
+         gap={1.5}
+         height="100%"
+         overflowX="auto"
+         flexGrow="1"
+         paddingInline={{ base: 0, sm: 2 }}
+      >
          {devicePartsUrl ? (
             <Link {...notSelectedStyleProps} href={devicePartsUrl}>
                Parts
