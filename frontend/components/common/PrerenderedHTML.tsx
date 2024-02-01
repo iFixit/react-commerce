@@ -12,7 +12,7 @@ type PrerenderedHTMLProps = BoxProps & {
 };
 
 export const PrerenderedHTML = forwardRef<PrerenderedHTMLProps, 'div'>(
-   function PrerenderedHTML({ html, template, className, ...others }, ref) {
+   function PrerenderedHTML({ html, template, className, sx, ...others }, ref) {
       useEffect(() => {
          if (template === 'troubleshooting') {
             import('lite-youtube-embed');
@@ -23,7 +23,7 @@ export const PrerenderedHTML = forwardRef<PrerenderedHTMLProps, 'div'>(
          <Box
             ref={ref}
             className={className ? `prerendered ${className}` : 'prerendered'}
-            sx={styleMap[template]}
+            sx={{ ...styleMap[template], ...sx }}
             dangerouslySetInnerHTML={{ __html: html }}
             {...others}
          />
