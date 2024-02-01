@@ -155,6 +155,7 @@ function useOptimisticAddToCart(
             imageSrc: selectedVariant.image?.url || product.images[0]?.url,
             price: userPrice.price,
             compareAtPrice: userPrice.compareAtPrice,
+            categories: product.categories,
          },
       });
       onOpen(event, true);
@@ -169,6 +170,7 @@ function useOptimisticAddToCart(
       product.images,
       userPrice.price,
       userPrice.compareAtPrice,
+      product.categories,
       onOpen,
    ]);
    return [addToCart.isLoading, optimisticAddToCart] as const;

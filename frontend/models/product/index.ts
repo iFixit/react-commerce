@@ -1,5 +1,5 @@
 import { filterFalsyItems } from '@helpers/application-helpers';
-import { parseItemcode } from '@ifixit/helpers';
+import { parseItemcode, getCategoriesFromTags } from '@ifixit/helpers';
 import type { FindProductQuery as ShopifyFindProductQuery } from '@lib/shopify-storefront-sdk';
 import type { FindProductQuery as StrapiFindProductQuery } from '@lib/strapi-sdk';
 import {
@@ -84,6 +84,7 @@ export const ProductSchema = z.object({
    enabledDomains: z.array(ProductEnabledDomainSchema).nullable(),
    vendor: z.string().nullable(),
    crossSellVariants: z.array(ProductPreviewSchema),
+   categories: z.array(z.string()),
    sections: z.array(ProductSectionSchema),
 });
 
@@ -185,6 +186,7 @@ export async function getProduct({
       ),
       vendor: shopifyProduct.vendor ?? null,
       crossSellVariants: getAllCrossSellProductVariant(shopifyProduct),
+      categories: getCategoriesFromTags(shopifyProduct.tags),
       sections,
    };
 }

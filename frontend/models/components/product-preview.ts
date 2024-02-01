@@ -5,7 +5,11 @@ import {
 } from '@config/env';
 import { filterFalsyItems } from '@helpers/application-helpers';
 import { printZodError } from '@helpers/zod-helpers';
-import { getItemCodeFromSku, isLifetimeWarranty } from '@ifixit/helpers';
+import {
+   getItemCodeFromSku,
+   isLifetimeWarranty,
+   getCategoriesFromTags,
+} from '@ifixit/helpers';
 import type { ProductPreviewFieldsFragment } from '@lib/shopify-storefront-sdk';
 import algoliasearch from 'algoliasearch/lite';
 import { z } from 'zod';
@@ -47,6 +51,7 @@ export const ProductPreviewSchema = z.object({
    quantityAvailable: z.number().nullable(),
    enabled: z.boolean().nullable().optional(),
    shopifyVariantId: z.string().nullable(),
+   categories: z.array(z.string()).nullable(),
 });
 
 export function productPreviewFromAlgoliaHit(hit: any): ProductPreview | null {
@@ -76,6 +81,7 @@ export function productPreviewFromAlgoliaHit(hit: any): ProductPreview | null {
       hasLifetimeWarranty: product.lifetime_warranty ?? false,
       quantityAvailable: product.quantity_available ?? null,
       shopifyVariantId: null,
+      categories: null,
    };
 }
 
@@ -115,6 +121,7 @@ export function productPreviewFromShopify(
       quantityAvailable: fields.quantityAvailable ?? null,
       enabled: fields.enabled?.value === 'true',
       shopifyVariantId: fields.id,
+      categories: getCategoriesFromTags(fields.product.tags) || null,
    };
 }
 

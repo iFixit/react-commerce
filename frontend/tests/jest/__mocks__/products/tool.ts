@@ -183,8 +183,10 @@ export const mockedToolProduct: Product = {
          isPro: false,
          enabled: true,
          shopifyVariantId: '39333789794394',
+         categories: [],
       },
    ],
+   categories: [],
    sections: [
       {
          type: 'ProductOverview',

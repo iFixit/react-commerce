@@ -59,6 +59,7 @@ export default function ProductTemplate({ product }: ProductTemplateProps) {
                item_variant: getVariantIdFromVariantURI(selectedVariant.id),
                price: selectedVariant.price.amount,
                quantity: selectedVariant.quantityAvailable,
+               categories: product.categories,
             },
          ],
       });

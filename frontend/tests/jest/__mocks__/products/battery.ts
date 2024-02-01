@@ -194,6 +194,7 @@ export const mockedBatteryProduct: Product = {
    productcode: '390042',
    vendor: '',
    crossSellVariants: [],
+   categories: [],
    sections: [
       {
          type: 'ProductOverview',

@@ -46,19 +46,19 @@ export function setupMinimumGA4(
 }
 
 export function trackGA4ViewItem(event: AnalyticsItemsEvent) {
-   gtag('event', 'view_item', event);
+   gtag('event', 'view_item', formatEvent(event));
 }
 
 export function trackGA4ViewCart(event: AnalyticsItemsEvent) {
-   gtag('event', 'view_cart', event);
+   gtag('event', 'view_cart', formatEvent(event));
 }
 
 export function trackGA4AddToCart(event: AnalyticsItemsEvent) {
-   gtag('event', 'add_to_cart', event);
+   gtag('event', 'add_to_cart', formatEvent(event));
 }
 
 export function trackGA4RemoveFromCart(event: AnalyticsItemsEvent) {
-   gtag('event', 'remove_from_cart', event);
+   gtag('event', 'remove_from_cart', formatEvent(event));
 }
 
 export function trackGA4ViewItemList(event: GTagViewItemsListEvent) {
@@ -87,5 +87,19 @@ export function useGACustomDimensions(): GACustomDimensions {
          preferredLang?.toUpperCase() ||
          getShopifyLanguageFromCurrentURL() ||
          'no-language-found',
+   };
+}
+
+function formatEvent(event: AnalyticsItemsEvent) {
+   const { items, ...rest } = event;
+   const formatedItems = items.map((item) => {
+      const { categories, ...rest } = item;
+      return {
+         ...rest,
+      };
+   });
+   return {
+      ...rest,
+      items: formatedItems,
    };
 }

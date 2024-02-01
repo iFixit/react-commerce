@@ -82,12 +82,13 @@ export function ProductOverviewSection({
                      item_variant: getVariantIdFromVariantURI(newVariant.id),
                      price: newVariant.price.amount,
                      quantity: newVariant.quantityAvailable,
+                     categories: product.categories,
                   },
                ],
             });
          }
       },
-      [onVariantChange, product.variants]
+      [onVariantChange, product.variants, product.categories]
    );
    const isForSale = useIsProductForSale(product);
    return (

@@ -204,6 +204,7 @@ export const mockedPartProduct: Product = {
    productcode: '457000',
    vendor: '',
    crossSellVariants: [],
+   categories: [],
    sections: [
       {
          type: 'ProductOverview',
