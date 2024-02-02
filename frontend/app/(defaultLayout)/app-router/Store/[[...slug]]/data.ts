@@ -1,5 +1,3 @@
-import 'server-only';
-
 import { findPage } from '@models/page/server';
 import { cache } from 'react';
 
