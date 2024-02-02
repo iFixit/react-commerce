@@ -6,7 +6,11 @@ import { NavBar } from './NavBar';
 import { Answers } from './Answers';
 import { ProblemCard } from './ProblemCard';
 
-import type { TroubleshootingProblemsApiData } from '../hooks/useTroubleshootingProblemsProps';
+import type {
+   TroubleshootingProblemsApiData,
+   Problems,
+} from '../hooks/useTroubleshootingProblemsProps';
+import { groupBy } from 'lodash';
 
 export default function TroubleshootingProblems(
    TroubleshootingProblems: TroubleshootingProblemsApiData
@@ -22,6 +26,11 @@ export default function TroubleshootingProblems(
       allAnswersCount,
    } = TroubleshootingProblems;
    const ProblemsData = TroubleshootingProblems.problems.slice(0, 10); // Design calls for 10
+
+   const _problemsDataGroups: Record<string, Problems[]> = groupBy(
+      ProblemsData,
+      'deviceTitle'
+   );
 
    return (
       <>
