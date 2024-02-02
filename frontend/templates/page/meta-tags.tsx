@@ -1,5 +1,5 @@
 import { IFIXIT_ORIGIN } from '@config/env';
-import { metaTitleWithSuffix } from '@helpers/metadata-helpers';
+import { ensureIFixitSuffix } from '@helpers/metadata-helpers';
 import { joinPaths } from '@helpers/path-helpers';
 import type { Page } from '@models/page';
 import Head from 'next/head';
@@ -16,7 +16,7 @@ export function MetaTags({ page }: MetaTagsProps) {
             {page.metaTitle && (
                <>
                   <title key="title">
-                     {metaTitleWithSuffix(page.metaTitle)}
+                     {ensureIFixitSuffix(page.metaTitle)}
                   </title>
                   <meta
                      key="og:title"

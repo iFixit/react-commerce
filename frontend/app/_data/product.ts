@@ -1,5 +1,3 @@
-import 'server-only';
-
 import { DEFAULT_STORE_CODE } from '@config/env';
 import Product from '@pages/api/nextjs/cache/product';
 import { ifixitOrigin } from 'app/_helpers/app-helpers';

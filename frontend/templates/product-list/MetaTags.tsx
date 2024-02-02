@@ -1,5 +1,5 @@
 import { PRODUCT_LIST_PAGE_PARAM } from '@config/constants';
-import { metaTitleWithSuffix } from '@helpers/metadata-helpers';
+import { ensureIFixitSuffix } from '@helpers/metadata-helpers';
 import { productListPath } from '@helpers/path-helpers';
 import { useAppContext } from '@ifixit/app';
 import type { ProductList } from '@models/product-list';
@@ -70,7 +70,7 @@ function useMetaTitle(productList: ProductList): string {
 
    let metaTitle = productList.metaTitle ?? productList.title;
 
-   metaTitle = metaTitleWithSuffix(metaTitle);
+   metaTitle = ensureIFixitSuffix(metaTitle);
 
    if (metaTitle && !isFiltered && page > 1) {
       metaTitle += ` - Page ${page}`;
