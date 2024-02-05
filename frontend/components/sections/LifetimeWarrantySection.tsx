@@ -1,3 +1,5 @@
+'use client';
+
 import { QualityGuarantee } from '@assets/svg/files';
 import { Box, Button, Flex, Heading, Icon } from '@chakra-ui/react';
 import { PrerenderedHTML } from '@components/common';

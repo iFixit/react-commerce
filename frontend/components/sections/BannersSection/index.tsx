@@ -1,3 +1,5 @@
+'use client';
+
 import type { Banner as SingleBannerSection } from '@models/components/banner';
 import { MultipleBanners } from './MultipleBanners';
 import { SingleBanner } from './SingleBanner';

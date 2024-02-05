@@ -1,3 +1,5 @@
+'use client';
+
 import { Box } from '@chakra-ui/react';
 import { SectionDescription } from '@components/sections/SectionDescription';
 import { SectionHeading } from '@components/sections/SectionHeading';
