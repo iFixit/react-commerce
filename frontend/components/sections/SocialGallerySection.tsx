@@ -1,3 +1,5 @@
+'use client';
+
 import { AspectRatio, Box, Flex, Grid, GridItem, Text } from '@chakra-ui/react';
 import { ResponsiveImage, Wrapper } from '@ifixit/ui';
 import type { SocialPost } from '@models/components/social-post';

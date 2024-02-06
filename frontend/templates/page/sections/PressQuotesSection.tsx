@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, Flex, Link } from '@chakra-ui/react';
 import { PrerenderedHTML } from '@components/common';
 import { SectionDescription } from '@components/sections/SectionDescription';

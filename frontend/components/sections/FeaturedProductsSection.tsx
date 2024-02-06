@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, Flex } from '@chakra-ui/react';
 import { ProductGrid } from '@components/common/ProductGrid';
 import { ProductGridItem } from '@components/common/ProductGridItem';

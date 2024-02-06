@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { LinkButton } from '@components/ui/LinkButton';
 import { SmartLink } from '@components/ui/SmartLink';
