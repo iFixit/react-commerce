@@ -6,7 +6,8 @@ export function Answers({
    answers,
    allAnswersUrl,
    allAnswersCount,
-}: TroubleshootingAnswersData) {
+   hasProblems,
+}: TroubleshootingAnswersData & { hasProblems: boolean }) {
    const answersData = answers.slice(0, 8); // design calls for 8
 
    return (
@@ -14,10 +15,11 @@ export function Answers({
          <Stack className="answers" spacing={4}>
             <Stack spacing={2} pt={6}>
                <Heading
-                  as="h3"
+                  as={hasProblems ? 'h4' : 'h3'}
+                  color="gray.800"
                   fontSize={{ base: '20px', mdPlus: '24px' }}
                   fontWeight="medium"
-                  lineHeight="normal"
+                  lineHeight="115%"
                >
                   Didn&apos;t see your problem? Try one of these answers.
                </Heading>

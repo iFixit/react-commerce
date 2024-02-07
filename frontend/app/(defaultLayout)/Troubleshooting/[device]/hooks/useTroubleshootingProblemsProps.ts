@@ -15,11 +15,12 @@ export type TroubleshootingProblemsApiData = {
 
 export type Problems = {
    problemTitle: string;
+   problemUrl: string;
    deviceTitle: string;
    description: string;
    altText: string;
-   imageSrcLg?: string;
-   imageSrcThumb?: string;
+   imageSrcStandard?: string;
+   imageSrcThumbnail?: string;
    problemTypeIcon?: FaIconProps;
    badges?: string[];
 };
