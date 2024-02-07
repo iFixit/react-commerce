@@ -6,7 +6,6 @@ import { QuoteGallerySection } from '@components/sections/QuoteGallerySection';
 import { SocialGallerySection } from '@components/sections/SocialGallerySection';
 import { SplitWithImageContentSection } from '@components/sections/SplitWithImageSection';
 import { IFIXIT_ORIGIN } from '@config/env';
-import { flags } from '@config/flags';
 import { ensureIFixitSuffix } from '@helpers/metadata-helpers';
 import { joinPaths } from '@helpers/path-helpers';
 import { assertNever, invariant } from '@ifixit/helpers';
@@ -26,8 +25,6 @@ export interface StorePageProps {
 }
 
 export default async function StorePage({ params }: StorePageProps) {
-   if (!flags.STORE_PAGES_APP_ROUTER_ENABLED) notFound();
-
    const page = await findPageByPath(pathFor(params.slug));
 
    if (page == null) notFound();
