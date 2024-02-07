@@ -1,12 +1,10 @@
 import {
    Box,
-   BoxProps,
    Button,
    Flex,
    FlexProps,
    IconButton,
    Link,
-   LinkProps,
    Menu,
    MenuButton,
    MenuItem,
