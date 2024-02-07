@@ -17,7 +17,7 @@ export function Answers({
                <Heading
                   as={hasProblems ? 'h4' : 'h3'}
                   color="gray.800"
-                  fontSize={{ base: '24px', sm: '30px' }}
+                  fontSize={{ base: '20px', mdPlus: '24px' }}
                   fontWeight="medium"
                   lineHeight="115%"
                >
