@@ -41,8 +41,8 @@ export default function TroubleshootingProblems({
             className="wrapper"
             maxWidth="1280px"
             mx="auto"
-            px={{ base: 4, md: 8 }}
-            pt={{ md: 8 }}
+            px={{ base: 4, sm: 8 }}
+            pt={{ sm: 8 }}
             pb={8}
          >
             <Stack as="main" spacing={6}>
