@@ -32,9 +32,6 @@ export function ProductListDeviceNavigation({
 
    return (
       <NavTabs
-         h="full"
-         align="stretch"
-         borderLeftWidth={{ base: '0', sm: '1px', md: '0' }}
          {...flexProps}
          tabs={[
             {

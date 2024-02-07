@@ -48,6 +48,7 @@ export function SecondaryNavigation({ productList }: SecondaryNavigationProps) {
                      }}
                      breadCrumbs={breadcrumbs}
                      fontSize="sm"
+                     paddingInlineEnd="32px"
                   />
                   <Flex
                      h="full"
@@ -69,7 +70,11 @@ export function SecondaryNavigation({ productList }: SecondaryNavigationProps) {
          <SecondaryNavbar display={{ sm: 'none' }}>
             <Wrapper h="full">
                <Flex h="full" w="full" boxSizing="border-box">
-                  <BreadCrumbs breadCrumbs={breadcrumbs} fontSize="sm" />
+                  <BreadCrumbs
+                     breadCrumbs={breadcrumbs}
+                     fontSize="sm"
+                     paddingInlineEnd="16px"
+                  />
                </Flex>
             </Wrapper>
          </SecondaryNavbar>
