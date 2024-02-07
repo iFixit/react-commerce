@@ -20,6 +20,7 @@ import {
    faClockRotateLeft,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FaIcon } from '@ifixit/icons';
+import { SecondaryNavbarItem, SecondaryNavbarLink } from '@components/common';
 
 export function NavBar({
    editUrl,
@@ -92,9 +93,6 @@ export function NavBar({
                   overflowX="auto"
                >
                   <NavTabs
-                     overflowX="auto"
-                     flexGrow="1"
-                     paddingInline={{ base: 0, sm: 2 }}
                      deviceGuideUrl={deviceGuideUrl}
                      devicePartsUrl={devicePartsUrl}
                   />
@@ -178,105 +176,46 @@ type NavTabsProps = {
    devicePartsUrl?: string;
 };
 
-function NavTabs({
-   devicePartsUrl,
-   deviceGuideUrl,
-   ...props
-}: NavTabsProps & FlexProps) {
-   // The type here works because all the styles we want to use are available on
-   // both Box and Link
-   const baseStyleProps: BoxProps & LinkProps = {
-      outline: '2px solid transparent',
-      outlineOffset: '2px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingTop: 2,
-      paddingBottom: 2,
-      paddingInlineStart: 4,
-      paddingInlineEnd: 4,
-      position: 'relative',
-   };
-
-   const bottomFeedbackStyleProps = {
-      content: '""',
-      position: 'absolute',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      height: '3px',
-      borderRadius: '2px 2px 0px 0px',
-   };
-
-   const selectedStyleProps = {
-      ...baseStyleProps,
-      borderColor: 'blue.500',
-      color: 'gray.900',
-      fontWeight: 'medium',
-      _visited: {
-         color: 'gray.900',
-      },
-      _hover: {
-         textDecoration: 'none',
-         background: 'gray.100',
-         '::after': {
-            background: 'blue.700',
-         },
-      },
-      _after: {
-         ...bottomFeedbackStyleProps,
-         background: 'blue.500',
-      },
-   };
-
-   const notSelectedStyleProps = {
-      ...baseStyleProps,
+function NavTabs({ devicePartsUrl, deviceGuideUrl }: NavTabsProps & FlexProps) {
+   const disabledStyleProps = {
       borderColor: 'transparent',
-      color: 'gray.500',
-      fontWeight: 'normal',
       _hover: {
          textDecoration: 'none',
       },
-      _visited: {
-         color: 'gray.500',
-      },
-      sx: {
-         '&:hover:not(.isDisabled)': {
-            color: 'gray.700',
-            background: 'gray.100',
-         },
-         '&.isDisabled': {
-            opacity: 0.4,
-            cursor: 'not-allowed',
-            color: 'gray.700',
-            background: 'gray.100',
-         },
-      },
+      opacity: 0.4,
+      cursor: 'not-allowed',
+      color: 'gray.700',
+      isDisabled: true,
    };
 
    return (
-      <Flex {...props} gap={1.5} height="100%">
-         {devicePartsUrl ? (
-            <Link {...notSelectedStyleProps} href={devicePartsUrl}>
+      <Flex
+         h="full"
+         align="stretch"
+         borderLeftWidth={{
+            base: '0',
+            sm: '1px',
+            md: '0',
+         }}
+         bg="white"
+      >
+         <SecondaryNavbarItem>
+            <SecondaryNavbarLink
+               href={devicePartsUrl ? devicePartsUrl : undefined}
+               {...(devicePartsUrl ? {} : disabledStyleProps)}
+            >
                Parts
-            </Link>
-         ) : (
-            <Box className="isDisabled" {...notSelectedStyleProps}>
-               Parts
-            </Box>
-         )}
-
-         {deviceGuideUrl ? (
-            <Link {...notSelectedStyleProps} href={deviceGuideUrl}>
+            </SecondaryNavbarLink>
+         </SecondaryNavbarItem>
+         <SecondaryNavbarItem>
+            <SecondaryNavbarLink
+               href={deviceGuideUrl ? deviceGuideUrl : undefined}
+               {...(deviceGuideUrl ? {} : disabledStyleProps)}
+            >
                Guides
-            </Link>
-         ) : (
-            <Box className="isDisabled" {...notSelectedStyleProps}>
-               Guides
-            </Box>
-         )}
-
-         <Box {...selectedStyleProps}>Troubleshooting</Box>
+            </SecondaryNavbarLink>
+         </SecondaryNavbarItem>
+         <SecondaryNavbarItem isCurrent>Troubleshooting</SecondaryNavbarItem>
       </Flex>
    );
 }
