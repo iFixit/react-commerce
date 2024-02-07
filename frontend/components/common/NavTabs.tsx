@@ -32,6 +32,7 @@ export function NavTabs({
       paddingInlineStart: 4,
       paddingInlineEnd: 4,
       position: 'relative',
+      fontSize: 'sm',
    };
 
    const bottomFeedbackStyleProps = {
