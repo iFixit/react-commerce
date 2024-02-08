@@ -98,6 +98,7 @@ export function NavTabs({
          paddingInline={{ base: 0, sm: 2 }}
          gap={1.5}
          height="100%"
+         borderLeftWidth={{ base: '1px', xl: '0' }}
          {...props}
       >
          {tabs.map((tab: NavTab) =>

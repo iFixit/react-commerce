@@ -48,7 +48,7 @@ export function SecondaryNavigation({ productList }: SecondaryNavigationProps) {
                      }}
                      breadCrumbs={breadcrumbs}
                      fontSize="sm"
-                     paddingInlineEnd="32px"
+                     paddingInlineEnd="16px"
                   />
                   <Flex
                      h="full"

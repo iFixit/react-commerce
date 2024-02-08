@@ -39,7 +39,7 @@ export function NavBar({
       label: breadcrumb.title,
       url: breadcrumb.url,
    }));
-   const padding = { base: '16px', sm: '32px' };
+   const padding = '16px';
    const breadcrumbMinHeight = '48px';
    return (
       <Flex

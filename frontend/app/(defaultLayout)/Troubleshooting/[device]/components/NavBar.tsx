@@ -19,7 +19,7 @@ export function NavBar({
       label: breadcrumb.title,
       url: breadcrumb.url,
    }));
-   const padding = { base: 4, sm: 8 };
+   const padding = 4;
    const breadcrumbMinHeight = '48px';
    const { devicePartsUrl, deviceGuideUrl } = deviceUrls;
 
