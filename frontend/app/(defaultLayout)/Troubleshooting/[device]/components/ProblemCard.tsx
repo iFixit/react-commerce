@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
    Box,
    Flex,
+   Heading,
    HStack,
    Image,
    LinkBox,
@@ -22,6 +23,7 @@ export function ProblemCard({
    problemTypeIcon,
    altText,
    badges,
+   hasAnswers,
 }: any) {
    return (
       <LinkBox
@@ -61,9 +63,14 @@ export function ProblemCard({
             <Stack className="content" spacing={4} flex="auto">
                <Stack className="title" spacing={1.5} flex="1">
                   <LinkOverlay href={problemUrl}>
-                     <Text fontWeight="semibold" noOfLines={3}>
+                     <Heading
+                        as={hasAnswers ? 'h3' : 'h4'}
+                        fontSize="inherit"
+                        fontWeight="semibold"
+                        noOfLines={3}
+                     >
                         {problemTitle}
-                     </Text>
+                     </Heading>
                   </LinkOverlay>
                   <Text color="gray.600" fontSize="sm" noOfLines={3}>
                      {description}

@@ -24,6 +24,7 @@ export default function TroubleshootingProblems({
 }: TroubleshootingProblemsApiData) {
    const problemsData = problems.slice(0, 10); // Design calls for 10
    const hasProblems = problemsData.length > 0;
+   const hasAnswers = answers.length > 0;
    const problemsDataGroups: Record<string, Problems[]> = groupBy(
       problemsData,
       'deviceTitle'
@@ -53,7 +54,7 @@ export default function TroubleshootingProblems({
                         <>
                            <Stack className="header" spacing={2}>
                               <Heading
-                                 as="h2"
+                                 as="h1"
                                  color="gray.800"
                                  fontSize={{ base: '24px', sm: '30px' }}
                                  fontWeight="medium"
@@ -95,6 +96,7 @@ export default function TroubleshootingProblems({
                                        deviceTitle={problem.deviceTitle}
                                        description={problem.description}
                                        altText={problem.altText}
+                                       hasAnswers={hasAnswers}
                                     />
                                  )
                               )}
@@ -103,7 +105,7 @@ export default function TroubleshootingProblems({
                      );
                   }
                )}
-               {answers.length > 0 && (
+               {hasAnswers && (
                   <Answers
                      answers={answers}
                      allAnswersUrl={allAnswersUrl}
