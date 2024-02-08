@@ -13,8 +13,11 @@ const sampleRate = SENTRY_SAMPLING_ENABLED
 Sentry.init({
    async beforeSend(event) {
       try {
+         /*
+          * Temporarily disable while we move to a new repo
          const current_production = await isCurrentProductionDeployment();
          event.tags = { ...event.tags, current_production };
+         */
       } catch (e) {
          event.tags = { ...event.tags, before_send_error: true };
          event.extra = {
