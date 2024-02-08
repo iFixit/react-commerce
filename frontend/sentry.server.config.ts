@@ -1,5 +1,5 @@
 import { SENTRY_SAMPLING_ENABLED, VERCEL_ENV } from '@config/env';
-import { isCurrentProductionDeployment } from '@helpers/vercel-helpers';
+// import { isCurrentProductionDeployment } from '@helpers/vercel-helpers';
 import { SentryErrorIntegration } from '@ifixit/sentry';
 import * as Sentry from '@sentry/nextjs';
 
@@ -33,8 +33,11 @@ Sentry.init({
          }
       }
       try {
+         /*
+          * Temporarily disable while we move to a new repo
          const current_production = await isCurrentProductionDeployment();
          event.tags = { ...event.tags, current_production };
+         */
       } catch (e) {
          event.tags = { ...event.tags, before_send_error: true };
          event.extra = {
