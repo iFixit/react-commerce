@@ -1,5 +1,5 @@
 import { SENTRY_SAMPLING_ENABLED, VERCEL_ENV } from '@config/env';
-import { isCurrentProductionDeployment } from '@helpers/vercel-helpers';
+// import { isCurrentProductionDeployment } from '@helpers/vercel-helpers';
 import { SentryErrorIntegration } from '@ifixit/sentry';
 import { BrowserTracing } from '@sentry/browser';
 import * as Sentry from '@sentry/nextjs';
