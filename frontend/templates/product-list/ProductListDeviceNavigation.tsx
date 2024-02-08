@@ -1,9 +1,9 @@
-import { Flex, FlexProps } from '@chakra-ui/react';
-import { SecondaryNavbarItem, SecondaryNavbarLink } from '@components/common';
+import { FlexProps } from '@chakra-ui/react';
 import { IFIXIT_ORIGIN } from '@config/env';
 import { stylizeDeviceTitle } from '@helpers/product-list-helpers';
 import type { ProductList } from '@models/product-list';
 import { ProductListType } from '@models/product-list';
+import { NavTabs } from '@components/common/NavTabs';
 
 type ProductListDeviceNavigationProps = FlexProps & {
    productList: ProductList;
@@ -31,24 +31,22 @@ export function ProductListDeviceNavigation({
    }
 
    return (
-      <Flex
-         h="full"
-         align="stretch"
-         borderLeftWidth={{
-            base: '0',
-            sm: '1px',
-            md: '0',
-         }}
-         bg="white"
+      <NavTabs
          {...flexProps}
-      >
-         <SecondaryNavbarItem isCurrent>Parts</SecondaryNavbarItem>
-         <SecondaryNavbarItem>
-            <SecondaryNavbarLink href={guideUrl}>Guides</SecondaryNavbarLink>
-         </SecondaryNavbarItem>
-         <SecondaryNavbarItem>
-            <SecondaryNavbarLink href={answersUrl}>Answers</SecondaryNavbarLink>
-         </SecondaryNavbarItem>
-      </Flex>
+         tabs={[
+            {
+               name: 'Parts',
+               isCurrentPage: true,
+            },
+            {
+               name: 'Guides',
+               url: guideUrl,
+            },
+            {
+               name: 'Answers',
+               url: answersUrl,
+            },
+         ]}
+      />
    );
 }

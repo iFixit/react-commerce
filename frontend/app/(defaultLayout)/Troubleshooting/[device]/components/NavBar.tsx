@@ -1,9 +1,10 @@
-import { Box, BoxProps, Flex, Link, LinkProps } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { BreadCrumbs } from '@ifixit/breadcrumbs';
 import type {
    BreadcrumbEntry,
    DeviceUrls,
 } from '../hooks/useTroubleshootingProblemsProps';
+import { NavTabs } from '@components/common/NavTabs';
 
 export function NavBar({
    deviceUrls,
@@ -18,8 +19,9 @@ export function NavBar({
       label: breadcrumb.title,
       url: breadcrumb.url,
    }));
-   const padding = { base: 4, sm: 8 };
+   const padding = 4;
    const breadcrumbMinHeight = '48px';
+   const { devicePartsUrl, deviceGuideUrl } = deviceUrls;
 
    return (
       <Flex
@@ -77,114 +79,25 @@ export function NavBar({
                   flex="1 2"
                   overflowX="auto"
                >
-                  <NavTabs deviceUrls={deviceUrls} />
+                  <NavTabs
+                     tabs={[
+                        {
+                           name: 'Parts',
+                           url: devicePartsUrl,
+                        },
+                        {
+                           name: 'Guides',
+                           url: deviceGuideUrl,
+                        },
+                        {
+                           name: 'Troubleshooting',
+                           isCurrentPage: true,
+                        },
+                     ]}
+                  />
                </Box>
             </Flex>
          </Flex>
-      </Flex>
-   );
-}
-
-function NavTabs({ deviceUrls }: { deviceUrls: DeviceUrls }) {
-   // The type here works because all the styles we want to use are available on
-   // both Box and Link
-   const baseStyleProps: BoxProps & LinkProps = {
-      outline: '2px solid transparent',
-      outlineOffset: '2px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingBlock: 2,
-      paddingInline: 4,
-      position: 'relative',
-   };
-
-   const bottomFeedbackStyleProps = {
-      content: '""',
-      position: 'absolute',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      height: '3px',
-      borderRadius: '2px 2px 0px 0px',
-   };
-
-   const selectedStyleProps = {
-      ...baseStyleProps,
-      borderColor: 'blue.500',
-      color: 'gray.900',
-      fontWeight: 'medium',
-      _visited: {
-         color: 'gray.900',
-      },
-      _hover: {
-         textDecoration: 'none',
-         background: 'gray.100',
-         '::after': {
-            background: 'blue.700',
-         },
-      },
-      _after: {
-         ...bottomFeedbackStyleProps,
-         background: 'blue.500',
-      },
-   };
-
-   const notSelectedStyleProps = {
-      ...baseStyleProps,
-      borderColor: 'transparent',
-      color: 'gray.500',
-      fontWeight: 'normal',
-      _hover: {
-         textDecoration: 'none',
-      },
-      _visited: {
-         color: 'gray.500',
-      },
-      sx: {
-         '&:hover:not(.isDisabled)': {
-            color: 'gray.700',
-            background: 'gray.100',
-         },
-         '&.isDisabled': {
-            opacity: 0.4,
-            cursor: 'not-allowed',
-            color: 'gray.500',
-         },
-      },
-   };
-
-   const { devicePartsUrl, deviceGuideUrl } = deviceUrls;
-
-   return (
-      <Flex
-         gap={1.5}
-         height="100%"
-         overflowX="auto"
-         flexGrow="1"
-         paddingInline={{ base: 0, sm: 2 }}
-      >
-         {devicePartsUrl ? (
-            <Link {...notSelectedStyleProps} href={devicePartsUrl}>
-               Parts
-            </Link>
-         ) : (
-            <Box className="isDisabled" {...notSelectedStyleProps}>
-               Parts
-            </Box>
-         )}
-
-         {deviceGuideUrl ? (
-            <Link {...notSelectedStyleProps} href={deviceGuideUrl}>
-               Guides
-            </Link>
-         ) : (
-            <Box className="isDisabled" {...notSelectedStyleProps}>
-               Guides
-            </Box>
-         )}
-
-         <Box {...selectedStyleProps}>Troubleshooting</Box>
       </Flex>
    );
 }
