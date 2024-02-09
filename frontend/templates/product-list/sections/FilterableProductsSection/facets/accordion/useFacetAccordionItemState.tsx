@@ -1,5 +1,5 @@
 import { ProductList, ProductListType } from '@models/product-list';
-import { useHits } from 'react-instantsearch';
+import { useAlgoliaSearch } from 'app/_data/product-list/useAlgoliaSearch';
 
 export type UseFacetAccordionItemProps = {
    attribute: string;
@@ -12,7 +12,7 @@ export function useFacetAccordionItemState({
    hasApplicableRefinements,
    productList,
 }: UseFacetAccordionItemProps) {
-   const { hits } = useHits();
+   const { hits } = useAlgoliaSearch();
    const isProductListEmpty = hits.length === 0;
    const isDisabled = isProductListEmpty || !hasApplicableRefinements;
 

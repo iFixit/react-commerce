@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { ProductList, ProductListType } from '@models/product-list';
 import { formatFacetName } from '@helpers/algolia-helpers';
+import { useAlgoliaSearch } from 'app/_data/product-list/useAlgoliaSearch';
+import { Facet } from 'app/_data/product-list/concerns/facets';
 
 export function useFacets() {
    return [
@@ -19,7 +21,7 @@ export function useFacets() {
 }
 
 export function useFilteredFacets(productList: ProductList) {
-   const facets = useFacets();
+   const { facets } = useAlgoliaSearch();
 
    const infoNames = React.useMemo(() => {
       return new Set(
@@ -35,7 +37,7 @@ export function useFilteredFacets(productList: ProductList) {
       const usefulFacets = facets
          .slice()
          .filter((facet) => {
-            return facet !== 'device' && !infoNames.has(facet);
+            return facet.name !== 'device' && !infoNames.has(facet.name);
          })
          .sort(sortBy);
       return usefulFacets;
@@ -56,12 +58,14 @@ export function useFilteredFacets(productList: ProductList) {
          'facet_tags.OS',
          'facet_tags.Part or Kit',
       ];
-      return facets.filter((facet) => !excludedToolsFacets.includes(facet));
+      return facets.filter(
+         (facet) => !excludedToolsFacets.includes(facet.name)
+      );
    }
 
    const excludedPartsAndMarketingFacets = ['price_range'];
    return usefulFacets.filter(
-      (facet) => !excludedPartsAndMarketingFacets.includes(facet)
+      (facet) => !excludedPartsAndMarketingFacets.includes(facet.name)
    );
 }
 
@@ -91,14 +95,14 @@ function getFacetComparator(productListType: ProductListType) {
 }
 
 function sortFacetsWithRanking(ranking: Map<string, number>) {
-   return (a: string, b: string): number => {
-      const aRank = ranking.get(a) || 0;
-      const bRank = ranking.get(b) || 0;
+   return (a: Facet, b: Facet): number => {
+      const aRank = ranking.get(a.name) || 0;
+      const bRank = ranking.get(b.name) || 0;
       return bRank - aRank || sortFacetsAlphabetically(a, b);
    };
 }
 
 const enCollator = new Intl.Collator('en');
-function sortFacetsAlphabetically(a: string, b: string) {
-   return enCollator.compare(formatFacetName(a), formatFacetName(b));
+function sortFacetsAlphabetically(a: Facet, b: Facet) {
+   return enCollator.compare(formatFacetName(a.name), formatFacetName(b.name));
 }

@@ -33,6 +33,9 @@ importers:
 
   frontend:
     dependencies:
+      '@algolia/requester-fetch':
+        specifier: 4.22.1
+        version: 4.22.1
       '@chakra-ui/react':
         specifier: 2.8.1
         version: 2.8.1(@emotion/react@11.10.5)(@emotion/styled@11.10.5)(@types/react@18.2.0)(framer-motion@10.12.0)(react-dom@18.2.0)(react@18.2.0)
@@ -966,6 +969,16 @@ packages:
 
   /@algolia/requester-common@4.13.1:
     resolution: {integrity: sha512-eGVf0ID84apfFEuXsaoSgIxbU3oFsIbz4XiotU3VS8qGCJAaLVUC5BUJEkiFENZIhon7hIB4d0RI13HY4RSA+w==}
+    dev: false
+
+  /@algolia/requester-common@4.22.1:
+    resolution: {integrity: sha512-dgvhSAtg2MJnR+BxrIFqlLtkLlVVhas9HgYKMk2Uxiy5m6/8HZBL40JVAMb2LovoPFs9I/EWIoFVjOrFwzn5Qg==}
+    dev: false
+
+  /@algolia/requester-fetch@4.22.1:
+    resolution: {integrity: sha512-fb5YfPms7lAYy4FdBmNc0LM872ITXbNEVGJUPhe+llbQscIzP0FM5WnRK7fQefAUFZR5zQ68J2tHkPCTDfeNLw==}
+    dependencies:
+      '@algolia/requester-common': 4.22.1
     dev: false
 
   /@algolia/requester-node-http@4.13.1:

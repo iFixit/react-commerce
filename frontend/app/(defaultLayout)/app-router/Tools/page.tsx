@@ -2,29 +2,27 @@ import { flags } from '@config/flags';
 import { productListPath } from '@helpers/path-helpers';
 import { ProductListType } from '@models/product-list';
 import ProductList from '@pages/api/nextjs/cache/product-list';
-import { ProductListView } from '@templates/product-list/ProductListView';
 import { search } from 'app/_data/product-list';
-import { AlgoliaSearchProvider } from 'app/_data/product-list/useAlgoliaSearch';
 import { ifixitOrigin, shouldSkipCache } from 'app/_helpers/app-helpers';
 import { parseSearchParams } from 'app/_helpers/product-list-helpers';
 import { notFound, redirect } from 'next/navigation';
 
-export interface AllPartsPageProps {
+export interface AllToolsPageProps {
    params: {};
    searchParams: {
       disableCacheGets?: string | string[] | undefined;
    };
 }
 
-export default async function AllPartsPage({
+export default async function AllToolsPage({
    params,
    searchParams,
-}: AllPartsPageProps) {
-   if (!flags.APP_ROUTER_PARTS_PAGE_ENABLED) notFound();
+}: AllToolsPageProps) {
+   if (!flags.APP_ROUTER_TOOLS_PAGE_ENABLED) notFound();
 
    const productList = await ProductList.get(
       {
-         filters: { handle: { eq: 'Parts' } },
+         filters: { handle: { eq: 'Tools' } },
          ifixitOrigin: ifixitOrigin(),
       },
       { forceMiss: shouldSkipCache(searchParams) }
@@ -40,18 +38,17 @@ export default async function AllPartsPage({
    }
 
    const urlState = parseSearchParams(searchParams);
-   const algoliaSearchResponse = await search({
-      productListType: ProductListType.DeviceParts,
-      // Todo: handle this
+   const { hitsCount } = await search({
+      productListType: ProductListType.AllTools,
       excludePro: true,
       ...urlState,
    });
 
    return (
       <>
-         <AlgoliaSearchProvider {...algoliaSearchResponse}>
-            <ProductListView productList={productList} />
-         </AlgoliaSearchProvider>
+         <div>All tools page</div>
+         <div>{JSON.stringify(productList)}</div>
+         <div>{hitsCount}</div>
       </>
    );
 }

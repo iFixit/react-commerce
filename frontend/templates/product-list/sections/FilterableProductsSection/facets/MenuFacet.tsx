@@ -9,21 +9,19 @@ import {
 } from '@chakra-ui/react';
 import { formatFacetName } from '@helpers/algolia-helpers';
 import { invariant } from '@helpers/application-helpers';
+import { FacetOption } from 'app/_data/product-list/concerns/facets';
 import React, { MouseEventHandler } from 'react';
 import { ShowMoreButton } from './ShowMoreButton';
-import type { MenuFacetState } from './useMenuFacet';
-
-type MenuItem = MenuFacetState['items'][0];
 
 export type MenuFacetProps = {
    attribute: string;
-   items: MenuItem[];
+   items: FacetOption[];
    limit: number;
-   onItemClick?: (value: string) => void;
-   canToggleShowMore?: boolean;
-   isShowingMore?: boolean;
-   onShowMore?: () => void;
-   createItemURL?: (item: MenuItem) => string;
+   // onItemClick?: (value: string) => void;
+   // canToggleShowMore?: boolean;
+   // isShowingMore?: boolean;
+   // onShowMore?: () => void;
+   // createItemURL?: (item: MenuItem) => string;
 };
 
 export function MenuFacet(props: MenuFacetProps) {
@@ -48,13 +46,13 @@ export function MenuFacet(props: MenuFacetProps) {
          >
             {firstItems.map((item) => (
                <MenuListItem
-                  key={item.label}
-                  label={item.label}
+                  key={item.value}
+                  label={item.value}
                   value={item.value}
                   count={item.count}
-                  isRefined={item.isRefined}
-                  url={props.createItemURL?.(item)}
-                  onClick={props.onItemClick}
+                  isRefined={item.selected}
+                  // url={props.createItemURL?.(item)}
+                  // onClick={props.onItemClick}
                />
             ))}
             {additionalItems.length > 0 && (
@@ -66,13 +64,13 @@ export function MenuFacet(props: MenuFacetProps) {
                >
                   {additionalItems.map((item) => (
                      <MenuListItem
-                        key={item.label}
-                        label={item.label}
+                        key={item.value}
+                        label={item.value}
                         value={item.value}
                         count={item.count}
-                        isRefined={item.isRefined}
-                        url={props.createItemURL?.(item)}
-                        onClick={props.onItemClick}
+                        isRefined={item.selected}
+                        // url={props.createItemURL?.(item)}
+                        // onClick={props.onItemClick}
                      />
                   ))}
                </VStack>
@@ -89,7 +87,7 @@ export function MenuFacet(props: MenuFacetProps) {
 }
 
 type UseShowMoreProps = {
-   items: MenuItem[];
+   items: FacetOption[];
    limit: number;
    canToggleShowMore?: boolean;
    isShowingMore?: boolean;

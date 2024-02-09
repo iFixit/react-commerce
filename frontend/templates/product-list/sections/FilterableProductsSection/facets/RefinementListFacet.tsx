@@ -1,17 +1,17 @@
 import { Box, Checkbox, HStack, Text, VStack } from '@chakra-ui/react';
 import { formatFacetName } from '@helpers/algolia-helpers';
 import { useDecoupledState } from '@ifixit/ui';
+import { FacetOption } from 'app/_data/product-list/concerns/facets';
 import * as React from 'react';
 import { ShowMoreButton } from './ShowMoreButton';
 import { RefinementListFacetState } from './useRefinementListFacet';
 
+const MAX_VISIBLE_OPTIONS = 10;
+
 type RefinementListFacetProps = {
    attribute: string;
-   items: RefinementListItem[];
+   items: FacetOption[];
    refine: (value: string) => void;
-   canToggleShowMore?: boolean;
-   isShowingMore?: boolean;
-   onToggleShowMore?: () => void;
 };
 
 type RefinementListItem = RefinementListFacetState['items'][0];
@@ -20,11 +20,11 @@ export function RefinementListFacet({
    attribute,
    items,
    refine,
-   canToggleShowMore,
-   isShowingMore = false,
-   onToggleShowMore,
 }: RefinementListFacetProps) {
    const formattedFacetName = formatFacetName(attribute);
+   const visibleOptions = items.slice(0, MAX_VISIBLE_OPTIONS);
+   const hiddenOptions = items.slice(MAX_VISIBLE_OPTIONS);
+   const hasHiddenOptions = hiddenOptions.length > 0;
 
    return (
       <Box>
@@ -34,28 +34,25 @@ export function RefinementListFacet({
             role="listbox"
             aria-label={`${formattedFacetName} options`}
          >
-            {items.map((item) => {
+            {visibleOptions.map((item) => {
                return (
                   <RefinementListItem
-                     key={item.label}
+                     key={item.value}
                      item={item}
                      refine={refine}
                   />
                );
             })}
          </VStack>
-         {canToggleShowMore && (
-            <ShowMoreButton
-               isShowingMore={isShowingMore}
-               onClick={onToggleShowMore}
-            />
+         {hasHiddenOptions && (
+            <ShowMoreButton isShowingMore={false} onClick={() => {}} />
          )}
       </Box>
    );
 }
 
 type RefinementListItemProps = {
-   item: RefinementListItem;
+   item: FacetOption;
    refine: (value: string) => void;
 };
 
@@ -63,10 +60,10 @@ const RefinementListItem = React.memo(function RefinementListItem({
    item,
    refine,
 }: RefinementListItemProps) {
-   const [isRefined, setIsRefined] = useDecoupledState(item.isRefined);
+   const [isRefined, setIsRefined] = useDecoupledState(item.selected);
 
    return (
-      <HStack key={item.label} justify="space-between">
+      <HStack key={item.value} justify="space-between">
          <Checkbox
             role="option"
             value={item.value}
@@ -78,7 +75,7 @@ const RefinementListItem = React.memo(function RefinementListItem({
             data-value={item.value}
             fontWeight={isRefined ? 'semibold' : 'inherit'}
          >
-            {item.label}
+            {item.value}
          </Checkbox>
          <Text
             size="sm"

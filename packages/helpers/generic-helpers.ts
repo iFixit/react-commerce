@@ -88,6 +88,31 @@ const loggingTimer = (timerName: string) => {
 type Timer = (name: string) => () => void;
 const time: Timer = !isProduction || enableLogging ? loggingTimer : silentTimer;
 
+export function isBlank(value: unknown): boolean {
+   return (
+      value == null ||
+      isBlankString(value) ||
+      isBlankArray(value) ||
+      isBlankObject(value)
+   );
+}
+
+function isBlankString(value: unknown): boolean {
+   return typeof value === 'string' && value.trim() === '';
+}
+
+function isBlankArray(value: unknown): boolean {
+   return Array.isArray(value) && value.length === 0;
+}
+
+function isBlankObject(value: unknown): boolean {
+   return (
+      typeof value === 'object' &&
+      value != null &&
+      Object.keys(value).length === 0
+   );
+}
+
 export function isPresent(text: string | null | undefined): text is string {
    return typeof text === 'string' && text.length > 0;
 }

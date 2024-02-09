@@ -1,9 +1,9 @@
-import { ProductList } from '@models/product-list';
-import { useVariantProductList } from './useVariantProductList';
-import { useItemTypeProductList } from './useItemTypeProductList';
-import React, { PropsWithChildren } from 'react';
 import { SentryError } from '@ifixit/sentry';
-import { AlgoliaAttributeSSRHack } from '@helpers/algolia-helpers';
+import { ProductList } from '@models/product-list';
+import React, { PropsWithChildren } from 'react';
+import { useMenu } from 'react-instantsearch';
+import { useItemTypeProductList } from './useItemTypeProductList';
+import { useVariantProductList } from './useVariantProductList';
 
 /**
  * Used to modify product list data before rendering
@@ -28,7 +28,7 @@ export const CurrentProductListProvider = ({
    algoliaUrl,
    children,
 }: CurrentProductListProviderProps) => {
-   AlgoliaAttributeSSRHack('worksin');
+   useMenu({ attribute: 'worksin' });
 
    const variantUpdatedProductList = useVariantProductList(
       productList,

@@ -1,12 +1,10 @@
 import { Accordion } from '@chakra-ui/react';
-import { getFacetWidgetType } from '@helpers/product-list-helpers';
-import { assertNever } from '@ifixit/helpers';
-import { FacetWidgetType, ProductList } from '@models/product-list';
+import { ProductList } from '@models/product-list';
+import { Facet } from 'app/_data/product-list/concerns/facets';
 import * as React from 'react';
-import { useCountRefinements } from '../useCountRefinements';
 import { useFilteredFacets } from '../useFacets';
-import { FacetMenuAccordionItem } from './FacetMenuAccordionItem';
 import { FacetRefinementListAccordionItem } from './FacetRefinementListAccordionItem';
+import { FacetMenuAccordionItem } from './FacetMenuAccordionItem';
 
 type FacetsAccordianProps = {
    productList: ProductList;
@@ -19,11 +17,10 @@ const initialExpandedFacets = [
 
 export function FacetsAccordion({ productList }: FacetsAccordianProps) {
    const facets = useFilteredFacets(productList);
-   const countRefinements = useCountRefinements();
    const [indexes, setIndexes] = React.useState<number[]>(() => {
       return initialExpandedFacets
          .map((expandedFacet) =>
-            facets.findIndex((facet) => facet === expandedFacet)
+            facets.findIndex((facet) => facet.name === expandedFacet)
          )
          .filter((index) => index >= 0);
    });
@@ -54,16 +51,14 @@ export function FacetsAccordion({ productList }: FacetsAccordianProps) {
          }}
       >
          {facets.map((facet, facetIndex) => {
-            const facetAttributes = [facet];
-            if (facet === 'price_range') {
+            const facetAttributes = [facet.name];
+            if (facet.name === 'price_range') {
                facetAttributes.push('facet_tags.Price');
             }
-            const refinedCount = countRefinements(facetAttributes);
             return (
                <AccordionItem
-                  key={facet}
-                  attribute={facet}
-                  refinedCount={refinedCount}
+                  key={facet.name}
+                  facet={facet}
                   productList={productList}
                   isExpanded={indexes.includes(facetIndex)}
                />
@@ -74,42 +69,30 @@ export function FacetsAccordion({ productList }: FacetsAccordianProps) {
 }
 
 type AccordionItemProps = {
-   attribute: string;
-   refinedCount: number;
    productList: ProductList;
+   facet: Facet;
    isExpanded: boolean;
 };
 
 export const AccordionItem = ({
-   attribute,
-   refinedCount,
    productList,
+   facet,
    isExpanded,
 }: AccordionItemProps) => {
-   const widgetType = getFacetWidgetType(attribute);
-
-   switch (widgetType) {
-      case FacetWidgetType.Menu: {
-         return (
-            <FacetMenuAccordionItem
-               attribute={attribute}
-               isExpanded={isExpanded}
-               productList={productList}
-               refinedCount={refinedCount}
-            />
-         );
-      }
-      case FacetWidgetType.RefinementList: {
-         return (
-            <FacetRefinementListAccordionItem
-               attribute={attribute}
-               isExpanded={isExpanded}
-               productList={productList}
-               refinedCount={refinedCount}
-            />
-         );
-      }
-      default:
-         return assertNever(widgetType);
+   if (facet.multiple) {
+      return (
+         <FacetRefinementListAccordionItem
+            productList={productList}
+            facet={facet}
+            isExpanded={isExpanded}
+         />
+      );
    }
+   return (
+      <FacetMenuAccordionItem
+         productList={productList}
+         facet={facet}
+         isExpanded={isExpanded}
+      />
+   );
 };

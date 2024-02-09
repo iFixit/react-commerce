@@ -3,7 +3,6 @@ import { AlgoliaSearchOptions } from 'algoliasearch';
 import { createNodeHttpRequester } from '@algolia/requester-node-http';
 import { Requester, Request, Response } from '@algolia/requester-common';
 import { timeAsync } from '@ifixit/helpers';
-import { useMenu } from 'react-instantsearch';
 
 const FACETS_NAME_OVERRIDES: { [rawName: string]: string } = {
    price_range: 'Price Range',
@@ -65,12 +64,4 @@ export function formatFacetName(algoliaName: string): string {
  */
 export function escapeFilterValue(value: string) {
    return value.replaceAll("'", "\\'").replaceAll('"', '\\"');
-}
-
-/**
- * This temporary hack allows to correctly populate the itemType facet during SSR
- * see: https://github.com/algolia/instantsearch/issues/5571
- */
-export function AlgoliaAttributeSSRHack(attributeName: string) {
-   useMenu({ attribute: attributeName });
 }

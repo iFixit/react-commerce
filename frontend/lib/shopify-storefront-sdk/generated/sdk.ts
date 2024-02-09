@@ -4796,6 +4796,7 @@ export type MenuItemResource =
    | Article
    | Blog
    | Collection
+   | Metaobject
    | Page
    | Product
    | ShopPolicy;
@@ -4816,6 +4817,8 @@ export enum MenuItemType {
    Frontpage = 'FRONTPAGE',
    /** An http link. */
    Http = 'HTTP',
+   /** A metaobject page link. */
+   Metaobject = 'METAOBJECT',
    /** A page link. */
    Page = 'PAGE',
    /** A product link. */
@@ -6333,6 +6336,8 @@ export type ProductSellingPlanGroupsArgs = {
  *
  */
 export type ProductVariantBySelectedOptionsArgs = {
+   caseInsensitiveMatch?: InputMaybe<Scalars['Boolean']>;
+   ignoreUnknownOptions?: InputMaybe<Scalars['Boolean']>;
    selectedOptions: Array<SelectedOptionInput>;
 };
 
@@ -6571,6 +6576,8 @@ export type ProductVariant = HasMetafields &
       sku?: Maybe<Scalars['String']>;
       /** The in-store pickup availability of this variant by location. */
       storeAvailability: StoreAvailabilityConnection;
+      /** Whether tax is charged when the product variant is sold. */
+      taxable: Scalars['Boolean'];
       /** The product variant’s title. */
       title: Scalars['String'];
       /** The unit price value for the variant based on the variant's measurement. */

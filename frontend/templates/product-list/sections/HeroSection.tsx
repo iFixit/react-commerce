@@ -2,21 +2,21 @@ import {
    Box,
    BoxProps,
    Button,
-   Flex,
-   forwardRef,
-   Heading,
    Image as ChakraImage,
+   Flex,
+   Heading,
    Text,
+   forwardRef,
    useDisclosure,
 } from '@chakra-ui/react';
 import { PrerenderedHTML } from '@components/common';
 import { DEFAULT_ANIMATION_DURATION_MS } from '@config/constants';
 import { markdownToHTML } from '@helpers/ui-helpers';
 import { isPresent } from '@ifixit/helpers';
-import { ResponsiveImage, useIsMountedState, Wrapper } from '@ifixit/ui';
+import { ResponsiveImage, Wrapper, useIsMountedState } from '@ifixit/ui';
 import type { Image } from '@models/components/image';
+import { useAlgoliaSearch } from 'app/_data/product-list/useAlgoliaSearch';
 import * as React from 'react';
-import { usePagination } from 'react-instantsearch';
 
 export interface HeroSectionProps {
    title: string;
@@ -33,8 +33,7 @@ export function HeroSection({
    backgroundImage,
    brandLogo,
 }: HeroSectionProps) {
-   const pagination = usePagination();
-   const page = pagination.currentRefinement + 1;
+   const { page } = useAlgoliaSearch();
    const isFirstPage = page === 1;
    return (
       <Wrapper as="section" my={{ base: 4, md: 6 }}>

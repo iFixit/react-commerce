@@ -1,38 +1,22 @@
-import {
-   ProductList as TProductList,
-   ProductSearchHit,
-} from '@models/product-list';
-import { useHits } from 'react-instantsearch';
-import { SearchResults } from 'algoliasearch-helper';
+import { ProductList as TProductList } from '@models/product-list';
+import { Facet } from 'app/_data/product-list/concerns/facets';
+import { useAlgoliaSearch } from 'app/_data/product-list/useAlgoliaSearch';
 import { useFilteredFacets } from './facets/useFacets';
 
-type Facet = SearchResults<ProductSearchHit>['facets'][number];
-type DisjunctiveFacet =
-   SearchResults<ProductSearchHit>['disjunctiveFacets'][number];
-type HierarchicalFacet =
-   SearchResults<ProductSearchHit>['hierarchicalFacets'][number];
-
 export function useHasAnyVisibleFacet(productList: TProductList): boolean {
-   const { results } = useHits<ProductSearchHit>();
+   const { hits, hitsCount, facets } = useAlgoliaSearch();
+
    const activeFacetsName = useFilteredFacets(productList);
 
-   if (!results) {
+   if (!hits) {
       return false;
    }
 
-   const isFacetActive = (facet: Facet | DisjunctiveFacet) =>
-      activeFacetsName.includes(facet.name) &&
-      Object.values(facet.data).some(
-         (value) => value > 0 && value < results.nbHits
+   const isFacetActive = (facet: Facet) =>
+      activeFacetsName.includes(facet) &&
+      facet.options.some(
+         (facetOption) => facetOption.count > 0 && facetOption.count < hitsCount
       );
 
-   const isHierarchicalFacetActive = (facet: HierarchicalFacet) =>
-      activeFacetsName.includes(facet.name) &&
-      facet.data?.some(({ count }) => count > 0 && count < results.nbHits);
-
-   return (
-      results.facets.some(isFacetActive) ||
-      results.disjunctiveFacets.some(isFacetActive) ||
-      results.hierarchicalFacets.some(isHierarchicalFacetActive)
-   );
+   return facets.some(isFacetActive);
 }

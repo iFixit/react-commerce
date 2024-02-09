@@ -1,15 +1,17 @@
+import { useAlgoliaSearch } from 'app/_data/product-list/useAlgoliaSearch';
 import { useMemo } from 'react';
-import { useHits } from 'react-instantsearch';
 
 export function useAvailableItemTypes() {
-   const { results } = useHits();
+   const { facets } = useAlgoliaSearch();
 
    return useMemo(() => {
-      const itemTypeFacets = results?.hierarchicalFacets.find(
+      const itemTypeFacets = facets.find(
          (facet) => facet.name === 'facet_tags.Item Type'
       );
       if (!itemTypeFacets) return [];
 
-      return itemTypeFacets.data?.map((facet) => facet.name) ?? [];
-   }, [results]);
+      return (
+         itemTypeFacets.options?.map((facetOption) => facetOption.value) ?? []
+      );
+   }, [facets]);
 }

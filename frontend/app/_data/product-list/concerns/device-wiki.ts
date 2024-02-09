@@ -1,0 +1,62 @@
+import { invariant } from '@/helpers/application-helpers';
+import { stylizeDeviceItemType } from '@/helpers/product-list-helpers';
+import { IFixitAPIClient } from '@/lib/ifixit-sdk';
+import { z } from 'zod';
+
+export type DeviceWiki = Record<string, any>;
+
+export async function fetchDeviceWiki(
+   deviceTitle: string
+): Promise<DeviceWiki | null> {
+   const client = new IFixitAPIClient();
+   const deviceHandle = encodeURIComponent(stylizeDeviceItemType(deviceTitle));
+   try {
+      invariant(
+         deviceHandle.length > 0,
+         'deviceHandle cannot be a blank string'
+      );
+      return await client.get(`cart/part_collections/devices/${deviceHandle}`);
+   } catch (error: any) {
+      return null;
+   }
+}
+
+export type MultipleDeviceApiResponse = z.infer<
+   typeof MultipleDeviceApiResponseSchema
+>;
+
+const MultipleDeviceApiResponseSchema = z.object({
+   images: z.record(z.string()),
+});
+
+export type GuideImageSize =
+   | 'mini'
+   | 'thumbnail'
+   | '140x105'
+   | '200x150'
+   | 'standard'
+   | '440x330'
+   | 'medium'
+   | 'large'
+   | 'huge';
+
+export async function fetchMultipleDeviceImages(
+   deviceTitles: string[],
+   size: GuideImageSize
+): Promise<MultipleDeviceApiResponse> {
+   const client = new IFixitAPIClient();
+   const params = new URLSearchParams();
+   params.set('size', size);
+   deviceTitles.forEach((deviceTitle) => {
+      params.append('t[]', deviceTitle);
+   });
+   try {
+      const result = await client.get(
+         `wikis/topic_images?` + params.toString()
+      );
+      return MultipleDeviceApiResponseSchema.parse(result);
+   } catch (error) {
+      console.error(error);
+      return { images: {} };
+   }
+}

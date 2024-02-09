@@ -3,12 +3,8 @@ import { ProductListCard } from '@components/product-list/ProductListCard';
 import { productListPath } from '@helpers/path-helpers';
 import { Wrapper } from '@ifixit/ui';
 import type { ProductList } from '@models/product-list';
+import { useAlgoliaSearch } from 'app/_data/product-list/useAlgoliaSearch';
 import * as React from 'react';
-import {
-   useCurrentRefinements,
-   useHits,
-   useSearchBox,
-} from 'react-instantsearch';
 import { useDevicePartsItemType } from '../hooks/useDevicePartsItemType';
 
 export type ProductListChildrenSectionProps = {
@@ -23,20 +19,18 @@ export function ProductListChildrenSection({
 
    const [showAll, setShowAll] = React.useState(false);
 
-   const { items } = useCurrentRefinements();
-   const { query } = useSearchBox();
-   const { hits } = useHits();
+   const { hits, query, facets } = useAlgoliaSearch();
    const itemType = useDevicePartsItemType(productList);
 
    const childrenCount = productListChildren.length;
    const isUnfilteredItemTypeWithNoHits = React.useMemo(() => {
-      const nonItemTypeRefinements = items.filter(
-         (item) => item.attribute !== 'facet_tags.Item Type'
+      const nonItemTypeRefinements = facets.filter(
+         (item) => item.name !== 'facet_tags.Item Type'
       );
       return (
          !hits.length && itemType && !nonItemTypeRefinements.length && !query
       );
-   }, [items, itemType, hits, query]);
+   }, [facets, itemType, hits, query]);
 
    if (isUnfilteredItemTypeWithNoHits) return null;
 

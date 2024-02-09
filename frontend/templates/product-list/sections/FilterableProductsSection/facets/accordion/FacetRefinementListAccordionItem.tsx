@@ -1,52 +1,39 @@
 import { ProductList } from '@models/product-list';
+import { Facet } from 'app/_data/product-list/concerns/facets';
 import { RefinementListFacet } from '../RefinementListFacet';
-import { useRefinementListFacet } from '../useRefinementListFacet';
 import { FacetAccordionItem } from './FacetAccordionItem';
 import { useFacetAccordionItemState } from './useFacetAccordionItemState';
 
 type FacetMenuAccordionItemProps = {
-   attribute: string;
    productList: ProductList;
+   facet: Facet;
    isExpanded: boolean;
-   refinedCount: number;
 };
 
 export function FacetRefinementListAccordionItem({
-   attribute,
    productList,
+   facet,
    isExpanded,
-   refinedCount,
 }: FacetMenuAccordionItemProps) {
-   const {
-      items,
-      refine,
-      canToggleShowMore,
-      isShowingMore,
-      toggleShowMore,
-      hasApplicableRefinements,
-   } = useRefinementListFacet({ attribute });
    const { isDisabled, isHidden } = useFacetAccordionItemState({
-      attribute,
-      hasApplicableRefinements,
+      attribute: facet.name,
+      hasApplicableRefinements: facet.options.length > 0,
       productList,
    });
 
    return (
       <FacetAccordionItem
-         attribute={attribute}
+         attribute={facet.name}
          isDisabled={isDisabled}
          isHidden={isHidden}
          isExpanded={isExpanded}
-         refinedCount={refinedCount}
+         refinedCount={facet.selectedCount}
          refinementIndicator="count"
       >
          <RefinementListFacet
-            attribute={attribute}
-            items={items}
-            refine={refine}
-            canToggleShowMore={canToggleShowMore}
-            isShowingMore={isShowingMore}
-            onToggleShowMore={toggleShowMore}
+            attribute={facet.name}
+            items={facet.options}
+            refine={() => {}}
          />
       </FacetAccordionItem>
    );
