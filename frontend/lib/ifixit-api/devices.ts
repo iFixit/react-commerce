@@ -55,7 +55,7 @@ export async function fetchMultipleDeviceImages(
    });
    try {
       const result = await client.get(
-         `wikis/topic_images?` + encodeURIComponent(params.toString()),
+         `wikis/topic_images?` + params.toString(),
          'device-images'
       );
       return MultipleDeviceApiResponseSchema.parse(result);
